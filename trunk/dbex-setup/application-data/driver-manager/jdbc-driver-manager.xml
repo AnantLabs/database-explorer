@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<driverManager>
+	<jdbcDriver name="Oracle 9i">
+		<connectionConfiguration name="SomeName001">
+			<databaseType>databaseType</databaseType>
+			<connectionUrl>
+				<protocol></protocol>
+				<url></url>
+			</connectionUrl>
+			<databaseConfiguration>
+				<driverClassName>someDriver</driverClassName>
+				<hostName>somehost</hostName>
+				<portNumber>1234</portNumber>
+				<userName>someuser</userName>
+				<password>password</password>
+				<savePassword>true</savePassword>
+				<storageType>CATALOG</storageType>
+				<sidServiceName>SOMESERVICE</sidServiceName>
+				<schemaName>Some_Schema</schemaName>
+			</databaseConfiguration>
+		</connectionConfiguration>
+		<services>
+			<className>com.oracle.Driver</className>
+			<className>com.oracle.jdbc.JdbcDriver</className>
+		</services>
+		<jarEntry fileName="" systemRef="true">
+			<jarLocation>d:/libs/</jarLocation>
+		</jarEntry>
+	</jdbcDriver>
+
+	<jdbcDriver name="Oracle 10g">
+		<connectionConfiguration name="SomeName001">
+			<databaseType>databaseType</databaseType>
+			<connectionUrl>
+				<protocol></protocol>
+				<url></url>
+			</connectionUrl>
+			<databaseConfiguration>
+				<driverClassName>someDriver</driverClassName>
+				<hostName>somehost</hostName>
+				<portNumber>1234</portNumber>
+				<userName>someuser</userName>
+				<password>password</password>
+				<savePassword>true</savePassword>
+				<storageType>CATALOG</storageType>
+				<sidServiceName>SOMESERVICE</sidServiceName>
+				<schemaName>Some_Schema</schemaName>
+			</databaseConfiguration>
+		</connectionConfiguration>
+		<services>
+			<className>com.oracle.Driver</className>
+			<className>com.oracle.jdbc.JdbcDriver</className>
+		</services>
+		<jarEntry fileName="" systemRef="true">
+			<jarLocation>d:/libs/</jarLocation>
+		</jarEntry>
+	</jdbcDriver>
+</driverManager>

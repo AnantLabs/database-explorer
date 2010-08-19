@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <connection name="yuijklhjkluioyuio" displayOrder="3">
+    <databaseType>MSSQL_2005</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url>jdbc:microsoft:sqlserver://&lt;hostName>:&lt;portNumber>;databaseName=&lt;databaseName>;selectMethod=&lt;selectMethod></url>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName>com.microsoft.jdbc.sqlserver.SQLServerDriver</driverClassName>
+      <hostName>localhost</hostName>
+      <portNumber>123</portNumber>
+      <userName xsi:nil="true"/>
+      <password>yuioyuio</password>
+      <savePassword>false</savePassword>
+      <sidServiceName/>
+      <schemaName>oyuioyuio</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="asdgdfgsdfg" displayOrder="0">
+    <databaseType>MYSQL</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url><![CDATA[jdbc:mysql://<hostName>:<portNumber>/<databaseName>user=<userName>&password=<password>]]></url>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName>com.mysql.jdbc.Driver</driverClassName>
+      <hostName>localhost</hostName>
+      <portNumber>123</portNumber>
+      <userName xsi:nil="true"/>
+      <password>uioyuioyui</password>
+      <savePassword>false</savePassword>
+      <sidServiceName/>
+      <schemaName>oyuioyuio</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="hjkliuioyuioil" displayOrder="2">
+    <databaseType>ORACLE</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url>uioyuioyuio</url>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName>oracle.jdbc.driver.OracleDriver</driverClassName>
+      <hostName>localhost</hostName>
+      <portNumber>123</portNumber>
+      <userName xsi:nil="true"/>
+      <password>oyuioyuio</password>
+      <savePassword>false</savePassword>
+      <sidServiceName>uioyuioyuio</sidServiceName>
+      <schemaName>oyuioyuio</schemaName>
+    </databaseConfiguration>
+  </connection>
+</connections>

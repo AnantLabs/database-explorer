@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+   "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	
+	<import resource="dbex-integration-context.xml"/>
+	<import resource="dbex-service-context.xml"/>
+	<import resource="dbex-historyMgr-context.xml"/>
+	<!--<import resource="dbex-appliation-context.xml"/>
+	
+	--><bean id="databaseExplorerLauncher" class="com.gs.dbex.launcher.DatabaseExplorerLauncher">
+		<property name="applicationDataLoader" ref="applicationDataLoader"></property>
+	</bean>
+	
+	<bean id="applicationDataLoader" class="com.gs.dbex.launcher.ApplicationDataLoader">
+		<property name="applicationDataHistoryMgr" ref="applicationDataHistoryMgr"></property>
+	</bean>
+</beans>

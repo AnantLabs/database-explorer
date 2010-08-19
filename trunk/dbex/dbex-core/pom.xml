@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>dbex</artifactId>
+		<groupId>com.gs.dbex</groupId>
+		<version>${release.version}</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>dbex-core</artifactId>
+	<name>DBEx - Core</name>
+	<version>${release.version}</version>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.gs.dbex</groupId>
+			<artifactId>dbex-common</artifactId>
+			<version>${release.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gs.dbex</groupId>
+			<artifactId>dbex-model</artifactId>
+			<version>${release.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>ojdbc</groupId>
+			<artifactId>ojdbc</artifactId>
+			<version>14</version>
+			<scope>system</scope>
+			<systemPath>${libs.dir}/ojdbc14.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql</artifactId>
+			<version>5.1.12</version>
+			<scope>system</scope>
+			<systemPath>${libs.dir}/mysql-connector-java-5.1.12.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>mssql</groupId>
+			<artifactId>mssql</artifactId>
+			<version>2.0</version>
+			<scope>system</scope>
+			<systemPath>${libs.dir}/sqlserver_4.jar</systemPath>
+		</dependency>
+	
+	</dependencies>
+</project>

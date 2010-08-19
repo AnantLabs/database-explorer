@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+   "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+	<bean id="oracleDatabaseMetadataIntegration"
+		class="com.gs.dbex.integration.impl.oracle.OracleDatabaseMetadataIntegrationImpl">
+		<property name="dbGrabber" ref="schemaDBGrabber"></property>
+	</bean>
+	
+	<bean id="mysqlDatabaseMetadataIntegration"
+		class="com.gs.dbex.integration.impl.mysql.MysqlDatabaseMetadataIntegrationImpl">
+		<property name="dbGrabber" ref="catalogDBGrabber"></property>
+	</bean>
+	
+	<bean id="oracleDatabaseConnectionIntegration"
+		class="com.gs.dbex.integration.impl.oracle.OracleDatabaseConnectionIntegrationImpl">
+		<property name="databaseConnectionHelper" ref="oracleDatabaseConnectionHelper"></property>
+	</bean>
+	
+	<bean id="mysqlDatabaseConnectionIntegration"
+		class="com.gs.dbex.integration.impl.mysql.MysqlDatabaseConnectionIntegrationImpl">
+		<property name="databaseConnectionHelper" ref="mysqlDatabaseConnectionHelper"></property>
+	</bean>
+	
+	<bean id="genericDatabaseConnectionIntegration"
+		class="com.gs.dbex.integration.impl.GenericDatabaseConnectionIntegration">
+		<property name="databaseConnectionHelper" ref="genericDatabaseConnectionHelper"></property>
+	</bean>
+	
+	<bean id="IntegrationBeanFactory"
+		class="com.gs.dbex.integration.IntegrationBeanFactory" factory-method="getBeanFactory">
+		<property name="oracleDatabaseMetadataIntegration" ref="oracleDatabaseMetadataIntegration"></property>
+		<property name="mysqlDatabaseMetadataIntegration" ref="mysqlDatabaseMetadataIntegration"></property>
+		<property name="oracleDatabaseConnectionIntegration" ref="oracleDatabaseConnectionIntegration"></property>
+		<property name="mysqlDatabaseConnectionIntegration" ref="mysqlDatabaseConnectionIntegration"></property>
+		<property name="castorXmlReaderIntegration" ref="castorXmlReaderIntegration"></property>
+		<property name="genericDatabaseConnectionIntegration" ref="genericDatabaseConnectionIntegration"></property>
+	</bean>
+	
+	<bean id="oracleDatabaseConnectionHelper"
+		class="com.gs.dbex.integration.helper.oracle.OracleDatabaseConnectionHelper">
+	</bean>
+	
+	<bean id="mysqlDatabaseConnectionHelper"
+		class="com.gs.dbex.integration.helper.mysql.MysqlDatabaseConnectionHelper">
+	</bean>
+	
+	<bean id="genericDatabaseConnectionHelper"
+		class="com.gs.dbex.integration.helper.GenericDatabaseConnectionHelper">
+	</bean>
+	
+	<bean id="catalogDBGrabber"
+		class="com.gs.dbex.core.catalog.grabber.CatalogDBGrabberImpl">
+	</bean>
+	
+	<bean id="schemaDBGrabber"
+		class="com.gs.dbex.core.schema.grabber.SchemaDBGrabberImpl">
+	</bean>
+	
+	<bean id="castorXmlReaderIntegration"
+		class="com.gs.dbex.integration.impl.castor.CastorXmlReaderIntegration">
+	</bean>
+	
+	<bean id="connectionPropertiesXmlTransformer"
+		class="com.gs.dbex.integration.xmlbeans.ConnectionPropertiesXmlTransformer">
+	</bean>
+	
+	<bean id="connectionPropertiesBodGenerator"
+		class="com.gs.dbex.integration.xmlbeans.ConnectionPropertiesBodGenerator">
+	</bean>
+	
+</beans>

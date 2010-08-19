@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.gs.dbex</groupId>
+	<artifactId>dbex</artifactId>
+	<packaging>pom</packaging>
+	<version>${release.version}</version>
+	<name>Database Explorer</name>
+
+	<modules>
+		<module>dbex-common</module>
+		<module>dbex-model</module>
+		<module>dbex-core</module>
+		<module>dbex-bod</module>
+		<module>dbex-integration</module>
+		<module>dbex-service</module>
+		<module>dbex-historyMgr</module>
+		<module>dbex-application</module>
+		<module>dbex-design</module>
+		<module>dbex-launcher</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.14</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging-api</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.gs.utils</groupId>
+				<artifactId>gs-utils</artifactId>
+				<version>1.0.02.2010</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context</artifactId>
+				<version>3.0.0.RELEASE</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+		</dependencies>
+		
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.gs.utils</groupId>
+			<artifactId>gs-utils</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency> 
+	</dependencies>
+	
+	<build>
+		<plugins>					
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<project.title>DBEX</project.title>
+		<project.home>D:/SVN_HOME/MyProjects/database-explorer/trunk</project.home>
+		<release.version>1.0-BETA-0.1</release.version>
+		<setup.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup</setup.dir>
+		<libs.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup/libs</libs.dir>
+		<release.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/release</release.dir>
+		<jdk.version>1.6</jdk.version>
+		<maven.test.skip>true</maven.test.skip>
+	</properties>
+
+</project>
+
