@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <connection name="ConnectionName_1" displayOrder="0">
+    <databaseType>Oracle</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_100</hostName>
+      <portNumber>100</portNumber>
+      <userName>userName100</userName>
+      <password>password100</password>
+      <savePassword>true</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_2" displayOrder="0">
+    <databaseType>Mysql</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_200</hostName>
+      <portNumber>200</portNumber>
+      <userName>userName200</userName>
+      <password>password200</password>
+      <savePassword>false</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_3" displayOrder="0">
+    <databaseType>MS SQL Server 2005</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_300</hostName>
+      <portNumber>300</portNumber>
+      <userName>userName300</userName>
+      <password>password300</password>
+      <savePassword>true</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_4" displayOrder="0">
+    <databaseType>Other Database</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_400</hostName>
+      <portNumber>400</portNumber>
+      <userName>userName400</userName>
+      <password>password400</password>
+      <savePassword>false</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_5" displayOrder="0">
+    <databaseType>Oracle</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_500</hostName>
+      <portNumber>500</portNumber>
+      <userName>userName500</userName>
+      <password>password500</password>
+      <savePassword>true</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_6" displayOrder="0">
+    <databaseType>Mysql</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_600</hostName>
+      <portNumber>600</portNumber>
+      <userName>userName600</userName>
+      <password>password600</password>
+      <savePassword>false</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_7" displayOrder="0">
+    <databaseType>MS SQL Server 2005</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_700</hostName>
+      <portNumber>700</portNumber>
+      <userName>userName700</userName>
+      <password>password700</password>
+      <savePassword>true</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_8" displayOrder="0">
+    <databaseType>Other Database</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_800</hostName>
+      <portNumber>800</portNumber>
+      <userName>userName800</userName>
+      <password>password800</password>
+      <savePassword>false</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_9" displayOrder="0">
+    <databaseType>Oracle</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_900</hostName>
+      <portNumber>900</portNumber>
+      <userName>userName900</userName>
+      <password>password900</password>
+      <savePassword>true</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+  <connection name="ConnectionName_10" displayOrder="0">
+    <databaseType>Mysql</databaseType>
+    <connectionUrl>
+      <protocol/>
+      <url/>
+    </connectionUrl>
+    <databaseConfiguration>
+      <driverClassName xsi:nil="true"/>
+      <hostName>hostName_1000</hostName>
+      <portNumber>1000</portNumber>
+      <userName>userName1000</userName>
+      <password>password1000</password>
+      <savePassword>false</savePassword>
+      <storageType>SCHEMA</storageType>
+      <sidServiceName xsi:nil="true"/>
+      <schemaName>schemaName</schemaName>
+    </databaseConfiguration>
+  </connection>
+</connections>
