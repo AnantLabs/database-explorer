@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+    "http://castor.org/mapping.dtd"><!--comment-->
+<mapping>
+	<class name="com.gs.dbex.model.cfg.DriverFile">
+		<map-to xml="driver-file" />
+		<field name="fileName" type="string"></field>
+		<field name="path" type="string"></field>
+	</class>
+	<class name="com.gs.dbex.model.cfg.DriverClassList">
+		<map-to xml="driver-class-list"></map-to>
+		<field name="classNameList" collection="collection">
+			<bind-xml name="driver-class" type="string" node="element"></bind-xml>
+		</field>
+	</class>
+</mapping>
+
