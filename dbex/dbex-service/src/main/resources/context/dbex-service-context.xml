@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+   "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+	<bean id="databaseConnectionService"
+		class="com.gs.dbex.service.impl.DatabaseConnectionServiceImpl">
+	</bean>
+	<bean id="databaseMetadataService"
+		class="com.gs.dbex.service.impl.DatabaseMetadataServiceImpl">
+	</bean>
+	<bean id="queryExecutionService"
+		class="com.gs.dbex.service.impl.QueryExecutionServiceImpl">
+	</bean>
+	
+	<bean id="DbexServiceBeanFactory"
+		class="com.gs.dbex.service.DbexServiceBeanFactory" factory-method="getBeanFactory">
+		<property name="databaseConnectionService" ref="databaseConnectionService"></property>
+		<property name="databaseMetadataService" ref="databaseMetadataService"></property>
+		<property name="queryExecutionService" ref="queryExecutionService"></property>
+	</bean>
+	
+	
+</beans>

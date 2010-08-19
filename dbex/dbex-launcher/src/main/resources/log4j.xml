@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+	debug="true">
+
+	<appender name="APP_LOG" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="./logs/app/Application.log" />
+		<param name="MaxFileSize" value="10485760KB" />
+		<param name="maxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
+		</layout>
+	</appender>
+	<appender name="CASTOR_LOG" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="./logs/integration/Castor.log" />
+		<param name="MaxFileSize" value="10485760KB" />
+		<param name="maxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
+		</layout>
+	</appender>
+	<appender name="GS_UTIL_LOG" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="./logs/external/Utility.log" />
+		<param name="MaxFileSize" value="10485760KB" />
+		<param name="maxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
+		</layout>
+	</appender>
+	<appender name="SPRING_LOG" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="./logs/integration/Spring.log" />
+		<param name="MaxFileSize" value="10485760KB" />
+		<param name="maxBackupIndex" value="10" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
+		</layout>
+	</appender>
+
+	<category name="com.gs.dbex">
+		<priority value="DEBUG" />
+		<appender-ref ref="APP_LOG" />
+	</category>
+	<category name="org.exolab.castor">
+		<priority value="DEBUG" />
+		<appender-ref ref="CASTOR_LOG" />
+	</category>
+	<category name="com.gs.utils">
+		<priority value="DEBUG" />
+		<appender-ref ref="GS_UTIL_LOG" />
+	</category>
+	<category name="org.springframework">
+		<priority value="DEBUG" />
+		<appender-ref ref="SPRING_LOG" />
+	</category>
+</log4j:configuration>

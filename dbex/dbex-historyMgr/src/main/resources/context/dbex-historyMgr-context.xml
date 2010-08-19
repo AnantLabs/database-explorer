@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+   "http://www.springframework.org/dtd/spring-beans.dtd">
+   
+<beans>
+
+	<bean id="DbexHistoryMgrBeanFactory"
+		class="com.gs.dbex.historyMgr.DbexHistoryMgrBeanFactory"
+		factory-method="getInstance">
+		<property name="applicationDataHistoryMgr" ref="applicationDataHistoryMgr"></property>
+	</bean>
+
+	<bean id="applicationDataHistoryMgr" class="com.gs.dbex.historyMgr.data.ApplicationDataHistoryMgrImpl">
+		<property name="connectionPropertiesXmlTransformer" ref="connectionPropertiesXmlTransformer" />
+		<property name="connectionPropertiesBodGenerator" ref="connectionPropertiesBodGenerator" />
+	</bean>
+
+</beans>

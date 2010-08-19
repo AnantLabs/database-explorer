@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+	<xs:element name="connections">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" ref="connection" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="connection">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="databaseType" />
+				<xs:element ref="connectionUrl" />
+				<xs:element ref="databaseConfiguration" />
+			</xs:sequence>
+			<xs:attribute name="displayOrder" use="required" type="xs:integer" />
+			<xs:attribute name="name" use="required" type="xs:NCName" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="driverManager">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" ref="jdbcDriver" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="jdbcDriver">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="connectionConfiguration" />
+				<xs:element ref="services" />
+				<xs:element ref="jarEntry" />
+			</xs:sequence>
+			<xs:attribute name="name" use="required" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="connectionConfiguration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="databaseType" />
+				<xs:element ref="connectionUrl" />
+				<xs:element ref="databaseConfiguration" />
+			</xs:sequence>
+			<xs:attribute name="name" use="required" type="xs:NCName" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="services">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" ref="className" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="className" type="xs:NCName" />
+	<xs:element name="jarEntry">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="jarLocation" />
+			</xs:sequence>
+			<xs:attribute name="fileName" use="required" />
+			<xs:attribute name="systemRef" use="required" type="xs:boolean" />
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="jarLocation" type="xs:anyURI" />
+	<xs:element name="databaseType" type="xs:NCName" />
+	<xs:element name="connectionUrl">
+		<xs:complexType mixed="true">
+
+			<xs:sequence>
+				<xs:element ref="protocol" />
+				<xs:element ref="url" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="protocol" type="xs:string">
+	</xs:element>
+	<xs:element name="url" type="xs:string">
+	</xs:element>
+	<xs:element name="databaseConfiguration">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="driverClassName" />
+				<xs:element ref="hostName" />
+				<xs:element ref="portNumber" />
+				<xs:element ref="userName" />
+				<xs:element ref="password" />
+				<xs:element ref="savePassword" />
+				<xs:element ref="storageType" />
+				<xs:element ref="sidServiceName" />
+				<xs:element ref="schemaName" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="driverClassName" type="xs:NCName" />
+	<xs:element name="hostName" type="xs:NCName" />
+	<xs:element name="portNumber" type="xs:integer" />
+	<xs:element name="userName" type="xs:NCName" />
+	<xs:element name="password" type="xs:NCName" />
+	<xs:element name="savePassword" type="xs:boolean" />
+	<xs:element name="storageType" type="storageTypeEnum" />
+	<xs:element name="sidServiceName" type="xs:NCName" />
+	<xs:element name="schemaName" type="xs:NCName" />
+
+	<xs:simpleType name="storageTypeEnum">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="CATALOG"></xs:enumeration>
+			<xs:enumeration value="SCHEMA"></xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

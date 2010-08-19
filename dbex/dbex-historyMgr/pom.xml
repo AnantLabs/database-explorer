@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<artifactId>dbex</artifactId>
+		<groupId>com.gs.dbex</groupId>
+		<version>${release.version}</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>dbex-historyMgr</artifactId>
+	<name>DBEx - History Manager</name>
+	<version>${release.version}</version>
+	<packaging>jar</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.gs.dbex</groupId>
+			<artifactId>dbex-common</artifactId>
+			<version>${release.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gs.dbex</groupId>
+			<artifactId>dbex-model</artifactId>
+			<version>${release.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.gs.dbex</groupId>
+			<artifactId>dbex-integration</artifactId>
+			<version>${release.version}</version>
+		</dependency>
+
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+</project>
