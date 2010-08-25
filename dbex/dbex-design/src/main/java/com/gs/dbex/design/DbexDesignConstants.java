@@ -10,5 +10,5 @@ package com.gs.dbex.design;
 public interface DbexDesignConstants {
 
 	String IMAGE_PATH = "/images/";
-	int TABLE_LEFT_MARGIN_WIDTH = 20;
+	int TABLE_LEFT_MARGIN_WIDTH = 24;
 }
