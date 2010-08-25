@@ -20,7 +20,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -35,9 +34,8 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import org.omg.CORBA.portable.ApplicationException;
-
 import com.gs.dbex.application.constants.ApplicationConstants;
+import com.gs.dbex.design.graph.DependencyGraphPanel;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.dependency.TableDependency;
 

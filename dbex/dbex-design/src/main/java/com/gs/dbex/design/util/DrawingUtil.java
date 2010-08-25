@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gs.dbex.application.util;
+package com.gs.dbex.design.util;
 
 import java.awt.Graphics;
 

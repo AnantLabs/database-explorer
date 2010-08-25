@@ -9,7 +9,7 @@ import java.awt.Color;
  * @author Sabuj Das
  *
  */
-public interface ColorConstants {
+public interface DbexColorConstants {
 
 	Color COLUMN_NAMES_FG_COLOR 		= Color.BLACK;
 	Color COLUMN_NAMES_BG_COLOR 		= new Color(170,205,249);

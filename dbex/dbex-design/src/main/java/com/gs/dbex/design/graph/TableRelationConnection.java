@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gs.dbex.application.graph;
+package com.gs.dbex.design.graph;
 
 import java.awt.Color;
 import java.awt.Point;
