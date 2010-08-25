@@ -71,17 +71,21 @@
 							<classpathPrefix>lib/</classpathPrefix>
 							<classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>
 						</manifest>
-						<!-- 
-							<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> 
-							<classpathLayoutType>repository</classpathLayoutType>
-							<classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout> 
-						-->
+						<!-- <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> 
+							<classpathLayoutType>repository</classpathLayoutType> 
+							<classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout> -->
 					</archive>
+					<keystore>${setup.dir}/key/DbEx_keystore.key</keystore>
+					<alias>dbexKey</alias>
+					<storepass>$w0rdf!$#</storepass>
+					<signedjar>${release.dir}/${project.title}_${release.version}/dbex-launcher-${release.version}-signed.jar</signedjar>
+					<verify>true</verify>
 				</configuration>
 				<executions>
 					<execution>
 						<goals>
 							<goal>test-jar</goal>
+							<goal>sign</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -118,7 +122,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>

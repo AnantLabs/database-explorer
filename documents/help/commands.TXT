@@ -1,0 +1,2 @@
+keytool -genkey -alias dbexKey -keystore d:\temp\DbEx_keystore.key
+	-- Generate the kerstore
