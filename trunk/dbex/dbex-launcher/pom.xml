@@ -62,16 +62,20 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.3.1</version>
 				<configuration>
 					<archive>
 						<manifest>
 							<mainClass>com.gs.dbex.launcher.DatabaseExplorerLauncher</mainClass>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-
+							<classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>
 						</manifest>
-						<!-- <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> 
-							<classpathLayoutType>repository</classpathLayoutType> -->
+						<!-- 
+							<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> 
+							<classpathLayoutType>repository</classpathLayoutType>
+							<classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout> 
+						-->
 					</archive>
 				</configuration>
 				<executions>
@@ -100,10 +104,12 @@
 									</fileset>
 								</copy>
 								<!-- Coping Application data to release directory -->
-								<copy todir="${release.dir}/${project.title}_${release.version}/" 
-									overwrite="true" failonerror="true" includeEmptyDirs="true"> <fileset dir="${setup.dir}"> 
-									<include name="application-data/**/*.*" /> </fileset> 
-								</copy> 
+								<copy todir="${release.dir}/${project.title}_${release.version}/"
+									overwrite="true" failonerror="true" includeEmptyDirs="true">
+									<fileset dir="${setup.dir}">
+										<include name="application-data/**/*.*" />
+									</fileset>
+								</copy>
 							</tasks>
 						</configuration>
 						<goals>
@@ -112,30 +118,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--<plugin> TODO: Not Working
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<id>copy-resources</id>
-						 here the phase you need 
-						<phase>validate</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${release.dir}/${project.title}_${release.version}/application-data/</outputDirectory>
-							<resources>
-								<resource>
-									<directory>${setup.dir}/application-data</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->
-
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -151,6 +134,7 @@
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>false</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
+							<useRepositoryLayout>true</useRepositoryLayout>
 						</configuration>
 					</execution>
 				</executions>
