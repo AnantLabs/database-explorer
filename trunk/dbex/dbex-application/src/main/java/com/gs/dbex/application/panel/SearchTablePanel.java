@@ -10,7 +10,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,19 +32,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
-import org.omg.CORBA.portable.ApplicationException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
-import com.gs.dbex.application.table.model.CollectionTableModel;
 import com.gs.dbex.application.util.DisplayUtils;
-import com.gs.dbex.application.util.DrawingUtil;
 import com.gs.dbex.application.vo.TableSearchCriteria;
 import com.gs.dbex.application.vo.TableSearchResult;
 import com.gs.dbex.common.enums.ObjectTypeEnum;
-import com.gs.dbex.common.enums.SearchObjectMetaDataEnum;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
-import com.gs.utils.collection.CollectionUtils;
 import com.gs.utils.text.StringUtil;
 
 /**

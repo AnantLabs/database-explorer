@@ -34,7 +34,11 @@
 			<artifactId>dbex-historyMgr</artifactId>
 			<version>${release.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.gs.dbex</groupId>
+			<artifactId>dbex-design</artifactId>
+			<version>${release.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.fife.plaf</groupId>

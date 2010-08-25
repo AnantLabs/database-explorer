@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gs.dbex.application.graph;
+package com.gs.dbex.design.graph;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,8 +25,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import com.gs.dbex.application.constants.ApplicationConstants;
-import com.gs.dbex.application.util.DrawingUtil;
+import com.gs.dbex.design.DbexColorConstants;
+import com.gs.dbex.design.DbexDesignConstants;
+import com.gs.dbex.design.util.DrawingUtil;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.ForeignKey;
 import com.gs.dbex.model.db.Table;
@@ -99,10 +100,10 @@ public class DependencyGraphPanel extends JPanel {
 		}
 		
 		imagePk = new ImageIcon(getClass()
-				.getResource(ApplicationConstants.IMAGE_PATH
+				.getResource(DbexDesignConstants.IMAGE_PATH
 						+ "PrimaryKeyColumn.gif")).getImage(); 
 		imageFk = new ImageIcon(getClass()
-				.getResource(ApplicationConstants.IMAGE_PATH
+				.getResource(DbexDesignConstants.IMAGE_PATH
 						+ "ForeignKeyColumn.gif")).getImage(); 
 			
 			
@@ -234,28 +235,28 @@ public class DependencyGraphPanel extends JPanel {
 	public void drawTable(Graphics graphics, Point location, Dimension size, Table table,
 			int tableType){
 		// draw the border
-		graphics.setColor(ApplicationConstants.TABLE_BORDER_COLOR);
+		graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
 		graphics.drawRect(location.x, location.y, size.width, size.height);
-		graphics.setColor(ApplicationConstants.COLUMN_NAMES_BG_COLOR);
+		graphics.setColor(DbexColorConstants.COLUMN_NAMES_BG_COLOR);
 		graphics.fillRect(location.x+1, location.y+1, size.width-1, size.height-1);
 		// draw the header
-		graphics.setColor(ApplicationConstants.TABLE_BORDER_COLOR);
+		graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
 		graphics.drawRect(location.x, location.y, size.width, DrawingUtil.calculateCellHeight(graphics));
-		graphics.setColor(ApplicationConstants.TABLE_HEADER_BG_COLOR);
+		graphics.setColor(DbexColorConstants.TABLE_HEADER_BG_COLOR);
 		graphics.fillRect(location.x+1, location.y+1, size.width-1, DrawingUtil.calculateCellHeight(graphics)-1);
-		graphics.setColor(ApplicationConstants.TABLE_HEADER_FG_COLOR);
+		graphics.setColor(DbexColorConstants.TABLE_HEADER_FG_COLOR);
 		graphics.drawString(table.getModelName(), location.x+2, 
 				location.y+DrawingUtil.calculateCellHeight(graphics)-4);
 		// draw the left margin
-		graphics.setColor(ApplicationConstants.TABLE_BORDER_COLOR);
+		graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
 		graphics.drawRect(location.x, location.y + DrawingUtil.calculateCellHeight(graphics),
-				ApplicationConstants.TABLE_LEFT_MARGIN_WIDTH, size.height-DrawingUtil.calculateCellHeight(graphics));
-		graphics.setColor(ApplicationConstants.TABLE_LEFT_MARGIN_BG_COLOR);
+				DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH, size.height-DrawingUtil.calculateCellHeight(graphics));
+		graphics.setColor(DbexColorConstants.TABLE_LEFT_MARGIN_BG_COLOR);
 		graphics.fillRect(location.x+1, location.y + DrawingUtil.calculateCellHeight(graphics)+1,
-				ApplicationConstants.TABLE_LEFT_MARGIN_WIDTH-1, size.height-1-DrawingUtil.calculateCellHeight(graphics));
+				DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH-1, size.height-1-DrawingUtil.calculateCellHeight(graphics));
 		
 		// draw columns
-		int colStart_X = location.x + ApplicationConstants.TABLE_LEFT_MARGIN_WIDTH + 5;
+		int colStart_X = location.x + DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH + 5;
 		int colStart_Y = location.y + DrawingUtil.calculateCellHeight(graphics) + 2;
 		int cellHeight = DrawingUtil.calculateCellHeight(graphics);
 		List<Column> columnList = table.getColumnlist();
@@ -264,7 +265,7 @@ public class DependencyGraphPanel extends JPanel {
 			if(! showCompleteTable){
 				// for primary key
 				if(c.getPrimaryKey()){
-					graphics.setColor(ApplicationConstants.COLUMN_NAMES_FG_COLOR);
+					graphics.setColor(DbexColorConstants.COLUMN_NAMES_FG_COLOR);
 					graphics.drawString(c.getModelName(), 
 							colStart_X + 2, colStart_Y + cellHeight - 4);
 					if(c.getPrimaryKey()){
@@ -294,7 +295,7 @@ public class DependencyGraphPanel extends JPanel {
 												+ expKey.getFkTableName() + "." + expKey.getFkColumnName());
 											if(startPoint != null){
 												TableRelationConnection trc = new TableRelationConnection();
-												trc.setConnectionColor(ApplicationConstants.EXPORTED_RELATION_LINE_COLOR);
+												trc.setConnectionColor(DbexColorConstants.TABLE_DEPENDENCY_LINE_COLOR);
 												trc.setRelationPoint(relationLineStart);
 												RelationConnectionDirection dir = new RelationConnectionDirection();
 												dir.setStartPoint(startPoint);
@@ -341,7 +342,7 @@ public class DependencyGraphPanel extends JPanel {
 															+ impKey.getPkTableName() + "." + impKey.getPkColumnName());
 													if(endPoint != null){
 														TableRelationConnection trc = new TableRelationConnection();
-														trc.setConnectionColor(ApplicationConstants.IMPORTED_RELATION_LINE_COLOR);
+														trc.setConnectionColor(DbexColorConstants.TABLE_DEPENDENCY_LINE_COLOR);
 														trc.setRelationPoint(relationLineStart);
 														RelationConnectionDirection dir = new RelationConnectionDirection();
 														dir.setStartPoint(relationLineStart);
@@ -363,13 +364,13 @@ public class DependencyGraphPanel extends JPanel {
 					}
 					// if the column is not the last column
 					if(i != columnList.size()-1){
-						graphics.setColor(ApplicationConstants.TABLE_BORDER_COLOR);
+						graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
 						graphics.drawLine(colStart_X+1, colStart_Y + cellHeight +2, location.x+size.width ,
 								colStart_Y + cellHeight +2);
 					}
 					colStart_Y += cellHeight;
 				} else if(c.getForeignKey()){
-					graphics.setColor(ApplicationConstants.COLUMN_NAMES_FG_COLOR);
+					graphics.setColor(DbexColorConstants.COLUMN_NAMES_FG_COLOR);
 					graphics.drawString(c.getModelName(), 
 							colStart_X + 2, colStart_Y + cellHeight - 4);
 					if(c.getPrimaryKey()){
@@ -399,7 +400,7 @@ public class DependencyGraphPanel extends JPanel {
 												+ expKey.getFkTableName() + "." + expKey.getFkColumnName());
 											if(startPoint != null){
 												TableRelationConnection trc = new TableRelationConnection();
-												trc.setConnectionColor(ApplicationConstants.EXPORTED_RELATION_LINE_COLOR);
+												trc.setConnectionColor(DbexColorConstants.TABLE_DEPENDENCY_LINE_COLOR);
 												trc.setRelationPoint(relationLineStart);
 												RelationConnectionDirection dir = new RelationConnectionDirection();
 												dir.setStartPoint(startPoint);
@@ -446,7 +447,7 @@ public class DependencyGraphPanel extends JPanel {
 															+ impKey.getPkTableName() + "." + impKey.getPkColumnName());
 													if(endPoint != null){
 														TableRelationConnection trc = new TableRelationConnection();
-														trc.setConnectionColor(ApplicationConstants.IMPORTED_RELATION_LINE_COLOR);
+														trc.setConnectionColor(DbexColorConstants.TABLE_DEPENDENCY_LINE_COLOR);
 														trc.setRelationPoint(relationLineStart);
 														RelationConnectionDirection dir = new RelationConnectionDirection();
 														dir.setStartPoint(relationLineStart);
@@ -467,7 +468,7 @@ public class DependencyGraphPanel extends JPanel {
 					}
 					// if the column is not the last column
 					if(i != columnList.size()-1){
-						graphics.setColor(ApplicationConstants.TABLE_BORDER_COLOR);
+						graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
 						graphics.drawLine(colStart_X+1, colStart_Y + cellHeight +2, location.x+size.width ,
 								colStart_Y + cellHeight +2);
 					}
@@ -477,7 +478,7 @@ public class DependencyGraphPanel extends JPanel {
 			
 		// show complete table	
 			else {
-				graphics.setColor(ApplicationConstants.COLUMN_NAMES_FG_COLOR);
+				graphics.setColor(DbexColorConstants.COLUMN_NAMES_FG_COLOR);
 				graphics.drawString(c.getModelName(), 
 						colStart_X + 2, colStart_Y + cellHeight - 4);
 				if(c.getPrimaryKey()){
@@ -507,7 +508,7 @@ public class DependencyGraphPanel extends JPanel {
 												+ expKey.getFkTableName() + "." + expKey.getFkColumnName());
 										if(startPoint != null){
 											TableRelationConnection trc = new TableRelationConnection();
-											trc.setConnectionColor(ApplicationConstants.EXPORTED_RELATION_LINE_COLOR);
+											trc.setConnectionColor(DbexColorConstants.TABLE_DEPENDENCY_LINE_COLOR);
 											trc.setRelationPoint(relationLineStart);
 											RelationConnectionDirection dir = new RelationConnectionDirection();
 											dir.setStartPoint(startPoint);
@@ -553,7 +554,7 @@ public class DependencyGraphPanel extends JPanel {
 														+ impKey.getPkTableName() + "." + impKey.getPkColumnName());
 												if(endPoint != null){
 													TableRelationConnection trc = new TableRelationConnection();
-													trc.setConnectionColor(ApplicationConstants.IMPORTED_RELATION_LINE_COLOR);
+													trc.setConnectionColor(DbexColorConstants.TABLE_DEPENDENCY_LINE_COLOR);
 													trc.setRelationPoint(relationLineStart);
 													RelationConnectionDirection dir = new RelationConnectionDirection();
 													dir.setStartPoint(relationLineStart);
@@ -574,7 +575,7 @@ public class DependencyGraphPanel extends JPanel {
 				}
 				// if the column is not the last column
 				if(i != columnList.size()-1){
-					graphics.setColor(ApplicationConstants.TABLE_BORDER_COLOR);
+					graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
 					graphics.drawLine(colStart_X+1, colStart_Y + cellHeight +2, location.x+size.width ,
 							colStart_Y + cellHeight +2);
 				}
