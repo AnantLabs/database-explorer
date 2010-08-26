@@ -77,7 +77,7 @@
 					</archive>
 					<keystore>${setup.dir}/key/DbEx_keystore.key</keystore>
 					<alias>dbexKey</alias>
-					<storepass>$w0rdf!$#</storepass>
+					<storepass>swordfish</storepass>
 					<signedjar>${release.dir}/${project.title}_${release.version}/dbex-launcher-${release.version}-signed.jar</signedjar>
 					<verify>true</verify>
 				</configuration>
