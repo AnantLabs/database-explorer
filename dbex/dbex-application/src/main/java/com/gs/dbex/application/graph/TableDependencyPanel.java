@@ -36,8 +36,8 @@ import javax.swing.SwingConstants;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.design.graph.DependencyGraphPanel;
+import com.gs.dbex.design.model.dependency.TableDependency;
 import com.gs.dbex.model.cfg.ConnectionProperties;
-import com.gs.dbex.model.dependency.TableDependency;
 
 /**
  * @author sabuj.das

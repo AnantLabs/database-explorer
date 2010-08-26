@@ -106,13 +106,14 @@
 
 	<properties>
 		<project.title>DBEX</project.title>
-		<project.home>D:/SVN_HOME/database-explorer/trunk</project.home>
-		<release.version>1.0-BETA-0.1</release.version>
-		<setup.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup</setup.dir>
-		<libs.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup/libs</libs.dir>
-		<release.dir>D:/SVN_HOME/database-explorer/trunk/release</release.dir>
+		<project.home>D:/SVN_HOME/MyProjects/database-explorer/trunk</project.home>
+		<release.version>1.0-BETA-1</release.version>
+		<setup.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup</setup.dir>
+		<libs.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup/libs</libs.dir>
+		<release.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/release</release.dir>
 		<jdk.version>1.6</jdk.version>
 		<maven.test.skip>true</maven.test.skip>
+		<maven.jar.sign.skip>true</maven.jar.sign.skip>
 	</properties>
 
 </project>
