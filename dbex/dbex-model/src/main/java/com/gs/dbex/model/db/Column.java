@@ -17,13 +17,14 @@ import com.gs.dbex.model.BaseDbModel;
 import com.gs.dbex.model.common.ColumnHeader;
 
 /**
- * Type Name	: com.gs.oracle.model.Column
- *
+ * Type Name : com.gs.oracle.model.Column
+ * 
  */
-public class Column extends BaseDbModel implements Serializable, Comparable<Column> {
+public class Column extends BaseDbModel implements Serializable,
+		Comparable<Column> {
 
 	private String tableName;
-	
+	private Table parentTable;
 	private Integer columnID;
 	private Boolean nullable;
 	private Integer dataType;
@@ -33,20 +34,32 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 	private Object defaultValue;
 	private Boolean primaryKey;
 	private Boolean foreignKey;
-	
-	@ColumnHeader(title="COLUMN_NAME", index=0)
+
+	public Column(Table table) {
+		parentTable = table;
+	}
+
+	public Table getParentTable() {
+		return parentTable;
+	}
+
+	public void setParentTable(Table parentTable) {
+		this.parentTable = parentTable;
+	}
+
+	@ColumnHeader(title = "COLUMN_NAME", index = 0)
 	public String getModelName() {
 		return super.getModelName();
 	}
-	
-	@ColumnHeader(title="COLUMN_ID", index=1)
+
+	@ColumnHeader(title = "COLUMN_ID", index = 1)
 	public Integer getColumnID() {
 		return columnID;
 	}
-	
-	@ColumnHeader(title="NULL_ABLE", index=2)
+
+	@ColumnHeader(title = "NULL_ABLE", index = 2)
 	public Boolean getNullable() {
-		if(null == nullable)
+		if (null == nullable)
 			return Boolean.FALSE;
 		return nullable;
 	}
@@ -63,7 +76,7 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 		this.dataType = dataType;
 	}
 
-	@ColumnHeader(title="DATA_TYPE", index=3)
+	@ColumnHeader(title = "DATA_TYPE", index = 3)
 	public String getTypeName() {
 		return typeName;
 	}
@@ -72,7 +85,7 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 		this.typeName = typeName;
 	}
 
-	@ColumnHeader(title="COLUMN_SIZE", index=4)
+	@ColumnHeader(title = "COLUMN_SIZE", index = 4)
 	public Integer getSize() {
 		return size;
 	}
@@ -81,7 +94,7 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 		this.size = size;
 	}
 
-	@ColumnHeader(title="COLUMN_PRECISION", index=5)
+	@ColumnHeader(title = "COLUMN_PRECISION", index = 5)
 	public Integer getPrecision() {
 		return precision;
 	}
@@ -90,7 +103,7 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 		this.precision = precision;
 	}
 
-	@ColumnHeader(title="DEFAULT_VALUE", index=6)
+	@ColumnHeader(title = "DEFAULT_VALUE", index = 6)
 	public Object getDefaultValue() {
 		return defaultValue;
 	}
@@ -99,9 +112,9 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 		this.defaultValue = defaultValue;
 	}
 
-	@ColumnHeader(title="IS_PRIMARY_KEY", index=7)
+	@ColumnHeader(title = "IS_PRIMARY_KEY", index = 7)
 	public Boolean getPrimaryKey() {
-		if(null == primaryKey)
+		if (null == primaryKey)
 			return Boolean.FALSE;
 		return primaryKey;
 	}
@@ -110,9 +123,9 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 		this.primaryKey = primaryKey;
 	}
 
-	@ColumnHeader(title="IS_FOREIGN_KEY", index=8)
+	@ColumnHeader(title = "IS_FOREIGN_KEY", index = 8)
 	public Boolean getForeignKey() {
-		if(null == foreignKey)
+		if (null == foreignKey)
 			return Boolean.FALSE;
 		return foreignKey;
 	}
@@ -133,15 +146,15 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 		this.tableName = tableName;
 	}
 
-	@ColumnHeader(title="COMMENTS", index=9)
+	@ColumnHeader(title = "COMMENTS", index = 9)
 	public String getComments() {
 		return super.getComments();
 	}
 
 	@Override
 	public String toString() {
-		return getModelName() + " [ " + typeName + ", (" + size +") " + 
-			((nullable) ? "NULL" : "NOTNULL") + " ]";
+		return getModelName() + " [ " + typeName + ", (" + size + ") "
+				+ ((nullable) ? "NULL" : "NOTNULL") + " ]";
 	}
 
 	public int compareTo(Column o) {
@@ -180,5 +193,5 @@ public class Column extends BaseDbModel implements Serializable, Comparable<Colu
 			return false;
 		return true;
 	}
-	
+
 }

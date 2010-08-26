@@ -20,13 +20,20 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 
+import com.gs.dbex.design.model.BaseDbShape;
+
 /**
  * @author Sabuj.das
  * 
  */
-public class DependencyGraphCanvas extends Canvas implements MouseListener,
+public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas implements MouseListener,
 		MouseMotionListener, MouseWheelListener, KeyListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1175314071365190993L;
+	
 	Rectangle rect = new Rectangle(0, 0, 100, 50);
 	BufferedImage bi;
 	Graphics2D big;
@@ -223,71 +230,6 @@ public class DependencyGraphCanvas extends Canvas implements MouseListener,
 		
 	}
 
-	/*
-	 * @Override public void keyTyped(KeyEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void keyPressed(KeyEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void keyReleased(KeyEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void mouseWheelMoved(MouseWheelEvent e) { // TODO
-	 * Auto-generated method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void mouseDragged(MouseEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void mouseMoved(MouseEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void mouseClicked(MouseEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void mousePressed(MouseEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void mouseReleased(MouseEvent e) { // TODO
-	 * Auto-generated method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void mouseEntered(MouseEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 * 
-	 * 
-	 * @Override public void mouseExited(MouseEvent e) { // TODO Auto-generated
-	 * method stub
-	 * 
-	 * }
-	 */
+	
 
 }

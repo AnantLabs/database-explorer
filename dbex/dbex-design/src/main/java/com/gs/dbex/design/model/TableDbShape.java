@@ -3,25 +3,39 @@
  */
 package com.gs.dbex.design.model;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.gs.dbex.model.db.Table;
 import com.gs.utils.text.StringUtil;
 
 /**
  * @author Sabuj Das
  * 
  */
-public class TableDbShape extends BaseDbShape implements Serializable,
+public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 		MovableShape<TableDbShape>, DrawableShape<TableDbShape> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -687226079740961023L;
+	
 	private String displayName;
 	
-	public TableDbShape(String tableName) {
-		setModelName(tableName);
-		if(StringUtil.hasValidContent(tableName)){
-			setDisplayName(tableName.toUpperCase());
+	private Map<String, Point> tablePkPointMap
+		= new HashMap<String, Point>();
+	private Map<String, Point> tableFkPointMap
+		= new HashMap<String, Point>();
+	
+	public TableDbShape(Table table) {
+		super(table);
+		if(null != table){
+			setDisplayName(table.getModelName());
 		}
 	}
 	
@@ -39,8 +53,13 @@ public class TableDbShape extends BaseDbShape implements Serializable,
 	}
 
 	@Override
-	public void draw(Graphics graphics, Point at) {
-		
+	public void drawShape(Graphics graphics) {
+		Color oldFg = graphics.getColor();
+		Table table = getDbModel();
+		if(null != table){
+			
+		}
+		graphics.setColor(oldFg);
 	}
 
 	@Override
