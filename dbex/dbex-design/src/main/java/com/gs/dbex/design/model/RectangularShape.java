@@ -3,6 +3,7 @@
  */
 package com.gs.dbex.design.model;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -24,6 +25,8 @@ public abstract class RectangularShape implements Serializable {
 	private int width;
 	private int height;
 	
+	private Graphics graphics;
+	
 	public RectangularShape() {
 		this(0, 0, 0, 0);
 	}
@@ -37,6 +40,14 @@ public abstract class RectangularShape implements Serializable {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+	}
+
+	public Graphics getGraphics() {
+		return graphics;
+	}
+
+	public void setGraphics(Graphics graphics) {
+		this.graphics = graphics;
 	}
 
 	public int getX() {
@@ -71,6 +82,13 @@ public abstract class RectangularShape implements Serializable {
 		this.height = height;
 	}
 
+	public Point getLocation(){
+		return new Point(x,y);
+	}
+	
+	public Dimension getSize(){
+		return new Dimension(width, height);
+	}
 	
 	@Override
 	public int hashCode() {
@@ -111,10 +129,10 @@ public abstract class RectangularShape implements Serializable {
 		return true;
 	}
 	
-	public abstract void drawShape(Graphics graphics);
+	public abstract void drawShape();
 	
-	public void repaintShape(Graphics graphics){
-		drawShape(graphics);
+	public void repaintShape(){
+		drawShape();
 	}
 	
 	public boolean isInside(Point point){

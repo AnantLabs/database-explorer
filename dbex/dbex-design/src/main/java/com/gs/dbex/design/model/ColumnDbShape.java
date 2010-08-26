@@ -29,8 +29,8 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 	private Image imagePk;
 	private Image imageFk;
 	
-	public ColumnDbShape(Column column) {
-		super(column);
+	public ColumnDbShape(Graphics graphics, Column column) {
+		super(graphics, column);
 		if (null != column) {
 			setDisplayName(column.getModelName());
 		}
@@ -58,7 +58,8 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 	}
 
 	@Override
-	public void drawShape(Graphics graphics) {
+	public void drawShape() {
+		Graphics graphics = getGraphics();
 		Color oldFg = graphics.getColor();
 		Column column = getDbModel(); 
 		if(null != column){
@@ -115,7 +116,7 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 			setX(to.x);
 			setY(to.y);
 		}
-		repaintShape(graphics);
+		repaintShape();
 	}
 
 	@Override
