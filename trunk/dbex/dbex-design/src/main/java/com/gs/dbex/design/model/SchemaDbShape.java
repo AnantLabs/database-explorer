@@ -3,9 +3,12 @@
  */
 package com.gs.dbex.design.model;
 
+import java.awt.Graphics;
 import java.io.Serializable;
 import java.util.List;
 
+import com.gs.dbex.model.BaseDbModel;
+import com.gs.dbex.model.db.Schema;
 import com.gs.utils.text.StringUtil;
 
 
@@ -13,15 +16,20 @@ import com.gs.utils.text.StringUtil;
  * @author Sabuj Das
  *
  */
-public class SchemaDbShape extends BaseDbShape implements Serializable {
+public class SchemaDbShape extends BaseDbShape<Schema> implements Serializable {
 
+	/**
+	 * serialVersionUID = -7266600008023990597L
+	 */
+	private static final long serialVersionUID = -7266600008023990597L;
+	
 	private String displayName;
 	private List<TableDbShape> tableDbShapes;
 	
-	public SchemaDbShape(String schemaName) {
-		setModelName(schemaName);
-		if(StringUtil.hasValidContent(schemaName)){
-			setDisplayName(schemaName.toUpperCase());
+	public SchemaDbShape(Schema dbModel) {
+		super(dbModel);
+		if(null != dbModel){
+			setDisplayName(dbModel.getModelName());
 		}
 	}
 
@@ -39,6 +47,11 @@ public class SchemaDbShape extends BaseDbShape implements Serializable {
 
 	public void setDisplayName(String displayName) {
 		this.displayName = displayName;
+	}
+
+	@Override
+	public void drawShape(Graphics graphics) {
+		
 	}
 	
 	

@@ -99,4 +99,30 @@ public class Table extends BaseDbModel implements Serializable {
 		
 		return buffer.toString();
 	}
+	
+	public boolean hasExportedTableForColumn(Column column){
+		if(null != column && null != getExportedKeys() && getExportedKeys().size() > 0){
+			for (ForeignKey expKey : getExportedKeys()) {
+				if(null != expKey){
+					if(column.getModelName().equalsIgnoreCase(expKey.getModelName())){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasImportedTableForColumn(Column column){
+		if(null != column && null != getImportedKeys() && getImportedKeys().size() > 0){
+			for (ForeignKey impKey : getImportedKeys()) {
+				if(null != impKey){
+					if(column.getModelName().equalsIgnoreCase(impKey.getModelName())){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 }

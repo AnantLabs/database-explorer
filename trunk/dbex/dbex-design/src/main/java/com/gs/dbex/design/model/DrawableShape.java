@@ -13,7 +13,5 @@ import java.awt.Point;
 public interface DrawableShape<S extends RectangularShape> {
 
 	public Boolean canBeDrawn();
-	
-	public void draw(Graphics graphics, Point at);
-	
+		
 }
