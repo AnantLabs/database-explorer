@@ -21,6 +21,9 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 
 import com.gs.dbex.design.model.BaseDbShape;
+import com.gs.dbex.design.model.TableDbShape;
+import com.gs.dbex.model.db.Column;
+import com.gs.dbex.model.db.Table;
 
 /**
  * @author Sabuj.das
@@ -33,6 +36,9 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 	 * 
 	 */
 	private static final long serialVersionUID = -1175314071365190993L;
+	
+	
+	private T dbShape;
 	
 	Rectangle rect = new Rectangle(0, 0, 100, 50);
 	BufferedImage bi;
@@ -49,11 +55,13 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 	boolean pressOut = false;
 
 	public DependencyGraphCanvas() {
+		
+		Graphics g = getGraphics();
 		setBackground(Color.white);
 		addMouseMotionListener(this);
 		addMouseListener(this);
 
-		// Creates the fill texture paint pattern.
+		/*// Creates the fill texture paint pattern.
 		bi = new BufferedImage(5, 5, BufferedImage.TYPE_INT_RGB);
 		big = bi.createGraphics();
 		big.setColor(Color.pink);
@@ -73,9 +81,20 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 		big.fillOval(0, 0, 3, 3);
 		r = new Rectangle(0, 0, 5, 5);
 		strokePolka = new TexturePaint(bi, r);
-		big.dispose();
+		big.dispose();*/
 
 	}
+
+	
+	public T getDbShape() {
+		return dbShape;
+	}
+
+
+	public void setDbShape(T dbShape) {
+		this.dbShape = dbShape;
+	}
+
 
 	// Handles the event of the user pressing down the mouse button.
 	public void mousePressed(MouseEvent e) {
@@ -143,13 +162,28 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 
 		repaint();
 	}
-
+	private Table populateData() {
+		Table t = new Table();
+		t.setModelName("TABLE_001");
+		for(int i=0; i<5; i++){
+			Column c = new Column(t);
+			c.setModelName("COLUMN_" + (i+1));
+			t.getColumnlist().add(c);
+		}
+		
+		return t;
+	}
 	public void paint(Graphics g) {
-		update(g);
+		TableDbShape dbShape = new TableDbShape(g, populateData());
+		dbShape.setX(100);
+		dbShape.setY(100);
+		dbShape.drawShape();
+		//update(g);
 	}
 
 	public void update(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
+		super.update(g);
+		/*Graphics2D g2 = (Graphics2D) g;
 		Dimension dim = getSize();
 		int w = (int) dim.getWidth();
 		int h = (int) dim.getHeight();
@@ -169,7 +203,7 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 		g2.setPaint(strokePolka);
 		g2.draw(rect);
 		g2.setPaint(fillPolka);
-		g2.fill(rect);
+		g2.fill(rect);*/
 
 	}
 

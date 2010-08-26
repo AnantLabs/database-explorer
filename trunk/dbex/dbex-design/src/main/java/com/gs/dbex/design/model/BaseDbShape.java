@@ -3,6 +3,7 @@
  */
 package com.gs.dbex.design.model;
 
+import java.awt.Graphics;
 import java.io.Serializable;
 
 import com.gs.dbex.common.enums.ShapeTypeEnum;
@@ -27,8 +28,9 @@ public abstract class BaseDbShape<T extends BaseDbModel> extends RectangularShap
 	private ShapeTypeEnum shapeTypeEnum;
 	
 
-	public BaseDbShape(T dbModel) {
+	public BaseDbShape(Graphics graphics, T dbModel) {
 		this.dbModel = dbModel;
+		setGraphics(graphics);
 		modelName = (null != dbModel) ? dbModel.getModelName()
 				: ("UNNAMED_MODEL_" + shapeCount++);
 	}

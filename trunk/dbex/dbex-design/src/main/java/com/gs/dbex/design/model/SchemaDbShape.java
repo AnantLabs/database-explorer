@@ -26,8 +26,8 @@ public class SchemaDbShape extends BaseDbShape<Schema> implements Serializable {
 	private String displayName;
 	private List<TableDbShape> tableDbShapes;
 	
-	public SchemaDbShape(Schema dbModel) {
-		super(dbModel);
+	public SchemaDbShape(Graphics graphics, Schema dbModel) {
+		super(graphics, dbModel);
 		if(null != dbModel){
 			setDisplayName(dbModel.getModelName());
 		}
@@ -50,7 +50,7 @@ public class SchemaDbShape extends BaseDbShape<Schema> implements Serializable {
 	}
 
 	@Override
-	public void drawShape(Graphics graphics) {
+	public void drawShape() {
 		
 	}
 	
