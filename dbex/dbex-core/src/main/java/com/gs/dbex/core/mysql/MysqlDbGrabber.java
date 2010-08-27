@@ -207,7 +207,7 @@ public class MysqlDbGrabber implements CatalogGrabber {
 		ResultSetMetaData rsm = colRs.getMetaData();
 		int cc = rsm.getColumnCount();
 		while(colRs.next()){
-			Column c = new Column();
+			Column c = new Column(table);
 			// set the schema name
 			c.setSchemaName(table.getSchemaName());
 			//set table name
@@ -281,7 +281,7 @@ public class MysqlDbGrabber implements CatalogGrabber {
 		ResultSetMetaData rsm = colRs.getMetaData();
 		int cc = rsm.getColumnCount();
 		while(colRs.next()){
-			Column c = new Column();
+			Column c = new Column(null);
 			//set schema name
 			c.setSchemaName(schemaName);
 			//set table name

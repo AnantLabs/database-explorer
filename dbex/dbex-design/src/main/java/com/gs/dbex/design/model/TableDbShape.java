@@ -43,12 +43,14 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 	
 	public TableDbShape(Graphics graphics, Table table) {
 		super(graphics, table);
+		setX(100);
+		setY(100);
 		columnDbShapes = new ArrayList<ColumnDbShape>();
 		if(null != table){
 			setDisplayName(table.getModelName());
-			populateColumnDbShapes(table);
 			setWidth(DrawingUtil.calculateTableWidth(getGraphics(), table, true));
 			setHeight(DrawingUtil.calculateTableHeight(getGraphics(), table, true));
+			populateColumnDbShapes(table);
 		}
 	}
 	
@@ -61,7 +63,7 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 				Column column = table.getColumnlist().get(i);
 				ColumnDbShape columnDbShape = new ColumnDbShape(getGraphics(), column);
 				columnDbShape.setX(colStart_X);
-				columnDbShape.setY(colStart_Y + (cellHeight * (i+1)));
+				columnDbShape.setY(colStart_Y + (cellHeight * (i)));
 				columnDbShape.setWidth(getWidth());
 				columnDbShape.setHeight(cellHeight);
 				columnDbShapes.add(columnDbShape);
@@ -118,8 +120,11 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 					columnDbShape.drawShape();
 					if(i < columnDbShapes.size()-1){
 						graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
-						graphics.drawLine(columnDbShape.getX()+DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH+2, columnDbShape.getY() + 2, location.x+size.width ,
-								columnDbShape.getY() + 2);
+						graphics.drawLine(
+								columnDbShape.getX() + DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH+2, 
+								columnDbShape.getY() + columnDbShape.getHeight() + 2, 
+								location.x + size.width ,
+								columnDbShape.getY() + columnDbShape.getHeight() + 2);
 					}
 				}
 			}
