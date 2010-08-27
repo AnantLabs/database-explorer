@@ -61,7 +61,7 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 				Column column = table.getColumnlist().get(i);
 				ColumnDbShape columnDbShape = new ColumnDbShape(getGraphics(), column);
 				columnDbShape.setX(colStart_X);
-				columnDbShape.setY(colStart_Y + (cellHeight * i));
+				columnDbShape.setY(colStart_Y + (cellHeight * (i+1)));
 				columnDbShape.setWidth(getWidth());
 				columnDbShape.setHeight(cellHeight);
 				columnDbShapes.add(columnDbShape);
@@ -113,8 +113,14 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 			
 			// draw columns
 			if(null != columnDbShapes){
-				for (ColumnDbShape columnDbShape : columnDbShapes) {
+				for (int i=0; i<columnDbShapes.size(); i++) {
+					ColumnDbShape columnDbShape = columnDbShapes.get(i);
 					columnDbShape.drawShape();
+					if(i < columnDbShapes.size()-1){
+						graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
+						graphics.drawLine(columnDbShape.getX()+DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH+2, columnDbShape.getY() + 2, location.x+size.width ,
+								columnDbShape.getY() + 2);
+					}
 				}
 			}
 		}

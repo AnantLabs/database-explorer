@@ -175,8 +175,8 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 	}
 	public void paint(Graphics g) {
 		TableDbShape dbShape = new TableDbShape(g, populateData());
-		dbShape.setX(100);
-		dbShape.setY(100);
+		//dbShape.setX(100);
+		//dbShape.setY(100);
 		dbShape.drawShape();
 		//update(g);
 	}
