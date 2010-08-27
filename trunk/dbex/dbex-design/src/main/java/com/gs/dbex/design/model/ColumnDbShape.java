@@ -74,7 +74,7 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 				if(null != parentTable){
 					if(parentTable.hasImportedTableForColumn(column)){
 						Point jointCircleCenter = new Point(
-								getX() ,
+								getX() - 1,
 								getY() + getHeight()/2 );
 						Point jointCirclePoint = new Point(
 								jointCircleCenter.x - DbexDesignConstants.JOINT_CIRCLE_RADIUS,
@@ -87,18 +87,22 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 								getX() + getWidth(),
 								getY() + getHeight()/2 );
 						Point jointCirclePoint = new Point(
-								jointCircleCenter.x + DbexDesignConstants.JOINT_CIRCLE_RADIUS,
+								jointCircleCenter.x - DbexDesignConstants.JOINT_CIRCLE_RADIUS,
 								jointCircleCenter.y - DbexDesignConstants.JOINT_CIRCLE_RADIUS );
 						graphics.setColor(DbexColorConstants.JOINT_CIRCLE_COLOR);
 						graphics.fillOval(jointCirclePoint.x, jointCirclePoint.y, 
 								DbexDesignConstants.JOINT_CIRCLE_RADIUS*2, DbexDesignConstants.JOINT_CIRCLE_RADIUS*2);
 					}
 				}
+				
 			}
 			graphics.setColor(DbexColorConstants.COLUMN_NAMES_FG_COLOR);
 			graphics.drawString(column.getModelName(), 
 					getX() + DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH + 2, 
-					getY() - 4);
+					getY() + getHeight() - 4);
+			
+			
+			
 		}
 		graphics.setColor(oldFg);
 	}

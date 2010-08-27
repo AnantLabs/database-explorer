@@ -3,13 +3,14 @@
  */
 package com.gs.dbex.design.graph;
 
-import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.TexturePaint;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,6 +20,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import com.gs.dbex.design.model.BaseDbShape;
 import com.gs.dbex.design.model.TableDbShape;
@@ -167,6 +169,10 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 		t.setModelName("TABLE_001");
 		for(int i=0; i<5; i++){
 			Column c = new Column(t);
+			if(i==0)
+				c.setPrimaryKey(true);
+			else
+				c.setForeignKey(true);
 			c.setModelName("COLUMN_" + (i+1));
 			t.getColumnlist().add(c);
 		}
@@ -174,10 +180,43 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 		return t;
 	}
 	public void paint(Graphics g) {
-		TableDbShape dbShape = new TableDbShape(g, populateData());
+		if (g instanceof Graphics2D) {
+			Graphics2D g2d = (Graphics2D) g;
+
+			// for antialising geometric shapes
+			g2d.addRenderingHints(new RenderingHints(
+					RenderingHints.KEY_ANTIALIASING,
+					RenderingHints.VALUE_ANTIALIAS_ON));
+			// for antialiasing text
+			g2d.getRenderingHints().put(RenderingHints.KEY_TEXT_ANTIALIASING,
+					RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			// to go for quality over speed
+		    g2d.getRenderingHints().put( RenderingHints.KEY_RENDERING,
+		            RenderingHints.VALUE_RENDER_QUALITY );
+
+			g = g2d;
+		}
+		super.paint(g);
+
+		try {
+			Font tf = Font.createFont(Font.TRUETYPE_FONT, 
+					getClass().getResourceAsStream("/fonts/TAHOMA.TTF"));
+			Font tahomaFont = new Font(tf.getFontName(),
+					java.awt.Font.PLAIN, 12);
+			g.setFont(tahomaFont);
+			TableDbShape dbShape = new TableDbShape(g, populateData());
+			dbShape.drawShape();
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		//dbShape.setX(100);
 		//dbShape.setY(100);
-		dbShape.drawShape();
+		
 		//update(g);
 	}
 
