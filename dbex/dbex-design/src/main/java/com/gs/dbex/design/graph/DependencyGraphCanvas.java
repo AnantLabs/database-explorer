@@ -3,18 +3,14 @@
  */
 package com.gs.dbex.design.graph;
 
-import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.TexturePaint;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -22,21 +18,16 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import javax.swing.JPanel;
 
 import com.gs.dbex.design.model.BaseDbShape;
-import com.gs.dbex.design.model.TableDbShape;
-import com.gs.dbex.model.db.Column;
-import com.gs.dbex.model.db.Table;
 
 /**
  * @author Sabuj.das
  * 
  */
-public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas implements MouseListener,
+public class DependencyGraphCanvas<T extends BaseDbShape> extends JPanel implements MouseListener,
 		MouseMotionListener, MouseWheelListener, KeyListener  {
 
 	/**
@@ -44,17 +35,23 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 	 */
 	private static final long serialVersionUID = -1175314071365190993L;
 	
+	int x1, y1, x2, y2;
 	
 	private T dbShape;
+	private T selectedShape;
 	private JPanel parentPanel;
 	private Graphics bufferGraphics; 
 	private Image offscreenImage; 
 	private Dimension currentSize;
 	private Point currentPoint;
+	private Rectangle bindingRectangle;
 	
 	public DependencyGraphCanvas(JPanel parentPanel, T dbShape) {
 		this.dbShape = dbShape;
 		this.parentPanel = parentPanel;
+		setBackground(Color.WHITE);
+		setMinimumSize(new Dimension(400, 400));
+		setPreferredSize(getMinimumSize());
 	}
 
 	public void initCanvas(){
@@ -65,18 +62,21 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 		addMouseWheelListener(this);
 		addKeyListener(this);
 		
-		setBackground(Color.WHITE);
 		offscreenImage = createImage(currentSize.width,currentSize.height); 
 		bufferGraphics = offscreenImage.getGraphics(); 
-		dbShape.setGraphics(bufferGraphics);
+		//if(null == dbShape.getGraphics())
+			dbShape.setGraphics(bufferGraphics);
 		dbShape.populateGraphicsContent(bufferGraphics, currentSize);
 	}
 	
 	@Override
 	public void paint(Graphics g) {
 		initCanvas();
-		bufferGraphics.clearRect(0,0,currentSize.width,currentSize.height); 
+		//bufferGraphics.clearRect(0,0,currentSize.width,currentSize.height); 
 		dbShape.drawShape();
+		if(bindingRectangle != null){
+			drawHighlightSquares(bufferGraphics, bindingRectangle);
+		}
 		g.drawImage(offscreenImage,0,0,this); 
 	}
 
@@ -111,8 +111,20 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(dbShape.contains(e.getX(), e.getY())){
+			x2 = e.getX();
+	        y2 = e.getY();
+			bindingRectangle = null;
+			selectedShape = dbShape;
+			bindingRectangle = null;
+			dbShape.setX(dbShape.getX() + x2 - x1);
+			dbShape.setY(dbShape.getY() + y2 - y1);
+			x1 = x2;
+	        y1 = y2;
+		} 
+		x1 = e.getX();
+		y1 = e.getY();
+		repaint();
 	}
 
 	@Override
@@ -121,28 +133,57 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 			currentPoint = new Point(e.getX(), e.getY());
 		} else {
 			currentPoint.x = e.getX();
-			
+			currentPoint.y = e.getY();
 		}
-		parentPanel.setToolTipText("[ "+ dbShape.tooltipText(currentPoint) + " ]");
+		setToolTipText(dbShape.tooltipText(currentPoint));
+		if(dbShape.contains(e.getX(), e.getY())){
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		} else {
+			setCursor(Cursor.getDefaultCursor());
+		}
 		repaint();
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(dbShape.contains(e.getX(), e.getY())){
+			selectedShape = dbShape;
+			bindingRectangle = dbShape.getBounds();
+		} else {
+			if(bindingRectangle != null){
+				bindingRectangle = null;
+			}
+		}
+		repaint();	
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(dbShape.contains(e.getX(), e.getY())){
+			setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+			selectedShape = dbShape;
+			if(bindingRectangle != null)
+				bindingRectangle = dbShape.getBounds();
+		} else {
+			bindingRectangle = null;
+		}
+		
+		x1 = e.getX();
+		y1 = e.getY();
+		repaint();
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(dbShape.contains(e.getX(), e.getY())){
+			bindingRectangle = dbShape.getBounds();
+			selectedShape = dbShape;
+			setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		} else {
+			setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		}
+		repaint();	
 	}
 
 	@Override
@@ -155,5 +196,25 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void drawHighlightSquares(Graphics g, Rectangle r) {
+		if(null == r)
+			return;
+		Graphics2D g2D = (Graphics2D) g;
+		double x = r.getX();
+		double y = r.getY();
+		double w = r.getWidth();
+		double h = r.getHeight();
+		g2D.setColor(Color.RED);
+
+		g2D.fill(new Rectangle.Double(x - 3.0, y - 3.0, 6.0, 6.0));
+		g2D.fill(new Rectangle.Double(x + w * 0.5 - 3.0, y - 3.0, 6.0, 6.0));
+		g2D.fill(new Rectangle.Double(x + w - 3.0, y - 3.0, 6.0, 6.0));
+		g2D.fill(new Rectangle.Double(x - 3.0, y + h * 0.5 - 3.0, 6.0, 6.0));
+		g2D.fill(new Rectangle.Double(x + w - 3.0, y + h * 0.5 - 3.0, 6.0, 6.0));
+		g2D.fill(new Rectangle.Double(x - 3.0, y + h - 3.0, 6.0, 6.0));
+		g2D.fill(new Rectangle.Double(x + w * 0.5 - 3.0, y + h - 3.0, 6.0, 6.0));
+		g2D.fill(new Rectangle.Double(x + w - 3.0, y + h - 3.0, 6.0, 6.0));
 	}
 }

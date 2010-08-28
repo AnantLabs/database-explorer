@@ -139,4 +139,10 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 		// TODO Auto-generated method stub
 		return getDisplayName();
 	}
+	
+	@Override
+	public BaseDbShape<Column> onShape(Point mousePosition) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

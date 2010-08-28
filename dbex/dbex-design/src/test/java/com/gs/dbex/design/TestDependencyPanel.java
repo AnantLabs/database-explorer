@@ -5,6 +5,8 @@ package com.gs.dbex.design;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -53,6 +55,8 @@ public class TestDependencyPanel extends JFrame {
 		Table t = populateData();
 		getContentPane().setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
+
+
 		panel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createCompoundBorder(BorderFactory
 						.createLineBorder(new Color(0, 0, 0)), BorderFactory
@@ -60,7 +64,7 @@ public class TestDependencyPanel extends JFrame {
 								231))), new LineBorder(
 						new Color(153, 153, 255), 1, true)));
 		panel.setLayout(new BorderLayout());
-		panel.setBackground(Color.BLUE);
+		panel.setBackground(Color.WHITE);
 		TableDbShape s = new TableDbShape(t);
 		DependencyGraphCanvas<TableDbShape> canvas = new DependencyGraphCanvas<TableDbShape>(panel,s);
 		panel.add(canvas, BorderLayout.CENTER);

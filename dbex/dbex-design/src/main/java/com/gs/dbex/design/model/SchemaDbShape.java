@@ -66,4 +66,10 @@ public class SchemaDbShape extends BaseDbShape<Schema> implements Serializable {
 		// TODO Auto-generated method stub
 		return "";
 	}
+	
+	@Override
+	public BaseDbShape<Schema> onShape(Point mousePosition) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
