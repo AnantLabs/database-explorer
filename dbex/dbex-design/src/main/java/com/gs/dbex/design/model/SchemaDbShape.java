@@ -3,7 +3,9 @@
  */
 package com.gs.dbex.design.model;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.io.Serializable;
 import java.util.List;
 
@@ -26,8 +28,8 @@ public class SchemaDbShape extends BaseDbShape<Schema> implements Serializable {
 	private String displayName;
 	private List<TableDbShape> tableDbShapes;
 	
-	public SchemaDbShape(Graphics graphics, Schema dbModel) {
-		super(graphics, dbModel);
+	public SchemaDbShape(Schema dbModel) {
+		super(dbModel);
 		if(null != dbModel){
 			setDisplayName(dbModel.getModelName());
 		}
@@ -53,6 +55,15 @@ public class SchemaDbShape extends BaseDbShape<Schema> implements Serializable {
 	public void drawShape() {
 		
 	}
-	
-	
+
+	@Override
+	public void populateGraphicsContent(Graphics graphics, Dimension canvasSize) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public String tooltipText(Point mousePosition) {
+		// TODO Auto-generated method stub
+		return "";
+	}
 }

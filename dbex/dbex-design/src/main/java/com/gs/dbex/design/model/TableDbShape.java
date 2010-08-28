@@ -16,6 +16,7 @@ import java.util.Map;
 
 import com.gs.dbex.design.DbexColorConstants;
 import com.gs.dbex.design.DbexDesignConstants;
+import com.gs.dbex.design.model.dependency.TableDependency;
 import com.gs.dbex.design.util.DrawingUtil;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
@@ -35,40 +36,120 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 	
 	private String displayName;
 	private List<ColumnDbShape> columnDbShapes;
+	private TableDependency tableDependency;
+	private Dimension canvasSize;
 	
 	private Map<String, Point> tablePkPointMap
 		= new HashMap<String, Point>();
 	private Map<String, Point> tableFkPointMap
 		= new HashMap<String, Point>();
 	
-	public TableDbShape(Graphics graphics, Table table) {
-		super(graphics, table);
-		setX(100);
-		setY(100);
+	public TableDbShape(Table table) {
+		super(table);
 		columnDbShapes = new ArrayList<ColumnDbShape>();
 		if(null != table){
 			setDisplayName(table.getModelName());
-			setWidth(DrawingUtil.calculateTableWidth(getGraphics(), table, true));
-			setHeight(DrawingUtil.calculateTableHeight(getGraphics(), table, true));
-			populateColumnDbShapes(table);
+			if(null != table.getColumnlist()){
+				for (int i = 0; i < table.getColumnlist().size(); i++) {
+					Column column = table.getColumnlist().get(i);
+					ColumnDbShape columnDbShape = new ColumnDbShape(column);
+					columnDbShapes.add(columnDbShape);
+				}
+			}
 		}
 	}
+
 	
-	private void populateColumnDbShapes(Table table) {
+	@Override
+	public void populateGraphicsContent(Graphics graphics, Dimension canvasSize) {
+		if(null == graphics)
+			return;
+		if(null != canvasSize)
+			setCanvasSize(canvasSize);
+		
+		setWidth(DrawingUtil.calculateTableWidth(getGraphics(), getDbModel(), true));
+		setHeight(DrawingUtil.calculateTableHeight(getGraphics(), getDbModel(), true));
+		if(getX() == 0 && getY() == 0){
+			setX(canvasSize.width - getWidth()/2);
+			setY(DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH);
+		}
 		int colStart_X = getX() + 1;
 		int colStart_Y = getY() + DrawingUtil.calculateCellHeight(getGraphics()) + 2;
 		int cellHeight = DrawingUtil.calculateCellHeight(getGraphics());
-		if(null != table.getColumnlist()){
-			for (int i = 0; i < table.getColumnlist().size(); i++) {
-				Column column = table.getColumnlist().get(i);
-				ColumnDbShape columnDbShape = new ColumnDbShape(getGraphics(), column);
+		if(null != columnDbShapes){
+			for (int i = 0; i < columnDbShapes.size(); i++) {
+				ColumnDbShape columnDbShape = columnDbShapes.get(i);
 				columnDbShape.setX(colStart_X);
 				columnDbShape.setY(colStart_Y + (cellHeight * (i)));
 				columnDbShape.setWidth(getWidth());
 				columnDbShape.setHeight(cellHeight);
-				columnDbShapes.add(columnDbShape);
+				columnDbShape.setGraphics(graphics);
+				columnDbShape.populateGraphicsContent(graphics, canvasSize);
 			}
 		}
+	}
+	
+	@Override
+	public String tooltipText(Point mousePosition) {
+		if(null == mousePosition)
+			return "";
+		if(isOnPerimeter(mousePosition)){
+			if(isInside(mousePosition)){
+				if(null != columnDbShapes){
+					for (int i = 0; i < columnDbShapes.size(); i++) {
+						ColumnDbShape columnDbShape = columnDbShapes.get(i);
+						if(columnDbShape.isInside(mousePosition) || columnDbShape.isOnPerimeter(mousePosition)){
+							return columnDbShape.getDisplayName();
+						}
+					}
+				}
+			}
+			return getModelName();
+		}
+		
+		return null;
+	}
+	
+	public Dimension getCanvasSize() {
+		return canvasSize;
+	}
+
+
+	public void setCanvasSize(Dimension canvasSize) {
+		this.canvasSize = canvasSize;
+	}
+
+
+	public List<ColumnDbShape> getColumnDbShapes() {
+		return columnDbShapes;
+	}
+
+	public void setColumnDbShapes(List<ColumnDbShape> columnDbShapes) {
+		this.columnDbShapes = columnDbShapes;
+	}
+
+	public TableDependency getTableDependency() {
+		return tableDependency;
+	}
+
+	public void setTableDependency(TableDependency tableDependency) {
+		this.tableDependency = tableDependency;
+	}
+
+	public Map<String, Point> getTablePkPointMap() {
+		return tablePkPointMap;
+	}
+
+	public void setTablePkPointMap(Map<String, Point> tablePkPointMap) {
+		this.tablePkPointMap = tablePkPointMap;
+	}
+
+	public Map<String, Point> getTableFkPointMap() {
+		return tableFkPointMap;
+	}
+
+	public void setTableFkPointMap(Map<String, Point> tableFkPointMap) {
+		this.tableFkPointMap = tableFkPointMap;
 	}
 
 	public String getDisplayName() {

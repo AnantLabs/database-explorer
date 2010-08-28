@@ -25,6 +25,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
+import javax.swing.JPanel;
+
 import com.gs.dbex.design.model.BaseDbShape;
 import com.gs.dbex.design.model.TableDbShape;
 import com.gs.dbex.model.db.Column;
@@ -35,7 +37,7 @@ import com.gs.dbex.model.db.Table;
  * 
  */
 public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas implements MouseListener,
-		MouseMotionListener, MouseWheelListener, KeyListener {
+		MouseMotionListener, MouseWheelListener, KeyListener  {
 
 	/**
 	 * 
@@ -44,14 +46,15 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 	
 	
 	private T dbShape;
-	
+	private JPanel parentPanel;
 	private Graphics bufferGraphics; 
 	private Image offscreenImage; 
 	private Dimension currentSize;
 	private Point currentPoint;
 	
-	public DependencyGraphCanvas() {
-		
+	public DependencyGraphCanvas(JPanel parentPanel, T dbShape) {
+		this.dbShape = dbShape;
+		this.parentPanel = parentPanel;
 	}
 
 	public void initCanvas(){
@@ -65,8 +68,23 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 		setBackground(Color.WHITE);
 		offscreenImage = createImage(currentSize.width,currentSize.height); 
 		bufferGraphics = offscreenImage.getGraphics(); 
+		dbShape.setGraphics(bufferGraphics);
+		dbShape.populateGraphicsContent(bufferGraphics, currentSize);
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		initCanvas();
+		bufferGraphics.clearRect(0,0,currentSize.width,currentSize.height); 
+		dbShape.drawShape();
+		g.drawImage(offscreenImage,0,0,this); 
 	}
 
+	@Override
+	public void update(Graphics g) {
+		paint(g);
+	}
+	
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
@@ -99,8 +117,14 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends Canvas impleme
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(null == currentPoint){
+			currentPoint = new Point(e.getX(), e.getY());
+		} else {
+			currentPoint.x = e.getX();
+			
+		}
+		parentPanel.setToolTipText("[ "+ dbShape.tooltipText(currentPoint) + " ]");
+		repaint();
 	}
 
 	@Override

@@ -3,7 +3,9 @@
  */
 package com.gs.dbex.design.model;
 
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.io.Serializable;
 
 import com.gs.dbex.common.enums.ShapeTypeEnum;
@@ -28,12 +30,15 @@ public abstract class BaseDbShape<T extends BaseDbModel> extends RectangularShap
 	private ShapeTypeEnum shapeTypeEnum;
 	
 
-	public BaseDbShape(Graphics graphics, T dbModel) {
+	public BaseDbShape(T dbModel) {
 		this.dbModel = dbModel;
-		setGraphics(graphics);
 		modelName = (null != dbModel) ? dbModel.getModelName()
 				: ("UNNAMED_MODEL_" + shapeCount++);
 	}
+	
+	public abstract void populateGraphicsContent(Graphics graphics, Dimension canvasSize);
+	
+	public abstract String tooltipText(Point mousePosition);
 
 	/**
 	 * @return the dbModel
