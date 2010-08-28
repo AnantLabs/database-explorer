@@ -40,6 +40,8 @@ public abstract class BaseDbShape<T extends BaseDbModel> extends RectangularShap
 	
 	public abstract String tooltipText(Point mousePosition);
 
+	public abstract BaseDbShape<T> onShape(Point mousePosition);
+	
 	/**
 	 * @return the dbModel
 	 */

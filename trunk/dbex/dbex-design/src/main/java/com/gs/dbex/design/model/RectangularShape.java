@@ -178,4 +178,26 @@ public abstract class RectangularShape implements Serializable {
 	public long getArea(){
 		return getWidth() * getHeight();
 	}
+	
+	public void setLocation(Point point){
+		if(null != point){
+			x = point.x;
+			y = point.y;
+		}
+	}
+	
+	public Rectangle getBounds(){
+		return new Rectangle(x, y, width, height);
+	}
+	
+	public boolean contains(int x, int y){
+		return contains(new Point(x,y));
+	}
+	
+	public boolean contains(Point point){
+		if(isInside(point) || isOnPerimeter(point)){
+			return true;
+		}
+		return false;
+	}
 }

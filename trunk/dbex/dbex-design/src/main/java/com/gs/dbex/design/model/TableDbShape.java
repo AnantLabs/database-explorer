@@ -36,7 +36,7 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 	
 	private String displayName;
 	private List<ColumnDbShape> columnDbShapes;
-	private TableDependency tableDependency;
+	private RelationTableShape relationTableShape;
 	private Dimension canvasSize;
 	
 	private Map<String, Point> tablePkPointMap
@@ -85,6 +85,7 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 				columnDbShape.setHeight(cellHeight);
 				columnDbShape.setGraphics(graphics);
 				columnDbShape.populateGraphicsContent(graphics, canvasSize);
+				
 			}
 		}
 	}
@@ -94,20 +95,21 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 		if(null == mousePosition)
 			return "";
 		if(isOnPerimeter(mousePosition)){
-			if(isInside(mousePosition)){
-				if(null != columnDbShapes){
-					for (int i = 0; i < columnDbShapes.size(); i++) {
-						ColumnDbShape columnDbShape = columnDbShapes.get(i);
-						if(columnDbShape.isInside(mousePosition) || columnDbShape.isOnPerimeter(mousePosition)){
-							return columnDbShape.getDisplayName();
-						}
+			return getDbModel().getModelName();
+		}
+		if(isInside(mousePosition)){
+			if(null != columnDbShapes){
+				for (int i = 0; i < columnDbShapes.size(); i++) {
+					ColumnDbShape columnDbShape = columnDbShapes.get(i);
+					if(columnDbShape.isInside(mousePosition)){
+						return columnDbShape.getDbModel().getModelName();
 					}
 				}
 			}
-			return getModelName();
+			return getDbModel().getModelName();
 		}
 		
-		return null;
+		return "[ X=" + mousePosition.x + ", Y="+ mousePosition.y + " ]";
 	}
 	
 	public Dimension getCanvasSize() {
@@ -128,12 +130,12 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 		this.columnDbShapes = columnDbShapes;
 	}
 
-	public TableDependency getTableDependency() {
-		return tableDependency;
+	public RelationTableShape getRelationTableShape() {
+		return relationTableShape;
 	}
 
-	public void setTableDependency(TableDependency tableDependency) {
-		this.tableDependency = tableDependency;
+	public void setRelationTableShape(RelationTableShape relationTableShape) {
+		this.relationTableShape = relationTableShape;
 	}
 
 	public Map<String, Point> getTablePkPointMap() {
@@ -229,4 +231,11 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 		repaintShape();
 	}
 
+	@Override
+	public BaseDbShape<Table> onShape(Point mousePosition) {
+		if(this.contains(mousePosition))
+			return this;
+		
+		return null;
+	}
 }
