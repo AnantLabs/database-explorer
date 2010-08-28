@@ -6,8 +6,10 @@ package com.gs.dbex.design;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import com.gs.dbex.design.graph.DependencyGraphCanvas;
 import com.gs.dbex.design.model.TableDbShape;
@@ -37,6 +39,7 @@ public class TestDependencyPanel extends JFrame {
 
 	private Table populateData() {
 		Table t = new Table();
+		t.setModelName("TABLE");
 		for(int i=0; i<5; i++){
 			Column c = new Column(t);
 			c.setModelName("COLUMN_" + (i+1));
@@ -50,10 +53,16 @@ public class TestDependencyPanel extends JFrame {
 		Table t = populateData();
 		getContentPane().setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
+		panel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createCompoundBorder(BorderFactory
+						.createLineBorder(new Color(0, 0, 0)), BorderFactory
+						.createMatteBorder(1, 25, 1, 25, new Color(207, 218,
+								231))), new LineBorder(
+						new Color(153, 153, 255), 1, true)));
 		panel.setLayout(new BorderLayout());
-		panel.setBackground(Color.WHITE);
-		DependencyGraphCanvas<TableDbShape> canvas = new DependencyGraphCanvas<TableDbShape>();
-		
+		panel.setBackground(Color.BLUE);
+		TableDbShape s = new TableDbShape(t);
+		DependencyGraphCanvas<TableDbShape> canvas = new DependencyGraphCanvas<TableDbShape>(panel,s);
 		panel.add(canvas, BorderLayout.CENTER);
 		
 		getContentPane().add(panel, BorderLayout.CENTER);

@@ -4,6 +4,7 @@
 package com.gs.dbex.design.model;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Point;
@@ -29,8 +30,8 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 	private Image imagePk;
 	private Image imageFk;
 	
-	public ColumnDbShape(Graphics graphics, Column column) {
-		super(graphics, column);
+	public ColumnDbShape(Column column) {
+		super(column);
 		if (null != column) {
 			setDisplayName(column.getModelName());
 		}
@@ -42,6 +43,11 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 						+ "ForeignKeyColumn.gif")).getImage();
 	}
 
+	@Override
+	public void populateGraphicsContent(Graphics graphics, Dimension canvasSize) {
+		
+	}
+	
 	/**
 	 * @return the displayName
 	 */
@@ -127,5 +133,10 @@ public class ColumnDbShape extends BaseDbShape<Column> implements
 	public Boolean canBeDrawn() {
 		return true;
 	}
-
+	
+	@Override
+	public String tooltipText(Point mousePosition) {
+		// TODO Auto-generated method stub
+		return getDisplayName();
+	}
 }
