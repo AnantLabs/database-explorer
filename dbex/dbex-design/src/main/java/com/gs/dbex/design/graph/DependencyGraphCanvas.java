@@ -11,6 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -19,7 +20,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 import com.gs.dbex.design.model.BaseDbShape;
 
@@ -52,15 +56,29 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends JPanel impleme
 		setBackground(Color.WHITE);
 		setMinimumSize(new Dimension(400, 400));
 		setPreferredSize(getMinimumSize());
-	}
-
-	public void initCanvas(){
-		currentSize = getSize();
-		
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(this);
 		addKeyListener(this);
+		
+		getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,0,true), this);
+		//getActionMap().put("showKey",  showKey);
+
+	}
+
+	Action showKey = new AbstractAction() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			 System.out.println("VK_DOWN");
+		}
+	};
+
+	
+	public void initCanvas(){
+		currentSize = getSize();
+		
+		
 		
 		offscreenImage = createImage(currentSize.width,currentSize.height); 
 		bufferGraphics = offscreenImage.getGraphics(); 
@@ -87,26 +105,29 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends JPanel impleme
 	
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("keyTyped:"+e.getKeyCode());
+		if(null != selectedShape){
+			if(KeyEvent.VK_DOWN == e.getKeyCode()){
+				dbShape.setX(dbShape.getX());
+				dbShape.setY(dbShape.getY() + 1);
+			}
+			repaint();
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("keyPressed:"+e.getKeyCode());
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("keyReleased:"+e.getKeyCode());
 	}
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("mouseWheelMoved:"+e.getWheelRotation());
 	}
 
 	@Override
