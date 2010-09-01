@@ -42,7 +42,7 @@ public class MysqlDatabaseMetadataIntegrationImpl extends
 		try {
 			connection = connectionProperties.getDataSource().getConnection();
 			if(dbGrabber != null)
-				database = dbGrabber.grabDatabaseByCatalog(connection, "", readDepthEnum);
+				database = dbGrabber.grabDatabaseByCatalog(connection, connectionProperties.getDatabaseConfiguration().getSchemaName(), readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());

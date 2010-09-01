@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.LineBorder;
 
 import com.gs.dbex.design.graph.DependencyGraphCanvas;
@@ -67,7 +68,9 @@ public class TestDependencyPanel extends JFrame {
 		panel.setBackground(Color.WHITE);
 		TableDbShape s = new TableDbShape(t);
 		DependencyGraphCanvas<TableDbShape> canvas = new DependencyGraphCanvas<TableDbShape>(panel,s);
-		panel.add(canvas, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(canvas);
+		panel.add(scrollPane, BorderLayout.CENTER);
 		
 		getContentPane().add(panel, BorderLayout.CENTER);
 	}

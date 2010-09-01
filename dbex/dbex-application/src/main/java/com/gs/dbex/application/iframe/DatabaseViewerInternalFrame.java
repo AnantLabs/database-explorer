@@ -93,7 +93,7 @@ public class DatabaseViewerInternalFrame extends JInternalFrame implements Windo
 		if(connectionProperties != null){
 			try {
 				db = DbexServiceBeanFactory.getBeanFactory().getDatabaseMetadataService()
-				.getDatabaseDetails(connectionProperties, "", ReadDepthEnum.SHALLOW);
+				.getDatabaseDetails(connectionProperties, ReadDepthEnum.SHALLOW);
 			
 			} catch (DbexException e) {
 				logger.error(e);

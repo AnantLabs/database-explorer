@@ -3,11 +3,13 @@
  */
 package com.gs.dbex.service;
 
+import java.util.List;
 import java.util.Set;
 
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
@@ -20,17 +22,17 @@ public interface DatabaseMetadataService {
 
 	String BEAN_NAME = "databaseMetadataService";
 	
-	public Set<Schema> getSchemaDetails(ConnectionProperties connectionProperties, String schemaName);
-	
-	public Database getDatabaseDetails(ConnectionProperties connectionProperties, String schemaName, ReadDepthEnum readDepthEnum) throws DbexException;
+	public Schema getSchemaDetails(ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException ;
 	
 	public Database getDatabaseDetails(ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException;
 	
-	public Table getTableDetails(ConnectionProperties connectionProperties, String schemaName, String tableName);
+	public Table getTableDetails(ConnectionProperties connectionProperties, String tableName) throws DbexException;
 	
-	public Database getColumnDetails(ConnectionProperties connectionProperties);
+	public Column getColumnDetails(ConnectionProperties connectionProperties, String tableName, String columnName) throws DbexException;
 	
-	public Database getAllTableDetails(ConnectionProperties connectionProperties);
+	public List<Column> getAllColumnDetails(ConnectionProperties connectionProperties, String tableName) throws DbexException;
+	
+	public List<Table> getAllTableDetails(ConnectionProperties connectionProperties) throws DbexException;
 	
 	
 	
