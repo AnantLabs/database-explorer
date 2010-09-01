@@ -6,12 +6,22 @@
 
 	<bean id="oracleDatabaseMetadataIntegration"
 		class="com.gs.dbex.integration.impl.oracle.OracleDatabaseMetadataIntegrationImpl">
-		<property name="dbGrabber" ref="schemaDBGrabber"></property>
+		<property name="dbGrabber" ref="oracleDBGrabber"></property>
 	</bean>
 	
 	<bean id="mysqlDatabaseMetadataIntegration"
 		class="com.gs.dbex.integration.impl.mysql.MysqlDatabaseMetadataIntegrationImpl">
+		<property name="dbGrabber" ref="mysqlDBGrabber"></property>
+	</bean>
+	
+	<bean id="catalogMetadataIntegration"
+		class="com.gs.dbex.integration.impl.CatalogMetadataIntegrationImpl">
 		<property name="dbGrabber" ref="catalogDBGrabber"></property>
+	</bean>
+	
+	<bean id="schemaMetadataIntegration"
+		class="com.gs.dbex.integration.impl.SchemaMetadataIntegrationImpl">
+		<property name="dbGrabber" ref="schemaDBGrabber"></property>
 	</bean>
 	
 	<bean id="oracleDatabaseConnectionIntegration"
@@ -57,6 +67,14 @@
 	
 	<bean id="schemaDBGrabber"
 		class="com.gs.dbex.core.schema.grabber.SchemaDBGrabberImpl">
+	</bean>
+	
+	<bean id="oracleDBGrabber"
+		class="com.gs.dbex.core.oracle.OracleDbGrabber">
+	</bean>
+	
+	<bean id="mysqlDBGrabber"
+		class="com.gs.dbex.core.mysql.MysqlDbGrabber">
 	</bean>
 	
 	<bean id="castorXmlReaderIntegration"

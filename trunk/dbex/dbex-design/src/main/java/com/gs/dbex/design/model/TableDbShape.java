@@ -70,7 +70,7 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 		setWidth(DrawingUtil.calculateTableWidth(getGraphics(), getDbModel(), true));
 		setHeight(DrawingUtil.calculateTableHeight(getGraphics(), getDbModel(), true));
 		if(getX() == 0 && getY() == 0){
-			setX(canvasSize.width - getWidth()/2);
+			setX(canvasSize.width - (canvasSize.width/2 - getWidth()/2));
 			setY(DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH);
 		}
 		int colStart_X = getX() + 1;

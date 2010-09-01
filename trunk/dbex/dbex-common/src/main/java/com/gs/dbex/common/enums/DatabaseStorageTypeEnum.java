@@ -36,4 +36,12 @@ public enum DatabaseStorageTypeEnum {
 			return SCHEMA_STORAGE;
 		return UNKNOWN;
 	}
+	
+	public static DatabaseStorageTypeEnum getDatabaseStorageTypeEnum(String code){
+		if(CATALOG_STORAGE.getCode().equals(code))
+			return CATALOG_STORAGE;
+		if(SCHEMA_STORAGE.getCode().equals(code))
+			return SCHEMA_STORAGE;
+		return UNKNOWN;
+	}
 }

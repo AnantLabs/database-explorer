@@ -3,6 +3,8 @@
  */
 package com.gs.dbex.integration;
 
+
+import com.gs.dbex.common.enums.DatabaseStorageTypeEnum;
 import com.gs.dbex.common.enums.DatabaseTypeEnum;
 
 /**
@@ -15,6 +17,8 @@ public final class IntegrationBeanFactory {
 	
 	private DatabaseMetadataIntegration oracleDatabaseMetadataIntegration;
 	private DatabaseMetadataIntegration mysqlDatabaseMetadataIntegration;
+	private DatabaseMetadataIntegration catalogMetadataIntegration;
+	private DatabaseMetadataIntegration schemaMetadataIntegration;
 	private DatabaseConnectionIntegration oracleDatabaseConnectionIntegration;
 	private DatabaseConnectionIntegration mysqlDatabaseConnectionIntegration;
 	private DatabaseConnectionIntegration genericDatabaseConnectionIntegration;
@@ -30,11 +34,19 @@ public final class IntegrationBeanFactory {
 		return instance;
 	}
 	
-	public DatabaseMetadataIntegration getDatabaseMetadataIntegration(DatabaseTypeEnum databaseTypeEnum){
+	public DatabaseMetadataIntegration getDatabaseMetadataIntegration(DatabaseTypeEnum databaseTypeEnum, DatabaseStorageTypeEnum storageTypeEnum){
+		if(null == databaseTypeEnum || null == storageTypeEnum)
+			return null;
 		if(DatabaseTypeEnum.ORACLE.equals(databaseTypeEnum)){
 			return getOracleDatabaseMetadataIntegration();
 		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
 			return getMysqlDatabaseMetadataIntegration();
+		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
+			if(DatabaseStorageTypeEnum.CATALOG_STORAGE.equals(storageTypeEnum)){
+				return getCatalogMetadataIntegration();
+			} else if(DatabaseStorageTypeEnum.SCHEMA_STORAGE.equals(storageTypeEnum)){
+				return getSchemaMetadataIntegration();
+			}
 		}
 		return null;
 	}
@@ -104,6 +116,24 @@ public final class IntegrationBeanFactory {
 	public void setGenericDatabaseConnectionIntegration(
 			DatabaseConnectionIntegration genericDatabaseConnectionIntegration) {
 		this.genericDatabaseConnectionIntegration = genericDatabaseConnectionIntegration;
+	}
+
+	public DatabaseMetadataIntegration getCatalogMetadataIntegration() {
+		return catalogMetadataIntegration;
+	}
+
+	public void setCatalogMetadataIntegration(
+			DatabaseMetadataIntegration catalogMetadataIntegration) {
+		this.catalogMetadataIntegration = catalogMetadataIntegration;
+	}
+
+	public DatabaseMetadataIntegration getSchemaMetadataIntegration() {
+		return schemaMetadataIntegration;
+	}
+
+	public void setSchemaMetadataIntegration(
+			DatabaseMetadataIntegration schemaMetadataIntegration) {
+		this.schemaMetadataIntegration = schemaMetadataIntegration;
 	}
 
 	

@@ -13,15 +13,13 @@ import java.io.Serializable;
  * @author Sabuj Das
  *
  */
-public abstract class RectangularShape implements Serializable {
+public abstract class RectangularShape extends Shape implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4396319855974789586L;
 	
-	private int x;
-	private int y;
 	private int width;
 	private int height;
 	
@@ -36,8 +34,7 @@ public abstract class RectangularShape implements Serializable {
 	}
 
 	public RectangularShape(int x, int y, int width, int height) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 		this.width = width;
 		this.height = height;
 	}
@@ -48,22 +45,6 @@ public abstract class RectangularShape implements Serializable {
 
 	public void setGraphics(Graphics graphics) {
 		this.graphics = graphics;
-	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
 	}
 
 	public int getWidth() {
@@ -83,51 +64,14 @@ public abstract class RectangularShape implements Serializable {
 	}
 
 	public Point getLocation(){
-		return new Point(x,y);
+		return new Point(getX(),getY());
 	}
 	
 	public Dimension getSize(){
 		return new Dimension(width, height);
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + height;
-		result = prime * result + width;
-		result = prime * result + x;
-		result = prime * result + y;
-		return result;
-	}
-
 	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof RectangularShape)) {
-			return false;
-		}
-		RectangularShape other = (RectangularShape) obj;
-		if (height != other.height) {
-			return false;
-		}
-		if (width != other.width) {
-			return false;
-		}
-		if (x != other.x) {
-			return false;
-		}
-		if (y != other.y) {
-			return false;
-		}
-		return true;
-	}
 	
 	public abstract void drawShape();
 	
@@ -181,13 +125,13 @@ public abstract class RectangularShape implements Serializable {
 	
 	public void setLocation(Point point){
 		if(null != point){
-			x = point.x;
-			y = point.y;
+			setX(point.x);
+			setY(point.y);
 		}
 	}
 	
 	public Rectangle getBounds(){
-		return new Rectangle(x, y, width, height);
+		return new Rectangle(getX(), getY(), width, height);
 	}
 	
 	public boolean contains(int x, int y){

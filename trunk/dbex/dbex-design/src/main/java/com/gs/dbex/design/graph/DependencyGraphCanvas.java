@@ -11,7 +11,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -20,8 +20,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -54,7 +54,7 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends JPanel impleme
 		this.dbShape = dbShape;
 		this.parentPanel = parentPanel;
 		setBackground(Color.WHITE);
-		setMinimumSize(new Dimension(400, 400));
+		setMinimumSize(new Dimension(100, 100));
 		setPreferredSize(getMinimumSize());
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -62,22 +62,14 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends JPanel impleme
 		addKeyListener(this);
 		
 		getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN,0,true), this);
-		//getActionMap().put("showKey",  showKey);
-
+		
+		setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
 	}
 
-	Action showKey = new AbstractAction() {
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			 System.out.println("VK_DOWN");
-		}
-	};
-
+	
 	
 	public void initCanvas(){
 		currentSize = getSize();
-		
 		
 		
 		offscreenImage = createImage(currentSize.width,currentSize.height); 
@@ -88,7 +80,7 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends JPanel impleme
 	}
 	
 	@Override
-	public void paint(Graphics g) {
+	public void paintComponent(Graphics g) {
 		initCanvas();
 		//bufferGraphics.clearRect(0,0,currentSize.width,currentSize.height); 
 		dbShape.drawShape();
@@ -100,7 +92,7 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends JPanel impleme
 
 	@Override
 	public void update(Graphics g) {
-		paint(g);
+		paintComponent(g);
 	}
 	
 	@Override
@@ -117,12 +109,12 @@ public class DependencyGraphCanvas<T extends BaseDbShape> extends JPanel impleme
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		System.out.println("keyPressed:"+e.getKeyCode());
+		System.out.println("keyPressed:: " + e.getKeyCode());
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		System.out.println("keyReleased:"+e.getKeyCode());
+		System.out.println("keyReleased:: " + e.getKeyCode());
 	}
 
 	@Override
