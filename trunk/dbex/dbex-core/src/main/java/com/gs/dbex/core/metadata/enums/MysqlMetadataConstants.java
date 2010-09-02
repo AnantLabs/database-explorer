@@ -47,14 +47,14 @@ public final class MysqlMetadataConstants {
 	 * @author Sabuj.das
 	 *
 	 */
-	static final class INFORMATION_SCHEMA {
+	public static final class INFORMATION_SCHEMA {
 		
 		/**
 		 * Column Name constants for table <code>CHARACTER_SETS</code>
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class CHARACTER_SETS {
+		public static final class CHARACTER_SETS {
 		}
 
 		/**
@@ -62,7 +62,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class COLLATIONS {
+		public static final class COLLATIONS {
 		}
 
 		/**
@@ -70,7 +70,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class COLLATION_CHARACTER_SET_APPLICABILITY {
+		public static final class COLLATION_CHARACTER_SET_APPLICABILITY {
 		}
 
 		/**
@@ -78,7 +78,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class COLUMNS {
+		public static final class COLUMNS {
 			public static final String TABLE_CATALOG = "TABLE_CATALOG";
 			public static final String TABLE_SCHEMA = "TABLE_SCHEMA";
 			public static final String TABLE_NAME = "TABLE_NAME";
@@ -105,7 +105,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class COLUMN_PRIVILEGES {
+		public static final class COLUMN_PRIVILEGES {
 		}
 
 		/**
@@ -113,7 +113,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class ENGINES {
+		public static final class ENGINES {
 		}
 
 		/**
@@ -121,7 +121,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class EVENTS {
+		public static final class EVENTS {
 		}
 
 		/**
@@ -129,7 +129,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class FILES {
+		public static final class FILES {
 		}
 
 		/**
@@ -137,7 +137,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class GLOBAL_STATUS {
+		public static final class GLOBAL_STATUS {
 		}
 
 		/**
@@ -145,7 +145,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class GLOBAL_VARIABLES {
+		public static final class GLOBAL_VARIABLES {
 		}
 
 		/**
@@ -153,7 +153,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class KEY_COLUMN_USAGE {
+		public static final class KEY_COLUMN_USAGE {
 			public static final String CONSTRAINT_CATALOG = "CONSTRAINT_CATALOG";
 			public static final String CONSTRAINT_SCHEMA = "CONSTRAINT_SCHEMA";
 			public static final String CONSTRAINT_NAME = "CONSTRAINT_NAME";
@@ -173,7 +173,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class PARTITIONS {
+		public static final class PARTITIONS {
 		}
 
 		/**
@@ -181,7 +181,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class PLUGINS {
+		public static final class PLUGINS {
 		}
 
 		/**
@@ -189,7 +189,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class PROCESSLIST {
+		public static final class PROCESSLIST {
 		}
 
 		/**
@@ -197,7 +197,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class PROFILING {
+		public static final class PROFILING {
 		}
 
 		/**
@@ -205,7 +205,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class REFERENTIAL_CONSTRAINTS {
+		public static final class REFERENTIAL_CONSTRAINTS {
 			public static final String CONSTRAINT_CATALOG = "CONSTRAINT_CATALOG";
 			public static final String CONSTRAINT_SCHEMA = "CONSTRAINT_SCHEMA";
 			public static final String CONSTRAINT_NAME = "CONSTRAINT_NAME";
@@ -224,7 +224,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class ROUTINES {
+		public static final class ROUTINES {
 		}
 
 		/**
@@ -232,7 +232,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class SCHEMATA {
+		public static final class SCHEMATA {
 			
 		}
 
@@ -241,7 +241,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class SCHEMA_PRIVILEGES {
+		public static final class SCHEMA_PRIVILEGES {
 		}
 
 		/**
@@ -249,7 +249,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class SESSION_STATUS {
+		public static final class SESSION_STATUS {
 		}
 
 		/**
@@ -257,7 +257,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class SESSION_VARIABLES {
+		public static final class SESSION_VARIABLES {
 		}
 
 		/**
@@ -265,7 +265,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class STATISTICS {
+		public static final class STATISTICS {
 		}
 
 		/**
@@ -273,7 +273,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class TABLES {
+		public static final class TABLES {
 			public static final String TABLE_CATALOG = "TABLE_CATALOG";
 			public static final String TABLE_SCHEMA = "TABLE_SCHEMA";
 			public static final String TABLE_NAME = "TABLE_NAME";
@@ -302,7 +302,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class TABLE_CONSTRAINTS {
+		public static final class TABLE_CONSTRAINTS {
 			public static final String CONSTRAINT_CATALOG = "CONSTRAINT_CATALOG";
 			public static final String CONSTRAINT_SCHEMA = "CONSTRAINT_SCHEMA";
 			public static final String CONSTRAINT_NAME = "CONSTRAINT_NAME";
@@ -316,7 +316,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class TABLE_PRIVILEGES {
+		public static final class TABLE_PRIVILEGES {
 			public static final String TABLE_CATALOG = "TABLE_CATALOG";
 			public static final String TABLE_SCHEMA = "TABLE_SCHEMA";
 			public static final String TABLE_NAME = "TABLE_NAME";
@@ -330,7 +330,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class TRIGGERS {
+		public static final class TRIGGERS {
 		}
 
 		/**
@@ -338,7 +338,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class USER_PRIVILEGES {
+		public static final class USER_PRIVILEGES {
 		}
 
 		/**
@@ -346,7 +346,7 @@ public final class MysqlMetadataConstants {
 		 * @author Sabuj.das
 		 *
 		 */
-		static final class VIEWS {
+		public static final class VIEWS {
 		}
 
 	}
