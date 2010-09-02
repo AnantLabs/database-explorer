@@ -158,9 +158,9 @@ class IconCellRenderer extends JLabel implements TreeCellRenderer {
 		Object obj = node.getUserObject();
 		setText(obj.toString());
 
-		if (obj instanceof Boolean)
+		/*if (obj instanceof Boolean)
 			setText("Retrieving data...");
-
+*/
 		if (obj instanceof IconData) {
 			IconData idata = (IconData) obj;
 			if (expanded)

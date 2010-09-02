@@ -42,6 +42,25 @@ public final class MysqlMetadataConstants {
 		VIEWS;
 	}
 	
+	public static enum CONSTRAINT_TYPE_ENUM{
+		PK("PRIMARY KEY"),
+		FK("FOREIGN KEY"),
+		UN("UNIQUE"),
+		CK("CHECK");
+		
+		private final String code;
+
+		private CONSTRAINT_TYPE_ENUM(String code) {
+			this.code = code;
+		}
+
+		public String getCode() {
+			return code;
+		}
+		
+		
+	}
+	
 	/**
 	 * Detailed column name constants of tables of INFORMATION_SCHEMA.
 	 * @author Sabuj.das
@@ -233,7 +252,11 @@ public final class MysqlMetadataConstants {
 		 *
 		 */
 		public static final class SCHEMATA {
-			
+			public static final String CATALOG_NAME = "CATALOG_NAME";
+			public static final String SCHEMA_NAME = "SCHEMA_NAME";
+			public static final String DEFAULT_CHARACTER_SET_NAME = "DEFAULT_CHARACTER_SET_NAME";
+			public static final String DEFAULT_COLLATION_NAME = "DEFAULT_COLLATION_NAME";
+			public static final String SQL_PATH = "SQL_PATH";
 		}
 
 		/**

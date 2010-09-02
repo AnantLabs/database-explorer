@@ -126,7 +126,7 @@ UndoableEditListener, HyperlinkListener {
 	public SqlQueryPanel(JComponent parentComponent, ConnectionProperties connectionProperties) {
 		this.connectionProperties = connectionProperties;
 		this.parentComponent = parentComponent;
-		try {
+		/*try {
 			bitstreamFont = Font.createFont(Font.TRUETYPE_FONT, 
 					getClass().getResourceAsStream("/fonts/VeraMono.ttf"));
 			bitstreamFont = new Font(bitstreamFont.getFontName(),
@@ -137,7 +137,8 @@ UndoableEditListener, HyperlinkListener {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
+		bitstreamFont = DEFAULT_TEXT_FONT;
 		setConnectionProperties(getConnectionProperties());
 		ResultSetTableModelFactory factory = null;
 		try {

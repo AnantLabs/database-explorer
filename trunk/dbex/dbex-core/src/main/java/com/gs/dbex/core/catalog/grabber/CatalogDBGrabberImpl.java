@@ -414,4 +414,17 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 		
 		return schemaNames;
 	}
+
+	@Override
+	public List<Schema> grabCatalog(Connection connection) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Table> grabTables(Connection connection, String schemaName)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
