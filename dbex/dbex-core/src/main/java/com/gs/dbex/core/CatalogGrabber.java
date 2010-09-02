@@ -25,21 +25,25 @@ public interface CatalogGrabber extends DbGrabber {
 	public Database grabDatabaseByCatalog(Connection connection,
 			String databaseName, ReadDepthEnum readDepth) throws SQLException;
 
+	public List<Schema> grabCatalog(Connection connection) throws SQLException;
+
 	public Schema grabCatalog(Connection connection, String catalogName)
 			throws SQLException;
 
 	public Set<String> getAvailableCatalogNames(Connection connection)
 			throws SQLException;
-	
+
 	public Table grabTable(Connection connection, String catalogName,
-			String tableName, ReadDepthEnum readDepth);
+			String tableName, ReadDepthEnum readDepth) throws SQLException;
 
-	public List<Column> getColumnList(Table table,
-			Connection connection, ReadDepthEnum readDepth) throws SQLException;
-
-	public List<Column> getColumnList(String catalogName,
-			String tableName, Connection connection, ReadDepthEnum readDepth)
+	public List<Table> grabTables(Connection connection, String schemaName)
 			throws SQLException;
+
+	public List<Column> getColumnList(Table table, Connection connection,
+			ReadDepthEnum readDepth) throws SQLException;
+
+	public List<Column> getColumnList(String catalogName, String tableName,
+			Connection connection, ReadDepthEnum readDepth) throws SQLException;
 
 	public List<PrimaryKey> grabPrimaryKeys(Connection connection,
 			String catalogName, String tableName, ReadDepthEnum readDepth)

@@ -64,7 +64,7 @@ public class SyntaxStylizer implements PreferenceChangeListener {
     public SyntaxStylizer(JTextPane componentOwner) {
 
         this.componentOwner = componentOwner;
-        initializeStyles();
+        //initializeStyles();
     }
 
     public Style styleForWord(TokenType tokenType) {
