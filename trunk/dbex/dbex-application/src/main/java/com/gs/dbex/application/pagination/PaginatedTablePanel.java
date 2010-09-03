@@ -51,11 +51,11 @@ import com.gs.dbex.application.dlg.QuickEditDialog;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
-import com.gs.dbex.application.vo.PaginationResult;
-import com.gs.dbex.application.vo.QuickEditVO;
 import com.gs.dbex.common.enums.TableDataExportTypeEnum;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.model.vo.PaginationResult;
+import com.gs.dbex.model.vo.QuickEditVO;
 import com.gs.utils.text.StringUtil;
 
 

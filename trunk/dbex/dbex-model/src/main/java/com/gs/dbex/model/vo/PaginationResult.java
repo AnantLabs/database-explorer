@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gs.dbex.application.vo;
+package com.gs.dbex.model.vo;
 
 import java.sql.ResultSet;
 import java.util.List;

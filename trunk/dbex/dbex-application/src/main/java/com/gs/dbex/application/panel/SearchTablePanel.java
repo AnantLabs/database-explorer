@@ -35,11 +35,11 @@ import org.apache.log4j.Logger;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.util.DisplayUtils;
-import com.gs.dbex.application.vo.TableSearchCriteria;
-import com.gs.dbex.application.vo.TableSearchResult;
 import com.gs.dbex.common.enums.ObjectTypeEnum;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.vo.TableSearchCriteria;
+import com.gs.dbex.model.vo.TableSearchResult;
 import com.gs.utils.text.StringUtil;
 
 /**
