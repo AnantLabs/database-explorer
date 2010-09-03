@@ -52,7 +52,7 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 	}
 
 	@Override
-	public Table getTableDetails(ConnectionProperties connectionProperties,
+	public Table getTableDetails(ConnectionProperties connectionProperties, String schemaName,
 			String tableName) throws DbexException {
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);

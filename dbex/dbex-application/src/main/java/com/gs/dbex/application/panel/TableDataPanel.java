@@ -37,10 +37,13 @@ import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.common.enums.ReadDepthEnum;
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.QuickEditVO;
+import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.QueryExecutionService;
 
 /**
  * @author Green Moon
@@ -62,6 +65,8 @@ public class TableDataPanel extends JPanel implements ActionListener{
 	private JFrame parentFrame;
 	
 	private PaginatedTablePanel paginatedTablePanel;
+	
+	private QueryExecutionService queryExecutionService = DbexServiceBeanFactory.getBeanFactory().getQueryExecutionService();
 	
 	/*public TableDataPanel(JFrame parent, String schemaName, String tableName,
 			ConnectionProperties connectionProperties) {
@@ -92,7 +97,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 		
 		prepareQuery(databaseTable);
 		//if(queryString == null)
-			
+		
 				
 		paginatedTablePanel = new PaginatedTablePanel(parentFrame, connectionProperties, queryString, 
 				"SELECT COUNT(*) FROM " + schemaName + "." + tableName.toUpperCase());
@@ -104,16 +109,12 @@ public class TableDataPanel extends JPanel implements ActionListener{
 
 
 	private void prepareQuery(Table databaseTable) {
-		StringBuffer buffer = new StringBuffer();
-		
 		if (databaseTable.getColumnlist() == null || databaseTable.getColumnlist().size() <= 0) {
-			Connection connection = null;
 			try {
-				connection = connectionProperties.getDataSource().getConnection();
-				databaseTable = new OracleDbGrabber().grabTable(connection, 
-						databaseTable.getSchemaName(), databaseTable.getModelName(), ReadDepthEnum.DEEP);
-			} catch (SQLException e) {
-				logger.error(e);
+				databaseTable = DbexServiceBeanFactory.getBeanFactory().getDatabaseMetadataService()
+					.getTableDetails(connectionProperties, databaseTable.getSchemaName(), databaseTable.getModelName());
+			} catch (DbexException e) {
+				e.printStackTrace();
 			}
 			if (databaseTable.getColumnlist() == null || databaseTable.getColumnlist().size() <= 0) {
 				DisplayUtils.displayMessage(getParentFrame(), "Cannot Read Column details.", DisplayTypeEnum.ERROR);
@@ -121,23 +122,21 @@ public class TableDataPanel extends JPanel implements ActionListener{
 				return;
 			} 
 		}
-		
-		
 		/*String s = "select " +
 				"* " +
 				"from (select " +
 				"a, b, c, rownum as limit from " +
 				"mytable where conditions order by whatiwant" +
 				") where limit&gt;x and limit &lt;y;";*/
-		buffer.append("SELECT ")
+		/*buffer.append("SELECT ")
 			.append(databaseTable.getColumnNames(','))
 			.append(" FROM ( SELECT ")
 			.append(databaseTable.getColumnNames(',')).append(",").append(" ROWNUM AS LIMIT FROM ")
 			.append(schemaName.toUpperCase() + "." + tableName.toUpperCase())
-			.append(" ) WHERE LIMIT >= ? AND LIMIT < ?");
-		
-		this.queryString = buffer.toString();
-		
+			.append(" ) WHERE LIMIT >= ? AND LIMIT < ?");*/
+		if(queryExecutionService != null)
+			this.queryString =  queryExecutionService.preparePaginationQuery(connectionProperties, databaseTable);
+		this.queryString = "";
 	}
 
 

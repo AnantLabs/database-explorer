@@ -53,10 +53,19 @@ public class ResultSetTableModelFactory {
 	public ResultSetTableModel getResultSetTableModel(String query, int rowFrom, int rowTo) throws SQLException{
 		if (connection == null)
 			throw new IllegalStateException("Connection already closed.");
-
+		
 		PreparedStatement ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		ps.setInt(1, rowFrom);
-		ps.setInt(2, rowTo);
+		try{
+			ps.setInt("FROM", rowFrom);
+		}catch (Exception e) {
+			
+		}
+		try{
+			ps.setInt(2, rowTo);
+		}catch (Exception e) {
+			
+		}
+		
 		
 		return new ResultSetTableModel(ps.executeQuery());
 		

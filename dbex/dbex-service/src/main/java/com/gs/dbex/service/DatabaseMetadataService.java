@@ -26,7 +26,7 @@ public interface DatabaseMetadataService {
 	
 	public Database getDatabaseDetails(ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException;
 	
-	public Table getTableDetails(ConnectionProperties connectionProperties, String tableName) throws DbexException;
+	public Table getTableDetails(ConnectionProperties connectionProperties, String schemaName, String tableName) throws DbexException;
 	
 	public Column getColumnDetails(ConnectionProperties connectionProperties, String tableName, String columnName) throws DbexException;
 	
