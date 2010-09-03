@@ -4,7 +4,7 @@
 package com.gs.dbex.common.enums;
 
 /**
- * @author Green Moon
+ * @author Sabuj Das
  *
  */
 public enum DatabaseResourceEnum {

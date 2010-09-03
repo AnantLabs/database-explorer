@@ -34,10 +34,10 @@ import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.MenuBarUtil;
-import com.gs.dbex.application.vo.QuickEditVO;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.model.vo.QuickEditVO;
 
 /**
  * @author sabuj.das

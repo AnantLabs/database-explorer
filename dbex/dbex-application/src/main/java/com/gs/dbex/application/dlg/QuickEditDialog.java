@@ -32,7 +32,7 @@ import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.WindowUtil;
-import com.gs.dbex.application.vo.QuickEditVO;
+import com.gs.dbex.model.vo.QuickEditVO;
 
 /**
  * @author sabuj das

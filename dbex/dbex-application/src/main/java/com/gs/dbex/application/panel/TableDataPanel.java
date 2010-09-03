@@ -36,11 +36,11 @@ import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.MenuBarUtil;
-import com.gs.dbex.application.vo.QuickEditVO;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.model.vo.QuickEditVO;
 
 /**
  * @author Green Moon
@@ -176,7 +176,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					if(e.getClickCount() == 2){
-						com.gs.dbex.application.vo.QuickEditVO vo = new com.gs.dbex.application.vo.QuickEditVO();
+						QuickEditVO vo = new QuickEditVO();
 						vo.setTableName(tableName);
 						vo.setSchemaName(schemaName);
 						int columnIndex = dataTable.getSelectedColumn();
