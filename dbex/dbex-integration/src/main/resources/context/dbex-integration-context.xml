@@ -47,6 +47,7 @@
 		<property name="mysqlDatabaseConnectionIntegration" ref="mysqlDatabaseConnectionIntegration"></property>
 		<property name="castorXmlReaderIntegration" ref="castorXmlReaderIntegration"></property>
 		<property name="genericDatabaseConnectionIntegration" ref="genericDatabaseConnectionIntegration"></property>
+		<property name="mysqlQueryExecutionIntegration" ref="mysqlQueryExecutionIntegration"></property>
 	</bean>
 	
 	<bean id="oracleDatabaseConnectionHelper"
@@ -87,6 +88,10 @@
 	
 	<bean id="connectionPropertiesBodGenerator"
 		class="com.gs.dbex.integration.xmlbeans.ConnectionPropertiesBodGenerator">
+	</bean>
+	
+	<bean id="mysqlQueryExecutionIntegration"
+		class="com.gs.dbex.integration.impl.mysql.MySqlQueryExecutionIntegration">
 	</bean>
 	
 </beans>

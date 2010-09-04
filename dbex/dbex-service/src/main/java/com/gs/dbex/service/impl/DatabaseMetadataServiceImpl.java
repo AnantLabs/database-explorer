@@ -64,8 +64,8 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 		if(integration == null){
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
-		// TODO invoke appropriate integration method
-		return null;
+		
+		return integration.readTable(connectionProperties, schemaName, tableName, ReadDepthEnum.DEEP);
 	}
 
 	@Override

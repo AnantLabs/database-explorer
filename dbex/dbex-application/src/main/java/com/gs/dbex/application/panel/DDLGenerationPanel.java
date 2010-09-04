@@ -61,7 +61,7 @@ public class DDLGenerationPanel extends JPanel implements ActionListener,
 	public DDLGenerationPanel(JFrame frame, String tableName,
 			ConnectionProperties connectionProperties) {
 		this.parentFrame = frame;
-		try {
+		/*try {
 			bitstreamFont = Font.createFont(Font.TRUETYPE_FONT, 
 					getClass().getResourceAsStream("/fonts/VeraMono.ttf"));
 			bitstreamFont = new Font(bitstreamFont.getFontName(),
@@ -73,7 +73,8 @@ public class DDLGenerationPanel extends JPanel implements ActionListener,
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+		*/
+		bitstreamFont = DEFAULT_TEXT_FONT;
 		this.tableName = tableName;
 		this.connectionProperties = connectionProperties;
 		//queryExecutionService = new QueryExecutionServiceImpl(connectionProperties);

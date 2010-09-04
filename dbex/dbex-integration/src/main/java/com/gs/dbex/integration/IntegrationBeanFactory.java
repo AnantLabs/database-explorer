@@ -23,6 +23,7 @@ public final class IntegrationBeanFactory {
 	private DatabaseConnectionIntegration mysqlDatabaseConnectionIntegration;
 	private DatabaseConnectionIntegration genericDatabaseConnectionIntegration;
 	private XmlReaderIntegration castorXmlReaderIntegration;
+	private QueryExecutionIntegration mysqlQueryExecutionIntegration;
 	
 	private IntegrationBeanFactory() {
 		
@@ -63,77 +64,117 @@ public final class IntegrationBeanFactory {
 		}
 		return null;
 	}
+	
+	public QueryExecutionIntegration getQueryExecutionIntegration(DatabaseTypeEnum databaseTypeEnum){
+		if(null == databaseTypeEnum)
+			return null;
+		if(DatabaseTypeEnum.ORACLE.equals(databaseTypeEnum)){
+			
+		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
+			return getMysqlQueryExecutionIntegration();
+		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
+			
+		}
+		return null;
+	}
 
+	@Deprecated
 	public DatabaseMetadataIntegration getOracleDatabaseMetadataIntegration() {
 		return oracleDatabaseMetadataIntegration;
 	}
 
+	@Deprecated
 	public void setOracleDatabaseMetadataIntegration(
 			DatabaseMetadataIntegration oracleDatabaseMetadataIntegration) {
 		this.oracleDatabaseMetadataIntegration = oracleDatabaseMetadataIntegration;
 	}
 
+	@Deprecated
 	public DatabaseMetadataIntegration getMysqlDatabaseMetadataIntegration() {
 		return mysqlDatabaseMetadataIntegration;
 	}
 
+	@Deprecated
 	public void setMysqlDatabaseMetadataIntegration(
 			DatabaseMetadataIntegration mysqlDatabaseMetadataIntegration) {
 		this.mysqlDatabaseMetadataIntegration = mysqlDatabaseMetadataIntegration;
 	}
 
+	@Deprecated
 	public DatabaseConnectionIntegration getOracleDatabaseConnectionIntegration() {
 		return oracleDatabaseConnectionIntegration;
 	}
 
+	@Deprecated
 	public void setOracleDatabaseConnectionIntegration(
 			DatabaseConnectionIntegration oracleDatabaseConnectionIntegration) {
 		this.oracleDatabaseConnectionIntegration = oracleDatabaseConnectionIntegration;
 	}
 
+	@Deprecated
 	public DatabaseConnectionIntegration getMysqlDatabaseConnectionIntegration() {
 		return mysqlDatabaseConnectionIntegration;
 	}
 
+	@Deprecated
 	public void setMysqlDatabaseConnectionIntegration(
 			DatabaseConnectionIntegration mysqlDatabaseConnectionIntegration) {
 		this.mysqlDatabaseConnectionIntegration = mysqlDatabaseConnectionIntegration;
 	}
 
+	@Deprecated
 	public XmlReaderIntegration getCastorXmlReaderIntegration() {
 		return castorXmlReaderIntegration;
 	}
 
+	@Deprecated
 	public void setCastorXmlReaderIntegration(
 			XmlReaderIntegration castorXmlReaderIntegration) {
 		this.castorXmlReaderIntegration = castorXmlReaderIntegration;
 	}
 
+	@Deprecated
 	public DatabaseConnectionIntegration getGenericDatabaseConnectionIntegration() {
 		return genericDatabaseConnectionIntegration;
 	}
 
+	@Deprecated
 	public void setGenericDatabaseConnectionIntegration(
 			DatabaseConnectionIntegration genericDatabaseConnectionIntegration) {
 		this.genericDatabaseConnectionIntegration = genericDatabaseConnectionIntegration;
 	}
 
+	@Deprecated
 	public DatabaseMetadataIntegration getCatalogMetadataIntegration() {
 		return catalogMetadataIntegration;
 	}
 
+	@Deprecated
 	public void setCatalogMetadataIntegration(
 			DatabaseMetadataIntegration catalogMetadataIntegration) {
 		this.catalogMetadataIntegration = catalogMetadataIntegration;
 	}
 
+	@Deprecated
 	public DatabaseMetadataIntegration getSchemaMetadataIntegration() {
 		return schemaMetadataIntegration;
 	}
 
+	@Deprecated
 	public void setSchemaMetadataIntegration(
 			DatabaseMetadataIntegration schemaMetadataIntegration) {
 		this.schemaMetadataIntegration = schemaMetadataIntegration;
+	}
+
+	@Deprecated
+	public QueryExecutionIntegration getMysqlQueryExecutionIntegration() {
+		return mysqlQueryExecutionIntegration;
+	}
+
+	@Deprecated
+	public void setMysqlQueryExecutionIntegration(
+			QueryExecutionIntegration mysqlQueryExecutionIntegration) {
+		this.mysqlQueryExecutionIntegration = mysqlQueryExecutionIntegration;
 	}
 
 	

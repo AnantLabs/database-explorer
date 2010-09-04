@@ -52,6 +52,7 @@ import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.common.enums.TableDataExportTypeEnum;
+import com.gs.dbex.design.util.DrawingUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.PaginationResult;
@@ -89,11 +90,12 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 	private Table databaseTable;
 	
 
-    public PaginatedTablePanel(JFrame parentFrame, 
-    		ConnectionProperties connectionProperties, String query, String countQuery) {
+    public PaginatedTablePanel(JFrame parentFrame,
+			ConnectionProperties connectionProperties, Table databaseTable,
+			String countQuery) {
+		this.databaseTable = databaseTable;
     	this.parentFrame = parentFrame;
         this.connectionProperties = connectionProperties;
-        this.queryString = query;
         this.countQuery = countQuery;
         try{
         	resultSetTableModelFactory = new ResultSetTableModelFactory(
@@ -110,10 +112,9 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
         targetTable.addMouseListener(this);
         targetTable.setCellSelectionEnabled(true);
         populatePaginatedResult(1);
-        
-    }
-    
-    public void populatePaginatedResult(int pageNumber){
+	}
+
+	public void populatePaginatedResult(int pageNumber){
     	if(resultSetTableModelFactory != null){
         	paginationResult.setCurrentPage(pageNumber);
         	showTableData();
@@ -162,7 +163,8 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
     	int rowNumTo = paginationResult.getEndRow();
     	logger.info("Executing query : " + getQueryString() + " With LIMIT > " + rowNumFrom + " and < " + rowNumTo);
     	try {
-			targetTable.setModel(resultSetTableModelFactory.getResultSetTableModel(getQueryString(), rowNumFrom, rowNumTo));
+			targetTable.setModel(resultSetTableModelFactory.getResultSetTableModel(connectionProperties, databaseTable, rowNumFrom, rowNumTo));
+			DrawingUtil.updateTableColumnWidth(targetTable);
 		} catch (SQLException e) {
 			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		} catch(Exception e){
