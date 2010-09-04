@@ -5,11 +5,21 @@ package com.gs.dbex.application.table.model;
 
 
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.db.Table;
+import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.QueryExecutionService;
 
 /**
  * @author sabuj.das
@@ -17,11 +27,14 @@ import java.sql.Statement;
  */
 public class ResultSetTableModelFactory {
 
+	private QueryExecutionService queryExecutionService;
 	private Connection connection;
 	//private ResultSet resultSet;
 
+	
 	public ResultSetTableModelFactory(Connection connection) {
 		this.connection = connection;
+		queryExecutionService = DbexServiceBeanFactory.getBeanFactory().getQueryExecutionService();
 	}
 
 	public Connection getConnection() {
@@ -50,36 +63,16 @@ public class ResultSetTableModelFactory {
 	}
 
 	
-	public ResultSetTableModel getResultSetTableModel(String query, int rowFrom, int rowTo) throws SQLException{
-		if (connection == null)
-			throw new IllegalStateException("Connection already closed.");
-		
-		PreparedStatement ps = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		try{
-			ps.setInt("FROM", rowFrom);
-		}catch (Exception e) {
-			
+	public ResultSetTableModel getResultSetTableModel(ConnectionProperties connectionProperties, Table table, int rowFrom, int rowTo) throws SQLException{
+		if (connectionProperties == null || table == null)
+			throw new IllegalStateException("Unable to get required information.");
+		try {
+			return new ResultSetTableModel(queryExecutionService.getLimitedResultset(connectionProperties, connection, table, rowFrom, rowTo));
+		} catch (DbexException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		try{
-			ps.setInt(2, rowTo);
-		}catch (Exception e) {
-			
-		}
-		
-		
-		return new ResultSetTableModel(ps.executeQuery());
-		
-		/*Statement statement = connection.createStatement(
-				ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-		// Run the query, creating a ResultSet
-		int pageSize = rowTo - rowFrom;
-		//statement.setFetchSize(pageSize);
-		ResultSet resultSet = statement.executeQuery(query);
-		if(rowFrom > 0)
-			resultSet.absolute(rowFrom);
-		resultSet.setFetchSize(pageSize);
-		// Create and return a TableModel for the ResultSet
-		return new ResultSetTableModel(resultSet);*/
+		return new ResultSetTableModel(null);
 	}
 
 	
@@ -95,5 +88,11 @@ public class ResultSetTableModelFactory {
 			connection.close();
 			connection = null;
 		}
+	}
+
+	public TableModel getResultSetTableModel(Table databaseTable,
+			int rowNumFrom, int rowNumTo) {
+		
+		return null;
 	}
 }

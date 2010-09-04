@@ -73,6 +73,8 @@ public class DrawingUtil{
 	public static void updateTableColumnWidth(JTable jTable){
 		int colCount = jTable.getColumnModel().getColumnCount();
 		Graphics g = jTable.getGraphics();
+		if(g == null)
+			return;
 		if(colCount > 0){
 			for (int i = 0; i < colCount; i++) {
 				TableColumn col = jTable.getColumnModel().getColumn(i);

@@ -110,7 +110,7 @@ public class IndexDetailsPanel extends JPanel {
 			String query = "select * from all_indexes where owner='"+
 				schemaName +"' and TABLE_NAME = '" + tableName +"'";
 			
-			indexDetailsTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
+			//indexDetailsTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
 			
 		/*} catch (SQLException e) {
 			// TODO Auto-generated catch block

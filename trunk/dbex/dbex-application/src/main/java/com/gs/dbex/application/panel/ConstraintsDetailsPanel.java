@@ -122,7 +122,7 @@ public class ConstraintsDetailsPanel extends JPanel {
 			String query = "select * from all_constraints where owner='"+
 				schemaName +"' and TABLE_NAME = '" + tableName +"'";
 			
-			constraintDetailsTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
+			//constraintDetailsTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
 			
 		/*} catch (SQLException e) {
 			// TODO Auto-generated catch block

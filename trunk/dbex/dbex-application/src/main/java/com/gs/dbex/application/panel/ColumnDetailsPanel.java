@@ -31,9 +31,12 @@ import com.gs.dbex.application.table.model.ColumnDetailsTableModel;
 import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
+import com.gs.dbex.design.util.DrawingUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.service.DatabaseMetadataService;
+import com.gs.dbex.service.DbexServiceBeanFactory;
 
 /**
  * @author sabuj.das
@@ -64,11 +67,10 @@ public class ColumnDetailsPanel extends JPanel implements ActionListener,
 	}
 	
 	private void showColumns() {
-		OracleDbGrabber dbGrabber = new OracleDbGrabber();
-		Connection conn = null;
+		DatabaseMetadataService metadataService = DbexServiceBeanFactory.getBeanFactory().getDatabaseMetadataService();
+		
 		try {
-			conn = connectionProperties.getDataSource().getConnection();
-			Table table = dbGrabber.grabTable(conn, schemaName, tableName, ReadDepthEnum.DEEP);
+			Table table = metadataService.getTableDetails(getConnectionProperties(), schemaName, tableName);
 			List<Column> columnList = new ArrayList<Column>();
 			if(table != null){
 				if(columnList != null){
@@ -78,21 +80,11 @@ public class ColumnDetailsPanel extends JPanel implements ActionListener,
 			columDetailsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			columDetailsTable.setCellSelectionEnabled(true);
 			columDetailsTable.setModel(new ColumnDetailsTableModel(columnList));
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			DrawingUtil.updateTableColumnWidth(columDetailsTable);
 		} catch(Exception e){
 			e.printStackTrace();
 		}finally{
-			if(conn != null){
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			
 		}
 		
 	}

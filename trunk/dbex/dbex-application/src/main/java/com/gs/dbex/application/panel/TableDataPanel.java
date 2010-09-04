@@ -39,6 +39,7 @@ import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
+import com.gs.dbex.design.util.DrawingUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.QuickEditVO;
@@ -95,13 +96,12 @@ public class TableDataPanel extends JPanel implements ActionListener{
 		this.tableName = databaseTable.getModelName();
 		this.connectionProperties = connectionProperties;
 		
-		prepareQuery(databaseTable);
+		//prepareQuery(databaseTable);
 		//if(queryString == null)
 		
 				
-		paginatedTablePanel = new PaginatedTablePanel(parentFrame, connectionProperties, queryString, 
+		paginatedTablePanel = new PaginatedTablePanel(parentFrame, connectionProperties, databaseTable, 
 				"SELECT COUNT(*) FROM " + schemaName + "." + tableName.toUpperCase());
-		paginatedTablePanel.setDatabaseTable(databaseTable);
 		initComponent();
 		//showTableData(queryString);
 		dataToolBar.setVisible(false);
@@ -141,17 +141,14 @@ public class TableDataPanel extends JPanel implements ActionListener{
 
 
 	private void showTableData(String query) {
-		OracleDbGrabber dbGrabber = new OracleDbGrabber();
 		try {
 			dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			dataTable.setCellSelectionEnabled(true);
 			dataTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
-		} catch (SQLException e) {
-			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		} catch(Exception e){
-			e.printStackTrace();
+			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		}
-		
+		DrawingUtil.updateTableColumnWidth(dataTable);
 	}
 
 

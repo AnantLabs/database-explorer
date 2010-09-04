@@ -88,6 +88,13 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 	private static final Logger logger = Logger.getLogger(DbexConnectionDialog.class);
 	private static final DbexCommonContext dbexCommonContext = DbexCommonContext.getInstance();
 	private static final ApplicationCommonContext applicationCommonContext = ApplicationCommonContext.getInstance();
+
+	private static final String[] definedDbTypes = new String[]{
+		DatabaseTypeEnum.ORACLE.getDescription(),
+		DatabaseTypeEnum.MYSQL.getDescription(),
+		DatabaseTypeEnum.MSSQL_2005.getDescription(),
+		DatabaseTypeEnum.OTHER.getDescription()
+	};
 	
 	private int selectedOption = ApplicationConstants.CANCEL_OPTION;
 	private Frame parentFrame;
@@ -147,6 +154,17 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
     private JTextField urlTextField;
     private JTextField userNameTextField;
 	
+    public int getIndexOf(String[] array, String value){
+    	if(array == null || !StringUtil.hasValidContent(value))
+    		return 0;
+    	for (int i = 0; i < array.length; i++) {
+			if(value.equalsIgnoreCase(array[i])){
+				return i;
+			}
+		}
+    	return 0;
+    }
+    
     /** Creates new form DbexConnectionDialog */
     public DbexConnectionDialog(Frame parent, boolean modal) {
         super(parent, modal);
@@ -423,11 +441,7 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
         gridBagConstraints.insets = new Insets(2, 2, 2, 2);
         jPanel2.add(jLabel4, gridBagConstraints);
 
-        dbTypeComboBox.setModel(new DefaultComboBoxModel(
-        		new String[]{DatabaseTypeEnum.ORACLE.getDescription(),
-                		DatabaseTypeEnum.MYSQL.getDescription(),
-                		DatabaseTypeEnum.MSSQL_2005.getDescription(),
-                		DatabaseTypeEnum.OTHER.getDescription()}));
+        dbTypeComboBox.setModel(new DefaultComboBoxModel(definedDbTypes));
         dbTypeComboBox.setName("dbTypeComboBox"); 
         //dbTypeComboBox.addPropertyChangeListener(this);
         dbTypeComboBox.addActionListener(this);
@@ -1217,9 +1231,10 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 			connectionNameLabel.setText(StringUtil.hasValidContent(p
 					.getConnectionName()) ? p.getConnectionName()
 					: dbexCommonContext.getDefaultHostName());
-			dbTypeComboBox.setSelectedItem(StringUtil.hasValidContent(p
+			int index = getIndexOf(definedDbTypes, StringUtil.hasValidContent(p
 					.getDatabaseType()) ? p.getDatabaseType()
 					: DatabaseTypeEnum.OTHER.getDescription());
+			dbTypeComboBox.setSelectedIndex(index);
 			DatabaseTypeEnum databaseTypeEnum = DatabaseTypeEnum.getDatabaseTypeEnumByName(p.getDatabaseType());
 			if (null != p.getDatabaseConfiguration()) {
 				driverClassTextField.setText(StringUtil.hasValidContent(p

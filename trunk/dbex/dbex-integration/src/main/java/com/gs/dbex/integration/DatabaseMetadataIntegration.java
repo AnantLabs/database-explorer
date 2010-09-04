@@ -38,7 +38,8 @@ public interface DatabaseMetadataIntegration {
 	 * @param connectionProperties
 	 * @param readDepthEnum
 	 * @return
+	 * @throws DbexException 
 	 */
-	public Table readTable(ConnectionProperties connectionProperties, String schemaName, String tableName, ReadDepthEnum readDepthEnum);
+	public Table readTable(ConnectionProperties connectionProperties, String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException;
 	
 }
