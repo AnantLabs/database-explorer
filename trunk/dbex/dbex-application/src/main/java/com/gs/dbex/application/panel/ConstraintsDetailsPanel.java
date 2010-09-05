@@ -7,6 +7,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.Icon;
@@ -22,7 +23,10 @@ import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
+import com.gs.dbex.design.util.DrawingUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.service.DatabaseMetadataService;
+import com.gs.dbex.service.DbexServiceBeanFactory;
 
 /**
  * @author sabuj.das
@@ -116,32 +120,16 @@ public class ConstraintsDetailsPanel extends JPanel {
 		gridBagConstraints.insets = insets;
 		
 		
-		OracleDbGrabber dbGrabber = new OracleDbGrabber();
-		Connection conn = null;
+		DatabaseMetadataService metadataService = DbexServiceBeanFactory.getBeanFactory().getDatabaseMetadataService();
+		
 		try {
-			String query = "select * from all_constraints where owner='"+
-				schemaName +"' and TABLE_NAME = '" + tableName +"'";
-			
-			//constraintDetailsTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
-			
-		/*} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/ 
+			ResultSet resultSet = metadataService.getAllConstraints(connectionProperties, resultSetTableModelFactory.getConnection(), schemaName, tableName);
+			constraintDetailsTable.setModel(resultSetTableModelFactory.getResultSetTableModel(resultSet));
+			constraintDetailsTable.updateUI();
+			DrawingUtil.updateTableColumnWidth(constraintDetailsTable);
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			if(conn != null){
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		}
-		
-		
 		add(new JScrollPane(constraintDetailsTable), gridBagConstraints);
 	}
 

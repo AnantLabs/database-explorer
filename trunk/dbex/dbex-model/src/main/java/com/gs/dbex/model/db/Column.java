@@ -85,7 +85,7 @@ public class Column extends BaseDbModel implements Serializable,
 		this.typeName = typeName;
 	}
 
-	@ColumnHeader(title = "COLUMN_SIZE", index = 4)
+	@ColumnHeader(title = "COLUMN_SCALE", index = 5)
 	public Integer getSize() {
 		return size;
 	}
@@ -94,7 +94,7 @@ public class Column extends BaseDbModel implements Serializable,
 		this.size = size;
 	}
 
-	@ColumnHeader(title = "COLUMN_PRECISION", index = 5)
+	@ColumnHeader(title = "COLUMN_PRECISION", index = 4)
 	public Integer getPrecision() {
 		return precision;
 	}

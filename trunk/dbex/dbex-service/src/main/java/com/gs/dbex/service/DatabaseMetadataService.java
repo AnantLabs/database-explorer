@@ -3,6 +3,8 @@
  */
 package com.gs.dbex.service;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,6 +35,8 @@ public interface DatabaseMetadataService {
 	public List<Column> getAllColumnDetails(ConnectionProperties connectionProperties, String tableName) throws DbexException;
 	
 	public List<Table> getAllTableDetails(ConnectionProperties connectionProperties) throws DbexException;
+
+	public ResultSet getAllConstraints(ConnectionProperties connectionProperties, Connection connection, String schemaName, String tableName) throws DbexException;
 	
 	
 	

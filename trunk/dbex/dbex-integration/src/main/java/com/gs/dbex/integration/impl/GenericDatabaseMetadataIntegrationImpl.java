@@ -4,6 +4,7 @@
 package com.gs.dbex.integration.impl;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
@@ -61,6 +62,14 @@ public class GenericDatabaseMetadataIntegrationImpl extends
 	
 	public Table readTable(ConnectionProperties connectionProperties,
 			String schemaName, String tableName, ReadDepthEnum readDepthEnum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public ResultSet getAllConstraints(Connection connection,
+			String schemaName, String tableName) throws DbexException {
 		// TODO Auto-generated method stub
 		return null;
 	}

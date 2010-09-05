@@ -1,5 +1,8 @@
 package com.gs.dbex.integration.impl;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.core.SchemaGrabber;
@@ -45,6 +48,13 @@ public class SchemaMetadataIntegrationImpl implements
 
 	public void setDbGrabber(SchemaGrabber dbGrabber) {
 		this.dbGrabber = dbGrabber;
+	}
+
+	@Override
+	public ResultSet getAllConstraints(Connection connection,
+			String schemaName, String tableName) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

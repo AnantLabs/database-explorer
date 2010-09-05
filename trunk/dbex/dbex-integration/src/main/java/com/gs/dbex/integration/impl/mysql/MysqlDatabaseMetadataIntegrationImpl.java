@@ -4,6 +4,7 @@
 package com.gs.dbex.integration.impl.mysql;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
@@ -13,12 +14,14 @@ import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.common.exception.ErrorCodeConstants;
 import com.gs.dbex.core.CatalogGrabber;
 import com.gs.dbex.core.mysql.MysqlDbGrabber;
+import com.gs.dbex.core.mysql.MysqlMetaQueryConstants;
 import com.gs.dbex.integration.impl.DatabaseMetadataIntegrationImpl;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
 import com.gs.utils.jdbc.JdbcUtil;
+import com.mysql.jdbc.PreparedStatement;
 
 /**
  * @author Sabuj.das
@@ -87,6 +90,38 @@ public class MysqlDatabaseMetadataIntegrationImpl extends
 
 	public void setDbGrabber(CatalogGrabber dbGrabber) {
 		this.dbGrabber = dbGrabber;
+	}
+
+	@Override
+	public ResultSet getAllConstraints(Connection connection,
+			String schemaName, String tableName) throws DbexException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: getAllConstraints()");
+		}
+		if(connection == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		ResultSet resultSet = null;
+		try {
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
+					MysqlMetaQueryConstants.GET_ALL_CONSTRAINTS_SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			preparedStatement.setString(1, schemaName);
+			preparedStatement.setString(2, schemaName);
+			preparedStatement.setString(3, tableName);
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + preparedStatement.getPreparedSql() + " ] schema:=" + schemaName + " table:=" + tableName);
+			}
+			resultSet = preparedStatement.executeQuery();
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			//JdbcUtil.close(connection);
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Exit:: getLimitedResultset()");
+		}
+		return resultSet;
 	}
 
 

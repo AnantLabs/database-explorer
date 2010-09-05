@@ -4,6 +4,7 @@
 package com.gs.dbex.integration.impl.oracle;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
@@ -74,6 +75,14 @@ public class OracleDatabaseMetadataIntegrationImpl extends
 
 	public void setDbGrabber(SchemaGrabber dbGrabber) {
 		this.dbGrabber = dbGrabber;
+	}
+
+
+	@Override
+	public ResultSet getAllConstraints(Connection connection,
+			String schemaName, String tableName) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

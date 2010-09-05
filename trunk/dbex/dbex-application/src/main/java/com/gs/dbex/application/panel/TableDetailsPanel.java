@@ -32,17 +32,6 @@ public class TableDetailsPanel extends JPanel implements ActionListener,
 	private String schemaName;
 	private ConnectionProperties connectionProperties;
 	
-/*	public TableDetailsPanel(JFrame parentFrame, String schemaName, String tableName) {
-		this(parentFrame, schemaName, tableName, null);
-	}
-	
-
-	public TableDetailsPanel(JFrame parentFrame, String schemaName, String tableName,
-			ConnectionProperties connectionProperties) {
-		
-	}
-
-*/
 
 	public TableDetailsPanel(JFrame parent, Table table, ConnectionProperties connectionProperties) {
 		this.parentFrame = parent;
@@ -50,7 +39,6 @@ public class TableDetailsPanel extends JPanel implements ActionListener,
 		this.schemaName = table.getSchemaName();
 		this.tableName = table.getModelName();
 		this.connectionProperties = connectionProperties;
-		//this.connectionProperties.setDatabaseName(schemaName);
 		initComponents();
 	}
 
