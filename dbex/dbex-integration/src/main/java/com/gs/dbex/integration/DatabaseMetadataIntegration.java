@@ -3,6 +3,9 @@
  */
 package com.gs.dbex.integration;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.model.cfg.ConnectionProperties;
@@ -41,5 +44,15 @@ public interface DatabaseMetadataIntegration {
 	 * @throws DbexException 
 	 */
 	public Table readTable(ConnectionProperties connectionProperties, String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException;
+
+	/**
+	 * 
+	 * @param connection
+	 * @param schemaName
+	 * @param tableName
+	 * @return
+	 * @throws DbexException
+	 */
+	public ResultSet getAllConstraints(Connection connection, String schemaName, String tableName) throws DbexException;
 	
 }

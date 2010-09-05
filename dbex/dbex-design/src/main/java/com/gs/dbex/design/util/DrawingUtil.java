@@ -73,15 +73,18 @@ public class DrawingUtil{
 	public static void updateTableColumnWidth(JTable jTable){
 		int colCount = jTable.getColumnModel().getColumnCount();
 		Graphics g = jTable.getGraphics();
-		if(g == null)
-			return;
+		
 		if(colCount > 0){
 			for (int i = 0; i < colCount; i++) {
 				TableColumn col = jTable.getColumnModel().getColumn(i);
 				if(col != null){
 					if(null != col.getHeaderValue()){
 						String header = col.getHeaderValue().toString();
-						col.setPreferredWidth(DrawingUtil.calculateTextWidth(g, header));
+						int width = 128;
+						if(g != null){
+							width = DrawingUtil.calculateTextWidth(g, header);
+						}
+						col.setPreferredWidth(width);
 					}
 					
 				}

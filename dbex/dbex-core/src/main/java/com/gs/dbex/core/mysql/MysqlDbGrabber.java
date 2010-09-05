@@ -275,6 +275,20 @@ public class MysqlDbGrabber implements CatalogGrabber {
 				else if("MUL".equalsIgnoreCase(columnKey))
 					column.setForeignKey(true);
 				
+				String scaleStr = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.COLUMNS.NUMERIC_SCALE);
+				try{
+					column.setSize(Integer.valueOf(scaleStr));
+				} catch (Exception e) {
+					// do nothing
+				}
+				
+				String preciStr = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.COLUMNS.NUMERIC_PRECISION);
+				try{
+					column.setPrecision(Integer.valueOf(preciStr));
+				} catch (Exception e) {
+					// do nothing
+				}
+				
 				columns.add(column);
 			}
 		}

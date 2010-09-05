@@ -75,6 +75,7 @@ public class ResultSetTableModelFactory {
 		return new ResultSetTableModel(null);
 	}
 
+
 	
 	public ResultSetTableModel getResultSetTableModel(ResultSet resultSet, int rowCount) throws SQLException{
 		return new ResultSetTableModel(resultSet, rowCount);
@@ -94,5 +95,9 @@ public class ResultSetTableModelFactory {
 			int rowNumFrom, int rowNumTo) {
 		
 		return null;
+	}
+
+	public TableModel getResultSetTableModel(ResultSet resultSet) throws SQLException {
+		return new ResultSetTableModel(resultSet);
 	}
 }

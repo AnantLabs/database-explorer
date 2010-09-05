@@ -1,5 +1,7 @@
 package com.gs.dbex.service.impl;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.util.List;
 
 import com.gs.dbex.common.enums.DatabaseStorageTypeEnum;
@@ -119,6 +121,21 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 		return null;
 	}
 
+	@Override
+	public ResultSet getAllConstraints(ConnectionProperties connectionProperties, Connection connection,
+			String schemaName, String tableName) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		DatabaseMetadataIntegration integration = IntegrationBeanFactory.getBeanFactory()
+			.getDatabaseMetadataIntegration(
+					DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+					DatabaseStorageTypeEnum.getDatabaseStorageTypeEnum(connectionProperties.getDatabaseConfiguration().getStorageType()));
+		if(integration == null){
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		return integration.getAllConstraints(connection, schemaName, tableName);
+	}
 
 
 }

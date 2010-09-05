@@ -68,26 +68,6 @@ public class TableDataPanel extends JPanel implements ActionListener{
 	private PaginatedTablePanel paginatedTablePanel;
 	
 	private QueryExecutionService queryExecutionService = DbexServiceBeanFactory.getBeanFactory().getQueryExecutionService();
-	
-	/*public TableDataPanel(JFrame parent, String schemaName, String tableName,
-			ConnectionProperties connectionProperties) {
-		this.parentFrame = parent;
-		this.schemaName = schemaName;
-		this.tableName = tableName;
-		this.connectionProperties = connectionProperties;
-		try {
-			this.resultSetTableModelFactory = new ResultSetTableModelFactory(connectionProperties.getDataSource().getConnection());
-		} catch (SQLException e) {
-			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
-		}
-		queryString = "SELECT * FROM " + schemaName + "." + tableName.toUpperCase();
-		paginatedTablePanel = new PaginatedTablePanel(parentFrame, connectionProperties, queryString, 
-				"SELECT COUNT(*) FROM " + schemaName + "." + tableName.toUpperCase());
-		initComponent();
-		//showTableData(queryString);
-		dataToolBar.setVisible(false);
-	}*/
-
 
 	public TableDataPanel(JFrame parentFrame, Table databaseTable,
 			ConnectionProperties connectionProperties) {
@@ -95,49 +75,12 @@ public class TableDataPanel extends JPanel implements ActionListener{
 		this.schemaName = databaseTable.getSchemaName();
 		this.tableName = databaseTable.getModelName();
 		this.connectionProperties = connectionProperties;
-		
-		//prepareQuery(databaseTable);
-		//if(queryString == null)
-		
-				
 		paginatedTablePanel = new PaginatedTablePanel(parentFrame, connectionProperties, databaseTable, 
 				"SELECT COUNT(*) FROM " + schemaName + "." + tableName.toUpperCase());
 		initComponent();
-		//showTableData(queryString);
 		dataToolBar.setVisible(false);
 	}
 
-
-	private void prepareQuery(Table databaseTable) {
-		if (databaseTable.getColumnlist() == null || databaseTable.getColumnlist().size() <= 0) {
-			try {
-				databaseTable = DbexServiceBeanFactory.getBeanFactory().getDatabaseMetadataService()
-					.getTableDetails(connectionProperties, databaseTable.getSchemaName(), databaseTable.getModelName());
-			} catch (DbexException e) {
-				e.printStackTrace();
-			}
-			if (databaseTable.getColumnlist() == null || databaseTable.getColumnlist().size() <= 0) {
-				DisplayUtils.displayMessage(getParentFrame(), "Cannot Read Column details.", DisplayTypeEnum.ERROR);
-				queryString = null;
-				return;
-			} 
-		}
-		/*String s = "select " +
-				"* " +
-				"from (select " +
-				"a, b, c, rownum as limit from " +
-				"mytable where conditions order by whatiwant" +
-				") where limit&gt;x and limit &lt;y;";*/
-		/*buffer.append("SELECT ")
-			.append(databaseTable.getColumnNames(','))
-			.append(" FROM ( SELECT ")
-			.append(databaseTable.getColumnNames(',')).append(",").append(" ROWNUM AS LIMIT FROM ")
-			.append(schemaName.toUpperCase() + "." + tableName.toUpperCase())
-			.append(" ) WHERE LIMIT >= ? AND LIMIT < ?");*/
-		if(queryExecutionService != null)
-			this.queryString =  queryExecutionService.preparePaginationQuery(connectionProperties, databaseTable);
-		this.queryString = "";
-	}
 
 
 	private void showTableData(String query) {
