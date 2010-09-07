@@ -90,7 +90,7 @@ public class ApplicationEventHandler implements ActionListener,
 								ConnectionProperties properties = (ConnectionProperties)getData();
 								connected = connectionService.connectToDatabase(properties);
 							} catch (DbexException e) {
-								DisplayUtils.displayMessage(e.getExceptionMessage());
+								DisplayUtils.displayMessage(parent, e.getExceptionMessage());
 							}
 						}
 						final DatabaseExplorerFrame frame = (DatabaseExplorerFrame) parent;
