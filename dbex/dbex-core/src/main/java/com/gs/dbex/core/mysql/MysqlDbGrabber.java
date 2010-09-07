@@ -15,6 +15,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.gs.dbex.common.enums.ForeignKeyMetaDataEnum;
+import com.gs.dbex.common.enums.PKMetaDataEnum;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.core.CatalogGrabber;
 import com.gs.dbex.core.metadata.enums.MysqlMetadataConstants;
@@ -201,7 +203,7 @@ public class MysqlDbGrabber implements CatalogGrabber {
 	public Table grabTable(Connection connection, String catalogName,
 			String tableName, ReadDepthEnum readDepth) throws SQLException {
 		if(logger.isDebugEnabled()){
-			logger.debug("");
+			logger.debug("Enter:: grabTable()");
 		}
 		if(connection == null){
 			return null;
@@ -217,8 +219,23 @@ public class MysqlDbGrabber implements CatalogGrabber {
 		if(null != columns){
 			table.getColumnlist().addAll(columns);
 		}
+		
+		List<PrimaryKey> primaryKeys = grabPrimaryKeys(connection, catalogName, tableName, readDepth);
+		if(null != primaryKeys){
+			table.getPrimaryKeys().addAll(primaryKeys);
+		}
+		
+		List<ForeignKey> importedKeys = grabImportedKeys(connection, catalogName, tableName, readDepth);
+		if(null != importedKeys){
+			table.getImportedKeys().addAll(importedKeys);
+		}
+		
+		List<ForeignKey> exportedKeys = grabExportedKeys(connection, catalogName, tableName, readDepth);
+		if(null != exportedKeys){
+			table.getExportedKeys().addAll(exportedKeys);
+		}
 		if(logger.isDebugEnabled()){
-			logger.debug("");
+			logger.debug("Exit:: grabTable()");
 		}
 		return table;
 	}
@@ -319,15 +336,38 @@ public class MysqlDbGrabber implements CatalogGrabber {
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
-			logger.debug("");
+			logger.debug("Enter:: grabPrimaryKeys()");
 		}
 		if(connection == null){
 			return null;
 		}
-		if(logger.isDebugEnabled()){
-			logger.debug("");
+		List<PrimaryKey> pkList = new ArrayList<PrimaryKey>();
+		DatabaseMetaData databaseMetaData = connection.getMetaData();
+		ResultSet pkRs = databaseMetaData.getPrimaryKeys(catalogName, "", tableName);
+		while(pkRs.next()){
+			PrimaryKey pk = new PrimaryKey();
+			pk.setColumnName(pkRs.getString(PKMetaDataEnum.COLUMN_NAME.getCode()));
+			
+			if(ReadDepthEnum.DEEP.equals(readDepth)){
+				pk.setTableCat(pkRs.getString(PKMetaDataEnum.TABLE_CAT.getCode()));
+				pk.setTableSchem(pkRs.getString(PKMetaDataEnum.TABLE_SCHEM.getCode()));
+				pk.setTableName(tableName);
+				pk.setModelName(pkRs.getString(PKMetaDataEnum.PK_NAME.getCode()));
+				//pk.setDeleted(pkRs.getBoolean(PKMetaDataEnum.))
+				pk.setKeySeq(pkRs.getShort(PKMetaDataEnum.KEY_SEQ.getCode()));
+				//pk.setComments(pkRs.getString(PKMetaDataEnum.comments))
+			}
+			
+			pkList.add(pk);
 		}
-		return null;
+		if(pkRs != null){
+			pkRs.close();
+		}
+		
+		if(logger.isDebugEnabled()){
+			logger.debug("Exit:: grabPrimaryKeys()");
+		}
+		return pkList;
 	}
 
 	@Override
@@ -335,15 +375,18 @@ public class MysqlDbGrabber implements CatalogGrabber {
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
-			logger.debug("");
+			logger.debug("Enter:: grabImportedKeys()");
 		}
 		if(connection == null){
 			return null;
 		}
+		DatabaseMetaData databaseMetaData = connection.getMetaData();
+		ResultSet fkRs = databaseMetaData.getImportedKeys(catalogName, "", tableName);
+		
 		if(logger.isDebugEnabled()){
-			logger.debug("");
+			logger.debug("Exit:: grabImportedKeys()");
 		}
-		return null;
+		return readFksFromRS(fkRs, true, readDepth);
 	}
 
 	@Override
@@ -351,15 +394,47 @@ public class MysqlDbGrabber implements CatalogGrabber {
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
-			logger.debug("");
+			logger.debug("Enter:: grabExportedKeys()");
 		}
 		if(connection == null){
 			return null;
 		}
+		DatabaseMetaData databaseMetaData = connection.getMetaData();
+		ResultSet fkRs = databaseMetaData.getExportedKeys(catalogName, "", tableName);
 		if(logger.isDebugEnabled()){
-			logger.debug("");
+			logger.debug("Exit:: grabExportedKeys()");
 		}
-		return null;
+		return readFksFromRS(fkRs, false, readDepth);
 	}
 	
+	private List<ForeignKey> readFksFromRS(ResultSet fkRs, Boolean imported, ReadDepthEnum readDepth) throws SQLException{
+		List<ForeignKey> fks = new ArrayList<ForeignKey>();
+		
+		while(fkRs.next()){
+			ForeignKey fk = new ForeignKey();
+			fk.setPkColumnName(fkRs.getString(ForeignKeyMetaDataEnum.PKCOLUMN_NAME.getCode()));
+			fk.setFkColumnName(fkRs.getString(ForeignKeyMetaDataEnum.FKCOLUMN_NAME.getCode()));
+			if(ReadDepthEnum.DEEP.equals(readDepth)){
+				fk.setPkTableCat(fkRs.getString(ForeignKeyMetaDataEnum.PKTABLE_CAT.getCode()));
+				fk.setPkTableSchem(fkRs.getString(ForeignKeyMetaDataEnum.PKTABLE_SCHEM.getCode()));
+				fk.setPkTableName(fkRs.getString(ForeignKeyMetaDataEnum.PKTABLE_NAME.getCode()));
+				fk.setFkTableCat(fkRs.getString(ForeignKeyMetaDataEnum.FKTABLE_CAT.getCode()));
+				fk.setFkTableSchem(fkRs.getString(ForeignKeyMetaDataEnum.FKTABLE_SCHEM.getCode()));
+				fk.setFkTableName(fkRs.getString(ForeignKeyMetaDataEnum.FKTABLE_NAME.getCode()));
+				fk.setKeySeq(fkRs.getShort(ForeignKeyMetaDataEnum.KEY_SEQ.getCode()));
+				fk.setUpdateRule(fkRs.getShort(ForeignKeyMetaDataEnum.UPDATE_RULE.getCode()));
+				fk.setDeleteRule(fkRs.getShort(ForeignKeyMetaDataEnum.DELETE_RULE.getCode()));
+				fk.setPkName(fkRs.getString(ForeignKeyMetaDataEnum.PK_NAME.getCode()));
+				fk.setFkName(fkRs.getString(ForeignKeyMetaDataEnum.FK_NAME.getCode()));
+				fk.setDeferrability(fkRs.getShort(ForeignKeyMetaDataEnum.DEFERRABILITY.getCode()));
+			}
+			fk.setImportedKey(imported);
+			fks.add(fk);
+		}
+		if(fkRs != null){
+			fkRs.close();
+		}
+		return fks;
+	}
+
 }
