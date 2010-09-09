@@ -7,7 +7,11 @@ package com.gs.mockup.dbex;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JWindow;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -16,6 +20,7 @@ import javax.swing.JWindow;
 public class DbexSplashWindow extends JWindow{
 
     public static void main(String[] a){
+        
         DbexSplashWindow window = new DbexSplashWindow();
         window.setVisible(true);
     }
@@ -27,7 +32,7 @@ public class DbexSplashWindow extends JWindow{
     }
 
     private void initComponents(){
-        setMinimumSize(new Dimension(488, 282));
+        setMinimumSize(new Dimension(402, 275));
         setPreferredSize(getMinimumSize());
 
         getContentPane().setLayout(new BorderLayout());
