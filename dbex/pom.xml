@@ -106,14 +106,16 @@
 
 	<properties>
 		<project.title>DBEX</project.title>
-		<project.home>D:/SVN_HOME/MyProjects/database-explorer/trunk</project.home>
+		<project.home>D:/SVN_HOME/database-explorer/trunk</project.home>
 		<release.version>1.0-BETA-1</release.version>
-		<setup.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup</setup.dir>
-		<libs.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup/libs</libs.dir>
-		<release.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/release</release.dir>
+		<setup.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup</setup.dir>
+		<libs.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup/libs</libs.dir>
+		<release.dir>D:/SVN_HOME/database-explorer/trunk/release</release.dir>
 		<jdk.version>1.6</jdk.version>
 		<maven.test.skip>true</maven.test.skip>
 		<maven.jar.sign.skip>true</maven.jar.sign.skip>
+		<staging.dir>D:/SVN_HOME/database-explorer/trunk/release/staging</staging.dir>
+		<izpack-standalone.version>4.3.1</izpack-standalone.version>
 	</properties>
 
 </project>
