@@ -61,7 +61,19 @@
 		</dependency>
 	</dependencies>
 
+
+
+
 	<build>
+
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>src/main/resources/izpack/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -192,6 +204,12 @@
 				</executions>
 			</plugin>
 
+			<!--<plugin> <artifactId>maven-resources-plugin</artifactId> <version>2.4.2</version> 
+				<executions> <execution> <id>copy-resources</id> <phase>validate</phase> 
+				<goals> <goal>copy-resources</goal> </goals> <configuration> <encoding>UTF-8</encoding> 
+				<outputDirectory>${staging.dir}</outputDirectory> <resources> <resource> 
+				<directory>src/main/resources/izpack</directory> </resource> </resources> 
+				</configuration> </execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 </project>
