@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<shortcuts>
+    <skipIfNotSupported/>
+    <programGroup defaultName="DbEx" location="applications"/>
+    <shortcut KdeUsername="root" applications="no" desktop="yes"
+        encoding="UTF-8" iconFile="$INSTALL_PATH/docs/images/dbex.ico"
+        iconIndex="0" initialState="normal" name="Database Explorer"
+        programGroup="no" startMenu="yes" startup="no"
+        target="$INSTALL_PATH/" type="Application"/>
+</shortcuts>

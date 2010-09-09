@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
+<installation version="1.0">
+    <info>
+        <appname>Database Explorer</appname>
+        <appversion>1.0-beta-1</appversion>
+        <authors>
+            <author email="sabuj.das@gmail.com" name="Sabuj Das"/>
+        </authors>
+        <url>http://code.google.com/p/database-explorer/</url>
+        <uninstaller name="DbEx-Uninstaller.jar" write="yes"/>
+        <javaversion>1.6</javaversion>
+        <requiresjdk>yes</requiresjdk>
+        <writeinstallationinformation>yes</writeinstallationinformation>
+        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
+    </info>
+    <guiprefs height="480" resizable="no" width="640">
+        <laf name="substance">
+            <param name="variant" value="business-blue"/>
+            <os family="windows"/>
+            <os family="unix"/>
+            <os family="mac"/>
+        </laf>
+        <modifier key="useFlags" value="yes"/>
+        <modifier key="langDisplayType" value="default"/>
+    </guiprefs>
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+    <resources>
+        <res id="HTMLHelloPanel.info" parse="yes" src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs\dbex-info.html"/>
+        <res id="shortcutSpec.xml" src="Install-dbex_shortcutSpec.xml"/>
+        <res id="Unix_shortcutSpec.xml" src="Install-dbex_Unix_shortcutSpec.xml"/>
+        <res id="installer.langsel.img" src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs\images\dbex.png"/>
+    </resources>
+    <panels>
+        <panel classname="HTMLHelloPanel"/>
+        <panel classname="PacksPanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+    <variables>
+        <variable name="DesktopShortcutCheckboxEnabled" value="true"/>
+    </variables>
+    <packs>
+        <pack name="Core" preselected="yes" required="yes">
+            <description/>
+            <file override="update"
+                src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\DBEX_1.0-BETA-1" targetdir="$INSTALL_PATH/"/>
+            <executable
+                class="com.gs.dbex.launcher.DatabaseExplorerLauncher"
+                failure="abort" keep="false" stage="never"
+                targetfile="$INSTALL_PATH/DBEX_1.0-BETA-1/dbex-launcher-1.0-BETA-1.jar" type="jar"/>
+        </pack>
+        <pack name="DOCS" preselected="yes" required="yes">
+            <description/>
+            <file override="update"
+                src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs" targetdir="$INSTALL_PATH/"/>
+        </pack>
+    </packs>
+    <native name="ShellLink.dll" type="izpack"/>
+    <native name="ShellLink_x64.dll" type="izpack"/>
+</installation>

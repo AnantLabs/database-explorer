@@ -1,93 +1,64 @@
-<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
-
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>
 <installation version="1.0">
-
-	<!-- The info section. The meaning of the tags should be natural ... -->
-	<info>
-		<appname>@{project.title}</appname>
-		<appversion>@{release.version}</appversion>
-		<uninstaller name="remove.task" path="${INSTALL_PATH}/Uninstall"
-			write="yes" />
-		<javaversion>1.6</javaversion>
-		<requiresjdk>yes</requiresjdk>
-		<authors>
-			<author name="Sabuj Das" email="sabuj.das@gmail.com" />
-		</authors>
-		<url>http://code.google.com/p/database-explorer/</url>
-	</info>
-
-	<!-- The gui preferences indication. Sets the installer window to 640x480. 
-		It will not be able to change the size. -->
-	<guiprefs width="600" height="480" resizable="no">
-		<laf name="metouia">
-			<os family="unix" />
-		</laf>
-		<laf name="substance">
-			<os family="windows" />
-			<param name="variant" value="business-blue" />
-		</laf>
-		<modifier key="useHeadingPanel" value="yes" />
-		<modifier key="useHeadingForSummary" value="yes" />
-		<modifier key="headingImageOnLeft" value="yes" />
-		<modifier key="headingLineCount" value="2" />
-		<modifier key="headingFontSize" value="1.5" />
-		<modifier key="headingBackgroundColor" value="0x00ffffff" />
-		<modifier key="headingPanelCounter" value="text" />
-		<modifier key="headingPanelCounterPos" value="inHeading" />
-	</guiprefs>
-
-
-	<!-- The locale section. Asks here to include the English and French langpacks. -->
-	<locale>
-		<langpack iso3="eng" />
-	</locale>
-
-
-	<!-- The resources section. The ids must be these ones if you want to use 
-		the LicencePanel and/or the InfoPanel. -->
-	<resources>
-		<res id="LicencePanel.licence" src="Licence.txt" />
-		<res id="InfoPanel.info" src="Readme.txt" />
-	</resources>
-
-	<!-- The panels section. We indicate here which panels we want to use. The 
-		order will be respected. -->
-	<panels>
-		<panel classname="HTMLHelloPanel" />
-		<panel classname="InfoPanel" />
-		<panel classname="LicencePanel" />
-		<panel classname="TargetPanel" />
-		<panel classname="PacksPanel" />
-		<panel classname="InstallPanel" />
-		<panel classname="ShortcutPanel" />
-		<panel classname="FinishPanel" />
-	</panels>
-
-	<jar src="dependency/plexus-utils.jar" />
-
-
-	<listeners>
-		<listener installer="SummaryLoggerInstallerListener">
-			<os family="windows" />
-		</listener>
-	</listeners>
-
-
-	<!-- The packs section. We specify here our packs. -->
-	<packs>
-		<pack name="Base" required="yes">
-			<description>The base files</description>
-			<file src="Readme.txt" targetdir="$INSTALL_PATH" />
-			<file src="Licence.txt" targetdir="$INSTALL_PATH" />
-			<file src="script.bat" targetdir="$INSTALL_PATH" />
-			
-		</pack>
-		<pack name="Docs" required="no">
-			<description>The documentation</description>
-			<file src="doc" targetdir="$INSTALL_PATH" />
-			
-		</pack>
-
-	</packs>
-
+    <info>
+        <appname>Database Explorer</appname>
+        <appversion>1.0-beta-1</appversion>
+        <authors>
+            <author email="sabuj.das@gmail.com" name="Sabuj Das"/>
+        </authors>
+        <url>http://code.google.com/p/database-explorer/</url>
+        <uninstaller name="DbEx-Uninstaller.jar" write="yes"/>
+        <javaversion>1.6</javaversion>
+        <requiresjdk>yes</requiresjdk>
+        <writeinstallationinformation>yes</writeinstallationinformation>
+        <run-privileged condition="izpack.windowsinstall.vista|izpack.windowsinstall.7"/>
+    </info>
+    <guiprefs height="480" resizable="no" width="640">
+        <laf name="substance">
+            <param name="variant" value="business-blue"/>
+            <os family="windows"/>
+            <os family="unix"/>
+            <os family="mac"/>
+        </laf>
+        <modifier key="useFlags" value="yes"/>
+        <modifier key="langDisplayType" value="default"/>
+    </guiprefs>
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+    <resources>
+        <res id="HTMLHelloPanel.info" parse="yes" src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs\dbex-info.html"/>
+        <res id="shortcutSpec.xml" src="Install-dbex_shortcutSpec.xml"/>
+        <res id="Unix_shortcutSpec.xml" src="Install-dbex_Unix_shortcutSpec.xml"/>
+        <res id="installer.langsel.img" src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs\images\dbex.png"/>
+    </resources>
+    <panels>
+        <panel classname="HTMLHelloPanel"/>
+        <panel classname="PacksPanel"/>
+        <panel classname="TargetPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="ShortcutPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+    <variables>
+        <variable name="DesktopShortcutCheckboxEnabled" value="true"/>
+    </variables>
+    <packs>
+        <pack name="Core" preselected="yes" required="yes">
+            <description/>
+            <file override="update"
+                src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\DBEX_1.0-BETA-1" targetdir="$INSTALL_PATH/"/>
+            <executable
+                class="com.gs.dbex.launcher.DatabaseExplorerLauncher"
+                failure="abort" keep="false" stage="never"
+                targetfile="$INSTALL_PATH/DBEX_1.0-BETA-1/dbex-launcher-1.0-BETA-1.jar" type="jar"/>
+        </pack>
+        <pack name="DOCS" preselected="yes" required="yes">
+            <description/>
+            <file override="update"
+                src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs" targetdir="$INSTALL_PATH/"/>
+        </pack>
+    </packs>
+    <native name="ShellLink.dll" type="izpack"/>
+    <native name="ShellLink_x64.dll" type="izpack"/>
 </installation>
