@@ -6,6 +6,10 @@
 	<info>
 		<appname>@{project.title}</appname>
 		<appversion>@{release.version}</appversion>
+		<uninstaller name="remove.task" path="${INSTALL_PATH}/Uninstall"
+			write="yes" />
+		<javaversion>1.6</javaversion>
+		<requiresjdk>yes</requiresjdk>
 		<authors>
 			<author name="Sabuj Das" email="sabuj.das@gmail.com" />
 		</authors>
@@ -14,7 +18,24 @@
 
 	<!-- The gui preferences indication. Sets the installer window to 640x480. 
 		It will not be able to change the size. -->
-	<guiprefs width="640" height="480" resizable="no" />
+	<guiprefs width="600" height="480" resizable="no">
+		<laf name="metouia">
+			<os family="unix" />
+		</laf>
+		<laf name="substance">
+			<os family="windows" />
+			<param name="variant" value="business-blue" />
+		</laf>
+		<modifier key="useHeadingPanel" value="yes" />
+		<modifier key="useHeadingForSummary" value="yes" />
+		<modifier key="headingImageOnLeft" value="yes" />
+		<modifier key="headingLineCount" value="2" />
+		<modifier key="headingFontSize" value="1.5" />
+		<modifier key="headingBackgroundColor" value="0x00ffffff" />
+		<modifier key="headingPanelCounter" value="text" />
+		<modifier key="headingPanelCounterPos" value="inHeading" />
+	</guiprefs>
+
 
 	<!-- The locale section. Asks here to include the English and French langpacks. -->
 	<locale>
@@ -45,6 +66,13 @@
 	<jar src="dependency/plexus-utils.jar" />
 
 
+	<listeners>
+		<listener installer="SummaryLoggerInstallerListener">
+			<os family="windows" />
+		</listener>
+	</listeners>
+
+
 	<!-- The packs section. We specify here our packs. -->
 	<packs>
 		<pack name="Base" required="yes">
@@ -52,13 +80,12 @@
 			<file src="Readme.txt" targetdir="$INSTALL_PATH" />
 			<file src="Licence.txt" targetdir="$INSTALL_PATH" />
 			<file src="script.bat" targetdir="$INSTALL_PATH" />
-			<parsable targetfile="$INSTALL_PATH/script.bat" />
-			<!-- The file will be parsed -->
+			
 		</pack>
 		<pack name="Docs" required="no">
 			<description>The documentation</description>
 			<file src="doc" targetdir="$INSTALL_PATH" />
-			<!-- Reccursive adding -->
+			
 		</pack>
 
 	</packs>
