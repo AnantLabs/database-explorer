@@ -114,6 +114,14 @@
 										<include name="application-data/**/*.*" />
 									</fileset>
 								</copy>
+								<!-- Coping DbEx.bat -->
+								<copy todir="${release.dir}/${project.title}_${release.version}/"
+									overwrite="true" failonerror="true" includeEmptyDirs="false">
+									<fileset dir="${setup.dir}/bin">
+										<include name="*.*" />
+									</fileset>
+								</copy>
+								
 							</tasks>
 						</configuration>
 						<goals>

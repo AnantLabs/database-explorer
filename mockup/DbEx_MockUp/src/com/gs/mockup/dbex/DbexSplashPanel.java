@@ -34,19 +34,24 @@ public class DbexSplashPanel extends javax.swing.JPanel {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         splashProgressBar = new javax.swing.JProgressBar();
-        jSeparator1 = new javax.swing.JSeparator();
-        splashLogLabel = new javax.swing.JLabel();
         copyRightLabel = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153)));
-        setMinimumSize(new java.awt.Dimension(488, 282));
+        setMinimumSize(new java.awt.Dimension(402, 300));
+        setPreferredSize(new java.awt.Dimension(402, 300));
         setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/DatabaseExplorer_Txt.PNG"))); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dbex_text.PNG"))); // NOI18N
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
@@ -54,40 +59,56 @@ public class DbexSplashPanel extends javax.swing.JPanel {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/dbex_128x128.png"))); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         add(jLabel2, gridBagConstraints);
+
+        jPanel1.setBackground(new java.awt.Color(67, 109, 209));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
+
+        splashProgressBar.setBackground(new java.awt.Color(67, 109, 209));
+        splashProgressBar.setForeground(new java.awt.Color(40, 210, 43));
+        splashProgressBar.setValue(50);
+        splashProgressBar.setBorderPainted(false);
+        splashProgressBar.setDoubleBuffered(true);
+        splashProgressBar.setFocusable(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
+        jPanel1.add(splashProgressBar, gridBagConstraints);
+
+        copyRightLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        copyRightLabel.setText("Starting Database Explorer...");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        add(splashProgressBar, gridBagConstraints);
+        jPanel1.add(copyRightLabel, gridBagConstraints);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        add(jSeparator1, gridBagConstraints);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        add(jPanel1, gridBagConstraints);
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/top_image.png"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
+        add(jLabel3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        add(splashLogLabel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 4, 4, 4);
-        add(copyRightLabel, gridBagConstraints);
+        add(jSeparator1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
 
@@ -95,8 +116,9 @@ public class DbexSplashPanel extends javax.swing.JPanel {
     private javax.swing.JLabel copyRightLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel splashLogLabel;
     private javax.swing.JProgressBar splashProgressBar;
     // End of variables declaration//GEN-END:variables
 

@@ -15,6 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.gs.dbex.application.context.ApplicationCommonContext;
 import com.gs.dbex.application.frame.DatabaseExplorerFrame;
 import com.gs.dbex.common.DbexCommonContext;
+import com.gs.dbex.launcher.splash.DbexSplashWindow;
 
 /**
  * @author sabuj.das
@@ -44,6 +45,10 @@ public class DatabaseExplorerLauncher {
 				new String[] { "/context/dbex-launcher-context.xml"});
 		
 		DatabaseExplorerLauncher launcher = (DatabaseExplorerLauncher) dbexCommonContext.applicationSpringContext.getBean("databaseExplorerLauncher");
+		DbexSplashWindow splashWindow = new DbexSplashWindow(launcher);
+	}
+	
+	public void launchApplication(){
 		try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException e1) {
@@ -55,25 +60,18 @@ public class DatabaseExplorerLauncher {
         } catch (UnsupportedLookAndFeelException e1) {
             e1.printStackTrace();
         }
-        try{
-        	logger.info("Create files/folders.");
-        	createFiles();
-        }catch (Exception ex){
-        	logger.error(ex);
-        }
+        
         logger.info("Initialize Context.");
-        launcher.getApplicationDataLoader().populateInitialContext();
+        
         DatabaseExplorerFrame explorerFrame = new DatabaseExplorerFrame();
 		if(explorerFrame != null){
 			explorerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			explorerFrame.setVisible(true);
 		}
-        
+     
 	}
 	
-	
-	
-	private static void createFiles() throws Exception{
+	public void createFiles() throws Exception{
 		File profilesDir = new File(dbexCommonContext.getProfilesDirName());
 		if(!profilesDir.exists()){
 			boolean created = profilesDir.mkdir();
