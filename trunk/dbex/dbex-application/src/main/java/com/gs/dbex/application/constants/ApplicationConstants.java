@@ -77,7 +77,7 @@ public interface ApplicationConstants {
 	
 	String ORACLE_DRIVER_NAME = "oracle.jdbc.driver.OracleDriver";
 	String ORACLE_CONNECTION_URL_PATTERN = "jdbc:oracle:thin:<userName>/<password>@<hostName>:<portNumber>:<SID>";
-	String MSSQL_DRIVER_NAME = "com.microsoft.jdbc.sqlserver.SQLServerDriver ";
+	String MSSQL_DRIVER_NAME = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 	String MSSQL_CONNECTION_URL_PATTERN = "jdbc:microsoft:sqlserver://<hostName>:<portNumber>;databaseName=<databaseName>;selectMethod=<selectMethod>";
 	String MYSQL_DRIVER_NAME = "com.mysql.jdbc.Driver";
 	String MYSQL_CONNECTION_URL_PATTERN = "jdbc:mysql://<hostName>:<portNumber>/<databaseName>user=<userName>&password=<password>";

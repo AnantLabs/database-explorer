@@ -53,6 +53,15 @@
 			<scope>system</scope>
 			<systemPath>${libs.dir}/sqlserver_4.jar</systemPath>
 		</dependency>
+		
+		<dependency>
+			<groupId>sqljdbc-auth</groupId>
+			<artifactId>sqlserver-auth</artifactId>
+			<version>2.0.1803.100</version>
+			<scope>system</scope>
+			<classifier>${system.classifier}</classifier>
+			<systemPath>${libs.dir}/sqlserver-auth/${system.architecture.version}/sqljdbc_auth.dll</systemPath>
+		</dependency>
 	
 	</dependencies>
 </project>

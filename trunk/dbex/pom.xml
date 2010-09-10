@@ -116,6 +116,8 @@
 		<maven.jar.sign.skip>true</maven.jar.sign.skip>
 		<staging.dir>D:/SVN_HOME/database-explorer/trunk/release/staging</staging.dir>
 		<izpack-standalone.version>4.3.1</izpack-standalone.version>
+		<system.architecture.version>x86</system.architecture.version>
+		<system.classifier>win32</system.classifier>
 	</properties>
 
 </project>
