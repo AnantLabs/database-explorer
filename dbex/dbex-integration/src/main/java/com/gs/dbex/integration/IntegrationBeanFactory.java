@@ -17,11 +17,13 @@ public final class IntegrationBeanFactory {
 	
 	private DatabaseMetadataIntegration oracleDatabaseMetadataIntegration;
 	private DatabaseMetadataIntegration mysqlDatabaseMetadataIntegration;
+	private DatabaseMetadataIntegration sqlServerDatabaseMetadataIntegration;
 	private DatabaseMetadataIntegration catalogMetadataIntegration;
 	private DatabaseMetadataIntegration schemaMetadataIntegration;
 	private DatabaseConnectionIntegration oracleDatabaseConnectionIntegration;
 	private DatabaseConnectionIntegration mysqlDatabaseConnectionIntegration;
 	private DatabaseConnectionIntegration genericDatabaseConnectionIntegration;
+	private DatabaseConnectionIntegration sqlServerDatabaseConnectionIntegration;
 	private XmlReaderIntegration castorXmlReaderIntegration;
 	private QueryExecutionIntegration mysqlQueryExecutionIntegration;
 	
@@ -42,6 +44,8 @@ public final class IntegrationBeanFactory {
 			return getOracleDatabaseMetadataIntegration();
 		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
 			return getMysqlDatabaseMetadataIntegration();
+		} else if(DatabaseTypeEnum.MSSQL_2005.equals(databaseTypeEnum)){
+			return getSqlServerDatabaseMetadataIntegration();
 		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
 			if(DatabaseStorageTypeEnum.CATALOG_STORAGE.equals(storageTypeEnum)){
 				return getCatalogMetadataIntegration();
@@ -58,7 +62,7 @@ public final class IntegrationBeanFactory {
 		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
 			return getMysqlDatabaseConnectionIntegration();
 		} else if(DatabaseTypeEnum.MSSQL_2005.equals(databaseTypeEnum)){
-			return null;
+			return getSqlServerDatabaseConnectionIntegration();
 		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
 			return getGenericDatabaseConnectionIntegration();
 		}
@@ -175,6 +179,28 @@ public final class IntegrationBeanFactory {
 	public void setMysqlQueryExecutionIntegration(
 			QueryExecutionIntegration mysqlQueryExecutionIntegration) {
 		this.mysqlQueryExecutionIntegration = mysqlQueryExecutionIntegration;
+	}
+
+	@Deprecated
+	public DatabaseConnectionIntegration getSqlServerDatabaseConnectionIntegration() {
+		return sqlServerDatabaseConnectionIntegration;
+	}
+
+	@Deprecated
+	public void setSqlServerDatabaseConnectionIntegration(
+			DatabaseConnectionIntegration sqlServerDatabaseConnectionIntegration) {
+		this.sqlServerDatabaseConnectionIntegration = sqlServerDatabaseConnectionIntegration;
+	}
+
+	@Deprecated
+	public DatabaseMetadataIntegration getSqlServerDatabaseMetadataIntegration() {
+		return sqlServerDatabaseMetadataIntegration;
+	}
+
+	@Deprecated
+	public void setSqlServerDatabaseMetadataIntegration(
+			DatabaseMetadataIntegration sqlServerDatabaseMetadataIntegration) {
+		this.sqlServerDatabaseMetadataIntegration = sqlServerDatabaseMetadataIntegration;
 	}
 
 	

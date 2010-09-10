@@ -24,6 +24,11 @@
 		<property name="dbGrabber" ref="schemaDBGrabber"></property>
 	</bean>
 	
+	<bean id="sqlServerDatabaseMetadataIntegration"
+		class="com.gs.dbex.integration.impl.mssql.SqlServerDatabaseMetadataIntegrationImpl">
+		<property name="dbGrabber" ref="sqlServerDBGrabber"></property>
+	</bean>
+	
 	<bean id="oracleDatabaseConnectionIntegration"
 		class="com.gs.dbex.integration.impl.oracle.OracleDatabaseConnectionIntegrationImpl">
 		<property name="databaseConnectionHelper" ref="oracleDatabaseConnectionHelper"></property>
@@ -39,6 +44,11 @@
 		<property name="databaseConnectionHelper" ref="genericDatabaseConnectionHelper"></property>
 	</bean>
 	
+	<bean id="sqlServerDatabaseConnectionIntegration"
+		class="com.gs.dbex.integration.impl.mssql.SqlServerConnectionIntegrationImpl">
+		<property name="databaseConnectionHelper" ref="sqlServerDatabaseConnectionHelper"></property>
+	</bean>
+	
 	<bean id="IntegrationBeanFactory"
 		class="com.gs.dbex.integration.IntegrationBeanFactory" factory-method="getBeanFactory">
 		<property name="oracleDatabaseMetadataIntegration" ref="oracleDatabaseMetadataIntegration"></property>
@@ -48,6 +58,7 @@
 		<property name="castorXmlReaderIntegration" ref="castorXmlReaderIntegration"></property>
 		<property name="genericDatabaseConnectionIntegration" ref="genericDatabaseConnectionIntegration"></property>
 		<property name="mysqlQueryExecutionIntegration" ref="mysqlQueryExecutionIntegration"></property>
+		<property name="sqlServerDatabaseConnectionIntegration" ref="sqlServerDatabaseConnectionIntegration"></property>
 	</bean>
 	
 	<bean id="oracleDatabaseConnectionHelper"
@@ -60,6 +71,10 @@
 	
 	<bean id="genericDatabaseConnectionHelper"
 		class="com.gs.dbex.integration.helper.GenericDatabaseConnectionHelper">
+	</bean>
+	
+	<bean id="sqlServerDatabaseConnectionHelper"
+		class="com.gs.dbex.integration.helper.mssql.SqlServerDatabaseConnectionHelper">
 	</bean>
 	
 	<bean id="catalogDBGrabber"
@@ -77,6 +92,11 @@
 	<bean id="mysqlDBGrabber"
 		class="com.gs.dbex.core.mysql.MysqlDbGrabber">
 	</bean>
+	
+	<bean id="sqlServerDBGrabber"
+		class="com.gs.dbex.core.mssql.SqlServerDbGrabber">
+	</bean>
+	
 	
 	<bean id="castorXmlReaderIntegration"
 		class="com.gs.dbex.integration.impl.castor.CastorXmlReaderIntegration">

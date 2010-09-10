@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gs.dbex.integration.helper.mysql;
+package com.gs.dbex.integration.helper.mssql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,49 +14,53 @@ import org.apache.log4j.Logger;
 import com.gs.dbex.integration.helper.DatabaseConnectionHelper;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.utils.text.StringUtil;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 
 /**
- * @author sabuj.das
+ * @author Sabuj Das
  *
  */
-public class MysqlDatabaseConnectionHelper extends DatabaseConnectionHelper {
+public class SqlServerDatabaseConnectionHelper extends DatabaseConnectionHelper {
 
-private static final Logger logger = Logger.getLogger(MysqlDatabaseConnectionHelper.class);
+	private static final Logger logger = Logger.getLogger(SqlServerDatabaseConnectionHelper.class);
 	
-	@Override
-	public DataSource createDataSource(ConnectionProperties connectionProperties)
-			throws ClassNotFoundException, SQLException {
-		if(logger.isDebugEnabled()){
-			logger.debug("ENTER ::- createDataSource()");
-		}
-		MysqlDataSource ds = new MysqlDataSource();
-		ds.setServerName(connectionProperties.getDatabaseConfiguration().getHostName());
-		ds.setPortNumber(connectionProperties.getDatabaseConfiguration().getPortNumber());
-		ds.setDatabaseName(connectionProperties.getDatabaseConfiguration().getSidServiceName()); 
-		ds.setUser(connectionProperties.getDatabaseConfiguration().getUserName());
-		ds.setPassword(connectionProperties.getDatabaseConfiguration().getPassword());
-		if(logger.isDebugEnabled()){
-			logger.debug("EXIT ::- createDataSource()");
-		}
-		return ds;
-	}
-
+	public static final String PROP_USER_NAME = "user";
+	public static final String PROP_PASSWORD = "password";
+	public static final String PROP_INTEGRATED_SECURITY = "integratedSecurity";
+	public static final String PROP_DATABASE_NAME = "databaseName";
+	public static final String PROP_APPLICATION_NAME = "applicationName";
+	public static final String PROP_INSTANCE_NAME = "instanceName";
+	
+	public static final char PROPERTY_SEPARATOR = ';';
+	
 	@Override
 	public String formConnectionURL(ConnectionProperties connectionProperties) {
 		if(logger.isDebugEnabled()){
 			logger.debug("ENTER ::- formConnectionURL()");
 		}
-		StringBuffer url = new StringBuffer("jdbc:mysql://");
+		StringBuffer url = new StringBuffer("jdbc:sqlserver://");
 		if (null != connectionProperties.getDatabaseConfiguration().getHostName()
 				&& !connectionProperties.getDatabaseConfiguration().getHostName().equals("")) {
 			url.append(connectionProperties.getDatabaseConfiguration().getHostName()).append(":");
 		}
 		
-		url.append(connectionProperties.getDatabaseConfiguration().getPortNumber()).append("/");
+		url.append(connectionProperties.getDatabaseConfiguration().getPortNumber()).append(PROPERTY_SEPARATOR);
 		
 		if(StringUtil.hasValidContent(connectionProperties.getDatabaseConfiguration().getSchemaName())){
-			url.append(connectionProperties.getDatabaseConfiguration().getSchemaName());
+			url.append(PROP_DATABASE_NAME).append("=");
+			url.append(connectionProperties.getDatabaseConfiguration().getSchemaName()).append(PROPERTY_SEPARATOR);
+		}
+		if(StringUtil.hasValidContent(connectionProperties.getDatabaseConfiguration().getSchemaName())){
+			url.append(PROP_USER_NAME).append("=");
+			url.append(connectionProperties.getDatabaseConfiguration().getUserName()).append(PROPERTY_SEPARATOR);
+		}
+		if(StringUtil.hasValidContent(connectionProperties.getDatabaseConfiguration().getSchemaName())){
+			url.append(PROP_PASSWORD).append("=");
+			url.append(connectionProperties.getDatabaseConfiguration().getPassword()).append(PROPERTY_SEPARATOR);
+		}
+		if(StringUtil.hasValidContent(connectionProperties.getDatabaseConfiguration().getSchemaName())){
+			url.append(PROP_INTEGRATED_SECURITY).append("=");
+			url.append(false);
 		}
 		logger.info("Connection URL : [ " + url.toString() + " ]");
 		if(logger.isDebugEnabled()){
@@ -65,6 +69,7 @@ private static final Logger logger = Logger.getLogger(MysqlDatabaseConnectionHel
 		return url.toString();
 	}
 
+	
 	@Override
 	public Connection getConnection(ConnectionProperties connectionProperties)
 			throws ClassNotFoundException, SQLException {
@@ -86,6 +91,26 @@ private static final Logger logger = Logger.getLogger(MysqlDatabaseConnectionHel
 		return connection;
 	}
 
+	
+	@Override
+	public DataSource createDataSource(ConnectionProperties connectionProperties)
+			throws ClassNotFoundException, SQLException {
+		if(logger.isDebugEnabled()){
+			logger.debug("ENTER ::- createDataSource()");
+		}
+		SQLServerDataSource ds = new SQLServerDataSource();
+		ds.setServerName(connectionProperties.getDatabaseConfiguration().getHostName());
+		ds.setPortNumber(connectionProperties.getDatabaseConfiguration().getPortNumber());
+		ds.setDatabaseName(connectionProperties.getDatabaseConfiguration().getSidServiceName()); 
+		ds.setUser(connectionProperties.getDatabaseConfiguration().getUserName());
+		ds.setPassword(connectionProperties.getDatabaseConfiguration().getPassword());
+		if(logger.isDebugEnabled()){
+			logger.debug("EXIT ::- createDataSource()");
+		}
+		return ds;
+	}
+
+	
 	@Override
 	public boolean testConnection(ConnectionProperties connectionProperties)
 			throws ClassNotFoundException, SQLException {
@@ -121,5 +146,5 @@ private static final Logger logger = Logger.getLogger(MysqlDatabaseConnectionHel
 		}
 		return connected;
 	}
-	
+
 }

@@ -42,7 +42,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	@Override
 	public Database grabDatabaseByCatalog(Connection connection,
 			String databaseName, ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

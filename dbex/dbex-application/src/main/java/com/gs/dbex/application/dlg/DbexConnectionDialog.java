@@ -157,8 +157,9 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
     public int getIndexOf(String[] array, String value){
     	if(array == null || !StringUtil.hasValidContent(value))
     		return 0;
+    	DatabaseTypeEnum databaseTypeEnum = DatabaseTypeEnum.getDatabaseTypeEnum(value);
     	for (int i = 0; i < array.length; i++) {
-			if(value.equalsIgnoreCase(array[i])){
+			if(databaseTypeEnum.getDescription().equalsIgnoreCase(array[i])){
 				return i;
 			}
 		}
@@ -1233,7 +1234,7 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 					: dbexCommonContext.getDefaultHostName());
 			int index = getIndexOf(definedDbTypes, StringUtil.hasValidContent(p
 					.getDatabaseType()) ? p.getDatabaseType()
-					: DatabaseTypeEnum.OTHER.getDescription());
+					: DatabaseTypeEnum.OTHER.getCode());
 			dbTypeComboBox.setSelectedIndex(index);
 			DatabaseTypeEnum databaseTypeEnum = DatabaseTypeEnum.getDatabaseTypeEnumByName(p.getDatabaseType());
 			if (null != p.getDatabaseConfiguration()) {
@@ -1274,9 +1275,11 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 						catalogRadioButton.setSelected(false);
 					}
 				}
+				schemaNameTextField.setText(p.getDatabaseConfiguration().getSchemaName());
 				sidTextField.setText(StringUtil.hasValidContent(p
 						.getDatabaseConfiguration().getSidServiceName()) ? p
 						.getDatabaseConfiguration().getSidServiceName() : "");
+				
 			}
 
 		}
