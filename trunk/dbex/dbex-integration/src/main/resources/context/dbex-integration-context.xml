@@ -26,7 +26,7 @@
 	
 	<bean id="sqlServerDatabaseMetadataIntegration"
 		class="com.gs.dbex.integration.impl.mssql.SqlServerDatabaseMetadataIntegrationImpl">
-		<property name="dbGrabber" ref="catalogDBGrabber"></property>
+		<property name="dbGrabber" ref="sqlServerDBGrabber"></property>
 	</bean>
 	
 	<bean id="oracleDatabaseConnectionIntegration"
