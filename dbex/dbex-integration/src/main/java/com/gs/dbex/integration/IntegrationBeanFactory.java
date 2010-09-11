@@ -26,6 +26,7 @@ public final class IntegrationBeanFactory {
 	private DatabaseConnectionIntegration sqlServerDatabaseConnectionIntegration;
 	private XmlReaderIntegration castorXmlReaderIntegration;
 	private QueryExecutionIntegration mysqlQueryExecutionIntegration;
+	private QueryExecutionIntegration sqlServerQueryExecutionIntegration;
 	
 	private IntegrationBeanFactory() {
 		
@@ -76,6 +77,8 @@ public final class IntegrationBeanFactory {
 			
 		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
 			return getMysqlQueryExecutionIntegration();
+		}else if(DatabaseTypeEnum.MSSQL_2005.equals(databaseTypeEnum)){
+			return getSqlServerQueryExecutionIntegration();
 		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
 			
 		}
@@ -201,6 +204,17 @@ public final class IntegrationBeanFactory {
 	public void setSqlServerDatabaseMetadataIntegration(
 			DatabaseMetadataIntegration sqlServerDatabaseMetadataIntegration) {
 		this.sqlServerDatabaseMetadataIntegration = sqlServerDatabaseMetadataIntegration;
+	}
+
+	@Deprecated
+	public QueryExecutionIntegration getSqlServerQueryExecutionIntegration() {
+		return sqlServerQueryExecutionIntegration;
+	}
+
+	@Deprecated
+	public void setSqlServerQueryExecutionIntegration(
+			QueryExecutionIntegration sqlServerQueryExecutionIntegration) {
+		this.sqlServerQueryExecutionIntegration = sqlServerQueryExecutionIntegration;
 	}
 
 	

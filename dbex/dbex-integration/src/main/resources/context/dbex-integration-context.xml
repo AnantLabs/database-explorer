@@ -60,6 +60,7 @@
 		<property name="mysqlQueryExecutionIntegration" ref="mysqlQueryExecutionIntegration"></property>
 		<property name="sqlServerDatabaseConnectionIntegration" ref="sqlServerDatabaseConnectionIntegration"></property>
 		<property name="sqlServerDatabaseMetadataIntegration" ref="sqlServerDatabaseMetadataIntegration"></property>
+		<property name="sqlServerQueryExecutionIntegration" ref="sqlServerQueryExecutionIntegration"></property>
 	</bean>
 	
 	<bean id="oracleDatabaseConnectionHelper"
@@ -113,6 +114,10 @@
 	
 	<bean id="mysqlQueryExecutionIntegration"
 		class="com.gs.dbex.integration.impl.mysql.MySqlQueryExecutionIntegration">
+	</bean>
+	
+	<bean id="sqlServerQueryExecutionIntegration"
+		class="com.gs.dbex.integration.impl.mssql.SqlServerQueryExecutionIntegration">
 	</bean>
 	
 </beans>
