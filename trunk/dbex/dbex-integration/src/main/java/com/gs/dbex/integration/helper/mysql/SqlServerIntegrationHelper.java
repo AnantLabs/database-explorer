@@ -29,22 +29,24 @@ public final class SqlServerIntegrationHelper {
 			logger.debug("Enter:: preparePaginationQuery()");
 		}
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT * FROM ( SELECT TOP ? * ")
+		buffer.append("SELECT * FROM ( SELECT TOP 75 * ")
 				.append("FROM ")
 				.append("dbo.[" + table.getModelName().toUpperCase())
 				.append("]) AS X ")
 				.append("EXCEPT ")
 				.append("SELECT * FROM ( ")
-				.append("SELECT TOP ? * ")
+				.append("SELECT TOP 30 * ")
 				.append("FROM ")
 				.append("dbo.[" + table.getModelName().toUpperCase())
 				.append("]) AS Y ");
+		//String s = "SELECT * FROM (SELECT TOP ? * FROM (SELECT TOP ? * from dbo.[" + table.getModelName().toUpperCase() + "] X) AS inner_tbl) AS outer_tbl";
 		if (logger.isDebugEnabled()) {
 			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
 			logger.debug("Exit:: preparePaginationQuery()");
 		}
 		//return "SELECT * FROM ( SELECT TOP 30 * FROM  dbo.[" + table.getModelName().toUpperCase()+") AS X ";
 		return buffer.toString();
+		//return s;
 	}
 
 	public String prepareTotalRecordsSQL(Table databaseTable) {
@@ -58,6 +60,23 @@ public final class SqlServerIntegrationHelper {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
 			logger.debug("Exit:: prepareTotalRecordsSQL()");
+		}
+		return buffer.toString();
+	}
+
+	public String preparePaginationQuery(Table table, int rowFrom, int rowTo) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Enter:: preparePaginationQuery()");
+		}
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT * FROM ( SELECT TOP ").append(rowTo).append(" * ").append("FROM ")
+				.append("dbo.[" + table.getModelName().toUpperCase()).append("]) AS X ")
+			.append("EXCEPT ")
+				.append("SELECT * FROM ( SELECT TOP ").append(rowFrom).append(" * ").append("FROM ")
+				.append("dbo.[" + table.getModelName().toUpperCase()).append("]) AS Y ");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
+			logger.debug("Exit:: preparePaginationQuery()");
 		}
 		return buffer.toString();
 	}
