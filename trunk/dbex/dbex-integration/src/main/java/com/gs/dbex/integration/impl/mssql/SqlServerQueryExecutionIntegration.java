@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
@@ -74,8 +73,6 @@ public class SqlServerQueryExecutionIntegration implements
 			connection.setCatalog(table.getSchemaName());
 			SQLServerPreparedStatement preparedStatement = (SQLServerPreparedStatement) connection.prepareStatement(
 					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			//preparedStatement.setInt(2, rowFrom);
-			//preparedStatement.setInt(1, rowTo);
 			if(logger.isDebugEnabled()){
 				logger.debug("Executing SQL: [ " + query + " ] start:=" + rowFrom + " to:=" + rowTo);
 			}
