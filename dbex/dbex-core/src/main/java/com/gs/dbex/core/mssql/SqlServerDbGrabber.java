@@ -18,7 +18,9 @@ import org.apache.log4j.Logger;
 import com.gs.dbex.common.enums.ForeignKeyMetaDataEnum;
 import com.gs.dbex.common.enums.PKMetaDataEnum;
 import com.gs.dbex.common.enums.ReadDepthEnum;
+import com.gs.dbex.common.enums.TableMetaDataEnum;
 import com.gs.dbex.core.CatalogGrabber;
+import com.gs.dbex.core.metadata.enums.CatalogMetadataEnum;
 import com.gs.dbex.core.metadata.enums.SqlServerMetadataConstants;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.db.Column;
@@ -131,15 +133,16 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 			return null;
 		List<Table> tables = new ArrayList<Table>();
 		List<String> tableNames = new ArrayList<String>();
+		connection.setCatalog(schemaName);
 		PreparedStatement statement = (PreparedStatement) connection.prepareStatement(SqlServerMetaQueryConstants.GET_ALL_TABLE_NAMES_BY_SCHEMA_SQL);
 		statement.setString(1, schemaName);
 		if(logger.isDebugEnabled()){
 			//logger.debug("Executing SQL: [ " + statement.getPreparedSql() + " ]");
 		}
-		ResultSet resultSet = statement.executeQuery();
+		ResultSet resultSet = statement.executeQuery();//metaData.getTables(schemaName, "dbo", "%", new String[] {"TABLE"});
 		if(null != resultSet){
 			while(resultSet.next()){
-				String tableName = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_NAME);
+				String tableName = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_NAME);//TableMetaDataEnum.TABLE_NAME.getCode());
 				if(logger.isDebugEnabled()){
 					logger.debug("SCHEMA_NAME found: " + tableName);
 				}
@@ -173,14 +176,12 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 			return null;
 		}
 		Set<String> schemaNames = new HashSet<String>();
-		PreparedStatement statement = (PreparedStatement) connection.prepareStatement(SqlServerMetaQueryConstants.GET_ALL_SCHEMA_NAMES_SQL);
-		if(logger.isDebugEnabled()){
-			//logger.debug("Executing SQL: [ " + statement.getPreparedSql() + " ]");
-		}
-		ResultSet resultSet = statement.executeQuery();
+		DatabaseMetaData metaData = connection.getMetaData();
+		
+		ResultSet resultSet = metaData.getCatalogs();
 		if(null != resultSet){
 			while(resultSet.next()){
-				String schemaName = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.SCHEMATA.CATALOG_NAME);
+				String schemaName = resultSet.getString(CatalogMetadataEnum.TABLE_CAT.getCode());
 				if(logger.isDebugEnabled()){
 					logger.debug("SCHEMA_NAME found: " + schemaName);
 				}
@@ -191,9 +192,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 		JdbcUtil.close(resultSet, false);
 		if(logger.isDebugEnabled()){
 			logger.debug("Total SCHEMA_NAME(s) found: " + schemaNames.size());
-		}
-		if(logger.isDebugEnabled()){
-			logger.debug("");
+			logger.debug("Exit:: getAvailableCatalogNames()");
 		}
 		return schemaNames;
 	}
@@ -251,12 +250,15 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 		if(null == table)
 			return null;
 		List<Column> columns = new ArrayList<Column>();
-		PreparedStatement statement = (PreparedStatement) connection.prepareStatement(SqlServerMetaQueryConstants.GET_ALL_COLUMNS_FOR_TABLE_QUERY);
+		connection.setCatalog(table.getSchemaName());
+		PreparedStatement statement = connection.prepareStatement(SqlServerMetaQueryConstants.GET_ALL_COLUMNS_FOR_TABLE_QUERY);
 		statement.setString(1, table.getSchemaName());
 		statement.setString(2, table.getModelName());
 		if(logger.isDebugEnabled()){
 			//logger.debug("Executing SQL: [ " + statement.getPreparedSql() + " ]");
 		}
+		DatabaseMetaData metaData = connection.getMetaData();
+		
 		ResultSet resultSet = statement.executeQuery();
 		if(null != resultSet){
 			while(resultSet.next()){
@@ -270,10 +272,26 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 				int columnID = resultSet.getInt(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.ORDINAL_POSITION);
 				column.setColumnID(columnID);
 				
-				String comments = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.COLUMN_COMMENT);
-				column.setComments(comments);
+				String typeName = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.DATA_TYPE);
+				Object charMaxLengthObj = resultSet.getObject(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.CHARACTER_MAXIMUM_LENGTH);
+				Object dateTimePrecisionObj = resultSet.getObject(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.DATETIME_PRECISION);
+				Object precisionObj = resultSet.getObject(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.NUMERIC_PRECISION);
+				Object scaleObj = resultSet.getObject(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.NUMERIC_SCALE);
 				
-				String typeName = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.COLUMN_TYPE);
+				if(null != charMaxLengthObj){
+					typeName += "(" + charMaxLengthObj.toString() + ")";
+				} else if(null != dateTimePrecisionObj){
+					typeName += "(" + dateTimePrecisionObj.toString() + ")";
+				} else if(null != precisionObj || null != scaleObj){
+					column.setPrecision(Integer.valueOf(precisionObj.toString()));
+					if(scaleObj == null)
+						typeName += "(" + precisionObj.toString() + ")";
+					else{
+						typeName += "(" + precisionObj.toString() + ", " + scaleObj.toString() + ")";
+						column.setSize(Integer.valueOf(scaleObj.toString()));
+					}
+				}  
+				
 				column.setTypeName(typeName);
 				
 				Object defaultValue = resultSet.getObject(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.COLUMN_DEFAULT);
@@ -284,12 +302,6 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 				if("YES".equalsIgnoreCase(isNull))
 					nullable = Boolean.TRUE;
 				column.setNullable(nullable);
-				
-				String columnKey = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.COLUMN_KEY);
-				if("PRI".equalsIgnoreCase(columnKey))
-					column.setPrimaryKey(true);
-				else if("MUL".equalsIgnoreCase(columnKey))
-					column.setForeignKey(true);
 				
 				String scaleStr = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.NUMERIC_SCALE);
 				try{

@@ -106,14 +106,11 @@ public final class SqlServerMetadataConstants {
 			public static final String CHARACTER_MAXIMUM_LENGTH = "CHARACTER_MAXIMUM_LENGTH";
 			public static final String CHARACTER_OCTET_LENGTH = "CHARACTER_OCTET_LENGTH";
 			public static final String NUMERIC_PRECISION = "NUMERIC_PRECISION";
+			public static final String NUMERIC_PRECISION_RADIX = "NUMERIC_PRECISION_RADIX";
 			public static final String NUMERIC_SCALE = "NUMERIC_SCALE";
+			public static final String DATETIME_PRECISION = "DATETIME_PRECISION";
 			public static final String CHARACTER_SET_NAME = "CHARACTER_SET_NAME";
 			public static final String COLLATION_NAME = "COLLATION_NAME";
-			public static final String COLUMN_TYPE = "COLUMN_TYPE";
-			public static final String COLUMN_KEY = "COLUMN_KEY";
-			public static final String EXTRA = "EXTRA";
-			public static final String PRIVILEGES = "PRIVILEGES";
-			public static final String COLUMN_COMMENT = "COLUMN_COMMENT";
 		}
 
 		/**
@@ -298,23 +295,6 @@ public final class SqlServerMetadataConstants {
 			public static final String TABLE_SCHEMA = "TABLE_SCHEMA";
 			public static final String TABLE_NAME = "TABLE_NAME";
 			public static final String TABLE_TYPE = "TABLE_TYPE";
-			public static final String ENGINE = "ENGINE";
-			public static final String VERSION = "VERSION";
-			public static final String ROW_FORMAT = "ROW_FORMAT";
-			public static final String TABLE_ROWS = "TABLE_ROWS";
-			public static final String AVG_ROW_LENGTH = "AVG_ROW_LENGTH";
-			public static final String DATA_LENGTH = "DATA_LENGTH";
-			public static final String MAX_DATA_LENGTH = "MAX_DATA_LENGTH";
-			public static final String INDEX_LENGTH = "INDEX_LENGTH";
-			public static final String DATA_FREE = "DATA_FREE";
-			public static final String AUTO_INCREMENT = "AUTO_INCREMENT";
-			public static final String CREATE_TIME = "CREATE_TIME";
-			public static final String UPDATE_TIME = "UPDATE_TIME";
-			public static final String CHECK_TIME = "CHECK_TIME";
-			public static final String TABLE_COLLATION = "TABLE_COLLATION";
-			public static final String CHECKSUM = "CHECKSUM";
-			public static final String CREATE_OPTIONS = "CREATE_OPTIONS";
-			public static final String TABLE_COMMENT = "TABLE_COMMENT";
 		}
 
 		/**
@@ -372,7 +352,6 @@ public final class SqlServerMetadataConstants {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(INFORMATION_SCHEMA.TABLES.AUTO_INCREMENT);
 	}
 
 }
