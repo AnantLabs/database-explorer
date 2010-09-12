@@ -66,7 +66,7 @@ public class SqlServerQueryExecutionIntegration implements
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
 		
-		String query = integrationHelper.preparePaginationQuery(table);
+		String query = integrationHelper.preparePaginationQuery(table, rowFrom, rowTo);
 		if(!StringUtil.hasValidContent(query))
 			return null;
 		ResultSet resultSet = null;
@@ -74,8 +74,8 @@ public class SqlServerQueryExecutionIntegration implements
 			connection.setCatalog(table.getSchemaName());
 			SQLServerPreparedStatement preparedStatement = (SQLServerPreparedStatement) connection.prepareStatement(
 					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-			preparedStatement.setInt(2, rowFrom);
-			preparedStatement.setInt(1, rowTo);
+			//preparedStatement.setInt(2, rowFrom);
+			//preparedStatement.setInt(1, rowTo);
 			if(logger.isDebugEnabled()){
 				logger.debug("Executing SQL: [ " + query + " ] start:=" + rowFrom + " to:=" + rowTo);
 			}
