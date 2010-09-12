@@ -153,7 +153,7 @@ public class Column extends BaseDbModel implements Serializable,
 
 	@Override
 	public String toString() {
-		return getModelName() + " [ " + typeName + ", (" + size + ") "
+		return getModelName() + " [ " + typeName + ", " + ((null != size) ? "(" + size + ") " : "")
 				+ ((nullable) ? "NULL" : "NOTNULL") + " ]";
 	}
 
