@@ -30,4 +30,6 @@ public interface QueryExecutionService {
 	public ResultSet getLimitedResultset(ConnectionProperties connectionProperties, Connection connection, Table table,
 			int rowFrom, int rowTo) throws DbexException;
 
+	public int getTotalRecords(ConnectionProperties connectionProperties, Table databaseTable) throws DbexException;
+
 }

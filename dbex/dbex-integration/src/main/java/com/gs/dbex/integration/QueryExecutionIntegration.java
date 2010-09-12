@@ -40,4 +40,14 @@ public interface QueryExecutionIntegration {
 	public ResultSet getLimitedResultset(
 			Connection connection, Table table,
 			int rowFrom, int rowTo) throws DbexException;
+
+	/**
+	 * 
+	 * @param connectionProperties
+	 * @param databaseTable
+	 * @return
+	 * @throws DbexException
+	 */
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			Table databaseTable) throws DbexException;
 }

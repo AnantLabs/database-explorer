@@ -115,4 +115,19 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 		}
 		return integration.getLimitedResultset(connection, table, rowFrom, rowTo);
 	}
+
+	@Override
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			Table databaseTable) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		QueryExecutionIntegration integration = IntegrationBeanFactory.getBeanFactory()
+			.getQueryExecutionIntegration(DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()));
+		if(integration == null){
+			logger.debug("Integration point not found.");
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		return integration.getTotalRecords(connectionProperties, databaseTable);
+	}
 }

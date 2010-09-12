@@ -29,20 +29,35 @@ public final class SqlServerIntegrationHelper {
 			logger.debug("Enter:: preparePaginationQuery()");
 		}
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT TOP ? * ")
+		buffer.append("SELECT * FROM ( SELECT TOP ? * ")
 				.append("FROM ")
-				.append(table.getSchemaName().toUpperCase() + "."
-						+ table.getModelName().toUpperCase())
-				.append(") AS X ")
+				.append("dbo.[" + table.getModelName().toUpperCase())
+				.append("]) AS X ")
 				.append("EXCEPT ")
 				.append("SELECT * FROM ( ")
 				.append("SELECT TOP ? * ")
 				.append("FROM ")
-				.append(table.getSchemaName().toUpperCase() + "."
-						+ table.getModelName().toUpperCase()).append(") AS Y ");
+				.append("dbo.[" + table.getModelName().toUpperCase())
+				.append("]) AS Y ");
 		if (logger.isDebugEnabled()) {
 			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
 			logger.debug("Exit:: preparePaginationQuery()");
+		}
+		//return "SELECT * FROM ( SELECT TOP 30 * FROM  dbo.[" + table.getModelName().toUpperCase()+") AS X ";
+		return buffer.toString();
+	}
+
+	public String prepareTotalRecordsSQL(Table databaseTable) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Enter:: prepareTotalRecordsSQL() for table:= " + databaseTable.getModelName());
+		}
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT COUNT(*) FROM " )
+			.append("dbo.[" + databaseTable.getModelName().toUpperCase())
+			.append("]");
+		if (logger.isDebugEnabled()) {
+			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
+			logger.debug("Exit:: prepareTotalRecordsSQL()");
 		}
 		return buffer.toString();
 	}

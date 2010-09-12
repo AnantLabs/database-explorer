@@ -5,6 +5,7 @@ package com.gs.dbex.integration.impl.mysql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
@@ -89,5 +90,40 @@ public class MySqlQueryExecutionIntegration implements
 			logger.debug("Exit:: getLimitedResultset()");
 		}
 		return resultSet;
+	}
+	
+	@Override
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			Table databaseTable) throws DbexException {
+		int totalRows = 0;
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		String countQuery = integrationHelper.prepareTotalRecordsSQL(databaseTable);
+		Connection connection = null;
+		try {
+			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			
+			connection.setCatalog(databaseTable.getSchemaName());
+			Statement statement = connection.prepareStatement(countQuery);
+			ResultSet rs = statement.executeQuery(countQuery);
+			if(rs != null){
+				while(rs.next()){
+					totalRows = rs.getInt(1);
+				}
+				rs.close();
+			}
+			logger.info("Total " + totalRows + " found by the query : " + countQuery);
+			JdbcUtil.close(rs, false);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		return totalRows;
 	}
 }

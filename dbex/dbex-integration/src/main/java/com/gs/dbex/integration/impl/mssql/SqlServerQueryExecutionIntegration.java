@@ -1,8 +1,10 @@
 package com.gs.dbex.integration.impl.mssql;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
@@ -15,8 +17,8 @@ import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.PaginationResult;
 import com.gs.utils.jdbc.JdbcUtil;
 import com.gs.utils.text.StringUtil;
-import com.mysql.jdbc.PreparedStatement;
-
+import com.microsoft.sqlserver.jdbc.SQLServerConnection;
+import com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement;
 /**
  * @author Sabuj Das
  *
@@ -37,9 +39,9 @@ public class SqlServerQueryExecutionIntegration implements
 		}
 		if(paginationResult == null)
 			paginationResult = new PaginationResult(0, 30);
-		Connection connection = null;
+		SQLServerConnection connection = null;
 		try {
-			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			connection = (SQLServerConnection) connectionProperties.getDataSource().getConnection();
 			if(connection == null){
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
@@ -55,7 +57,7 @@ public class SqlServerQueryExecutionIntegration implements
 	}
 
 	public ResultSet getLimitedResultset(
-			java.sql.Connection connection, Table table,
+			Connection connection, Table table,
 			int rowFrom, int rowTo) throws DbexException{
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: getLimitedResultset()");
@@ -63,17 +65,19 @@ public class SqlServerQueryExecutionIntegration implements
 		if(connection == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
+		
 		String query = integrationHelper.preparePaginationQuery(table);
 		if(!StringUtil.hasValidContent(query))
 			return null;
 		ResultSet resultSet = null;
 		try {
-			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
+			connection.setCatalog(table.getSchemaName());
+			SQLServerPreparedStatement preparedStatement = (SQLServerPreparedStatement) connection.prepareStatement(
 					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			preparedStatement.setInt(2, rowFrom);
 			preparedStatement.setInt(1, rowTo);
 			if(logger.isDebugEnabled()){
-				logger.debug("Executing SQL: [ " + preparedStatement.getPreparedSql() + " ] start:=" + rowFrom + " to:=" + rowTo);
+				logger.debug("Executing SQL: [ " + query + " ] start:=" + rowFrom + " to:=" + rowTo);
 			}
 			resultSet = preparedStatement.executeQuery();
 		} catch (SQLException e) {
@@ -86,5 +90,40 @@ public class SqlServerQueryExecutionIntegration implements
 			logger.debug("Exit:: getLimitedResultset()");
 		}
 		return resultSet;
+	}
+	
+	@Override
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			Table databaseTable) throws DbexException {
+		int totalRows = 0;
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		String countQuery = integrationHelper.prepareTotalRecordsSQL(databaseTable);
+		SQLServerConnection connection = null;
+		try {
+			connection = (SQLServerConnection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			
+			connection.setCatalog(databaseTable.getSchemaName());
+			PreparedStatement statement = connection.prepareStatement(countQuery);
+			ResultSet rs = statement.executeQuery();
+			if(rs != null){
+				while(rs.next()){
+					totalRows = rs.getInt(1);
+				}
+				rs.close();
+			}
+			logger.info("Total " + totalRows + " found by the query : " + countQuery);
+			JdbcUtil.close(rs, false);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		return totalRows;
 	}
 }

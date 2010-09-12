@@ -52,11 +52,15 @@ import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.common.enums.TableDataExportTypeEnum;
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.design.util.DrawingUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.PaginationResult;
 import com.gs.dbex.model.vo.QuickEditVO;
+import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.QueryExecutionService;
+import com.gs.utils.jdbc.JdbcUtil;
 import com.gs.utils.text.StringUtil;
 
 
@@ -123,36 +127,14 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
     
     private int getTotalRecords(){
     	int totalRows = 0;
-		Connection connection = null;
-    	try {
-    		logger.info("Populating Data in table for Page number : "+ paginationResult.getCurrentPage());
-			connection = getConnectionProperties().getDataSource().getConnection();
-			
-			Statement statement = connection.prepareStatement(countQuery);
-			ResultSet rs = statement.executeQuery(countQuery);
-			if(rs != null){
-				while(rs.next()){
-					totalRows = rs.getInt(1);
-				}
-				rs.close();
+    	QueryExecutionService queryExecutionService = DbexServiceBeanFactory.getBeanFactory().getQueryExecutionService();
+    	if(null != queryExecutionService){
+    		try {
+				totalRows = queryExecutionService.getTotalRecords(connectionProperties, databaseTable);
+			} catch (DbexException e) {
+				DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 			}
-			logger.info("Total " + totalRows + " found by the query : " + countQuery);
-			
-		} catch (SQLException e) {
-			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		finally{
-			if(connection != null){
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
+    	}
 		return totalRows;
     }
     

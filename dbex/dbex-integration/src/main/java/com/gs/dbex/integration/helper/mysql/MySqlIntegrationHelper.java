@@ -43,4 +43,18 @@ public final class MySqlIntegrationHelper {
 		}
 		return buffer.toString();
 	}
+
+	public String prepareTotalRecordsSQL(Table databaseTable) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Enter:: prepareTotalRecordsSQL() for table:= " + databaseTable.getModelName());
+		}
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT COUNT(*) FROM " )
+			.append(databaseTable.getSchemaName().toUpperCase() + "." + databaseTable.getModelName().toUpperCase());
+		if (logger.isDebugEnabled()) {
+			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
+			logger.debug("Exit:: prepareTotalRecordsSQL()");
+		}
+		return buffer.toString();
+	}
 }
