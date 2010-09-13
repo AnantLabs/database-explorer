@@ -6,19 +6,17 @@ package com.gs.dbex.integration.xmlbeans;
 import java.util.ArrayList;
 import java.util.List;
 
-import noNamespace.ClassNameDocument;
-import noNamespace.ConnectionConfigurationDocument.ConnectionConfiguration;
-import noNamespace.DriverManagerDocument;
-import noNamespace.JarEntryDocument.JarEntry;
-import noNamespace.JdbcDriverDocument.JdbcDriver;
-import noNamespace.ServicesDocument.Services;
-import noNamespace.impl.DriverManagerDocumentImpl;
-
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlBeans;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
 
+import com.gs.dbex.bod.ConnectionConfigurationDocument.ConnectionConfiguration;
+import com.gs.dbex.bod.DriverManagerDocument;
+import com.gs.dbex.bod.JarEntryDocument.JarEntry;
+import com.gs.dbex.bod.JdbcDriverDocument.JdbcDriver;
+import com.gs.dbex.bod.ServicesDocument.Services;
+import com.gs.dbex.bod.impl.DriverManagerDocumentImpl;
 import com.gs.dbex.model.cfg.DriverFile;
 import com.gs.dbex.model.cfg.JdbcDriverConfiguration;
 import com.gs.dbex.model.cfg.JdbcServices;

@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style-configuration>
+	<syntax-style name="Default SQL Syntax Style">
+		<language>SQL</language>
+		<display-order>1</display-order>
+		<style-color editable="true" type="BG" code="#0A0A0A">
+			<red>10</red>
+			<green>10</green>
+			<blue>10</blue>
+		</style-color>
+		<word-styles>
+			<word-style type="KEY_WORD">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>true</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0000cc">
+						<red>0</red>
+						<green>0</green>
+						<blue>204</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="SCHEMA_NAME">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>true</bold>
+						<italic>true</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#003366">
+						<red>0</red>
+						<green>51</green>
+						<blue>102</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="TABLE_NAME">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>true</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#00992a">
+						<red>0</red>
+						<green>153</green>
+						<blue>42</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="COLUMN_NAME">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#009933">
+						<red>0</red>
+						<green>153</green>
+						<blue>51</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="OPERATOR">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>true</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0000cc">
+						<red>0</red>
+						<green>0</green>
+						<blue>204</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="BRACKET">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="NUMBER">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>true</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0066ff">
+						<red>0</red>
+						<green>102</green>
+						<blue>255</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="CHAR_VALUE">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#009933">
+						<red>0</red>
+						<green>153</green>
+						<blue>51</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="STRING_VALUE">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#009966">
+						<red>0</red>
+						<green>153</green>
+						<blue>102</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="DEFAULT">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="UNKNOWN">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="ERROR">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="COMMENT">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="START_COMMENT">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="MID_COMMENT">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="END_COMMENT">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="FUNCTION">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#009999">
+						<red>0</red>
+						<green>153</green>
+						<blue>153</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="MATCHED_BRACKET">
+				<word-font editable="false" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="CURRENT_LINE">
+				<word-font editable="false" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="false" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="PROCEDURE">
+				<word-font editable="true" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="true" type="FG" code="#6666ff">
+						<red>102</red>
+						<green>102</green>
+						<blue>255</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+			<word-style type="WHITESPACE">
+				<word-font editable="false" name="Bitstream Vera Sans Mono">
+					<font-size>12</font-size>
+					<font-style>
+						<bold>false</bold>
+						<italic>false</italic>
+						<underlined>false</underlined>
+					</font-style>
+				</word-font>
+				<style-colors>
+					<style-color editable="true" type="BG" code="#ffffff">
+						<red>255</red>
+						<green>255</green>
+						<blue>255</blue>
+					</style-color>
+					<style-color editable="false" type="FG" code="#0A0A0A">
+						<red>10</red>
+						<green>10</green>
+						<blue>10</blue>
+					</style-color>
+				</style-colors>
+			</word-style>
+		</word-styles>
+	</syntax-style>
+</style-configuration>

@@ -8,7 +8,6 @@ package com.gs.dbex.application.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -20,8 +19,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.StringReader;
 import java.lang.Thread.State;
 import java.sql.Connection;
@@ -45,6 +42,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
@@ -69,8 +67,6 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyledDocument;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
-
-import org.omg.CORBA.portable.ApplicationException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.event.command.GuiEventHandler;
@@ -697,7 +693,10 @@ UndoableEditListener, HyperlinkListener {
 		/*AutoTextComplete atc = new AutoTextComplete(queryTextArea);
 		atc.setAlwaysOnTop(true);
 		atc.setItems(ApplicationConstants.SQL_KEYWORD_LIST);*/
-		jScrollPane1.setViewportView(commandEditor);
+		
+		jScrollPane1 = new JScrollPane(commandEditor);
+        LineNumberedTextPanel textLineNumber = new LineNumberedTextPanel(commandEditor);
+        jScrollPane1.setRowHeaderView( textLineNumber );
 
 		gridBagConstraints = new GridBagConstraints();
 		gridBagConstraints.gridx = 0;
@@ -755,10 +754,70 @@ UndoableEditListener, HyperlinkListener {
 		queryResultTabbedPane.addTab("Message", messagePanel);
 
 		gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 2;
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
 		gridBagConstraints.weightx = 1.0;
 		gridBagConstraints.weighty = 1.0;
 		queryResultPanel.add(queryResultTabbedPane, gridBagConstraints);
+		
+		queryStatusPanel = new JPanel();
+		queryStatusPanel.setMinimumSize(new java.awt.Dimension(641, 28));
+        queryStatusPanel.setPreferredSize(new java.awt.Dimension(641, 28));
+        queryStatusPanel.setLayout(new java.awt.GridBagLayout());
+
+        rowCountLabel = new JLabel();
+        rowCountLabel.setText("Row Count : ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        queryStatusPanel.add(rowCountLabel, gridBagConstraints);
+        rowCountResultLabel = new JLabel();
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        queryStatusPanel.add(rowCountResultLabel, gridBagConstraints);
+
+        messageLabel = new JLabel();
+        messageLabel.setText("Message");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        queryStatusPanel.add(messageLabel, gridBagConstraints);
+
+        queryRunnerProgressBar = new JProgressBar();
+        queryRunnerProgressBar.setMaximumSize(new java.awt.Dimension(150, 19));
+        queryRunnerProgressBar.setMinimumSize(new java.awt.Dimension(150, 19));
+        queryRunnerProgressBar.setPreferredSize(new java.awt.Dimension(150, 19));
+        queryRunnerProgressBar.setString("Query Runner ...");
+        queryRunnerProgressBar.setStringPainted(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 5, 0, 5);
+        queryStatusPanel.add(queryRunnerProgressBar, gridBagConstraints);
+
+        separatorLabel = new JLabel();
+        separatorLabel.setForeground(new java.awt.Color(153, 153, 153));
+        separatorLabel.setText("|");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
+        queryStatusPanel.add(separatorLabel, gridBagConstraints);
+		
+		gridBagConstraints = new GridBagConstraints();
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.gridy = 3;
+		gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+		gridBagConstraints.weightx = 1.0;
+		gridBagConstraints.weighty = 0.0;
+		queryResultPanel.add(queryStatusPanel, gridBagConstraints);
 
 		sqlQuerySplitPane.setRightComponent(queryResultPanel);
 
@@ -844,6 +903,13 @@ UndoableEditListener, HyperlinkListener {
 	private JTable queryResultTable;
 	private ResultSetTableModelFactory factory;
 	
+	private JLabel messageLabel;
+    private JProgressBar queryRunnerProgressBar;
+    private JPanel queryStatusPanel;
+    private JLabel rowCountLabel;
+    private JLabel rowCountResultLabel;
+    private JLabel separatorLabel;
+    
 	private JMenu editMenu, fileMenu;
 	private JMenuItem undoMenuItem, redoMenuItem,
 				cutMenuItem, copyMenuItem, pasteMenuItem,

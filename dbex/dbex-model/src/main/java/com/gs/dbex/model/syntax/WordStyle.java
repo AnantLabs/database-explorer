@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gs.dbex.application.mapping;
+package com.gs.dbex.model.syntax;
 
 import java.io.Serializable;
 import java.util.List;

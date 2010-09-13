@@ -6,15 +6,14 @@ package com.gs.dbex.integration.xmlbeans;
 import java.math.BigInteger;
 import java.util.List;
 
-import noNamespace.ConnectionDocument.Connection;
-import noNamespace.ConnectionUrlDocument.ConnectionUrl;
-import noNamespace.ConnectionsDocument;
-import noNamespace.ConnectionsDocument.Connections;
-import noNamespace.DatabaseConfigurationDocument.DatabaseConfiguration;
-import noNamespace.StorageTypeEnum;
-
 import org.apache.log4j.Logger;
 
+import com.gs.dbex.bod.ConnectionDocument.Connection;
+import com.gs.dbex.bod.ConnectionUrlDocument.ConnectionUrl;
+import com.gs.dbex.bod.ConnectionsDocument;
+import com.gs.dbex.bod.ConnectionsDocument.Connections;
+import com.gs.dbex.bod.DatabaseConfigurationDocument.DatabaseConfiguration;
+import com.gs.dbex.bod.StorageTypeEnum;
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.common.enums.DatabaseStorageTypeEnum;
 import com.gs.dbex.model.cfg.ConnectionProperties;
