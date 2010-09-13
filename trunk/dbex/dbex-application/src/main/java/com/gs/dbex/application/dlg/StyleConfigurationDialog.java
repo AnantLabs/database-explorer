@@ -49,12 +49,12 @@ import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
-import com.gs.dbex.application.mapping.FontStyle;
-import com.gs.dbex.application.mapping.StyleColor;
-import com.gs.dbex.application.mapping.StyleConfiguration;
-import com.gs.dbex.application.mapping.SyntaxStyle;
-import com.gs.dbex.application.mapping.WordFont;
-import com.gs.dbex.application.mapping.WordStyle;
+import com.gs.dbex.model.syntax.FontStyle;
+import com.gs.dbex.model.syntax.StyleColor;
+import com.gs.dbex.model.syntax.StyleConfiguration;
+import com.gs.dbex.model.syntax.SyntaxStyle;
+import com.gs.dbex.model.syntax.WordFont;
+import com.gs.dbex.model.syntax.WordStyle;
 import com.gs.utils.io.IOUtil;
 import com.gs.utils.xml.rw.XmlRWUtils;
 

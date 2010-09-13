@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="style-configuration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="syntax-style"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="syntax-style">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="language"/>
+        <xs:element ref="display-order"/>
+        <xs:element ref="style-color"/>
+        <xs:element ref="word-styles"/>
+      </xs:sequence>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="language" type="xs:NCName"/>
+  <xs:element name="display-order" type="xs:integer"/>
+  <xs:element name="word-styles">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="word-style"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="word-style">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="word-font"/>
+        <xs:element ref="style-colors"/>
+      </xs:sequence>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="word-font">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="font-size"/>
+        <xs:element ref="font-style"/>
+      </xs:sequence>
+      <xs:attribute name="editable" use="required" type="xs:boolean"/>
+      <xs:attribute name="name" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="font-size" type="xs:integer"/>
+  <xs:element name="font-style">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="bold"/>
+        <xs:element ref="italic"/>
+        <xs:element ref="underlined"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="bold" type="xs:boolean"/>
+  <xs:element name="italic" type="xs:boolean"/>
+  <xs:element name="underlined" type="xs:boolean"/>
+  <xs:element name="style-colors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="style-color"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="style-color">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="red"/>
+        <xs:element ref="green"/>
+        <xs:element ref="blue"/>
+      </xs:sequence>
+      <xs:attribute name="code" use="required"/>
+      <xs:attribute name="editable" use="required" type="xs:boolean"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="red" type="xs:integer"/>
+  <xs:element name="green" type="xs:integer"/>
+  <xs:element name="blue" type="xs:integer"/>
+</xs:schema>

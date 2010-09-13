@@ -27,10 +27,10 @@
         <langpack iso3="eng"/>
     </locale>
     <resources>
-        <res id="HTMLHelloPanel.info" parse="yes" src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs\dbex-info.html"/>
+        <res id="HTMLHelloPanel.info" parse="yes" src="${release.dir}\Installer\docs\dbex-info.html"/>
         <res id="shortcutSpec.xml" src="Install-dbex_shortcutSpec.xml"/>
         <res id="Unix_shortcutSpec.xml" src="Install-dbex_Unix_shortcutSpec.xml"/>
-        <res id="installer.langsel.img" src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs\images\dbex.png"/>
+        <res id="installer.langsel.img" src="${release.dir}\Installer\docs\images\dbex.png"/>
     </resources>
     <panels>
         <panel classname="HTMLHelloPanel"/>
@@ -47,7 +47,7 @@
         <pack name="Core" preselected="yes" required="yes">
             <description/>
             <file override="update"
-                src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\DBEX_1.0-BETA-1" targetdir="$INSTALL_PATH/"/>
+                src="${release.dir}\DBEX_1.0-BETA-1" targetdir="$INSTALL_PATH/"/>
             <executable
                 class="com.gs.dbex.launcher.DatabaseExplorerLauncher"
                 failure="abort" keep="false" stage="never"
@@ -56,7 +56,7 @@
         <pack name="DOCS" preselected="yes" required="yes">
             <description/>
             <file override="update"
-                src="D:\SVN_HOME\MyProjects\database-explorer\trunk\release\Installer\docs" targetdir="$INSTALL_PATH/"/>
+                src="${release.dir}\Installer\docs" targetdir="$INSTALL_PATH/"/>
         </pack>
     </packs>
     <native name="ShellLink.dll" type="izpack"/>
