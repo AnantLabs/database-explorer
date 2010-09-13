@@ -13,6 +13,7 @@
 	<bean id="applicationDataHistoryMgr" class="com.gs.dbex.historyMgr.data.ApplicationDataHistoryMgrImpl">
 		<property name="connectionPropertiesXmlTransformer" ref="connectionPropertiesXmlTransformer" />
 		<property name="connectionPropertiesBodGenerator" ref="connectionPropertiesBodGenerator" />
+		<property name="styleConfigurationXmlTransformer" ref="styleConfigurationXmlTransformer"></property>
 	</bean>
 
 </beans>

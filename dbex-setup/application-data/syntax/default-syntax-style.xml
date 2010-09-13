@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+	This file contains the default syntax style.
+	DO NOT DELETE OR MODIFY THIS FILE.
+-->
 <style-configuration>
 	<syntax-style name="Default SQL Syntax Style">
 		<language>SQL</language>
-		<display-order>1</display-order>
+		<display-order>0</display-order>
 		<style-color editable="true" type="BG" code="#0A0A0A">
 			<red>10</red>
 			<green>10</green>
@@ -473,4 +477,5 @@
 			</word-style>
 		</word-styles>
 	</syntax-style>
+	
 </style-configuration>

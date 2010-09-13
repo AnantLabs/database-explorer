@@ -20,13 +20,18 @@ import org.exolab.castor.xml.ValidationException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.sql.processor.TokenType;
+import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.common.enums.SqlStyleEnum;
+import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.historyMgr.ApplicationDataHistoryMgr;
+import com.gs.dbex.historyMgr.DbexHistoryMgrBeanFactory;
 import com.gs.dbex.model.syntax.FontStyle;
 import com.gs.dbex.model.syntax.StyleColor;
 import com.gs.dbex.model.syntax.StyleConfiguration;
 import com.gs.dbex.model.syntax.StyleConfigurationHelper;
 import com.gs.dbex.model.syntax.WordFont;
 import com.gs.dbex.model.syntax.WordStyle;
+import com.gs.dbex.service.DbexServiceBeanFactory;
 import com.gs.utils.io.IOUtil;
 import com.gs.utils.xml.rw.XmlRWUtils;
 
@@ -109,6 +114,8 @@ public class SyntaxStylizer implements PreferenceChangeListener {
     private void initializeStyles() {
 
     	StyleConfiguration configuration = readSavedStyles();
+    	if(null == configuration)
+    		return;
     	configuration.loadStyleMap();
     	WordStyle wordStyle = null;
     	wordStyle = StyleConfigurationHelper.getWordStyleByType("SQL", 
@@ -211,19 +218,13 @@ public class SyntaxStylizer implements PreferenceChangeListener {
 	}*/
     
 	private StyleConfiguration readSavedStyles() {
-		InputStream mappingInputStream = IOUtil.getResourceAsStream(ApplicationConstants.SQL_SYNTAX_MAPPING_FILE);
-		//File dataFile = IOUtil.mkfile(ApplicationConstants.SYNTAX_DATA_FILE);
-		File dataFile = new File(ApplicationConstants.SYNTAX_DATA_FILE);
-		try {
-			return XmlRWUtils.readUsingCastor(dataFile, mappingInputStream);
-		} catch (MarshalException e) {
-			e.printStackTrace();
-		} catch (ValidationException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (MappingException e) {
-			e.printStackTrace();
+		ApplicationDataHistoryMgr applicationDataHistoryMgr = DbexHistoryMgrBeanFactory.getInstance().getApplicationDataHistoryMgr();
+		if(null != applicationDataHistoryMgr){
+			try {
+				return applicationDataHistoryMgr.getStyleConfiguration(DbexCommonContext.getInstance().getSyntaxFileName());
+			} catch (DbexException e) {
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}

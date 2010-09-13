@@ -112,6 +112,10 @@
 		class="com.gs.dbex.integration.xmlbeans.ConnectionPropertiesBodGenerator">
 	</bean>
 	
+	<bean id="styleConfigurationXmlTransformer"
+		class="com.gs.dbex.integration.xmlbeans.StyleConfigurationXmlTransformer">
+	</bean>
+	
 	<bean id="mysqlQueryExecutionIntegration"
 		class="com.gs.dbex.integration.impl.mysql.MySqlQueryExecutionIntegration">
 	</bean>
