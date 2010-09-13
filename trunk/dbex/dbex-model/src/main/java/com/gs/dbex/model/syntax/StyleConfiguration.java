@@ -32,6 +32,8 @@ public class StyleConfiguration implements Serializable{
 	public void loadStyleMap(){
 		if(syntaxStyleList != null){
 			for (SyntaxStyle style : syntaxStyleList) {
+				if(null == style.getWordStyleList())
+					style.setWordStyleList(new WordStyles());
 				style.getWordStyleList().loadStyleMap();
 				syntaxStylemMap.put(style.getLanguage(), style);
 			}

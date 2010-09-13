@@ -3,7 +3,7 @@
   <xs:element name="style-configuration">
     <xs:complexType>
       <xs:sequence>
-        <xs:element ref="syntax-style"/>
+        <xs:element ref="syntax-style" maxOccurs="unbounded"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -15,7 +15,7 @@
         <xs:element ref="style-color"/>
         <xs:element ref="word-styles"/>
       </xs:sequence>
-      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="language" type="xs:NCName"/>
@@ -43,7 +43,7 @@
         <xs:element ref="font-style"/>
       </xs:sequence>
       <xs:attribute name="editable" use="required" type="xs:boolean"/>
-      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="font-size" type="xs:integer"/>

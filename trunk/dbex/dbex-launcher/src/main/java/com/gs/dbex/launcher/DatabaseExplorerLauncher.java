@@ -136,6 +136,27 @@ public class DatabaseExplorerLauncher {
 					logger.debug("Cannot Create File [ " + driverMgrFile.getCanonicalPath() + " ].");
 			}
 		}
+		
+		File syntaxDataDir = new File(dbexCommonContext.getSyntaxDataPath());
+		if(!syntaxDataDir.exists()){
+			boolean created = syntaxDataDir.mkdir();
+			if(logger.isDebugEnabled()){
+				if(created)
+					logger.debug("Directory [ " + syntaxDataDir.getCanonicalPath() + " ] created.");
+				else
+					logger.debug("Cannot Create Directory [ " + syntaxDataDir.getCanonicalPath() + " ].");
+			}
+		}
+		File stntaxFile = new File(dbexCommonContext.getSyntaxFileName());
+		if(!stntaxFile.exists()){
+			boolean created = stntaxFile.createNewFile();
+			if(logger.isDebugEnabled()){
+				if(created)
+					logger.debug("File [ " + stntaxFile.getCanonicalPath() + " ] created.");
+				else
+					logger.debug("Cannot Create File [ " + stntaxFile.getCanonicalPath() + " ].");
+			}
+		}
 	}
 	
 	

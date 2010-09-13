@@ -69,6 +69,14 @@ public final class DbexCommonContext implements DbexCommonConstants{
 		return getProfilesDirName() + FILE_SEPARATOR + USER_NAME;
 	}
 
+	public String getSyntaxDataPath(){
+		return getApplicationDataDir() + FILE_SEPARATOR + "syntax";
+	}
+	
+	public String getSyntaxFileName(){
+		return getSyntaxDataPath() + FILE_SEPARATOR + "sql-syntax-style.xml";
+	}
+	
 	public int getDefaultPortNumber() {
 		return defaultPortNumber;
 	}
@@ -93,4 +101,7 @@ public final class DbexCommonContext implements DbexCommonConstants{
 		return getApplicationPropertiesDir() + FILE_SEPARATOR + "ErrorMessage.properties";
 	}
 	
+	public String getDefaultSyntaxStyleFileName(){
+		return APPLICATION_DATA_DIR + FILE_SEPARATOR + "syntax" + FILE_SEPARATOR + "default-syntax-style.xml";
+	}
 }

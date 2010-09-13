@@ -7,13 +7,17 @@ import java.io.File;
 import java.util.List;
 
 import com.gs.dbex.common.DbexCommonContext;
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.historyMgr.ApplicationDataHistoryMgr;
 import com.gs.dbex.integration.xmlbeans.ConnectionPropertiesBodGenerator;
 import com.gs.dbex.integration.xmlbeans.ConnectionPropertiesXmlTransformer;
 import com.gs.dbex.integration.xmlbeans.DriverManagerXmlTransformer;
+import com.gs.dbex.integration.xmlbeans.StyleConfigurationXmlTransformer;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.cfg.JdbcDriverConfiguration;
+import com.gs.dbex.model.syntax.StyleConfiguration;
 import com.gs.utils.io.FileRWUtil;
+import com.gs.utils.io.IOUtil;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -27,13 +31,22 @@ public class ApplicationDataHistoryMgrImpl implements ApplicationDataHistoryMgr 
 	private ConnectionPropertiesBodGenerator connectionPropertiesBodGenerator;
 	private ConnectionPropertiesXmlTransformer connectionPropertiesXmlTransformer;
 	private DriverManagerXmlTransformer driverManagerXmlTransformer;
+	private StyleConfigurationXmlTransformer styleConfigurationXmlTransformer;
 	
 	public ApplicationDataHistoryMgrImpl() {
 		// TODO Auto-generated constructor stub
 	}
 	
 	
-	
+	public StyleConfigurationXmlTransformer getStyleConfigurationXmlTransformer() {
+		return styleConfigurationXmlTransformer;
+	}
+
+	public void setStyleConfigurationXmlTransformer(
+			StyleConfigurationXmlTransformer styleConfigurationXmlTransformer) {
+		this.styleConfigurationXmlTransformer = styleConfigurationXmlTransformer;
+	}
+
 	public ConnectionPropertiesBodGenerator getConnectionPropertiesBodGenerator() {
 		return connectionPropertiesBodGenerator;
 	}
@@ -129,5 +142,35 @@ public class ApplicationDataHistoryMgrImpl implements ApplicationDataHistoryMgr 
 			List<JdbcDriverConfiguration> driverConfigurations, String fileName) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+
+	@Override
+	public StyleConfiguration getStyleConfiguration(String styleConfigFileName)
+			throws DbexException {
+		if(!StringUtil.hasValidContent(styleConfigFileName)){
+			styleConfigFileName = dbexCommonContext.getDefaultSyntaxStyleFileName();
+		}
+		String xmlText = FileRWUtil.getContents(new File(styleConfigFileName));
+		if(!StringUtil.hasValidContent(xmlText)){
+			styleConfigFileName = dbexCommonContext.getDefaultSyntaxStyleFileName();
+			xmlText = FileRWUtil.getContents(new File(styleConfigFileName));
+		}
+		return getStyleConfigurationXmlTransformer().getStyleConfiguration(xmlText);
+	}
+	
+	@Override
+	public Boolean saveStyleConfiguration(
+			StyleConfiguration styleConfiguration, String styleConfigFileName)
+			throws DbexException {
+		if(!StringUtil.hasValidContent(styleConfigFileName)){
+			styleConfigFileName = dbexCommonContext.getDefaultSyntaxStyleFileName();
+		}
+		String xmlText = getStyleConfigurationXmlTransformer().generateStyleConfigurationXML(styleConfiguration);
+		if(!StringUtil.hasValidContent(xmlText)){
+			return false;
+		}
+		return FileRWUtil.writeAsText(styleConfigFileName, xmlText);
 	}
 }

@@ -37,6 +37,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -49,13 +50,19 @@ import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
+import com.gs.dbex.common.DbexCommonContext;
+import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.historyMgr.ApplicationDataHistoryMgr;
+import com.gs.dbex.historyMgr.DbexHistoryMgrBeanFactory;
 import com.gs.dbex.model.syntax.FontStyle;
 import com.gs.dbex.model.syntax.StyleColor;
 import com.gs.dbex.model.syntax.StyleConfiguration;
 import com.gs.dbex.model.syntax.SyntaxStyle;
 import com.gs.dbex.model.syntax.WordFont;
 import com.gs.dbex.model.syntax.WordStyle;
+import com.gs.utils.enums.DisplayTypeEnum;
 import com.gs.utils.io.IOUtil;
+import com.gs.utils.swing.display.DisplayUtils;
 import com.gs.utils.xml.rw.XmlRWUtils;
 
 /**
@@ -82,27 +89,21 @@ public class StyleConfigurationDialog extends JDialog {
         
         initValues();
     }
+    
+    private StyleConfiguration readSavedStyles() {
+		ApplicationDataHistoryMgr applicationDataHistoryMgr = DbexHistoryMgrBeanFactory.getInstance().getApplicationDataHistoryMgr();
+		if(null != applicationDataHistoryMgr){
+			try {
+				return applicationDataHistoryMgr.getStyleConfiguration(DbexCommonContext.getInstance().getSyntaxFileName());
+			} catch (DbexException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 
 	private void initValues(){
-		InputStream mappingInputStream = IOUtil.getResourceAsStream(ApplicationConstants.SQL_SYNTAX_MAPPING_FILE);
-		//File dataFile = IOUtil.mkfile(ApplicationConstants.SYNTAX_DATA_FILE);
-		File dataFile = new File(ApplicationConstants.SYNTAX_DATA_FILE);
-		try {
-			configuration = XmlRWUtils.readUsingCastor(dataFile, mappingInputStream);
-		} catch (MarshalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ValidationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		configuration = readSavedStyles();
 		if(configuration != null ){
 			configuration.loadStyleMap();
 			List<SyntaxStyle> sl = configuration.getSyntaxStyleList();
@@ -704,11 +705,26 @@ public class StyleConfigurationDialog extends JDialog {
     }
 
     private void saveButtonActionPerformed(ActionEvent evt) {
-    	/*InputStream mappingInputStream = IOUtils.getResourceAsStream(ApplicationConstants.SQL_SYNTAX_MAPPING_FILE);
-		File dataFile = IOUtils.mkfile(ApplicationConstants.SYNTAX_DATA_FILE);
-		
-		XmlRWUtils.writeUsingCastor(dataFile, mappingInputStream, configuration);*/
-		dispose();
+    	ApplicationDataHistoryMgr applicationDataHistoryMgr = DbexHistoryMgrBeanFactory.getInstance().getApplicationDataHistoryMgr();
+    	Boolean saved = false; 
+		if(null != applicationDataHistoryMgr){
+			try {
+				saved = applicationDataHistoryMgr.saveStyleConfiguration(configuration, DbexCommonContext.getInstance().getSyntaxFileName());
+			} catch (DbexException e) {
+				e.printStackTrace();
+			}
+		}
+		if(!saved){
+			int opt = DisplayUtils.confirmOkCancel(getParent(), "Configuration is NOT SAVED.\nDo you want to close?", DisplayTypeEnum.WARN);
+			if(JOptionPane.OK_OPTION == opt){
+				dispose();
+			}
+		} else {
+			int opt = DisplayUtils.confirmOkCancel(getParent(), "Configuration is SAVED.\nDo you want to close?", DisplayTypeEnum.INFO);
+			if(JOptionPane.OK_OPTION == opt){
+				dispose();
+			}
+		}
     }
 
     private void cancelButtonActionPerformed(ActionEvent evt) {
