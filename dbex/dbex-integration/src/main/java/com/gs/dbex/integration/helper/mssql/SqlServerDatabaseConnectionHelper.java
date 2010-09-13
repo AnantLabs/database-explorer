@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.gs.dbex.integration.helper.DatabaseConnectionHelper;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.utils.jdbc.JdbcUtil;
 import com.gs.utils.text.StringUtil;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 
@@ -128,18 +129,12 @@ public class SqlServerDatabaseConnectionHelper extends DatabaseConnectionHelper 
 			}
 		} catch (ClassNotFoundException e) {
 			connected = false;
-			e.printStackTrace();
+			logger.error(e);
 		} catch (SQLException e) {
 			connected = false;
-			e.printStackTrace();
+			logger.error(e);
 		} finally {
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			JdbcUtil.close(conn);
 		}
 		if(logger.isDebugEnabled()){
 			logger.debug("EXIT ::- testConnection()");

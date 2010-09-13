@@ -85,6 +85,7 @@
 						<manifest>
 							<mainClass>com.gs.dbex.launcher.DatabaseExplorerLauncher</mainClass>
 							<addClasspath>true</addClasspath>
+							<addExtensions>false</addExtensions>
 							<classpathPrefix>lib/</classpathPrefix>
 							<classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>
 						</manifest>

@@ -31,37 +31,60 @@
 			<scope>test</scope>
 		</dependency>
 
-
+		
 		<dependency>
-			<groupId>ojdbc</groupId>
+			<groupId>com.oracle.jdbc</groupId>
 			<artifactId>ojdbc</artifactId>
 			<version>14</version>
 			<scope>system</scope>
 			<systemPath>${libs.dir}/ojdbc14.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql</artifactId>
+			<groupId>com.mysql.jdbc</groupId>
+			<artifactId>mysql-connector</artifactId>
 			<version>5.1.12</version>
 			<scope>system</scope>
 			<systemPath>${libs.dir}/mysql-connector-java-5.1.12.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>mssql</groupId>
-			<artifactId>mssql</artifactId>
+			<groupId>com.microsoft.sqlserver.jdbc</groupId>
+			<artifactId>sqlserver</artifactId>
 			<version>2.0</version>
 			<scope>system</scope>
 			<systemPath>${libs.dir}/sqlserver_4.jar</systemPath>
 		</dependency>
 		
 		<dependency>
-			<groupId>sqljdbc-auth</groupId>
+			<groupId>com.microsoft.sqlserver.auth</groupId>
 			<artifactId>sqlserver-auth</artifactId>
 			<version>2.0.1803.100</version>
 			<scope>system</scope>
 			<classifier>${system.classifier}</classifier>
 			<systemPath>${libs.dir}/sqlserver-auth/${system.architecture.version}/sqljdbc_auth.dll</systemPath>
+		</dependency> 
+	<!--
+		<dependency>
+			<groupId>com.oracle.jdbc</groupId>
+			<artifactId>ojdbc</artifactId>
+			<version>14</version>
 		</dependency>
-	
+		<dependency>
+			<groupId>com.mysql.jdbc</groupId>
+			<artifactId>mysql-connector</artifactId>
+			<version>5.1.12</version>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver.jdbc</groupId>
+			<artifactId>sqlserver</artifactId>
+			<version>2.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.microsoft.sqlserver.auth</groupId>
+			<artifactId>sqlserver-auth</artifactId>
+			<version>2.0.1803.100</version>
+			<classifier>${system.classifier}</classifier>
+		</dependency>
+	-->
 	</dependencies>
 </project>
