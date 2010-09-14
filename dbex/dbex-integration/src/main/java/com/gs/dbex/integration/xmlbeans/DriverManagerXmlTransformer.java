@@ -11,12 +11,12 @@ import org.apache.xmlbeans.XmlBeans;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
 
-import com.gs.dbex.bod.ConnectionConfigurationDocument.ConnectionConfiguration;
-import com.gs.dbex.bod.DriverManagerDocument;
-import com.gs.dbex.bod.JarEntryDocument.JarEntry;
-import com.gs.dbex.bod.JdbcDriverDocument.JdbcDriver;
-import com.gs.dbex.bod.ServicesDocument.Services;
-import com.gs.dbex.bod.impl.DriverManagerDocumentImpl;
+import com.gs.dbex.bod.dbcfg.ConnectionConfigurationDocument.ConnectionConfiguration;
+import com.gs.dbex.bod.dbcfg.DriverManagerDocument;
+import com.gs.dbex.bod.dbcfg.JarEntryDocument.JarEntry;
+import com.gs.dbex.bod.dbcfg.JdbcDriverDocument.JdbcDriver;
+import com.gs.dbex.bod.dbcfg.ServicesDocument.Services;
+import com.gs.dbex.bod.dbcfg.impl.DriverManagerDocumentImpl;
 import com.gs.dbex.model.cfg.DriverFile;
 import com.gs.dbex.model.cfg.JdbcDriverConfiguration;
 import com.gs.dbex.model.cfg.JdbcServices;

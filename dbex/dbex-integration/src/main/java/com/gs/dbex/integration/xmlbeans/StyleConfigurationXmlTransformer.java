@@ -10,15 +10,15 @@ import org.apache.xmlbeans.XmlBeans;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
 
-import com.gs.dbex.bod.FontStyleDocument.FontStyle;
-import com.gs.dbex.bod.StyleColorDocument.StyleColor;
-import com.gs.dbex.bod.StyleColorsDocument.StyleColors;
-import com.gs.dbex.bod.StyleConfigurationDocument;
-import com.gs.dbex.bod.SyntaxStyleDocument.SyntaxStyle;
-import com.gs.dbex.bod.WordFontDocument.WordFont;
-import com.gs.dbex.bod.WordStyleDocument.WordStyle;
-import com.gs.dbex.bod.WordStylesDocument.WordStyles;
-import com.gs.dbex.bod.impl.StyleConfigurationDocumentImpl;
+import com.gs.dbex.bod.syntax.FontStyleDocument.FontStyle;
+import com.gs.dbex.bod.syntax.StyleColorDocument.StyleColor;
+import com.gs.dbex.bod.syntax.StyleColorsDocument.StyleColors;
+import com.gs.dbex.bod.syntax.StyleConfigurationDocument;
+import com.gs.dbex.bod.syntax.SyntaxStyleDocument.SyntaxStyle;
+import com.gs.dbex.bod.syntax.WordFontDocument.WordFont;
+import com.gs.dbex.bod.syntax.WordStyleDocument.WordStyle;
+import com.gs.dbex.bod.syntax.WordStylesDocument.WordStyles;
+import com.gs.dbex.bod.syntax.impl.StyleConfigurationDocumentImpl;
 import com.gs.dbex.model.syntax.StyleConfiguration;
 import com.gs.utils.text.StringUtil;
 
@@ -97,7 +97,7 @@ public class StyleConfigurationXmlTransformer {
 		}
 		return syntaxStyleModel;
 	}
-	private void addSyntaxStyle(com.gs.dbex.bod.StyleConfigurationDocument.StyleConfiguration styleConfiguration, 
+	private void addSyntaxStyle(com.gs.dbex.bod.syntax.StyleConfigurationDocument.StyleConfiguration styleConfiguration, 
 			com.gs.dbex.model.syntax.SyntaxStyle syntaxStyleModel){
 		if(null == syntaxStyleModel){
 			return;
@@ -239,7 +239,7 @@ public class StyleConfigurationXmlTransformer {
 		StyleConfigurationDocument styleConfigurationDocument = StyleConfigurationDocument.Factory.newInstance();
 		if(null != styleConfigurationModel.getSyntaxStyleList()){
 			for (com.gs.dbex.model.syntax.SyntaxStyle syntaxStyleModel : styleConfigurationModel.getSyntaxStyleList()) {
-				com.gs.dbex.bod.StyleConfigurationDocument.StyleConfiguration styleConfiguration = styleConfigurationDocument.addNewStyleConfiguration();
+				com.gs.dbex.bod.syntax.StyleConfigurationDocument.StyleConfiguration styleConfiguration = styleConfigurationDocument.addNewStyleConfiguration();
 				addSyntaxStyle(styleConfiguration, syntaxStyleModel);
 			}
 		}
