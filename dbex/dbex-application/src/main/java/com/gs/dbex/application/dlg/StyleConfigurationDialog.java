@@ -45,6 +45,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.apache.log4j.Logger;
 import org.exolab.castor.mapping.MappingException;
 import org.exolab.castor.xml.MarshalException;
 import org.exolab.castor.xml.ValidationException;
@@ -70,6 +71,8 @@ import com.gs.utils.xml.rw.XmlRWUtils;
  *
  */
 public class StyleConfigurationDialog extends JDialog {
+	
+	private static final Logger logger = Logger.getLogger(StyleConfigurationDialog.class);
 
 	public static String[] installedFontNames;
 
@@ -91,14 +94,20 @@ public class StyleConfigurationDialog extends JDialog {
     }
     
     private StyleConfiguration readSavedStyles() {
+    	if(logger.isDebugEnabled()){
+    		logger.debug("Enter:: readSavedStyles() ");
+    	}
 		ApplicationDataHistoryMgr applicationDataHistoryMgr = DbexHistoryMgrBeanFactory.getInstance().getApplicationDataHistoryMgr();
 		if(null != applicationDataHistoryMgr){
 			try {
 				return applicationDataHistoryMgr.getStyleConfiguration(DbexCommonContext.getInstance().getSyntaxFileName());
 			} catch (DbexException e) {
-				e.printStackTrace();
+				logger.error(e);
 			}
 		}
+		if(logger.isDebugEnabled()){
+    		logger.debug("Exit:: readSavedStyles() ");
+    	}
 		return null;
 	}
 

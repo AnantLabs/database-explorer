@@ -6,6 +6,8 @@ package com.gs.dbex.historyMgr.data;
 import java.io.File;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.historyMgr.ApplicationDataHistoryMgr;
@@ -26,6 +28,7 @@ import com.gs.utils.text.StringUtil;
  */
 public class ApplicationDataHistoryMgrImpl implements ApplicationDataHistoryMgr {
 
+	private static final Logger logger = Logger.getLogger(ApplicationDataHistoryMgrImpl.class);
 	private static DbexCommonContext dbexCommonContext = DbexCommonContext.getInstance();
 	
 	private ConnectionPropertiesBodGenerator connectionPropertiesBodGenerator;
@@ -149,6 +152,9 @@ public class ApplicationDataHistoryMgrImpl implements ApplicationDataHistoryMgr 
 	@Override
 	public StyleConfiguration getStyleConfiguration(String styleConfigFileName)
 			throws DbexException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: getStyleConfiguration() with fileName:= " + styleConfigFileName);
+		}
 		if(!StringUtil.hasValidContent(styleConfigFileName)){
 			styleConfigFileName = dbexCommonContext.getDefaultSyntaxStyleFileName();
 		}
@@ -156,6 +162,10 @@ public class ApplicationDataHistoryMgrImpl implements ApplicationDataHistoryMgr 
 		if(!StringUtil.hasValidContent(xmlText)){
 			styleConfigFileName = dbexCommonContext.getDefaultSyntaxStyleFileName();
 			xmlText = FileRWUtil.getContents(new File(styleConfigFileName));
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Read from fileName:= " + styleConfigFileName);
+			logger.debug("File Content := ****[ " + xmlText + " ]****");
 		}
 		return getStyleConfigurationXmlTransformer().getStyleConfiguration(xmlText);
 	}
