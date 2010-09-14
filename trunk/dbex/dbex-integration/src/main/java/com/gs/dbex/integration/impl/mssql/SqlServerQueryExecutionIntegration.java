@@ -14,7 +14,9 @@ import com.gs.dbex.integration.helper.mysql.SqlServerIntegrationHelper;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.PaginationResult;
+import com.gs.utils.exception.UtilityException;
 import com.gs.utils.jdbc.JdbcUtil;
+import com.gs.utils.jdbc.ResultSetDataTable;
 import com.gs.utils.text.StringUtil;
 import com.microsoft.sqlserver.jdbc.SQLServerConnection;
 import com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement;
@@ -77,6 +79,7 @@ public class SqlServerQueryExecutionIntegration implements
 				logger.debug("Executing SQL: [ " + query + " ] start:=" + rowFrom + " to:=" + rowTo);
 			}
 			resultSet = preparedStatement.executeQuery();
+			
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());

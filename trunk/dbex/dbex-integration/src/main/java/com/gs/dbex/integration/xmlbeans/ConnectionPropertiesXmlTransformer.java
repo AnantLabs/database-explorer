@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gs.dbex.bod.ConnectionDocument.Connection;
-import com.gs.dbex.bod.ConnectionUrlDocument.ConnectionUrl;
-import com.gs.dbex.bod.ConnectionsDocument;
-import com.gs.dbex.bod.impl.ConnectionsDocumentImpl;
+import com.gs.dbex.bod.dbcfg.ConnectionDocument.Connection;
+import com.gs.dbex.bod.dbcfg.ConnectionUrlDocument.ConnectionUrl;
+import com.gs.dbex.bod.dbcfg.ConnectionsDocument;
+import com.gs.dbex.bod.dbcfg.impl.ConnectionsDocumentImpl;
 
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlBeans;
@@ -73,7 +73,7 @@ public class ConnectionPropertiesXmlTransformer {
 	
 	
 	
-	private DatabaseConfiguration populateDatabaseConfiguration(com.gs.dbex.bod.DatabaseConfigurationDocument.DatabaseConfiguration databaseConfiguration) {
+	private DatabaseConfiguration populateDatabaseConfiguration(com.gs.dbex.bod.dbcfg.DatabaseConfigurationDocument.DatabaseConfiguration databaseConfiguration) {
 		DatabaseConfiguration cfg = new DatabaseConfiguration();
 		cfg.setDriverClassName(databaseConfiguration.getDriverClassName());
 		cfg.setHostName(databaseConfiguration.getHostName());

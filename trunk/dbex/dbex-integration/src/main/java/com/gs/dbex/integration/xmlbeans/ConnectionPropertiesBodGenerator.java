@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.gs.dbex.bod.ConnectionDocument.Connection;
-import com.gs.dbex.bod.ConnectionUrlDocument.ConnectionUrl;
-import com.gs.dbex.bod.ConnectionsDocument;
-import com.gs.dbex.bod.ConnectionsDocument.Connections;
-import com.gs.dbex.bod.DatabaseConfigurationDocument.DatabaseConfiguration;
-import com.gs.dbex.bod.StorageTypeEnum;
+import com.gs.dbex.bod.dbcfg.ConnectionDocument.Connection;
+import com.gs.dbex.bod.dbcfg.ConnectionUrlDocument.ConnectionUrl;
+import com.gs.dbex.bod.dbcfg.ConnectionsDocument;
+import com.gs.dbex.bod.dbcfg.ConnectionsDocument.Connections;
+import com.gs.dbex.bod.dbcfg.DatabaseConfigurationDocument.DatabaseConfiguration;
+import com.gs.dbex.bod.dbcfg.StorageTypeEnum;
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.common.enums.DatabaseStorageTypeEnum;
 import com.gs.dbex.model.cfg.ConnectionProperties;
