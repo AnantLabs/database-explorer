@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	elementFormDefault="qualified"
-	xmlns="http://dbcfg.bod.dbex.gs.com"
-	targetNamespace="http://dbcfg.bod.dbex.gs.com">
+	elementFormDefault="qualified" targetNamespace="http://dbcfg.bod.dbex.gs.com"
+	xmlns:ns1="http://dbcfg.bod.dbex.gs.com">
 	<xs:element name="connections">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="connection" />
+				<xs:element maxOccurs="unbounded" ref="ns1:connection" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="connection">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="databaseType" />
-				<xs:element ref="connectionUrl" />
-				<xs:element ref="databaseConfiguration" />
+				<xs:element ref="ns1:databaseType" />
+				<xs:element ref="ns1:connectionUrl" />
+				<xs:element ref="ns1:databaseConfiguration" />
 			</xs:sequence>
 			<xs:attribute name="displayOrder" use="required" type="xs:integer" />
 			<xs:attribute name="name" use="required" type="xs:NCName" />
@@ -24,16 +23,16 @@
 	<xs:element name="driverManager">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="jdbcDriver" />
+				<xs:element maxOccurs="unbounded" ref="ns1:jdbcDriver" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="jdbcDriver">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="connectionConfiguration" />
-				<xs:element ref="services" />
-				<xs:element ref="jarEntry" />
+				<xs:element ref="ns1:connectionConfiguration" />
+				<xs:element ref="ns1:services" />
+				<xs:element ref="ns1:jarEntry" />
 			</xs:sequence>
 			<xs:attribute name="name" use="required" />
 		</xs:complexType>
@@ -41,9 +40,9 @@
 	<xs:element name="connectionConfiguration">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="databaseType" />
-				<xs:element ref="connectionUrl" />
-				<xs:element ref="databaseConfiguration" />
+				<xs:element ref="ns1:databaseType" />
+				<xs:element ref="ns1:connectionUrl" />
+				<xs:element ref="ns1:databaseConfiguration" />
 			</xs:sequence>
 			<xs:attribute name="name" use="required" type="xs:NCName" />
 		</xs:complexType>
@@ -51,7 +50,7 @@
 	<xs:element name="services">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="className" />
+				<xs:element maxOccurs="unbounded" ref="ns1:className" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -59,39 +58,36 @@
 	<xs:element name="jarEntry">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="jarLocation" />
+				<xs:element ref="ns1:jarLocation" />
 			</xs:sequence>
-			<xs:attribute name="fileName" use="required" />
+			<xs:attribute name="fileName" use="required" type="xs:NCName" />
 			<xs:attribute name="systemRef" use="required" type="xs:boolean" />
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="jarLocation" type="xs:anyURI" />
 	<xs:element name="databaseType" type="xs:NCName" />
 	<xs:element name="connectionUrl">
-		<xs:complexType mixed="true">
-
+		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="protocol" />
-				<xs:element ref="url" />
+				<xs:element ref="ns1:protocol" />
+				<xs:element ref="ns1:url" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
-	<xs:element name="protocol" type="xs:string">
-	</xs:element>
-	<xs:element name="url" type="xs:string">
-	</xs:element>
+	<xs:element name="protocol" type="xs:NMTOKEN" />
+	<xs:element name="url" type="xs:string" />
 	<xs:element name="databaseConfiguration">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="driverClassName" />
-				<xs:element ref="hostName" />
-				<xs:element ref="portNumber" />
-				<xs:element ref="userName" />
-				<xs:element ref="password" />
-				<xs:element ref="savePassword" />
-				<xs:element ref="storageType" />
-				<xs:element ref="sidServiceName" />
-				<xs:element ref="schemaName" />
+				<xs:element ref="ns1:driverClassName" />
+				<xs:element ref="ns1:hostName" />
+				<xs:element ref="ns1:portNumber" />
+				<xs:element ref="ns1:userName" />
+				<xs:element ref="ns1:password" />
+				<xs:element ref="ns1:savePassword" />
+				<xs:element ref="ns1:storageType" />
+				<xs:element ref="ns1:sidServiceName" />
+				<xs:element ref="ns1:schemaName" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -101,10 +97,10 @@
 	<xs:element name="userName" type="xs:NCName" />
 	<xs:element name="password" type="xs:NCName" />
 	<xs:element name="savePassword" type="xs:boolean" />
-	<xs:element name="storageType" type="storageTypeEnum" />
+	<xs:element name="storageType" type="ns1:storageTypeEnum" />
 	<xs:element name="sidServiceName" type="xs:NCName" />
 	<xs:element name="schemaName" type="xs:NCName" />
-
+	
 	<xs:simpleType name="storageTypeEnum">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="CATALOG"></xs:enumeration>

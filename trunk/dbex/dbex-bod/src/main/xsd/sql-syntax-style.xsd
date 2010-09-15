@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	elementFormDefault="qualified" xmlns="http://syntax.bod.dbex.gs.com"
-	targetNamespace="http://syntax.bod.dbex.gs.com">
+	elementFormDefault="qualified" targetNamespace="http://syntax.bod.dbex.gs.com"
+	xmlns:ns1="http://syntax.bod.dbex.gs.com">
 	<xs:element name="style-configuration">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="syntax-style" maxOccurs="unbounded" />
+				<xs:element ref="ns1:syntax-style" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="syntax-style">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="language" />
-				<xs:element ref="display-order" />
-				<xs:element ref="style-color" />
-				<xs:element ref="word-styles" />
+				<xs:element ref="ns1:language" />
+				<xs:element ref="ns1:display-order" />
+				<xs:element ref="ns1:style-color" />
+				<xs:element ref="ns1:word-styles" />
 			</xs:sequence>
-			<xs:attribute name="name" use="required" type="xs:NCName" />
+			<xs:attribute name="name" use="required" type="xs:NCName"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="language" type="xs:NCName" />
@@ -25,15 +25,15 @@
 	<xs:element name="word-styles">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="word-style" />
+				<xs:element maxOccurs="unbounded" ref="ns1:word-style" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="word-style">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="word-font" />
-				<xs:element ref="style-colors" />
+				<xs:element ref="ns1:word-font" />
+				<xs:element ref="ns1:style-colors" />
 			</xs:sequence>
 			<xs:attribute name="type" use="required" type="xs:NCName" />
 		</xs:complexType>
@@ -41,20 +41,20 @@
 	<xs:element name="word-font">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="font-size" />
-				<xs:element ref="font-style" />
+				<xs:element ref="ns1:font-size" />
+				<xs:element ref="ns1:font-style" />
 			</xs:sequence>
 			<xs:attribute name="editable" use="required" type="xs:boolean" />
-			<xs:attribute name="name" use="required" type="xs:NCName" />
+			<xs:attribute name="name" use="required" type="xs:NCName"/>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="font-size" type="xs:integer" />
 	<xs:element name="font-style">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="bold" />
-				<xs:element ref="italic" />
-				<xs:element ref="underlined" />
+				<xs:element ref="ns1:bold" />
+				<xs:element ref="ns1:italic" />
+				<xs:element ref="ns1:underlined" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
@@ -64,16 +64,16 @@
 	<xs:element name="style-colors">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element maxOccurs="unbounded" ref="style-color" />
+				<xs:element maxOccurs="unbounded" ref="ns1:style-color" />
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 	<xs:element name="style-color">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="red" />
-				<xs:element ref="green" />
-				<xs:element ref="blue" />
+				<xs:element ref="ns1:red" />
+				<xs:element ref="ns1:green" />
+				<xs:element ref="ns1:blue" />
 			</xs:sequence>
 			<xs:attribute name="code" use="required" />
 			<xs:attribute name="editable" use="required" type="xs:boolean" />
