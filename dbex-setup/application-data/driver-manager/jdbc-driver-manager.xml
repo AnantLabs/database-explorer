@@ -4,8 +4,8 @@
 		<connectionConfiguration name="SomeName001">
 			<databaseType>databaseType</databaseType>
 			<connectionUrl>
-				<protocol></protocol>
-				<url></url>
+				<protocol>gfsdfg</protocol>
+				<url>dfgsdf</url>
 			</connectionUrl>
 			<databaseConfiguration>
 				<driverClassName>someDriver</driverClassName>
@@ -23,7 +23,7 @@
 			<className>com.oracle.Driver</className>
 			<className>com.oracle.jdbc.JdbcDriver</className>
 		</services>
-		<jarEntry fileName="" systemRef="true">
+		<jarEntry fileName="sdfgsdfg" systemRef="true">
 			<jarLocation>d:/libs/</jarLocation>
 		</jarEntry>
 	</jdbcDriver>
@@ -32,8 +32,8 @@
 		<connectionConfiguration name="SomeName001">
 			<databaseType>databaseType</databaseType>
 			<connectionUrl>
-				<protocol></protocol>
-				<url></url>
+				<protocol>dsfgsdfg</protocol>
+				<url>dfgsdf</url>
 			</connectionUrl>
 			<databaseConfiguration>
 				<driverClassName>someDriver</driverClassName>
@@ -51,7 +51,7 @@
 			<className>com.oracle.Driver</className>
 			<className>com.oracle.jdbc.JdbcDriver</className>
 		</services>
-		<jarEntry fileName="" systemRef="true">
+		<jarEntry fileName="dfgsdf" systemRef="true">
 			<jarLocation>d:/libs/</jarLocation>
 		</jarEntry>
 	</jdbcDriver>

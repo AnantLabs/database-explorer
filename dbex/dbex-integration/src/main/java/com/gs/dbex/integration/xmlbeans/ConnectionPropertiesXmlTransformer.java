@@ -1,24 +1,19 @@
 package com.gs.dbex.integration.xmlbeans;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.gs.dbex.bod.dbcfg.ConnectionDocument.Connection;
-import com.gs.dbex.bod.dbcfg.ConnectionUrlDocument.ConnectionUrl;
-import com.gs.dbex.bod.dbcfg.ConnectionsDocument;
-import com.gs.dbex.bod.dbcfg.impl.ConnectionsDocumentImpl;
 
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.XmlBeans;
 import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
 
-import com.gs.dbex.common.enums.DatabaseTypeEnum;
+import com.gs.dbex.bod.dbcfg.ConnectionDocument.Connection;
+import com.gs.dbex.bod.dbcfg.ConnectionUrlDocument.ConnectionUrl;
+import com.gs.dbex.bod.dbcfg.ConnectionsDocument;
+import com.gs.dbex.bod.dbcfg.impl.ConnectionsDocumentImpl;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.cfg.DatabaseConfiguration;
-import com.gs.utils.io.FileRWUtil;
 import com.gs.utils.text.StringUtil;
 
 public class ConnectionPropertiesXmlTransformer {
