@@ -13,6 +13,7 @@ import com.gs.dbex.bod.dbcfg.ConnectionUrlDocument.ConnectionUrl;
 import com.gs.dbex.bod.dbcfg.ConnectionsDocument;
 import com.gs.dbex.bod.dbcfg.ConnectionsDocument.Connections;
 import com.gs.dbex.bod.dbcfg.DatabaseConfigurationDocument.DatabaseConfiguration;
+import com.gs.dbex.bod.dbcfg.StorageTypeDocument;
 import com.gs.dbex.bod.dbcfg.StorageTypeEnum;
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.common.enums.DatabaseStorageTypeEnum;

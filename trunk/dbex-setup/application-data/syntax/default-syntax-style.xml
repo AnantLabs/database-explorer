@@ -3,7 +3,7 @@
 	This file contains the default syntax style.
 	DO NOT DELETE OR MODIFY THIS FILE.
 -->
-<style-configuration>
+<style-configuration xmlns="http://syntax.bod.dbex.gs.com">
 	<syntax-style name="Default SQL Syntax Style">
 		<language>SQL</language>
 		<display-order>0</display-order>

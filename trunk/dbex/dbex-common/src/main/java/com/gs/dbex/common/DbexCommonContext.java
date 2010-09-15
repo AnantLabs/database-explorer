@@ -102,6 +102,7 @@ public final class DbexCommonContext implements DbexCommonConstants{
 	}
 	
 	public String getDefaultSyntaxStyleFileName(){
+		//return "D:\\SVN_HOME\\MyProjects\\database-explorer\\trunk\\dbex-setup\\application-data\\syntax\\default-syntax-style.xml"; 
 		return APPLICATION_DATA_DIR + FILE_SEPARATOR + "syntax" + FILE_SEPARATOR + "default-syntax-style.xml";
 	}
 }
