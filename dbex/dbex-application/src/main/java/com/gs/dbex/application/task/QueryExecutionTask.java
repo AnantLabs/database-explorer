@@ -41,12 +41,21 @@ public class QueryExecutionTask extends
 		? extends PreparedStatement, 
 		? extends ResultSet> currentTransaction;
 	private ResultSetDataTable resultSetDataTable;
+	private String catalogName;
 
 	public QueryExecutionTask(ConnectionProperties connectionProperties, SqlQuery sqlQuery) {
 		this.connectionProperties = connectionProperties;
 		this.sqlQuery = sqlQuery;
 		this.queryExecutionService = DbexServiceBeanFactory.getBeanFactory()
 				.getQueryExecutionService();
+	}
+
+	public String getCatalogName() {
+		return catalogName;
+	}
+
+	public void setCatalogName(String catalogName) {
+		this.catalogName = catalogName;
 	}
 
 	public SqlQuery getSqlQuery() {
@@ -83,6 +92,7 @@ public class QueryExecutionTask extends
 		}
 		firePropertyChange(PROPERTY_PROGRESS, null, TASK_STATUS_START);
 		currentTransaction = getQueryExecutionService().createTransaction(connectionProperties);
+		currentTransaction.setCatalogName(catalogName);
 		int rows = 0;
 		if (null != currentTransaction) {
 			if(QueryTypeEnum.SELECT.equals(sqlQuery.getQueryType())){
