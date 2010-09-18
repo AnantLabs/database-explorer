@@ -89,6 +89,7 @@ import com.gs.dbex.service.DbexServiceBeanFactory;
 import com.gs.dbex.service.QueryExecutionService;
 import com.gs.utils.io.FileRWUtil;
 import com.gs.utils.io.IOUtil;
+import com.gs.utils.jdbc.ResultSetDataTable;
 import com.gs.utils.swing.file.ExtensionFileFilter;
 import com.gs.utils.swing.file.FileBrowserUtil;
 import com.gs.utils.text.StringUtil;
@@ -1197,13 +1198,32 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 	public void propertyChange(PropertyChangeEvent evt) {
 		String p = evt.getPropertyName();
 		if(QueryExecutionTask.TASK_STATUS_DONE.equals(p)){
-			Object msg = evt.getNewValue();
+			Object newValue = evt.getNewValue();
 			String txtMsg = "Done";
-			if(null != msg){
-				txtMsg = msg.toString();
+			
+			if(null != newValue){
+				if(newValue instanceof Integer){
+					rowCountResultLabel.setText("" + newValue);
+				}
+				else if(newValue instanceof ResultSetDataTable){
+					ResultSetDataTable dataTable = (ResultSetDataTable) newValue;
+					rowCountResultLabel.setText("" + dataTable.getRowCount());
+					populateResultSetDataTable(dataTable);
+				}
+				else {
+					rowCountResultLabel.setText(newValue.toString());
+				}
 			}
+			
+			Object oldValue = evt.getOldValue();
+			if(null != oldValue){
+				if(oldValue instanceof Long){
+					messageLabel.setText(txtMsg + " [ Time taken : " + oldValue + "ms ]");
+				}
+			}
+			
+			
 			queryRunnerProgressBar.setIndeterminate(false);
-			messageLabel.setText(txtMsg);
 			stopExecutionButton.setEnabled(false);
 			stopExecutionMenuItem.setEnabled(false);
 			
@@ -1253,5 +1273,10 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 			}
 			messageLabel.setText(txtMsg);
 		}
+	}
+
+	private void populateResultSetDataTable(ResultSetDataTable dataTable) {
+		// TODO Auto-generated method stub
+		
 	}
 }

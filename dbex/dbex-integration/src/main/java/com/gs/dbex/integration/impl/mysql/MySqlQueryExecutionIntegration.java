@@ -156,5 +156,15 @@ public class MySqlQueryExecutionIntegration implements
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public int executeNonQuery(
+			ConnectionProperties connectionProperties,
+			SqlQuery sqlQuery,
+			Transaction<? extends java.sql.Connection, ? extends java.sql.Statement, ? extends java.sql.PreparedStatement, ? extends ResultSet> transaction)
+			throws DbexException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }

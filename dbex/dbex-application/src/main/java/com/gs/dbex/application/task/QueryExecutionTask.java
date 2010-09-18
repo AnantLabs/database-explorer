@@ -5,12 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Date;
 import java.util.List;
 
-import javax.swing.JLabel;
-import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
+import org.apache.log4j.Logger;
+
+import com.gs.dbex.common.enums.QueryTypeEnum;
 import com.gs.dbex.core.Transaction;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.sql.SqlQuery;
@@ -27,6 +29,8 @@ public class QueryExecutionTask extends
 	
 	public static final String PROPERTY_PROGRESS = "PROPERTY_PROGRESS";
 	public static final String PROPERTY_MESSAGE = "PROPERTY_MESSAGE";
+	
+	private static final Logger LOGGER = Logger.getLogger(QueryExecutionTask.class);
 	
 	private SqlQuery sqlQuery;
 	private ConnectionProperties connectionProperties;
@@ -73,13 +77,32 @@ public class QueryExecutionTask extends
 
 	@Override
 	protected ResultSetDataTable doInBackground() throws Exception {
+		Long startTime = System.currentTimeMillis();
+		if(LOGGER.isDebugEnabled()){
+			LOGGER.debug("Query execution task STARTED @ " + new Date());
+		}
 		firePropertyChange(PROPERTY_PROGRESS, null, TASK_STATUS_START);
-		Thread.sleep(50000);
+		Thread.sleep(10000);
 		currentTransaction = getQueryExecutionService().createTransaction(connectionProperties);
-		if (null != currentTransaction) {
-			resultSetDataTable = getQueryExecutionService().executeQuery(connectionProperties, sqlQuery, currentTransaction);
+		int rows = 0;
+		/*if (null != currentTransaction) {
+			if(QueryTypeEnum.SELECT.equals(sqlQuery.getQueryType())){
+				resultSetDataTable = getQueryExecutionService().executeQuery(connectionProperties, sqlQuery, currentTransaction);
+			} else {
+				rows = getQueryExecutionService().executeNonQuery(connectionProperties, sqlQuery, currentTransaction);
+			}
 		} else {
 			firePropertyChange(TASK_STATUS_ABORT, null, "Cannot create transaction.");
+		}*/
+		Long endTime = System.currentTimeMillis();
+		Long totalTime = endTime - startTime;
+		if(LOGGER.isDebugEnabled()){
+			LOGGER.debug("Query execution task ENDED @ " + new Date() + ". Total Time taken = " + totalTime + "ms");
+		}
+		if(null != resultSetDataTable){
+			firePropertyChange(TASK_STATUS_DONE, totalTime, resultSetDataTable);
+		} else {
+			firePropertyChange(TASK_STATUS_DONE, totalTime, new Integer(rows));
 		}
 		return resultSetDataTable;
 	}
@@ -105,6 +128,7 @@ public class QueryExecutionTask extends
 				e.printStackTrace();
 			}
 		}
+		cancel(true);
 		firePropertyChange(TASK_STATUS_ABORT, null, null);
 	}
 

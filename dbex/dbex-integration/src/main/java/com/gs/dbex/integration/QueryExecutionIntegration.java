@@ -96,6 +96,27 @@ public interface QueryExecutionIntegration {
 	/**
 	 * 
 	 * @param connectionProperties
+	 * @param sqlQuery
+	 * @param transaction <code>Transaction<
+			? extends Connection, 
+			? extends Statement, 
+			? extends PreparedStatement, 
+			? extends ResultSet></code>
+	 * @return
+	 * @throws DbexException
+	 */
+	public int executeNonQuery(
+		ConnectionProperties connectionProperties,
+		SqlQuery sqlQuery, 
+		Transaction<
+			? extends Connection, 
+			? extends Statement, 
+			? extends PreparedStatement, 
+			? extends ResultSet> transaction) throws DbexException;
+	
+	/**
+	 * 
+	 * @param connectionProperties
 	 * @param transaction <code>Transaction<
 			? extends Connection, 
 			? extends Statement, 
