@@ -174,8 +174,9 @@ public class MySqlQueryExecutionIntegration implements
 			if(connection == null){
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
-			//connection.setCatalog(transaction.getCatalogName());
-			ResultSet rs = transaction.executeQuery(sqlQuery);
+			connection.setCatalog(transaction.getCatalogName());
+			PreparedStatement ps = (PreparedStatement) transaction.prepareStatement(sqlQuery, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			ResultSet rs = ps.executeQuery();
 			dataTable = new ResultSetDataTable(rs);
 			logger.info("Total " + dataTable.getRowCount() + " found by the query : " + sqlQuery);
 			JdbcUtil.close(rs, false);
@@ -232,7 +233,7 @@ public class MySqlQueryExecutionIntegration implements
 			if(connection == null){
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
-			//connection.setCatalog(transaction.getCatalogName());
+			connection.setCatalog(transaction.getCatalogName());
 			PreparedStatement ps = (PreparedStatement) transaction.prepareStatement(sqlQuery);
 			rows = transaction.executeUpdate(sqlQuery);
 			logger.info("Total " + rows + " changed : " + sqlQuery);

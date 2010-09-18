@@ -1032,6 +1032,7 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 			
 			queryExecutionTask = new QueryExecutionTask(connectionProperties, sqlQuery);
 			queryExecutionTask.addPropertyChangeListener(this);
+			queryExecutionTask.setCatalogName("gs_dev");
 			queryExecutionTask.execute();
 			
 		}

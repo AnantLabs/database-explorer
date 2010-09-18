@@ -31,6 +31,10 @@ public class Transaction<C extends Connection, S extends Statement, P extends Pr
 	}
 
 	public final void commit() throws SQLException {
+		if(null == connection)
+			return;
+		if(connection.isClosed())
+			return;
 		if (this.resultSet != null) {
 			this.resultSet.close();
 		}
@@ -43,6 +47,8 @@ public class Transaction<C extends Connection, S extends Statement, P extends Pr
 
 	public final void abort() throws SQLException {
 		if(null == this.connection)
+			return;
+		if(connection.isClosed())
 			return;
 		if (!(this.connection.getAutoCommit()))
 			this.connection.rollback();
@@ -98,6 +104,13 @@ public class Transaction<C extends Connection, S extends Statement, P extends Pr
 	public final PreparedStatement prepareStatement(String query)
 			throws SQLException {
 		this.preparedStatement = (P) this.connection.prepareStatement(query);
+		return this.preparedStatement;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public final PreparedStatement prepareStatement(String query, int resultSetType, int resultSetConcurrency)
+			throws SQLException {
+		this.preparedStatement = (P) this.connection.prepareStatement(query, resultSetType, resultSetConcurrency);
 		return this.preparedStatement;
 	}
 
