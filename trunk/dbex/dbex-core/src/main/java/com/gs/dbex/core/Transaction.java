@@ -11,9 +11,19 @@ public class Transaction<C extends Connection, S extends Statement, P extends Pr
 	private S statement;
 	private P preparedStatement;
 	private R resultSet;
+	
+	private String catalogName;
 
 	public Transaction(C connection) {
 		this.connection = connection;
+	}
+
+	public String getCatalogName() {
+		return catalogName;
+	}
+
+	public void setCatalogName(String catalogName) {
+		this.catalogName = catalogName;
 	}
 
 	public final C begin() throws SQLException {
@@ -32,7 +42,11 @@ public class Transaction<C extends Connection, S extends Statement, P extends Pr
 	}
 
 	public final void abort() throws SQLException {
-		this.connection.rollback();
+		if(null == this.connection)
+			return;
+		if (!(this.connection.getAutoCommit()))
+			this.connection.rollback();
+		this.close();
 	}
 
 	public final void close() {

@@ -82,18 +82,18 @@ public class QueryExecutionTask extends
 			LOGGER.debug("Query execution task STARTED @ " + new Date());
 		}
 		firePropertyChange(PROPERTY_PROGRESS, null, TASK_STATUS_START);
-		Thread.sleep(10000);
 		currentTransaction = getQueryExecutionService().createTransaction(connectionProperties);
 		int rows = 0;
-		/*if (null != currentTransaction) {
+		if (null != currentTransaction) {
 			if(QueryTypeEnum.SELECT.equals(sqlQuery.getQueryType())){
 				resultSetDataTable = getQueryExecutionService().executeQuery(connectionProperties, sqlQuery, currentTransaction);
 			} else {
 				rows = getQueryExecutionService().executeNonQuery(connectionProperties, sqlQuery, currentTransaction);
+				currentTransaction.commit();
 			}
 		} else {
 			firePropertyChange(TASK_STATUS_ABORT, null, "Cannot create transaction.");
-		}*/
+		}
 		Long endTime = System.currentTimeMillis();
 		Long totalTime = endTime - startTime;
 		if(LOGGER.isDebugEnabled()){

@@ -140,7 +140,7 @@ public class SqlServerQueryExecutionIntegration implements
 	@Override
 	public ResultSetDataTable executeQuery(
 			ConnectionProperties connectionProperties,
-			SqlQuery sqlQuery,
+			String sqlQuery,
 			Transaction<? extends Connection, ? extends Statement, ? extends PreparedStatement, ? extends ResultSet> transaction)
 			throws DbexException {
 		// TODO Auto-generated method stub
@@ -159,7 +159,7 @@ public class SqlServerQueryExecutionIntegration implements
 	@Override
 	public int executeNonQuery(
 			ConnectionProperties connectionProperties,
-			SqlQuery sqlQuery,
+			String sqlQuery,
 			Transaction<? extends Connection, ? extends Statement, ? extends PreparedStatement, ? extends ResultSet> transaction)
 			throws DbexException {
 		// TODO Auto-generated method stub
