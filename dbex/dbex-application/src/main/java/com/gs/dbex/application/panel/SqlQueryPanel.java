@@ -1235,7 +1235,7 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 		}
 		if(QueryExecutionTask.PROPERTY_PROGRESS.equals(p)){
 			String type = evt.getNewValue().toString();
-			String txtMsg = "Executing task...";
+			String txtMsg = "Executing Query ...";
 			if(QueryExecutionTask.TASK_STATUS_START.equals(type)){
 				stopExecutionButton.setEnabled(true);
 				stopExecutionMenuItem.setEnabled(true);
