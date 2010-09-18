@@ -177,6 +177,23 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 		}
 		return integration.executeQuery(connectionProperties, sqlQuery, transaction);
 	}
+	
+	@Override
+	public int executeNonQuery(
+			ConnectionProperties connectionProperties,
+			SqlQuery sqlQuery,
+			Transaction<? extends Connection, ? extends Statement, ? extends PreparedStatement, ? extends ResultSet> transaction)
+			throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		QueryExecutionIntegration integration = getIntegrationPoint(connectionProperties);
+		if(integration == null){
+			logger.debug("Integration point not found.");
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		return integration.executeNonQuery(connectionProperties, sqlQuery, transaction);
+	}
 
 	@Override
 	public boolean abortTransaction(

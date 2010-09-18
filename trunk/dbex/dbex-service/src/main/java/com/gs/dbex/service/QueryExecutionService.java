@@ -51,6 +51,15 @@ public interface QueryExecutionService {
 				? extends Statement, 
 				? extends PreparedStatement, 
 				? extends ResultSet> transaction) throws DbexException;
+	
+	public int executeNonQuery(
+			ConnectionProperties connectionProperties,
+			SqlQuery sqlQuery, 
+			Transaction<
+				? extends Connection, 
+				? extends Statement, 
+				? extends PreparedStatement, 
+				? extends ResultSet> transaction) throws DbexException;
 
 	public boolean abortTransaction(
 			ConnectionProperties connectionProperties,

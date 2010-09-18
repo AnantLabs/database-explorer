@@ -155,4 +155,14 @@ public class SqlServerQueryExecutionIntegration implements
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	@Override
+	public int executeNonQuery(
+			ConnectionProperties connectionProperties,
+			SqlQuery sqlQuery,
+			Transaction<? extends Connection, ? extends Statement, ? extends PreparedStatement, ? extends ResultSet> transaction)
+			throws DbexException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
