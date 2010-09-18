@@ -5,21 +5,25 @@ package com.gs.dbex.integration.impl.mysql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.common.exception.ErrorCodeConstants;
+import com.gs.dbex.core.Transaction;
 import com.gs.dbex.integration.QueryExecutionIntegration;
 import com.gs.dbex.integration.helper.mysql.MySqlIntegrationHelper;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.model.vo.PaginationResult;
 import com.gs.utils.jdbc.JdbcUtil;
+import com.gs.utils.jdbc.ResultSetDataTable;
 import com.gs.utils.text.StringUtil;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.ResultSetImpl;
+import com.mysql.jdbc.Statement;
 
 /**
  * @author Sabuj Das
@@ -108,7 +112,7 @@ public class MySqlQueryExecutionIntegration implements
 			}
 			
 			connection.setCatalog(databaseTable.getSchemaName());
-			Statement statement = connection.prepareStatement(countQuery);
+			java.sql.Statement statement = connection.prepareStatement(countQuery);
 			ResultSet rs = statement.executeQuery(countQuery);
 			if(rs != null){
 				while(rs.next()){
@@ -126,4 +130,31 @@ public class MySqlQueryExecutionIntegration implements
 		}
 		return totalRows;
 	}
+
+	@Override
+	public Transaction<? extends java.sql.Connection, ? extends java.sql.Statement, ? extends java.sql.PreparedStatement, ? extends ResultSet> createTransaction(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResultSetDataTable executeQuery(
+			ConnectionProperties connectionProperties,
+			SqlQuery sqlQuery,
+			Transaction<? extends java.sql.Connection, ? extends java.sql.Statement, ? extends java.sql.PreparedStatement, ? extends ResultSet> transaction)
+			throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean abortTransaction(
+			ConnectionProperties connectionProperties,
+			Transaction<? extends java.sql.Connection, ? extends java.sql.Statement, ? extends java.sql.PreparedStatement, ? extends ResultSet> transaction)
+			throws DbexException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

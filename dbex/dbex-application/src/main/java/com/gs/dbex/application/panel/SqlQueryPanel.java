@@ -17,6 +17,8 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.StringReader;
@@ -74,15 +76,15 @@ import com.gs.dbex.application.sql.SyntaxHighlighter;
 import com.gs.dbex.application.sql.processor.SqlProcessor;
 import com.gs.dbex.application.sql.text.WrapEditorKit;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
-import com.gs.dbex.application.thread.QueryExecutionThread;
+import com.gs.dbex.application.task.QueryExecutionTask;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.application.util.SwingUtilities;
-import com.gs.dbex.common.SqlQuery;
 import com.gs.dbex.common.enums.QueryTypeEnum;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.service.DbexServiceBeanFactory;
 import com.gs.dbex.service.QueryExecutionService;
 import com.gs.utils.io.FileRWUtil;
@@ -96,7 +98,7 @@ import com.gs.utils.text.StringUtil;
  * @author Green Moon
  */
 public class SqlQueryPanel extends JPanel implements ActionListener, CaretListener, FocusListener,
-UndoableEditListener, HyperlinkListener {
+UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 
 	private JFrame parentFrame;
 	public static final Font DEFAULT_TEXT_FONT =
@@ -115,8 +117,7 @@ UndoableEditListener, HyperlinkListener {
 	
 	private Runnable queryExecutionRunner;
 	private Thread queryExecutionThread;
-	
-	QueryExecutionThread t;
+	private QueryExecutionTask queryExecutionTask;
 
 	/** Creates new form SqlQueryPanel */
 	public SqlQueryPanel(JComponent parentComponent, ConnectionProperties connectionProperties) {
@@ -978,22 +979,8 @@ UndoableEditListener, HyperlinkListener {
 
 	@SuppressWarnings("deprecation")
 	private void stopQueryExecution() {
-		if(queryExecutionThread != null){
-			System.out.println(queryExecutionThread.getState().name());
-			if(!queryExecutionThread.getState().equals(State.NEW)
-					&& !queryExecutionThread.getState().equals(State.TERMINATED)){
-				queryExecutionThread.stop();
-				stopExecutionButton.setEnabled(false);
-				stopExecutionMenuItem.setEnabled(false);
-				
-				runQueryButton.setEnabled(true);
-				runQueryMenuItem.setEnabled(true);
-				runAllButton.setEnabled(true);
-				runAllMenuItem.setEnabled(true);
-				runSelectedQueryButton.setEnabled(true);
-				runSelectionMenuItem.setEnabled(true);
-			}
-			System.out.println(queryExecutionThread.getState().name());
+		if(queryExecutionTask != null){
+			queryExecutionTask.stop();
 		}
 		
 	}
@@ -1033,88 +1020,19 @@ UndoableEditListener, HyperlinkListener {
 		}
 	}
 
-	public void displayQueryResults(final String q) {
-		final SqlQuery sqlQuery = new SqlQuery(q);
-		
-		/*t.setSqlQuery(sqlQuery);
-		
-		dsb.add();
-		dsb.add();
-		dsb.add();
-		dsb.add();
-		*/
+	public void displayQueryResults(final String queryString) {
+		final SqlQuery sqlQuery = new SqlQuery(queryString);
+
+		if(null == sqlQuery){
+			return;
+		}
+			
 		synchronized (this) {
 			
-		
-		queryExecutionRunner = new Runnable() {
+			queryExecutionTask = new QueryExecutionTask(connectionProperties, sqlQuery);
+			queryExecutionTask.addPropertyChangeListener(this);
+			queryExecutionTask.execute();
 			
-			public void run() {
-				stopExecutionButton.setEnabled(true);
-				stopExecutionMenuItem.setEnabled(true);
-				
-				runQueryButton.setEnabled(false);
-				runQueryMenuItem.setEnabled(false);
-				runAllButton.setEnabled(false);
-				runAllMenuItem.setEnabled(false);
-				runSelectedQueryButton.setEnabled(false);
-				runSelectionMenuItem.setEnabled(false);
-				
-				if(QueryTypeEnum.SELECT.equals(sqlQuery.getQueryType())){
-					/*EventQueue.invokeLater(new Runnable() {
-						public void run() {
-							try {
-								queryResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-								queryResultTable.setCellSelectionEnabled(true);
-								queryResultTable.setModel(factory.getResultSetTableModel(q));
-								queryResultTabbedPane.setSelectedIndex(0);
-							} catch (SQLException ex) {
-								JOptionPane.showMessageDialog(getParentFrame(), new String[] {
-								ex.getClass().getName() + ": ", ex.getMessage() });
-							} catch (Exception ex) {
-								JOptionPane.showMessageDialog(getParentFrame(), "Error in query.");
-							}
-						}
-					});*/
-					try {
-						queryResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-						queryResultTable.setCellSelectionEnabled(true);
-						queryResultTable.setModel(factory.getResultSetTableModel(q));
-						queryResultTabbedPane.setSelectedIndex(0);
-					} catch (SQLException ex) {
-						JOptionPane.showMessageDialog(getParentFrame(), new String[] {
-						ex.getClass().getName() + ": ", ex.getMessage() });
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(getParentFrame(), "Error in query.");
-					}
-				}
-				else {
-					queryExecutionService = DbexServiceBeanFactory.getBeanFactory().getQueryExecutionService();
-					/*try {
-						int row = queryExecutionService.executeNonQuery(sqlQuery);
-						queryLogTextArea.append("[ " + row + " ] rows updated.\n");
-						queryResultTabbedPane.setSelectedIndex(1);
-					} catch (ApplicationException ex) {
-						JOptionPane.showMessageDialog(getParentFrame(), ex.getMessage());
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(getParentFrame(), "Error in query.");
-					}*/
-				}
-				
-				stopExecutionButton.setEnabled(false);
-				stopExecutionMenuItem.setEnabled(false);
-				
-				runQueryButton.setEnabled(true);
-				runQueryMenuItem.setEnabled(true);
-				runAllButton.setEnabled(true);
-				runAllMenuItem.setEnabled(true);
-				runSelectedQueryButton.setEnabled(true);
-				runSelectionMenuItem.setEnabled(true);
-			}
-		};
-		
-		
-		queryExecutionThread = new Thread(queryExecutionRunner);
-		queryExecutionThread.start();
 		}
 	}
 	
@@ -1273,5 +1191,67 @@ UndoableEditListener, HyperlinkListener {
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String p = evt.getPropertyName();
+		if(QueryExecutionTask.TASK_STATUS_DONE.equals(p)){
+			Object msg = evt.getNewValue();
+			String txtMsg = "Done";
+			if(null != msg){
+				txtMsg = msg.toString();
+			}
+			queryRunnerProgressBar.setIndeterminate(false);
+			messageLabel.setText(txtMsg);
+			stopExecutionButton.setEnabled(false);
+			stopExecutionMenuItem.setEnabled(false);
+			
+			runQueryButton.setEnabled(true);
+			runQueryMenuItem.setEnabled(true);
+			runAllButton.setEnabled(true);
+			runAllMenuItem.setEnabled(true);
+			runSelectedQueryButton.setEnabled(true);
+			runSelectionMenuItem.setEnabled(true);
+		}
+		if(QueryExecutionTask.TASK_STATUS_ABORT.equals(p)){
+			Object msg = evt.getNewValue();
+			String txtMsg = "Transaction aborted";
+			if(null != msg){
+				txtMsg = msg.toString();
+			}
+			queryRunnerProgressBar.setIndeterminate(false);
+			messageLabel.setText(txtMsg);
+			
+			stopExecutionButton.setEnabled(false);
+			stopExecutionMenuItem.setEnabled(false);
+			
+			runQueryButton.setEnabled(true);
+			runQueryMenuItem.setEnabled(true);
+			runAllButton.setEnabled(true);
+			runAllMenuItem.setEnabled(true);
+			runSelectedQueryButton.setEnabled(true);
+			runSelectionMenuItem.setEnabled(true);
+		}
+		if(QueryExecutionTask.PROPERTY_PROGRESS.equals(p)){
+			String type = evt.getNewValue().toString();
+			String txtMsg = "Executing task...";
+			if(QueryExecutionTask.TASK_STATUS_START.equals(type)){
+				stopExecutionButton.setEnabled(true);
+				stopExecutionMenuItem.setEnabled(true);
+				
+				runQueryButton.setEnabled(false);
+				runQueryMenuItem.setEnabled(false);
+				runAllButton.setEnabled(false);
+				runAllMenuItem.setEnabled(false);
+				runSelectedQueryButton.setEnabled(false);
+				runSelectionMenuItem.setEnabled(false);
+				
+				queryRunnerProgressBar.setIndeterminate(true);
+			} else {
+				queryRunnerProgressBar.setIndeterminate(false);
+			}
+			messageLabel.setText(txtMsg);
+		}
 	}
 }

@@ -1,7 +1,4 @@
-/**
- * 
- */
-package com.gs.dbex.common;
+package com.gs.dbex.model.sql;
 
 import com.gs.dbex.common.enums.QueryTypeEnum;
 import com.gs.utils.text.StringUtil;

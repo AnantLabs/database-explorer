@@ -4,15 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.apache.log4j.Logger;
 
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.common.exception.ErrorCodeConstants;
+import com.gs.dbex.core.Transaction;
 import com.gs.dbex.integration.QueryExecutionIntegration;
 import com.gs.dbex.integration.helper.mysql.SqlServerIntegrationHelper;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.model.vo.PaginationResult;
 import com.gs.utils.exception.UtilityException;
 import com.gs.utils.jdbc.JdbcUtil;
@@ -125,5 +128,31 @@ public class SqlServerQueryExecutionIntegration implements
 			JdbcUtil.close(connection);
 		}
 		return totalRows;
+	}
+
+	@Override
+	public Transaction<? extends Connection, ? extends Statement, ? extends PreparedStatement, ? extends ResultSet> createTransaction(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ResultSetDataTable executeQuery(
+			ConnectionProperties connectionProperties,
+			SqlQuery sqlQuery,
+			Transaction<? extends Connection, ? extends Statement, ? extends PreparedStatement, ? extends ResultSet> transaction)
+			throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean abortTransaction(
+			ConnectionProperties connectionProperties,
+			Transaction<? extends Connection, ? extends Statement, ? extends PreparedStatement, ? extends ResultSet> transaction)
+			throws DbexException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
