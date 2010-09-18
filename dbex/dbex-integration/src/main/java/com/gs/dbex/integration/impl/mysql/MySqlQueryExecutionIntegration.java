@@ -17,6 +17,7 @@ import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.model.vo.PaginationResult;
+import com.gs.utils.exception.UtilityException;
 import com.gs.utils.jdbc.JdbcUtil;
 import com.gs.utils.jdbc.ResultSetDataTable;
 import com.gs.utils.text.StringUtil;
@@ -134,18 +135,60 @@ public class MySqlQueryExecutionIntegration implements
 	@Override
 	public Transaction<? extends java.sql.Connection, ? extends java.sql.Statement, ? extends java.sql.PreparedStatement, ? extends ResultSet> createTransaction(
 			ConnectionProperties connectionProperties) throws DbexException {
-		// TODO Auto-generated method stub
-		return null;
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		Connection connection = null;
+		Transaction<Connection, Statement, PreparedStatement, ResultSet> transaction = null;
+		try {
+			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			connection.setAutoCommit(false);
+			transaction = new Transaction<Connection, Statement, PreparedStatement, ResultSet>(connection);
+		} catch (SQLException e) {
+			logger.error(e);
+			JdbcUtil.close(connection);
+			throw new DbexException(null, e.getMessage());
+		}
+		return transaction;
 	}
 
 	@Override
 	public ResultSetDataTable executeQuery(
 			ConnectionProperties connectionProperties,
-			SqlQuery sqlQuery,
+			String sqlQuery,
 			Transaction<? extends java.sql.Connection, ? extends java.sql.Statement, ? extends java.sql.PreparedStatement, ? extends ResultSet> transaction)
 			throws DbexException {
-		// TODO Auto-generated method stub
-		return null;
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		if(transaction == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		Connection connection = null;
+		ResultSetDataTable dataTable = null;
+		try {
+			connection = (Connection) transaction.begin();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			//connection.setCatalog(transaction.getCatalogName());
+			ResultSet rs = transaction.executeQuery(sqlQuery);
+			dataTable = new ResultSetDataTable(rs);
+			logger.info("Total " + dataTable.getRowCount() + " found by the query : " + sqlQuery);
+			JdbcUtil.close(rs, false);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} catch (UtilityException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		return dataTable;
 	}
 
 	@Override
@@ -153,18 +196,53 @@ public class MySqlQueryExecutionIntegration implements
 			ConnectionProperties connectionProperties,
 			Transaction<? extends java.sql.Connection, ? extends java.sql.Statement, ? extends java.sql.PreparedStatement, ? extends ResultSet> transaction)
 			throws DbexException {
-		// TODO Auto-generated method stub
-		return false;
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		if(transaction == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		try {
+			transaction.abort();
+		} catch (SQLException e) {
+			logger.error(e);
+			return false;
+		} finally {
+			transaction.close();
+		}
+		return true;
 	}
 	
 	@Override
 	public int executeNonQuery(
 			ConnectionProperties connectionProperties,
-			SqlQuery sqlQuery,
+			String sqlQuery,
 			Transaction<? extends java.sql.Connection, ? extends java.sql.Statement, ? extends java.sql.PreparedStatement, ? extends ResultSet> transaction)
 			throws DbexException {
-		// TODO Auto-generated method stub
-		return 0;
+		int rows = 0;
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		if(transaction == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		Connection connection = null;
+		try {
+			connection = (Connection) transaction.begin();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			//connection.setCatalog(transaction.getCatalogName());
+			PreparedStatement ps = (PreparedStatement) transaction.prepareStatement(sqlQuery);
+			rows = transaction.executeUpdate(sqlQuery);
+			logger.info("Total " + rows + " changed : " + sqlQuery);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			//JdbcUtil.close(connection);
+		}
+		return rows;
 	}
 
 }

@@ -33,4 +33,7 @@ public class SqlQuery {
 		this.query = query;
 	}
 
+	public boolean isValid(){
+		return StringUtil.hasValidContent(query);
+	}
 }

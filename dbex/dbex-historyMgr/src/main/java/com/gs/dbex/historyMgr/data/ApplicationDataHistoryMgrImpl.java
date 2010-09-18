@@ -19,7 +19,6 @@ import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.cfg.JdbcDriverConfiguration;
 import com.gs.dbex.model.syntax.StyleConfiguration;
 import com.gs.utils.io.FileRWUtil;
-import com.gs.utils.io.IOUtil;
 import com.gs.utils.text.StringUtil;
 
 /**

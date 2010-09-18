@@ -175,7 +175,7 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 			logger.debug("Integration point not found.");
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
-		return integration.executeQuery(connectionProperties, sqlQuery, transaction);
+		return integration.executeQuery(connectionProperties, sqlQuery.getQuery(), transaction);
 	}
 	
 	@Override
@@ -192,7 +192,7 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 			logger.debug("Integration point not found.");
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
-		return integration.executeNonQuery(connectionProperties, sqlQuery, transaction);
+		return integration.executeNonQuery(connectionProperties, sqlQuery.getQuery(), transaction);
 	}
 
 	@Override

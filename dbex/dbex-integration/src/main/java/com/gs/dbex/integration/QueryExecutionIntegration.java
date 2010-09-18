@@ -86,7 +86,7 @@ public interface QueryExecutionIntegration {
 	 */
 	public ResultSetDataTable executeQuery(
 		ConnectionProperties connectionProperties,
-		SqlQuery sqlQuery, 
+		String sqlQuery, 
 		Transaction<
 			? extends Connection, 
 			? extends Statement, 
@@ -107,7 +107,7 @@ public interface QueryExecutionIntegration {
 	 */
 	public int executeNonQuery(
 		ConnectionProperties connectionProperties,
-		SqlQuery sqlQuery, 
+		String sqlQuery, 
 		Transaction<
 			? extends Connection, 
 			? extends Statement, 
