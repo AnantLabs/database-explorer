@@ -49,7 +49,7 @@ public class SqlServerDatabaseMetadataIntegrationImpl extends
 		try {
 			connection = connectionProperties.getDataSource().getConnection();
 			if(dbGrabber != null)
-				database = dbGrabber.grabDatabaseByCatalog(connection, connectionProperties.getDatabaseConfiguration().getSchemaName(), readDepthEnum);
+				database = dbGrabber.grabDatabaseByCatalog(connectionProperties.getConnectionName(), connection, connectionProperties.getDatabaseConfiguration().getSchemaName(), readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
@@ -77,7 +77,7 @@ public class SqlServerDatabaseMetadataIntegrationImpl extends
 		try {
 			connection = connectionProperties.getDataSource().getConnection();
 			if(dbGrabber != null)
-				table = dbGrabber.grabTable(connection, schemaName, tableName, readDepthEnum);
+				table = dbGrabber.grabTable(connectionProperties.getConnectionName(), connection, schemaName, tableName, readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());

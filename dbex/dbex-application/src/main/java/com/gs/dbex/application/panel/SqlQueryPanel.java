@@ -62,6 +62,7 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Keymap;
@@ -75,6 +76,7 @@ import com.gs.dbex.application.event.command.GuiEventHandler;
 import com.gs.dbex.application.sql.SyntaxHighlighter;
 import com.gs.dbex.application.sql.processor.SqlProcessor;
 import com.gs.dbex.application.sql.text.WrapEditorKit;
+import com.gs.dbex.application.table.model.DataTableTableModel;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.task.QueryExecutionTask;
 import com.gs.dbex.application.util.DisplayTypeEnum;
@@ -82,6 +84,8 @@ import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.application.util.SwingUtilities;
 import com.gs.dbex.common.enums.QueryTypeEnum;
+import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.design.util.DrawingUtil;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.sql.SqlQuery;
@@ -149,7 +153,7 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 		Connection con = null;
 		try {
 			con = getConnectionProperties().getDataSource().getConnection();
-			sqlProcessor = new SqlProcessor();
+			sqlProcessor = new SqlProcessor(getConnectionProperties());
 			sqlProcessor.installServiceKeywords();//con.getMetaData(), "%", connectionProperties.getDatabaseName());
 			sqlProcessor.installServiceKeywords(con.getMetaData());
 		} catch (SQLException e) {
@@ -567,8 +571,9 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 		
 		
 		queryToolBar.add(schemaNameLabel);
-		schemaNamesComboBox.setModel(new DefaultComboBoxModel(RESERVED_WORDS_UTIL.getSchemaNames().toArray()));
-		if(RESERVED_WORDS_UTIL.getSchemaNames().size() <= 1){
+		schemaNamesComboBox.setModel(new DefaultComboBoxModel(
+				RESERVED_WORDS_UTIL.getSchemaNames(getConnectionProperties().getConnectionName()).toArray()));
+		if(RESERVED_WORDS_UTIL.getSchemaNames(getConnectionProperties().getConnectionName()).size() <= 1){
 			schemaNamesComboBox.setEnabled(false);
 		} else {
 			schemaNamesComboBox.setEnabled(true);
@@ -715,7 +720,7 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 		queryResultTabPanel.setLayout(new BorderLayout());
 		queryResultTable = new JTable();
 		queryResultTable.setAutoCreateRowSorter(true);
-		queryResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		queryResultTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		queryResultTable.setAutoscrolls(true);
 		queryResultTabPanel.add(new JScrollPane(queryResultTable),
 				BorderLayout.CENTER);
@@ -1023,16 +1028,13 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 
 	public void displayQueryResults(final String queryString) {
 		final SqlQuery sqlQuery = new SqlQuery(queryString);
-
 		if(null == sqlQuery){
 			return;
 		}
-			
 		synchronized (this) {
-			
 			queryExecutionTask = new QueryExecutionTask(connectionProperties, sqlQuery);
 			queryExecutionTask.addPropertyChangeListener(this);
-			queryExecutionTask.setCatalogName("gs_dev");
+			queryExecutionTask.setCatalogName(schemaNamesComboBox.getSelectedItem().toString());
 			queryExecutionTask.execute();
 			
 		}
@@ -1197,11 +1199,11 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		String p = evt.getPropertyName();
-		if(QueryExecutionTask.TASK_STATUS_DONE.equals(p)){
+		String propertyName = evt.getPropertyName();
+		if(QueryExecutionTask.TASK_STATUS_DONE.equals(propertyName)){
 			Object newValue = evt.getNewValue();
 			String txtMsg = "Done";
-			
+			queryLogTextArea.append("\n" + txtMsg);
 			if(null != newValue){
 				if(newValue instanceof Integer){
 					rowCountResultLabel.setText("" + newValue);
@@ -1220,9 +1222,9 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 			if(null != oldValue){
 				if(oldValue instanceof Long){
 					messageLabel.setText(txtMsg + " [ Time taken : " + oldValue + "ms ]");
+					queryLogTextArea.append("\n" + txtMsg + " [ Time taken : " + oldValue + "ms ]");
 				}
 			}
-			
 			
 			queryRunnerProgressBar.setIndeterminate(false);
 			stopExecutionButton.setEnabled(false);
@@ -1235,7 +1237,7 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 			runSelectedQueryButton.setEnabled(true);
 			runSelectionMenuItem.setEnabled(true);
 		}
-		if(QueryExecutionTask.TASK_STATUS_ABORT.equals(p)){
+		if(QueryExecutionTask.TASK_STATUS_ABORT.equals(propertyName)){
 			Object msg = evt.getNewValue();
 			String txtMsg = "Transaction aborted";
 			if(null != msg){
@@ -1243,7 +1245,7 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 			}
 			queryRunnerProgressBar.setIndeterminate(false);
 			messageLabel.setText(txtMsg);
-			
+			queryLogTextArea.append("\n" + txtMsg);
 			stopExecutionButton.setEnabled(false);
 			stopExecutionMenuItem.setEnabled(false);
 			
@@ -1254,10 +1256,13 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 			runSelectedQueryButton.setEnabled(true);
 			runSelectionMenuItem.setEnabled(true);
 		}
-		if(QueryExecutionTask.PROPERTY_PROGRESS.equals(p)){
+		if(QueryExecutionTask.PROPERTY_PROGRESS.equals(propertyName)){
 			String type = evt.getNewValue().toString();
 			String txtMsg = "Executing Query ...";
+			queryLogTextArea.append("\n" + txtMsg);
 			if(QueryExecutionTask.TASK_STATUS_START.equals(type)){
+				queryResultTable.setModel(new DefaultTableModel());
+				
 				stopExecutionButton.setEnabled(true);
 				stopExecutionMenuItem.setEnabled(true);
 				
@@ -1273,11 +1278,34 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 				queryRunnerProgressBar.setIndeterminate(false);
 			}
 			messageLabel.setText(txtMsg);
+			updateUI();
+		}
+		if(QueryExecutionTask.TASK_STATUS_FAILED.equals(propertyName)){
+			Object newValue = evt.getNewValue();
+			String txtMsg = "Query execution Failed.";
+			queryResultTable.setModel(new DefaultTableModel());
+			if(null != newValue){
+				if(newValue instanceof DbexException){
+					txtMsg += " Reason:: " + ((DbexException)newValue).getExceptionMessage();
+				}
+			}
+			
+			Object oldValue = evt.getOldValue();
+			if(null != oldValue){
+				if(oldValue instanceof Long){
+					messageLabel.setText(txtMsg + " [ Time taken : " + oldValue + "ms ]");
+				}
+			}
+			queryLogTextArea.append("\n" + txtMsg);
 		}
 	}
 
 	private void populateResultSetDataTable(ResultSetDataTable dataTable) {
-		// TODO Auto-generated method stub
-		
+		if(null != dataTable){
+			if(dataTable.getColumnCount() > 0){
+				queryResultTable.setModel(new DataTableTableModel(dataTable));
+				DrawingUtil.updateTableColumnWidth(queryResultTable);
+			}
+		}
 	}
 }

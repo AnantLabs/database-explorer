@@ -25,7 +25,7 @@ public interface DbGrabber {
 	DatabaseReservedWordsUtil RESERVED_WORDS_UTIL = DatabaseReservedWordsUtil.getInstance();
 	
 	
-	public String grabSqlKeyWords(Connection connection)
+	public String grabSqlKeyWords(String connectionName, Connection connection)
 			throws SQLException;
 
 

@@ -139,7 +139,7 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		String[] schemaNames = null;
         		try{
         			connection = getConnectionProperties().getDataSource().getConnection();
-        			Set<String> schemas = new OracleDbGrabber().getAvailableSchemaNames(connection);
+        			Set<String> schemas = new OracleDbGrabber().getAvailableSchemaNames(connectionProperties.getConnectionName(), connection);
         			if(logger.isDebugEnabled()){
         				logger.debug("[ " + schemas.size() + " ] available schema found.");
         			}

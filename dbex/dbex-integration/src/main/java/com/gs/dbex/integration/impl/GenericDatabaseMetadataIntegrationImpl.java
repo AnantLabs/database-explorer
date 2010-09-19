@@ -41,7 +41,7 @@ public class GenericDatabaseMetadataIntegrationImpl extends
 		try {
 			connection = connectionProperties.getDataSource().getConnection();
 			OracleDbGrabber dbGrabber = new OracleDbGrabber();
-			database = dbGrabber.grabDatabaseBySchema(connection, "", readDepthEnum);
+			database = dbGrabber.grabDatabaseBySchema(connectionProperties.getConnectionName(), connection, "", readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());

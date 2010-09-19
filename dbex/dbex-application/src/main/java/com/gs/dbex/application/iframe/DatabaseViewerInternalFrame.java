@@ -32,7 +32,10 @@ import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.common.ConnectionBasedReservedWords;
+import com.gs.dbex.model.common.DatabaseReservedWords;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
@@ -67,6 +70,14 @@ public class DatabaseViewerInternalFrame extends JInternalFrame implements
 
 	public DatabaseViewerInternalFrame(JFrame parent,
 			ConnectionProperties connectionProperties) {
+		DatabaseReservedWordsUtil util = DatabaseReservedWordsUtil.getInstance();
+		if(util.getConnectionBasedReservedWords(connectionProperties.getConnectionName()) == null){
+			ConnectionBasedReservedWords connectionBasedReservedWords = new ConnectionBasedReservedWords();
+			connectionBasedReservedWords.setConnectionName(connectionProperties.getConnectionName());
+			connectionBasedReservedWords.setConnectionProperties(connectionProperties);
+			util.addConnectionBasedReservedWords(connectionProperties.getConnectionName(), connectionBasedReservedWords);
+		}
+		
 		setName(getClass().getCanonicalName());
 
 		parentFrame = parent;

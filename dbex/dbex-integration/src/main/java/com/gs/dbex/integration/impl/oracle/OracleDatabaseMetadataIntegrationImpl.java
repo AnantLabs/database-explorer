@@ -42,7 +42,7 @@ public class OracleDatabaseMetadataIntegrationImpl extends
 		try {
 			connection = connectionProperties.getDataSource().getConnection();
 			if(dbGrabber != null)
-				database = dbGrabber.grabDatabaseBySchema(connection, "", readDepthEnum);
+				database = dbGrabber.grabDatabaseBySchema(connectionProperties.getConnectionName(), connection, "", readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());

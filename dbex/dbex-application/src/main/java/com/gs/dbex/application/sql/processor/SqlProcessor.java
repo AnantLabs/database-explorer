@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Set;
 
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
+import com.gs.dbex.model.cfg.ConnectionProperties;
 
 
 /**
@@ -20,15 +21,21 @@ public class SqlProcessor extends AbstractProcessor {
     private int charlength = 1;
     private int pair = 0;
 
-    public SqlProcessor() {
-
+    private ConnectionProperties connectionProperties;
+    
+    public SqlProcessor(ConnectionProperties connectionProperties) {
+    	this.connectionProperties = connectionProperties;
         initKind();
         initUniKind();
     }
     
+    private String getCurrentConnectionName(){
+    	return this.connectionProperties.getConnectionName();
+    }
+    
     public void installServiceKeywords(){
     	//initSymbolTable();
-    	Set<String> schemaNames = RESERVED_WORDS_UTIL.getSchemaNames();
+    	Set<String> schemaNames = RESERVED_WORDS_UTIL.getSchemaNames(getCurrentConnectionName());
     	if(schemaNames != null){
     		for (String s : schemaNames) {
     			lookup(TokenType.SCHEMA_NAME, s);
@@ -36,7 +43,7 @@ public class SqlProcessor extends AbstractProcessor {
     	    	if(tableNames != null){
     	    		for (String t : tableNames) {
     					lookup(TokenType.TABLE_NAME, t);
-    					Set<String> colNames = RESERVED_WORDS_UTIL.getColumnNames(t);
+    					Set<String> colNames = RESERVED_WORDS_UTIL.getColumnNames(getCurrentConnectionName(), t);
     					if(colNames != null){
     						for (String c : colNames) {
     							lookup(TokenType.COLUMN_NAME, c);
@@ -56,7 +63,7 @@ public class SqlProcessor extends AbstractProcessor {
         while (st.hasMoreTokens()) {
             String nextToken = st.nextToken();
             lookup(TokenType.FUNCTION, nextToken);
-            RESERVED_WORDS_UTIL.addFunctionName(nextToken, true);
+            RESERVED_WORDS_UTIL.addFunctionName(getCurrentConnectionName(), nextToken, true);
         }
 
         wordSet = metaData.getNumericFunctions();
@@ -64,7 +71,7 @@ public class SqlProcessor extends AbstractProcessor {
         while (st.hasMoreTokens()) {
             String nextToken = st.nextToken();
             lookup(TokenType.FUNCTION, nextToken);
-            RESERVED_WORDS_UTIL.addFunctionName(nextToken, true);
+            RESERVED_WORDS_UTIL.addFunctionName(getCurrentConnectionName(), nextToken, true);
         }
 
         wordSet = metaData.getStringFunctions();
@@ -72,7 +79,7 @@ public class SqlProcessor extends AbstractProcessor {
         while (st.hasMoreTokens()) {
             String nextToken = st.nextToken();
             lookup(TokenType.FUNCTION, nextToken);
-            RESERVED_WORDS_UTIL.addFunctionName(nextToken, true);
+            RESERVED_WORDS_UTIL.addFunctionName(getCurrentConnectionName(),nextToken, true);
         }
 
         wordSet = metaData.getTimeDateFunctions();
@@ -80,7 +87,7 @@ public class SqlProcessor extends AbstractProcessor {
         while (st.hasMoreTokens()) {
             String nextToken = st.nextToken();
             lookup(TokenType.FUNCTION, nextToken);
-            RESERVED_WORDS_UTIL.addFunctionName(nextToken, true);
+            RESERVED_WORDS_UTIL.addFunctionName(getCurrentConnectionName(),nextToken, true);
         }
 
     }

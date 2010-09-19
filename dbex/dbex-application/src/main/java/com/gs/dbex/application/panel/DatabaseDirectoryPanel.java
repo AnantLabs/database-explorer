@@ -576,7 +576,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 					Connection connection = null;
 					try {
 						connection = connectionProperties.getDataSource().getConnection();
-						table = new OracleDbGrabber().grabTable(connection, 
+						table = new OracleDbGrabber().grabTable(connectionProperties.getConnectionName(), connection, 
 								table.getSchemaName(), table.getModelName(), ReadDepthEnum.MEDIUM);
 					} catch (SQLException e) {
 						e.printStackTrace();

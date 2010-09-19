@@ -61,7 +61,7 @@ public class SearchColumnPanel extends JPanel implements ActionListener {
     	String[] schemaNames = null;
 		try{
 			connection = connectionProperties.getDataSource().getConnection();
-			Set<String> schemas = new OracleDbGrabber().getAvailableSchemaNames(connection);
+			Set<String> schemas = new OracleDbGrabber().getAvailableSchemaNames(connectionProperties.getConnectionName(), connection);
 			if(logger.isDebugEnabled()){
 				logger.debug("[ " + schemas.size() + " ] available schema found.");
 			}

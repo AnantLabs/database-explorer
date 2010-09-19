@@ -46,7 +46,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 	
 	@Override
-	public String grabSqlKeyWords(Connection connection) throws SQLException {
+	public String grabSqlKeyWords(String connectionName, Connection connection) throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabSqlKeyWords()");
 		}
@@ -58,7 +58,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public Database grabDatabaseByCatalog(Connection connection,
+	public Database grabDatabaseByCatalog(String connectionName, Connection connection,
 			String catalogName, ReadDepthEnum readDepth) throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabDatabaseByCatalog() for Catalog: " + catalogName);
@@ -67,10 +67,11 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 			return null;
 		}
 		Database database = new Database();
+		RESERVED_WORDS_UTIL.addSchemaName(connectionName, catalogName);
 		if(!StringUtil.hasValidContent(catalogName))
-			database.getSchemaList().addAll(grabCatalog(connection));
+			database.getSchemaList().addAll(grabCatalog(connectionName, connection));
 		else
-			database.getSchemaList().add(grabCatalog(connection, catalogName));
+			database.getSchemaList().add(grabCatalog(connectionName, connection, catalogName));
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: grabDatabaseByCatalog()");
 		}
@@ -78,7 +79,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public Schema grabCatalog(Connection connection, String catalogName)
+	public Schema grabCatalog(String connectionName, Connection connection, String catalogName)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabCatalog() for catalog: " + catalogName);
@@ -88,10 +89,11 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 		}
 		if(!StringUtil.hasValidContent(catalogName))
 			return null;
+		RESERVED_WORDS_UTIL.addSchemaName(connectionName, catalogName);
 		Schema schema = new Schema();
 		schema.setSchemaName(catalogName);
 		schema.setModelName(catalogName);
-		schema.setTableList(grabTables(connection, catalogName));
+		schema.setTableList(grabTables(connectionName, connection, catalogName));
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: grabCatalog()");
 		}
@@ -99,7 +101,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public List<Schema> grabCatalog(Connection connection)
+	public List<Schema> grabCatalog(String connectionName, Connection connection)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabCatalog()");
@@ -108,10 +110,12 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 			return null;
 		}
 		List<Schema> schemas = new ArrayList<Schema>();
-		Set<String> schemaNames = getAvailableCatalogNames(connection);
+		Set<String> schemaNames = getAvailableCatalogNames(connectionName, connection);
+		
 		if(null != schemaNames && schemaNames.size() > 0){
 			for (String schemaName : schemaNames) {
-				Schema schema = grabCatalog(connection, schemaName);
+				RESERVED_WORDS_UTIL.addSchemaName(connectionName, schemaName);
+				Schema schema = grabCatalog(connectionName, connection, schemaName);
 				if(null != schema)
 					schemas.add(schema);
 			}
@@ -122,7 +126,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 		return schemas;
 	}
 	
-	public List<Table> grabTables(Connection connection, String schemaName)throws SQLException  {
+	public List<Table> grabTables(String connectionName, Connection connection, String schemaName)throws SQLException  {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabTables() for catalog: " + schemaName);
 		}
@@ -153,7 +157,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 		JdbcUtil.close(resultSet, false);
 		if(tableNames.size() > 0){
 			for (String tableName : tableNames) {
-				Table table = grabTable(connection, schemaName, tableName, ReadDepthEnum.DEEP);
+				Table table = grabTable(connectionName, connection, schemaName, tableName, ReadDepthEnum.DEEP);
 				if(null != table)
 					tables.add(table);
 			}
@@ -167,7 +171,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public Set<String> getAvailableCatalogNames(Connection connection)
+	public Set<String> getAvailableCatalogNames(String connectionName, Connection connection)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: getAvailableCatalogNames()");
@@ -198,7 +202,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public Table grabTable(Connection connection, String catalogName,
+	public Table grabTable(String connectionName, Connection connection, String catalogName,
 			String tableName, ReadDepthEnum readDepth) throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabTable()");
@@ -213,22 +217,22 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 		table.setModelName(tableName);
 		table.setSchemaName(catalogName);
 		
-		List<Column> columns = getColumnList(table, connection, ReadDepthEnum.DEEP);
+		List<Column> columns = getColumnList(connectionName, table, connection, ReadDepthEnum.DEEP);
 		if(null != columns){
 			table.getColumnlist().addAll(columns);
 		}
 		
-		List<PrimaryKey> primaryKeys = grabPrimaryKeys(connection, catalogName, tableName, readDepth);
+		List<PrimaryKey> primaryKeys = grabPrimaryKeys(connectionName, connection, catalogName, tableName, readDepth);
 		if(null != primaryKeys){
 			table.getPrimaryKeys().addAll(primaryKeys);
 		}
 		
-		List<ForeignKey> importedKeys = grabImportedKeys(connection, catalogName, tableName, readDepth);
+		List<ForeignKey> importedKeys = grabImportedKeys(connectionName, connection, catalogName, tableName, readDepth);
 		if(null != importedKeys){
 			table.getImportedKeys().addAll(importedKeys);
 		}
 		
-		List<ForeignKey> exportedKeys = grabExportedKeys(connection, catalogName, tableName, readDepth);
+		List<ForeignKey> exportedKeys = grabExportedKeys(connectionName, connection, catalogName, tableName, readDepth);
 		if(null != exportedKeys){
 			table.getExportedKeys().addAll(exportedKeys);
 		}
@@ -239,7 +243,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public List<Column> getColumnList(Table table, Connection connection,
+	public List<Column> getColumnList(String connectionName, Table table, Connection connection,
 			ReadDepthEnum readDepth) throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: getColumnList()");
@@ -328,7 +332,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public List<Column> getColumnList(String catalogName, String tableName,
+	public List<Column> getColumnList(String connectionName, String catalogName, String tableName,
 			Connection connection, ReadDepthEnum readDepth) throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("");
@@ -343,7 +347,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public List<PrimaryKey> grabPrimaryKeys(Connection connection,
+	public List<PrimaryKey> grabPrimaryKeys(String connectionName, Connection connection,
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
@@ -382,7 +386,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public List<ForeignKey> grabImportedKeys(Connection connection,
+	public List<ForeignKey> grabImportedKeys(String connectionName, Connection connection,
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
@@ -401,7 +405,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 	}
 
 	@Override
-	public List<ForeignKey> grabExportedKeys(Connection connection,
+	public List<ForeignKey> grabExportedKeys(String connectionName, Connection connection,
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
