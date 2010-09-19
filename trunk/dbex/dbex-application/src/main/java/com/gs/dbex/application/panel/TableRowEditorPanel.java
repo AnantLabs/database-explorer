@@ -68,7 +68,7 @@ public class TableRowEditorPanel extends JPanel implements ActionListener {
 		Connection con = null;
 		try{
 			con = getConnectionProperties().getDataSource().getConnection();
-			databaseTable = new OracleDbGrabber().grabTable(con, schemaName, tableName, ReadDepthEnum.DEEP);
+			databaseTable = new OracleDbGrabber().grabTable(connectionProperties.getConnectionName(), con, schemaName, tableName, ReadDepthEnum.DEEP);
 			List<PrimaryKey> primaryKeyList = databaseTable.getPrimaryKeys();
 			for (PrimaryKey pk : primaryKeyList) {
 				primaryKeyColumnNameList.add(pk.getColumnName());

@@ -36,7 +36,7 @@ import com.gs.utils.text.StringUtil;
  */
 public class CatalogDBGrabberImpl implements CatalogGrabber {
 
-	public String grabSqlKeyWords(Connection connection) throws SQLException{
+	public String grabSqlKeyWords(String connectionName, Connection connection) throws SQLException{
 		if(connection == null){
 			return "";
 		}
@@ -54,7 +54,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Database grabDatabaseByCatalog(Connection connection, String catalogName, ReadDepthEnum readDepth) throws SQLException{
+	public Database grabDatabaseByCatalog(String connectionName, Connection connection, String catalogName, ReadDepthEnum readDepth) throws SQLException{
 		if(connection == null){
 			return null;
 		}
@@ -72,7 +72,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 				} else {
 					continue;
 				}
-				RESERVED_WORDS_UTIL.addSchemaName(cat);
+				RESERVED_WORDS_UTIL.addSchemaName(connectionName, cat);
 				Schema schema = new Schema();
 				schema.setModelName(cat);
 				
@@ -80,7 +80,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 				if(tableResultSet != null){
 					while(tableResultSet.next()){
 						String tableName = tableResultSet.getString(TableMetaDataEnum.TABLE_NAME.getCode());
-						Table table = grabTable(connection, schema.getModelName(), tableName, readDepth);
+						Table table = grabTable(connectionName, connection, schema.getModelName(), tableName, readDepth);
 						schema.getTableList().add(table);
 					}
 					tableResultSet.close();
@@ -99,7 +99,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 		return db;
 	}
 
-	public Schema grabCatalog(Connection connection, String catalogName) throws SQLException{
+	public Schema grabCatalog(String connectionName, Connection connection, String catalogName) throws SQLException{
 		if(connection == null)
 			return null;
 		Schema schema = new Schema();
@@ -118,12 +118,12 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 		return schema;
 	}
 	
-	public ResultSet grabColumnDetails(String schemaName, String tableName, Connection connection) throws SQLException{
+	public ResultSet grabColumnDetails(String connectionName, String schemaName, String tableName, Connection connection) throws SQLException{
 		DatabaseMetaData metaData = connection.getMetaData();
 		return metaData.getColumns("", schemaName, tableName, "%");
 	}
 	
-	public int grabColumnCount(String schemaName, String tableName, Connection connection) throws SQLException{
+	public int grabColumnCount(String connectionName, String schemaName, String tableName, Connection connection) throws SQLException{
 		DatabaseMetaData metaData = connection.getMetaData();
 		ResultSet rs = metaData.getColumns("", schemaName, tableName, "%");
 		int count = 0;
@@ -143,7 +143,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 	 * @param readDepth
 	 * @return
 	 */
-	public Table grabTable(Connection connection, String catalogName, String tableName, ReadDepthEnum readDepth){
+	public Table grabTable(String connectionName, Connection connection, String catalogName, String tableName, ReadDepthEnum readDepth){
 		
 		Table table = new Table();
 		table.setModelName(tableName);
@@ -155,11 +155,11 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 				table.setModelName(tn);
 				table.setSchemaName(catalogName);
 				if(ReadDepthEnum.DEEP.equals(readDepth) || ReadDepthEnum.MEDIUM.equals(readDepth)){
-					table.setPrimaryKeys(grabPrimaryKeys(connection, catalogName, tableName, readDepth));
-					table.setImportedKeys(grabImportedKeys(connection, catalogName, tableName, readDepth));
-					table.setExportedKeys(grabExportedKeys(connection, catalogName, tableName, readDepth));
+					table.setPrimaryKeys(grabPrimaryKeys(connectionName, connection, catalogName, tableName, readDepth));
+					table.setImportedKeys(grabImportedKeys(connectionName, connection, catalogName, tableName, readDepth));
+					table.setExportedKeys(grabExportedKeys(connectionName, connection, catalogName, tableName, readDepth));
 					try{
-						table.setColumnlist(getColumnList(table, connection, readDepth));
+						table.setColumnlist(getColumnList(connectionName, table, connection, readDepth));
 					}catch(Exception e){
 						System.err.println("Table : " + table.getModelName() );
 						e.printStackTrace();
@@ -168,7 +168,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 						table.setComments(ret.getString(TableMetaDataEnum.REMARKS.getCode()));
 					}
 				}
-				RESERVED_WORDS_UTIL.addTableName(catalogName, tn);
+				RESERVED_WORDS_UTIL.addTableName(connectionName, catalogName, tn);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -176,7 +176,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 		return table;
 	}
 	
-	public List<Column> getColumnList(Table table, Connection connection, ReadDepthEnum readDepth) throws SQLException{
+	public List<Column> getColumnList(String connectionName, Table table, Connection connection, ReadDepthEnum readDepth) throws SQLException{
 		if(connection instanceof OracleConnection)
 			((OracleConnection)connection).setRemarksReporting(true);
 		List<Column> list = new ArrayList<Column>();
@@ -203,7 +203,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 			c.setTableName(table.getModelName());
 			// set column name
 			c.setModelName(colRs.getString(ColumnMetaDataEnum.COLUMN_NAME.getCode()));
-			RESERVED_WORDS_UTIL.addColumnName(table.getModelName(), c.getModelName());
+			RESERVED_WORDS_UTIL.addColumnName(connectionName, table.getModelName(), c.getModelName());
 			// set PK
 			if(pkColSet.contains(c.getModelName())){
 				c.setPrimaryKey(true);
@@ -248,20 +248,20 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 		return list;
 	}
 	
-	public List<Column> getColumnList(String schemaName, String tableName, Connection connection, ReadDepthEnum readDepth) throws SQLException{
+	public List<Column> getColumnList(String connectionName, String schemaName, String tableName, Connection connection, ReadDepthEnum readDepth) throws SQLException{
 		if(connection instanceof OracleConnection)
 			((OracleConnection)connection).setRemarksReporting(true);
 		List<Column> list = new ArrayList<Column>();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		
-		List<PrimaryKey> pkList = grabPrimaryKeys(connection, schemaName, tableName, readDepth);
+		List<PrimaryKey> pkList = grabPrimaryKeys(connectionName, connection, schemaName, tableName, readDepth);
 		Set<String> pkColSet = new HashSet<String>();
 		for (PrimaryKey pk : pkList) {
 			pkColSet.add(pk.getColumnName());
 		}
 		
 		Set<String> fkColSet = new HashSet<String>();
-		List<ForeignKey> importedKeys = grabImportedKeys(connection, schemaName, tableName, readDepth);
+		List<ForeignKey> importedKeys = grabImportedKeys(connectionName, connection, schemaName, tableName, readDepth);
 		for (ForeignKey fk : importedKeys) {
 			fkColSet.add(fk.getFkColumnName());
 		}
@@ -325,7 +325,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<PrimaryKey> grabPrimaryKeys(Connection connection, String catalogName, 
+	public List<PrimaryKey> grabPrimaryKeys(String connectionName, Connection connection, String catalogName, 
 			String tableName, ReadDepthEnum readDepth) throws SQLException{
 		List<PrimaryKey> pkList = new ArrayList<PrimaryKey>();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
@@ -352,13 +352,13 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 		return pkList;
 	}
 	
-	public List<ForeignKey> grabImportedKeys(Connection connection, String catalogName, String tableName, ReadDepthEnum readDepth) throws SQLException{
+	public List<ForeignKey> grabImportedKeys(String connectionName, Connection connection, String catalogName, String tableName, ReadDepthEnum readDepth) throws SQLException{
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		ResultSet fkRs = databaseMetaData.getImportedKeys(catalogName, "", tableName);
 		return readFksFromRS(fkRs, true, readDepth);
 	}
 	
-	public List<ForeignKey> grabExportedKeys(Connection connection, String catalogName, String tableName, ReadDepthEnum readDepth) throws SQLException{
+	public List<ForeignKey> grabExportedKeys(String connectionName, Connection connection, String catalogName, String tableName, ReadDepthEnum readDepth) throws SQLException{
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		ResultSet fkRs = databaseMetaData.getExportedKeys(catalogName, "", tableName);
 		return readFksFromRS(fkRs, false, readDepth);
@@ -394,7 +394,7 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 		return fks;
 	}
 
-	public Set<String> getAvailableCatalogNames(
+	public Set<String> getAvailableCatalogNames(String connectionName, 
 			Connection connection) throws SQLException {
 		Set<String> schemaNames = new HashSet<String>();
 		if(null == connection)
@@ -416,13 +416,13 @@ public class CatalogDBGrabberImpl implements CatalogGrabber {
 	}
 
 	@Override
-	public List<Schema> grabCatalog(Connection connection) throws SQLException {
+	public List<Schema> grabCatalog(String connectionName, Connection connection) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Table> grabTables(Connection connection, String schemaName)
+	public List<Table> grabTables(String connectionName, Connection connection, String schemaName)
 			throws SQLException {
 		// TODO Auto-generated method stub
 		return null;

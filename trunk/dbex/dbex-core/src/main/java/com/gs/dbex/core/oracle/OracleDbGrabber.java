@@ -37,7 +37,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public String grabSqlKeyWords(Connection connection) throws SQLException{
+	public String grabSqlKeyWords(String connectionName, Connection connection) throws SQLException{
 		if(connection == null){
 			return "";
 		}
@@ -55,7 +55,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 	 * @return
 	 * @throws SQLException
 	 */
-	public Database grabDatabaseBySchema(Connection connection, String databaseName, ReadDepthEnum readDepth) throws SQLException{
+	public Database grabDatabaseBySchema(String connectionName, Connection connection, String databaseName, ReadDepthEnum readDepth) throws SQLException{
 		if(connection == null){
 			return null;
 		}
@@ -71,14 +71,14 @@ public class OracleDbGrabber implements SchemaGrabber{
 					if(!databaseName.equalsIgnoreCase(cat)){
 						continue;
 					}
-				RESERVED_WORDS_UTIL.addSchemaName(cat);
+				RESERVED_WORDS_UTIL.addSchemaName(connectionName, cat);
 				Schema s = new Schema();
 				s.setModelName(cat);
 				ResultSet ret = databaseMetaData.getTables("", s.getModelName(), "%", new String[] {"TABLE"});
 				while(ret.next()){
 					String tn = ret.getString(TableMetaDataEnum.TABLE_NAME.getCode());
 					
-					Table t = grabTable(connection, s.getModelName(), tn, readDepth);
+					Table t = grabTable(connectionName, connection, s.getModelName(), tn, readDepth);
 					if(tn.startsWith("BIN$"))
 						t.setDeleted(true);
 					s.getTableList().add(t);
@@ -100,7 +100,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return db;
 	}
 
-	public Schema grabSchema(Connection connection, String schemaName) throws SQLException{
+	public Schema grabSchema(String connectionName, Connection connection, String schemaName) throws SQLException{
 		if(connection == null)
 			return null;
 		Schema schema = new Schema();
@@ -119,12 +119,12 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return schema;
 	}
 	
-	public ResultSet grabColumnDetails(String schemaName, String tableName, Connection connection) throws SQLException{
+	public ResultSet grabColumnDetails(String connectionName, String schemaName, String tableName, Connection connection) throws SQLException{
 		DatabaseMetaData metaData = connection.getMetaData();
 		return metaData.getColumns("", schemaName, tableName, "%");
 	}
 	
-	public int grabColumnCount(String schemaName, String tableName, Connection connection) throws SQLException{
+	public int grabColumnCount(String connectionName, String schemaName, String tableName, Connection connection) throws SQLException{
 		DatabaseMetaData metaData = connection.getMetaData();
 		ResultSet rs = metaData.getColumns("", schemaName, tableName, "%");
 		int count = 0;
@@ -142,7 +142,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 	 * @param readDepth
 	 * @return
 	 */
-	public Table grabTable(Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth){
+	public Table grabTable(String connectionName, Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth){
 		if(connection instanceof OracleConnection)
 			((OracleConnection)connection).setRemarksReporting(true);
 		Table table = new Table();
@@ -155,11 +155,11 @@ public class OracleDbGrabber implements SchemaGrabber{
 				table.setModelName(tn);
 				table.setSchemaName(schemaName);
 				if(ReadDepthEnum.DEEP.equals(readDepth) || ReadDepthEnum.MEDIUM.equals(readDepth)){
-					table.setPrimaryKeys(grabPrimaryKeys(connection, schemaName, tableName, readDepth));
-					table.setImportedKeys(grabImportedKeys(connection, schemaName, tableName, readDepth));
-					table.setExportedKeys(grabExportedKeys(connection, schemaName, tableName, readDepth));
+					table.setPrimaryKeys(grabPrimaryKeys(connectionName, connection, schemaName, tableName, readDepth));
+					table.setImportedKeys(grabImportedKeys(connectionName, connection, schemaName, tableName, readDepth));
+					table.setExportedKeys(grabExportedKeys(connectionName, connection, schemaName, tableName, readDepth));
 					try{
-						table.setColumnlist(getColumnList(table, connection, readDepth));
+						table.setColumnlist(getColumnList(connectionName, table, connection, readDepth));
 					}catch(Exception e){
 						System.err.println("Table : " + table.getModelName() );
 						e.printStackTrace();
@@ -172,7 +172,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 				if(tn.startsWith("BIN$"))
 					table.setDeleted(true);
 				else
-					RESERVED_WORDS_UTIL.addTableName(schemaName, tn);
+					RESERVED_WORDS_UTIL.addTableName(connectionName, schemaName, tn);
 				
 			}
 		}catch(Exception e){
@@ -181,7 +181,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return table;
 	}
 	
-	public List<Column> getColumnList(Table table, Connection connection, ReadDepthEnum readDepth) throws SQLException{
+	public List<Column> getColumnList(String connectionName, Table table, Connection connection, ReadDepthEnum readDepth) throws SQLException{
 		if(connection instanceof OracleConnection)
 			((OracleConnection)connection).setRemarksReporting(true);
 		List<Column> list = new ArrayList<Column>();
@@ -208,7 +208,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 			c.setTableName(table.getModelName());
 			// set column name
 			c.setModelName(colRs.getString(ColumnMetaDataEnum.COLUMN_NAME.getCode()));
-			RESERVED_WORDS_UTIL.addColumnName(table.getModelName(), c.getModelName());
+			RESERVED_WORDS_UTIL.addColumnName(connectionName, table.getModelName(), c.getModelName());
 			// set PK
 			if(pkColSet.contains(c.getModelName())){
 				c.setPrimaryKey(true);
@@ -253,20 +253,20 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return list;
 	}
 	
-	public List<Column> getColumnList(String schemaName, String tableName, Connection connection, ReadDepthEnum readDepth) throws SQLException{
+	public List<Column> getColumnList(String connectionName, String schemaName, String tableName, Connection connection, ReadDepthEnum readDepth) throws SQLException{
 		if(connection instanceof OracleConnection)
 			((OracleConnection)connection).setRemarksReporting(true);
 		List<Column> list = new ArrayList<Column>();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		
-		List<PrimaryKey> pkList = grabPrimaryKeys(connection, schemaName, tableName, readDepth);
+		List<PrimaryKey> pkList = grabPrimaryKeys(connectionName, connection, schemaName, tableName, readDepth);
 		Set<String> pkColSet = new HashSet<String>();
 		for (PrimaryKey pk : pkList) {
 			pkColSet.add(pk.getColumnName());
 		}
 		
 		Set<String> fkColSet = new HashSet<String>();
-		List<ForeignKey> importedKeys = grabImportedKeys(connection, schemaName, tableName, readDepth);
+		List<ForeignKey> importedKeys = grabImportedKeys(connectionName, connection, schemaName, tableName, readDepth);
 		for (ForeignKey fk : importedKeys) {
 			fkColSet.add(fk.getFkColumnName());
 		}
@@ -330,7 +330,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<PrimaryKey> grabPrimaryKeys(Connection connection, String schemaName, 
+	public List<PrimaryKey> grabPrimaryKeys(String connectionName, Connection connection, String schemaName, 
 			String tableName, ReadDepthEnum readDepth) throws SQLException{
 		List<PrimaryKey> pkList = new ArrayList<PrimaryKey>();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
@@ -357,13 +357,13 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return pkList;
 	}
 	
-	public List<ForeignKey> grabImportedKeys(Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException{
+	public List<ForeignKey> grabImportedKeys(String connectionName, Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException{
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		ResultSet fkRs = databaseMetaData.getImportedKeys("", schemaName, tableName);
 		return readFksFromRS(fkRs, true, readDepth);
 	}
 	
-	public List<ForeignKey> grabExportedKeys(Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException{
+	public List<ForeignKey> grabExportedKeys(String connectionName, Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException{
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		ResultSet fkRs = databaseMetaData.getExportedKeys("", schemaName, tableName);
 		return readFksFromRS(fkRs, false, readDepth);
@@ -399,7 +399,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return fks;
 	}
 
-	public Set<String> getAvailableSchemaNames(
+	public Set<String> getAvailableSchemaNames(String connectionName, 
 			Connection connection) throws SQLException {
 		Set<String> schemaNames = new HashSet<String>();
 		if(null == connection)

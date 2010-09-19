@@ -22,34 +22,34 @@ import com.gs.dbex.model.db.Table;
  */
 public interface SchemaGrabber extends DbGrabber {
 
-	public Database grabDatabaseBySchema(Connection connection,
+	public Database grabDatabaseBySchema(String connectionName, Connection connection,
 			String databaseName, ReadDepthEnum readDepth) throws SQLException;
 
-	public Schema grabSchema(Connection connection, String schemaName)
+	public Schema grabSchema(String connectionName, Connection connection, String schemaName)
 			throws SQLException;
 
-	public Set<String> getAvailableSchemaNames(Connection connection)
+	public Set<String> getAvailableSchemaNames(String connectionName, Connection connection)
 			throws SQLException;
 	
-	public Table grabTable(Connection connection, String schemaName,
+	public Table grabTable(String connectionName, Connection connection, String schemaName,
 			String tableName, ReadDepthEnum readDepth);
 
-	public List<Column> getColumnList(Table table,
+	public List<Column> getColumnList(String connectionName, Table table,
 			Connection connection, ReadDepthEnum readDepth) throws SQLException;
 
-	public List<Column> getColumnList(String schemaName,
+	public List<Column> getColumnList(String connectionName, String schemaName,
 			String tableName, Connection connection, ReadDepthEnum readDepth)
 			throws SQLException;
 
-	public List<PrimaryKey> grabPrimaryKeys(Connection connection,
+	public List<PrimaryKey> grabPrimaryKeys(String connectionName, Connection connection,
 			String schemaName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException;
 
-	public List<ForeignKey> grabImportedKeys(Connection connection,
+	public List<ForeignKey> grabImportedKeys(String connectionName, Connection connection,
 			String schemaName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException;
 
-	public List<ForeignKey> grabExportedKeys(Connection connection,
+	public List<ForeignKey> grabExportedKeys(String connectionName, Connection connection,
 			String schemaName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException;
 }
