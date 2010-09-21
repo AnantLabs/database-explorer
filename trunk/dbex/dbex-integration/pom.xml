@@ -40,8 +40,8 @@
 			<artifactId>dbex-bod</artifactId>
 			<version>${release.version}</version>
 		</dependency>
-		
-		
+
+
 		<!-- Integration Point Dependencies -->
 		<dependency>
 			<groupId>castor</groupId>
@@ -59,6 +59,22 @@
 			<artifactId>xercesImpl</artifactId>
 			<version>2.9.1</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-betwixt</groupId>
+			<artifactId>commons-betwixt</artifactId>
+			<version>20030211.133854</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-sql</groupId>
+			<artifactId>commons-sql</artifactId>
+			<version>20040118.000852</version>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.14</version>
+		</dependency>
+
 	</dependencies>
-	
+
 </project>

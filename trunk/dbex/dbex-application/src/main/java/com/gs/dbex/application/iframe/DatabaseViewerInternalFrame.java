@@ -32,6 +32,7 @@ import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.core.GenericDataSource;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.common.ConnectionBasedReservedWords;
@@ -40,6 +41,8 @@ import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 /**
  * @author sabuj.das
@@ -249,17 +252,32 @@ public class DatabaseViewerInternalFrame extends JInternalFrame implements
 	}
 
 	public void closeWindow() {
-		/*
-		 * guiResourceContext.internalFrameCount -= 1;
-		 * guiResourceContext.connectedDatabaseMap.remove(getName());
-		 * if(connectionProperties.getDataSource() != null){
-		 * logger.info("Closing Datasource"); try {
-		 * if(connectionProperties.getDataSource() instanceof OracleDataSource){
-		 * ((OracleDataSource)connectionProperties.getDataSource()).close(); } }
-		 * catch (SQLException e) {
-		 * DisplayUtils.displayMessage(getParentFrame(), e.getMessage(),
-		 * DisplayTypeEnum.ERROR); } }
-		 */
+		if(connectionProperties.getDataSource() != null){
+			logger.info("Closing Datasource"); 
+			try {
+				if(connectionProperties.getDataSource() instanceof OracleDataSource){
+					OracleDataSource dataSource = (OracleDataSource) connectionProperties.getDataSource(); 
+					dataSource.close();
+				}
+				else if(connectionProperties.getDataSource() instanceof MysqlDataSource){
+					MysqlDataSource dataSource = (MysqlDataSource) connectionProperties.getDataSource();
+					dataSource = null;
+				}
+				else if(connectionProperties.getDataSource() instanceof SQLServerDataSource){
+					SQLServerDataSource dataSource = (SQLServerDataSource) connectionProperties.getDataSource();
+					dataSource = null;
+				}
+				else if(connectionProperties.getDataSource() instanceof GenericDataSource){
+					GenericDataSource dataSource = (GenericDataSource) connectionProperties.getDataSource();
+					dataSource = null;
+				} 
+				else {
+					connectionProperties.setDataSource(null);
+				}
+			}catch (SQLException e) {
+				DisplayUtils.displayMessage(getParentFrame(), e.getMessage(),DisplayTypeEnum.ERROR);
+			}
+		}
 	}
 
 	public void windowDeactivated(WindowEvent e) {
