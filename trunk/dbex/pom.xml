@@ -12,6 +12,7 @@
 		<module>dbex-model</module>
 		<module>dbex-core</module>
 		<module>dbex-bod</module>
+		<module>dbex-resources</module>
 		<module>dbex-integration</module>
 		<module>dbex-service</module>
 		<module>dbex-historyMgr</module>
