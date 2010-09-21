@@ -146,7 +146,7 @@ public class DatabaseDirectoryTree extends JTree implements ApplicationConstants
 						} 
 						tNode.add(cNode);
 					}
-					tNode.add(new DefaultMutableTreeNode(new Boolean(true)));
+					//tNode.add(new DefaultMutableTreeNode(new Boolean(true)));
 					tableFolderNode.add(tNode);
 				}
 			}
