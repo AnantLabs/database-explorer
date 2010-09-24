@@ -545,7 +545,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
         	Table table = ((TableNode)dbNode).getTable();
 			if(table != null){
 				TableContentPanel contentPanel = new TableContentPanel(
-					table.getSchemaName(), table.getModelName(), connectionProperties, table	
+					table.getTableCatalog(), table.getModelName(), connectionProperties, table	
 				);
 				contentPanel.setParentFrame(getParentFrame());
 				DatabaseViewerInternalFrame iFrame = (DatabaseViewerInternalFrame) getParentComponent();
@@ -577,7 +577,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 					try {
 						connection = connectionProperties.getDataSource().getConnection();
 						table = new OracleDbGrabber().grabTable(connectionProperties.getConnectionName(), connection, 
-								table.getSchemaName(), table.getModelName(), ReadDepthEnum.MEDIUM);
+								table.getTableCatalog(), table.getModelName(), ReadDepthEnum.MEDIUM);
 					} catch (SQLException e) {
 						e.printStackTrace();
 						showCompleteTable = true;
@@ -588,7 +588,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 				}
 				if(showCompleteTable){
 					TableContentPanel contentPanel = new TableContentPanel(
-							table.getSchemaName(), table.getModelName(), connectionProperties, table	
+							table.getTableCatalog(), table.getModelName(), connectionProperties, table	
 						);
 						contentPanel.setParentFrame(getParentFrame());
 						DatabaseViewerInternalFrame iFrame = (DatabaseViewerInternalFrame) getParentComponent();
@@ -623,7 +623,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 					if(selectedColumns != null && selectedColumns.length == 0)
 						selectedColumns = null;
 					TableContentPanel contentPanel = new TableContentPanel(
-						table.getSchemaName(), table.getModelName(), connectionProperties, table, selectedColumns	
+						table.getTableCatalog(), table.getModelName(), connectionProperties, table, selectedColumns	
 					);
 					contentPanel.setParentFrame(getParentFrame());
 					DatabaseViewerInternalFrame iFrame = (DatabaseViewerInternalFrame) getParentComponent();
@@ -798,7 +798,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 				ResourceEditDialog<Table> editTableDialog = new ResourceEditDialog<Table>(
 						getParentFrame(), true,
 						connectionProperties,
-						table.getSchemaName(),
+						table.getTableCatalog(),
 						table,
 						resourceTypeEnum,
 						resourceEditTypeEnum
@@ -814,7 +814,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 				ResourceEditDialog<Column> editTableDialog = new ResourceEditDialog<Column>(
 						getParentFrame(), true,
 						connectionProperties,
-						column.getSchemaName(),
+						column.getParentTable().getTableCatalog(),
 						column,
 						resourceTypeEnum,
 						resourceEditTypeEnum

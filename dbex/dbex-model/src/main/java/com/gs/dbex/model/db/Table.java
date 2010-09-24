@@ -14,6 +14,10 @@ import com.gs.dbex.model.BaseDbModel;
  */
 public class Table extends BaseDbModel implements Serializable {
 
+	private String tableCatalog;
+	private String tableSchema;
+	
+	
 	private List<PrimaryKey> primaryKeys;
 	private List<Column> columnlist;
 	private List<ForeignKey> importedKeys;
@@ -65,6 +69,18 @@ public class Table extends BaseDbModel implements Serializable {
 		return super.getModelName();
 	}
 
+	public String getTableCatalog() {
+		return tableCatalog;
+	}
+	public void setTableCatalog(String tableCatalog) {
+		this.tableCatalog = tableCatalog;
+	}
+	public String getTableSchema() {
+		return tableSchema;
+	}
+	public void setTableSchema(String tableSchema) {
+		this.tableSchema = tableSchema;
+	}
 	public List<PrimaryKey> getPrimaryKeys() {
 		return primaryKeys;
 	}

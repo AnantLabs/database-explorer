@@ -3,8 +3,9 @@ package com.gs.dbex.model;
 
 import java.io.Serializable;
 
+
 /**
- * Type Name	: com.gs.oracle.BaseDbModel
+ * @author Sabuj Das
  *
  */
 public abstract class BaseDbModel implements Serializable {
@@ -18,13 +19,14 @@ public abstract class BaseDbModel implements Serializable {
 	private String modelName;
 	private String comments;
 	private boolean deleted = false;
-	private String schemaName;
+	private String modelType;
+
 	
-	public String getSchemaName() {
-		return schemaName;
+	public String getModelType() {
+		return modelType;
 	}
-	public void setSchemaName(String schemaName) {
-		this.schemaName = schemaName;
+	public void setModelType(String modelType) {
+		this.modelType = modelType;
 	}
 	public String getModelName() {
 		return modelName;
