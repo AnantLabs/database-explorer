@@ -14,23 +14,5 @@ import com.gs.dbex.integration.DDLGenerationIntegration;
  */
 public abstract class DDLGenerationIntegrationImpl extends JdbcSupport implements DDLGenerationIntegration{
 
-	public String ddl(){
-		 
-
-		    DDLBuilder builder = DDLBuilderFactory.newDDLBuilder(provider, version);
-
-		    if (builder == null) {
-		      throw new Exception("Database provider/version unknown: " + provider + "/" + version);
-		    }
-
-		    StringWriter buffer = new StringWriter();
-		    builder.setWriter(buffer);
-		    if (create)
-		      builder.createDatabase(database, false);
-		    else {
-		      builder.dropDatabase(database);
-		    }
-		    buffer.flush();
-		    System.out.println(buffer.toString());
-	}
+	
 }

@@ -1,24 +1,33 @@
 package com.gs.dbex.model.db;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gs.dbex.model.BaseDbModel;
 
 
-public class Index extends BaseDbModel {
+public class Index extends BaseDbModel implements Serializable{
 
-	private Column indexedColumn;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 799664973359626509L;
+	
+	private List<Column> indexedColumns;
 	private boolean unique;
 	private boolean fullText;
-	/**
-	 * @return the indexedColumn
-	 */
-	public Column getIndexedColumn() {
-		return indexedColumn;
+
+
+	public Index() {
+		this.indexedColumns = new ArrayList<Column>();
 	}
-	/**
-	 * @param indexedColumn the indexedColumn to set
-	 */
-	public void setIndexedColumn(Column indexedColumn) {
-		this.indexedColumn = indexedColumn;
+	
+	public List<Column> getIndexedColumns() {
+		return indexedColumns;
+	}
+	public void setIndexedColumns(List<Column> indexedColumns) {
+		this.indexedColumns = indexedColumns;
 	}
 	/**
 	 * @return the unique
