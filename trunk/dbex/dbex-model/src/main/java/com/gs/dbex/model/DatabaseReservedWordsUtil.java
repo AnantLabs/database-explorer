@@ -2,6 +2,8 @@
 package com.gs.dbex.model;
 
 import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Set;
 
 import com.gs.dbex.model.common.ConnectionBasedReservedWords;
@@ -109,5 +111,78 @@ public class DatabaseReservedWordsUtil {
 	
 	public ConnectionBasedReservedWords getConnectionBasedReservedWords(String connectionName){
 		return databaseReservedWords.getConnectionBasedReservedWordsMap().get(connectionName);
+	}
+	
+	public String getAllKeyWords(String connectionName, char separator){
+		
+		StringBuffer kwBuffer = new StringBuffer();
+		Set<String> schemaNames = getSchemaNames(connectionName);
+		if(null != schemaNames){
+			Iterator<String> iterator = schemaNames.iterator();
+			while(iterator.hasNext()){
+				String sn = iterator.next();
+				kwBuffer.append(sn);
+				Set<String> tableNames = getTableNames(connectionName, sn);
+				if(null != tableNames && tableNames.size() > 0 ){
+					kwBuffer.append(separator);
+					Iterator<String> Titerator = tableNames.iterator();
+					while(Titerator.hasNext()){
+						String tn = Titerator.next();
+						kwBuffer.append(sn);
+						Set<String> columnNames = getColumnNames(connectionName, tn);
+						if(null != columnNames && columnNames.size() > 0 ){
+							kwBuffer.append(separator);
+							Iterator<String> Citerator = columnNames.iterator();
+							while(Citerator.hasNext()){
+								String cn = Citerator.next();
+								kwBuffer.append(sn);
+								if(Citerator.hasNext()){
+									kwBuffer.append(separator);
+								}
+							}
+						}
+						if(Titerator.hasNext()){
+							kwBuffer.append(separator);
+						}
+					}
+				}
+				if(iterator.hasNext()){
+					kwBuffer.append(separator);
+				}
+			}
+		}
+		
+		return kwBuffer.toString();
+	}
+	
+	public Hashtable<String, String> getAllKeyWords(String connectionName){
+		Hashtable<String, String> keywords = new Hashtable<String, String>();
+		
+		Set<String> schemaNames = getSchemaNames(connectionName);
+		if(null != schemaNames){
+			Iterator<String> iterator = schemaNames.iterator();
+			while(iterator.hasNext()){
+				String sn = iterator.next();
+				keywords.put(sn, sn);
+				Set<String> tableNames = getTableNames(connectionName, sn);
+				if(null != tableNames && tableNames.size() > 0 ){
+					Iterator<String> Titerator = tableNames.iterator();
+					while(Titerator.hasNext()){
+						String tn = Titerator.next();
+						keywords.put(tn, tn);
+						Set<String> columnNames = getColumnNames(connectionName, tn);
+						if(null != columnNames && columnNames.size() > 0 ){
+							Iterator<String> Citerator = columnNames.iterator();
+							while(Citerator.hasNext()){
+								String cn = Citerator.next();
+								keywords.put(cn, cn);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return keywords;
 	}
 }

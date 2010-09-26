@@ -3,9 +3,11 @@ package com.gs.dbex.model.db;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.gs.dbex.model.BaseDbModel;
+import com.gs.utils.text.StringUtil;
 
 
 /**
@@ -16,6 +18,7 @@ public class Table extends BaseDbModel implements Serializable {
 
 	private String tableCatalog;
 	private String tableSchema;
+	private Integer autoIncrementValue;
 	
 	
 	private List<PrimaryKey> primaryKeys;
@@ -56,6 +59,12 @@ public class Table extends BaseDbModel implements Serializable {
 		return false;
 	}
 
+	public Integer getAutoIncrementValue() {
+		return autoIncrementValue;
+	}
+	public void setAutoIncrementValue(Integer autoIncrementValue) {
+		this.autoIncrementValue = autoIncrementValue;
+	}
 	public List<Column> getColumnlist() {
 		return columnlist;
 	}
@@ -140,5 +149,32 @@ public class Table extends BaseDbModel implements Serializable {
 			}
 		}
 		return false;
+	}
+	
+	public boolean isPrimaryKeyColumn(String columnName){
+		if(!StringUtil.hasValidContent(columnName)){
+			return false;
+		}
+		if(null != getPrimaryKeys() && getPrimaryKeys().size() > 0){
+			for(PrimaryKey pk : getPrimaryKeys()){
+				if(columnName.equalsIgnoreCase(pk.getColumnName()))
+					return true;
+			}
+		}
+		return false;
+	}
+	
+	public void markForeignKey(String ...columnNames){
+		if(null == columnNames || columnNames.length <= 0){
+			return ;
+		}
+		List<String> columnNameList = Arrays.asList(columnNames);
+		if(null != getColumnlist() && getColumnlist().size() > 0){
+			for(Column column : getColumnlist()){
+				if(columnNameList.contains(column.getModelName())){
+					column.setForeignKey(true);
+				}
+			}
+		}
 	}
 }

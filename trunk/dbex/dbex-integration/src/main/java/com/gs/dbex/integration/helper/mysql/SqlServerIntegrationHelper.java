@@ -3,6 +3,7 @@ package com.gs.dbex.integration.helper.mysql;
 import org.apache.log4j.Logger;
 
 import com.gs.dbex.model.db.Table;
+import com.gs.utils.text.StringUtil;
 
 /**
  * @author Sabuj Das
@@ -77,6 +78,48 @@ public final class SqlServerIntegrationHelper {
 		if (logger.isDebugEnabled()) {
 			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
 			logger.debug("Exit:: preparePaginationQuery()");
+		}
+		return buffer.toString();
+	}
+	
+
+	public String prepareFilteredRecordsSQL(Table databaseTable,
+			String filterSubQuery) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Enter:: prepareFilteredRecordsSQL() for table:= " + databaseTable.getModelName()
+					+ " With filterSubQuery:= " + filterSubQuery);
+		}
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT COUNT(*) FROM " )
+			.append("dbo.[" + databaseTable.getModelName().toUpperCase())
+			.append("]");
+		if(StringUtil.hasValidContent(filterSubQuery)){
+			buffer.append(" WHERE ").append(filterSubQuery);
+		}
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
+			logger.debug("Exit:: prepareFilteredRecordsSQL()");
+		}
+		return buffer.toString();
+	}
+
+	public String prepareFilteredQuery(Table table, String filterSubQuery) {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: prepareFilteredQuery()");
+		}
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("SELECT ")
+				.append("* ")
+				.append(" FROM ")
+				.append("dbo.[" + table.getModelName().toUpperCase())
+			.append("]");
+		if(StringUtil.hasValidContent(filterSubQuery)){
+			buffer.append(" WHERE ").append(filterSubQuery);
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
+			logger.debug("Exit:: prepareFilteredQuery()");
 		}
 		return buffer.toString();
 	}

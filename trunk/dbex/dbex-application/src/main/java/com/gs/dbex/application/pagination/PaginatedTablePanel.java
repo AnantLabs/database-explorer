@@ -48,6 +48,10 @@ import org.apache.log4j.Logger;
 import com.gs.dbex.application.comps.ExtensionFileFilter;
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.dlg.QuickEditDialog;
+import com.gs.dbex.application.dlg.ResultFilterDialog;
+import com.gs.dbex.application.dlg.TableDataEditorDialog;
+import com.gs.dbex.application.table.model.DataTableTableModel;
+import com.gs.dbex.application.table.model.DataTableTableModelFactory;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
@@ -84,31 +88,19 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 	
 	private JFrame parentFrame;
 	private ConnectionProperties connectionProperties;
-	private ResultSetTableModelFactory resultSetTableModelFactory;
-	//private ResultSetTableModel resultSetTableModel;
-	
+	private DataTableTableModelFactory dataTableTableModelFactory;
+	private String currentFilter = "";
 	private String queryString;
-	private String countQuery;
 	private PaginationResult paginationResult;
 	
 	private Table databaseTable;
 	
 
-    public PaginatedTablePanel(JFrame parentFrame,
-			ConnectionProperties connectionProperties, Table databaseTable,
-			String countQuery) {
+    public PaginatedTablePanel(JFrame parentFrame, ConnectionProperties connectionProperties, Table databaseTable) {
 		this.databaseTable = databaseTable;
     	this.parentFrame = parentFrame;
         this.connectionProperties = connectionProperties;
-        this.countQuery = countQuery;
-        try{
-        	resultSetTableModelFactory = new ResultSetTableModelFactory(
-        			connectionProperties.getDataSource().getConnection());
-        	
-        } catch(SQLException sqx){
-        	DisplayUtils.displayMessage(parentFrame, "Cannot create connection to database.", DisplayTypeEnum.ERROR);
-        }
-        
+        dataTableTableModelFactory = new DataTableTableModelFactory();
         paginationResult = new PaginationResult();
         paginationResult.setRowsPerPage(MIN_RECORDS_PER_PAGE);
         paginationResult.setStartRow(1);
@@ -118,11 +110,28 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
         populatePaginatedResult(1);
 	}
 
+	public PaginationResult getPaginationResult() {
+		return paginationResult;
+	}
+
 	public void populatePaginatedResult(int pageNumber){
-    	if(resultSetTableModelFactory != null){
+    	if(dataTableTableModelFactory != null){
         	paginationResult.setCurrentPage(pageNumber);
         	showTableData();
         }
+    }
+    
+    private int getTotalRecords(String filterSubQuery){
+    	int totalRows = 0;
+    	QueryExecutionService queryExecutionService = DbexServiceBeanFactory.getBeanFactory().getQueryExecutionService();
+    	if(null != queryExecutionService){
+    		try {
+				totalRows = queryExecutionService.getTotalRecords(connectionProperties, databaseTable, filterSubQuery);
+			} catch (DbexException e) {
+				DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
+			}
+    	}
+		return totalRows;
     }
     
     private int getTotalRecords(){
@@ -138,22 +147,34 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 		return totalRows;
     }
     
-    private void showTableData() {
+    public void showTableData() {
 		paginationResult.setRowAttributes(getTotalRecords());
 		paginationResult.setEndRow(paginationResult.getStartRow() + paginationResult.getRowsPerPage());
 		int rowNumFrom = paginationResult.getStartRow();
     	int rowNumTo = paginationResult.getEndRow();
-    	logger.info("Executing query : " + getQueryString() + " With LIMIT > " + rowNumFrom + " and < " + rowNumTo);
     	try {
-			targetTable.setModel(resultSetTableModelFactory.getResultSetTableModel(connectionProperties, databaseTable, rowNumFrom, rowNumTo));
+			targetTable.setModel(dataTableTableModelFactory.getResultSetTableModel(connectionProperties, databaseTable, rowNumFrom, rowNumTo));
 			DrawingUtil.updateTableColumnWidth(targetTable);
-		} catch (SQLException e) {
-			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		} catch(Exception e){
-			e.printStackTrace();
+			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		}
 		populatePageLinks();
 		
+	}
+    
+    public void showTableData(String filterSubQuery) {
+    	int totalRecords = getTotalRecords(filterSubQuery);
+    	paginationResult.setRowsPerPage(totalRecords);
+    	paginationResult.setRowAttributes(totalRecords);
+		paginationResult.setEndRow(paginationResult.getStartRow() + paginationResult.getRowsPerPage());
+    	try {
+    		DataTableTableModel tableModel = dataTableTableModelFactory.getResultSetTableModel(connectionProperties, databaseTable, filterSubQuery);
+			targetTable.setModel(tableModel);
+			DrawingUtil.updateTableColumnWidth(targetTable);
+		} catch(Exception e){
+			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
+		}
+		populatePageLinks();
 	}
 
     
@@ -762,6 +783,12 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 		else if(e.getSource().equals(refreshButton)){
 			refreshPage();
 		}
+		else if(e.getSource().equals(filterButton)){
+			applyFilter();
+		}
+		else if(e.getSource().equals(editRecordButton)){
+			editRecord();
+		}
 		else if(e.getSource().equals(exportButton)){
 			TableDataExportTypeEnum dataExportTypeEnum = TableDataExportTypeEnum.getTypeEnumByDescription(
 					exportTypeComboBox.getSelectedItem().toString());
@@ -1146,5 +1173,32 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 	public void focusLost(FocusEvent e) {
 		
 	}
+
+
+	private void applyFilter() {
+		ResultFilterDialog filterDialog = new ResultFilterDialog(getParentFrame(), true, connectionProperties.getConnectionName());
+		filterDialog.setFilterQuery(currentFilter);
+		filterDialog.setAlwaysOnTop(true);
+		filterDialog.setLocation(100, 100);
+		int opt = filterDialog.showFilterDialog();
+		if(opt == ApplicationConstants.APPLY_OPTION){
+			currentFilter  = filterDialog.getFilterQuery();
+			showTableData(currentFilter);
+		}
+	}
+
+
+	public void editRecord(){
+		TableDataEditorDialog dataEditorDialog = new TableDataEditorDialog(getParentFrame(), targetTable);
+		dataEditorDialog.setSchemaName(databaseTable.getSchemaName());
+		dataEditorDialog.setTableName(databaseTable.getModelName());
+		dataEditorDialog.setConnectionProperties(connectionProperties);
+		dataEditorDialog.setLocation(100, 100);
+		int opt = dataEditorDialog.showEditorDialog();
+		if(opt == ApplicationConstants.APPLY_OPTION){
+			
+		}
+	}
+
 
 }

@@ -96,6 +96,52 @@ public class SqlServerQueryExecutionIntegration implements
 	}
 	
 	@Override
+	public ResultSetDataTable getLimitedDataTable(
+			ConnectionProperties connectionProperties, Table table,
+			int rowFrom, int rowTo) throws DbexException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: getLimitedDataTable()");
+		}
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		String query = integrationHelper.preparePaginationQuery(table, rowFrom, rowTo);
+		if(!StringUtil.hasValidContent(query))
+			return null;
+		Connection connection = null;
+		ResultSet resultSet = null;
+		ResultSetDataTable dataTable = null;
+		try {
+			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			connection.setCatalog(table.getSchemaName());
+			SQLServerPreparedStatement preparedStatement = (SQLServerPreparedStatement) connection.prepareStatement(
+					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + query + " ] start:=" 
+						+ rowFrom + " to:=" + rowTo);
+			}
+			resultSet = preparedStatement.executeQuery();
+			dataTable = new ResultSetDataTable(resultSet);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} catch (UtilityException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(resultSet, true);
+			JdbcUtil.close(connection);
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Exit:: getLimitedDataTable()");
+		}
+		return dataTable;
+	}
+	
+	@Override
 	public int getTotalRecords(ConnectionProperties connectionProperties,
 			Table databaseTable) throws DbexException {
 		int totalRows = 0;
@@ -129,7 +175,88 @@ public class SqlServerQueryExecutionIntegration implements
 		}
 		return totalRows;
 	}
+	
+	@Override
+	public ResultSetDataTable getFilteredDataTable(
+			ConnectionProperties connectionProperties, Table databaseTable,
+			String filterSubQuery) throws DbexException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: getLimitedDataTable()");
+		}
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		String query = integrationHelper.prepareFilteredQuery(databaseTable, filterSubQuery);
+		if(!StringUtil.hasValidContent(query))
+			return null;
+		Connection connection = null;
+		ResultSet resultSet = null;
+		ResultSetDataTable dataTable = null;
+		try {
+			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			connection.setCatalog(databaseTable.getSchemaName());
+			SQLServerPreparedStatement preparedStatement = (SQLServerPreparedStatement) connection.prepareStatement(
+					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + query + " ] ");
+			}
+			resultSet = preparedStatement.executeQuery();
+			dataTable = new ResultSetDataTable(resultSet);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} catch (UtilityException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(resultSet, true);
+			JdbcUtil.close(connection);
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Exit:: getLimitedDataTable()");
+		}
+		return dataTable;
+	}
+	
+	@Override
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			Table databaseTable, String filterSubQuery) throws DbexException {
+		int totalRows = 0;
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		String countQuery = integrationHelper.prepareFilteredRecordsSQL(databaseTable, filterSubQuery);
+		SQLServerConnection connection = null;
+		try {
+			connection = (SQLServerConnection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			
+			connection.setCatalog(databaseTable.getSchemaName());
+			PreparedStatement statement = connection.prepareStatement(countQuery);
+			ResultSet rs = statement.executeQuery();
+			if(rs != null){
+				while(rs.next()){
+					totalRows = rs.getInt(1);
+				}
+				rs.close();
+			}
+			logger.info("Total " + totalRows + " found by the query : " + countQuery);
+			JdbcUtil.close(rs, false);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		return totalRows;
+	}
 
+	
 	@Override
 	public Transaction<? extends Connection, ? extends Statement, ? extends PreparedStatement, ? extends ResultSet> createTransaction(
 			ConnectionProperties connectionProperties) throws DbexException {

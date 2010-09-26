@@ -2,6 +2,7 @@
 package com.gs.dbex.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 
 /**
@@ -20,8 +21,30 @@ public abstract class BaseDbModel implements Serializable {
 	private String comments;
 	private boolean deleted = false;
 	private String modelType;
+	private String schemaName;
+	private Timestamp createTime;
+	private Timestamp updateTime;
 
 	
+	
+	public Timestamp getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Timestamp createTime) {
+		this.createTime = createTime;
+	}
+	public Timestamp getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Timestamp updateTime) {
+		this.updateTime = updateTime;
+	}
+	public String getSchemaName() {
+		return schemaName;
+	}
+	public void setSchemaName(String schemaName) {
+		this.schemaName = schemaName;
+	}
 	public String getModelType() {
 		return modelType;
 	}

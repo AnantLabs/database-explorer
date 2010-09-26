@@ -8,6 +8,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.enums.TableMetaDataEnum;
 import com.gs.dbex.core.CatalogGrabber;
 import com.gs.dbex.core.metadata.enums.CatalogMetadataEnum;
+import com.gs.dbex.core.metadata.enums.MysqlMetadataConstants;
 import com.gs.dbex.core.metadata.enums.SqlServerMetadataConstants;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.db.Column;
@@ -144,14 +146,27 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 			//logger.debug("Executing SQL: [ " + statement.getPreparedSql() + " ]");
 		}
 		ResultSet resultSet = statement.executeQuery();//metaData.getTables(schemaName, "dbo", "%", new String[] {"TABLE"});
+		
 		if(null != resultSet){
 			while(resultSet.next()){
-				String tableName = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_NAME);//TableMetaDataEnum.TABLE_NAME.getCode());
+				String tableName = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_NAME);
 				if(logger.isDebugEnabled()){
-					logger.debug("SCHEMA_NAME found: " + tableName);
+					logger.debug("TABLE_NAME found: " + tableName);
 				}
-				if(StringUtil.hasValidContent(tableName))
-					tableNames.add(tableName);
+				String tableCatalog = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_CATALOG);
+				String tableSchema = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_SCHEMA);
+				String tableType = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_TYPE);
+				String tableComment = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_COMMENT);
+				if(StringUtil.hasValidContent(tableName)){
+					Table table = grabTable(connectionName, connection, schemaName, tableName, ReadDepthEnum.DEEP);
+					table.setTableCatalog(tableCatalog);
+					table.setTableSchema(tableSchema);
+					table.setModelName(tableName);
+					table.setModelType(tableType);
+					table.setComments(tableComment);
+					tables.add(table);
+					RESERVED_WORDS_UTIL.addTableName(connectionName, schemaName, tableName);
+				}
 			}
 		}
 		JdbcUtil.close(resultSet, false);
@@ -272,6 +287,7 @@ public class SqlServerDbGrabber implements CatalogGrabber {
 				
 				String columnName = resultSet.getString(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.COLUMN_NAME);
 				column.setModelName(columnName);
+				RESERVED_WORDS_UTIL.addColumnName(connectionName, table.getModelName(), columnName);
 				
 				int columnID = resultSet.getInt(SqlServerMetadataConstants.INFORMATION_SCHEMA.COLUMNS.ORDINAL_POSITION);
 				column.setColumnID(columnID);

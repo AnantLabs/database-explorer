@@ -60,49 +60,7 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 		return paginationResult;
 	}
 
-	@Override
-	public String preparePaginationQuery(ConnectionProperties connectionProperties, Table table) {
-		StringBuffer buffer = new StringBuffer();
-		if(DatabaseTypeEnum.ORACLE.getCode().equals(connectionProperties.getDatabaseType())){
-			buffer = new StringBuffer();
-			buffer.append("SELECT ")
-				.append(table.getColumnNames(','))
-				.append(" FROM ( SELECT ")
-				.append(table.getColumnNames(',')).append(",").append(" ROWNUM AS LIMIT FROM ")
-				.append(table.getSchemaName().toUpperCase() + "." + table.getModelName().toUpperCase())
-				.append(" ) WHERE LIMIT >= :FROM AND LIMIT < :TO");
-			return buffer.toString();
-		}
-		if(DatabaseTypeEnum.MYSQL.getCode().equals(connectionProperties.getDatabaseType())){
-			buffer = new StringBuffer();
-			buffer.append("SELECT ")
-				.append(table.getColumnNames(','))
-				.append(" FROM ")
-				.append(table.getSchemaName().toUpperCase() + "." + table.getModelName().toUpperCase())
-				.append(" LIMIT :FROM :TO ");
-			return buffer.toString();
-		}
-		if(DatabaseTypeEnum.MSSQL_2005.getCode().equals(connectionProperties.getDatabaseType())){
-			buffer = new StringBuffer();
-			buffer.append("SELECT TOP :TO * ")
-					.append("FROM ")
-					.append(table.getSchemaName().toUpperCase() + "." + table.getModelName().toUpperCase())
-					.append(") AS X ")
-					.append("EXCEPT ")
-					.append("SELECT * FROM ( ")
-					.append("SELECT TOP :FROM * ")
-					.append("FROM ")
-					.append(table.getSchemaName().toUpperCase() + "." + table.getModelName().toUpperCase())
-					.append(") AS Y ");
-			return buffer.toString();
-		}
-		buffer = new StringBuffer();
-		buffer.append("SELECT ")
-			.append(table.getColumnNames(','))
-			.append(" FROM ")
-			.append(table.getSchemaName().toUpperCase() + "." + table.getModelName().toUpperCase());
-		return buffer.toString();
-	}
+	
 
 	@Override
 	public ResultSet getLimitedResultset(
@@ -132,6 +90,36 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 		}
 		return integration.getLimitedResultset(connection, table, rowFrom, rowTo);
 	}
+	
+	@Override
+	public ResultSetDataTable getLimitedDataTable(
+			ConnectionProperties connectionProperties, Table table,
+			int rowFrom, int rowTo) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		QueryExecutionIntegration integration = getIntegrationPoint(connectionProperties);
+		if(integration == null){
+			logger.debug("Integration point not found.");
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		return integration.getLimitedDataTable(connectionProperties, table, rowFrom, rowTo);
+	}
+	
+	@Override
+	public ResultSetDataTable getFilteredDataTable(
+			ConnectionProperties connectionProperties, Table databaseTable,
+			String filterSubQuery) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		QueryExecutionIntegration integration = getIntegrationPoint(connectionProperties);
+		if(integration == null){
+			logger.debug("Integration point not found.");
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		return integration.getFilteredDataTable(connectionProperties, databaseTable, filterSubQuery);
+	}
 
 	@Override
 	public int getTotalRecords(ConnectionProperties connectionProperties,
@@ -145,6 +133,20 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
 		return integration.getTotalRecords(connectionProperties, databaseTable);
+	}
+	
+	@Override
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			Table databaseTable, String filterSubQuery) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		QueryExecutionIntegration integration = getIntegrationPoint(connectionProperties);
+		if(integration == null){
+			logger.debug("Integration point not found.");
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		return integration.getTotalRecords(connectionProperties, databaseTable, filterSubQuery);
 	}
 
 	@Override
@@ -210,4 +212,6 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 		}
 		return integration.abortTransaction(connectionProperties, transaction);
 	}
+	
+	
 }

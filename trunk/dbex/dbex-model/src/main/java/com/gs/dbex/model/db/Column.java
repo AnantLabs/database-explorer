@@ -34,10 +34,22 @@ public class Column extends BaseDbModel implements Serializable,
 	private Object defaultValue;
 	private Boolean primaryKey;
 	private Boolean foreignKey;
+	private String privileges;
 
 	public Column(Table table) {
 		parentTable = table;
 	}
+
+
+	public String getPrivileges() {
+		return privileges;
+	}
+
+
+	public void setPrivileges(String privileges) {
+		this.privileges = privileges;
+	}
+
 
 	public Table getParentTable() {
 		return parentTable;
@@ -76,7 +88,7 @@ public class Column extends BaseDbModel implements Serializable,
 		this.dataType = dataType;
 	}
 
-	@ColumnHeader(title = "DATA_TYPE", index = 3)
+	@ColumnHeader(title = "DATA_TYPE_NAME", index = 3)
 	public String getTypeName() {
 		return typeName;
 	}

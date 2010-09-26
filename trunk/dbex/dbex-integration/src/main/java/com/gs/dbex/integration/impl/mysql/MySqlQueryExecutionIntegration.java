@@ -63,6 +63,7 @@ public class MySqlQueryExecutionIntegration implements
 		return null;
 	}
 
+	@Deprecated
 	public ResultSet getLimitedResultset(
 			java.sql.Connection connection, Table table,
 			int rowFrom, int rowTo) throws DbexException{
@@ -98,6 +99,54 @@ public class MySqlQueryExecutionIntegration implements
 	}
 	
 	@Override
+	public ResultSetDataTable getLimitedDataTable(
+			ConnectionProperties connectionProperties, Table table,
+			int rowFrom, int rowTo) throws DbexException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: getLimitedDataTable()");
+		}
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		String query = integrationHelper.preparePaginationQuery(table);
+		if(!StringUtil.hasValidContent(query))
+			return null;
+		Connection connection = null;
+		ResultSet resultSet = null;
+		ResultSetDataTable dataTable = null;
+		try {
+			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			connection.setCatalog(table.getTableSchema());
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
+					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			preparedStatement.setInt(1, rowFrom);
+			preparedStatement.setInt(2, rowTo - rowFrom);
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + preparedStatement.getPreparedSql() + " ] start:=" 
+						+ rowFrom + " to:=" + rowTo);
+			}
+			resultSet = preparedStatement.executeQuery();
+			dataTable = new ResultSetDataTable(resultSet);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} catch (UtilityException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(resultSet, true);
+			JdbcUtil.close(connection);
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Exit:: getLimitedDataTable()");
+		}
+		return dataTable;
+	}
+	
+	@Override
 	public int getTotalRecords(ConnectionProperties connectionProperties,
 			Table databaseTable) throws DbexException {
 		int totalRows = 0;
@@ -112,14 +161,93 @@ public class MySqlQueryExecutionIntegration implements
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
 			
-			connection.setCatalog(databaseTable.getSchemaName());
+			connection.setCatalog(databaseTable.getTableSchema());
 			java.sql.Statement statement = connection.prepareStatement(countQuery);
 			ResultSet rs = statement.executeQuery(countQuery);
 			if(rs != null){
 				while(rs.next()){
 					totalRows = rs.getInt(1);
 				}
-				rs.close();
+			}
+			logger.info("Total " + totalRows + " found by the query : " + countQuery);
+			JdbcUtil.close(rs, false);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		return totalRows;
+	}
+	
+
+	@Override
+	public ResultSetDataTable getFilteredDataTable(
+			ConnectionProperties connectionProperties, Table databaseTable,
+			String filterSubQuery) throws DbexException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: getFilteredDataTable()");
+		}
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		String query = integrationHelper.prepareFilteredQuery(databaseTable, filterSubQuery);
+		if(!StringUtil.hasValidContent(query))
+			return null;
+		Connection connection = null;
+		ResultSet resultSet = null;
+		ResultSetDataTable dataTable = null;
+		try {
+			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			connection.setCatalog(databaseTable.getTableSchema());
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
+					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + preparedStatement.getPreparedSql() + " ]");
+			}
+			resultSet = preparedStatement.executeQuery();
+			dataTable = new ResultSetDataTable(resultSet);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} catch (UtilityException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(resultSet, true);
+			JdbcUtil.close(connection);
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Exit:: getFilteredDataTable()");
+		}
+		return dataTable;
+	}
+	
+	@Override
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			Table databaseTable, String filterSubQuery) throws DbexException {
+		int totalRows = 0;
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		String countQuery = integrationHelper.prepareFilteredRecordsSQL(databaseTable, filterSubQuery);
+		Connection connection = null;
+		try {
+			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			
+			connection.setCatalog(databaseTable.getTableSchema());
+			java.sql.Statement statement = connection.prepareStatement(countQuery);
+			ResultSet rs = statement.executeQuery(countQuery);
+			if(rs != null){
+				while(rs.next()){
+					totalRows = rs.getInt(1);
+				}
 			}
 			logger.info("Total " + totalRows + " found by the query : " + countQuery);
 			JdbcUtil.close(rs, false);
