@@ -274,7 +274,7 @@ public class TableContentPanel extends JPanel implements ActionListener, MouseLi
 	}
 
 	private void applyFilter() {
-		ResultFilterDialog filterDialog = new ResultFilterDialog(null, true);
+		ResultFilterDialog filterDialog = new ResultFilterDialog(null, true, connectionProperties.getConnectionName());
 		filterDialog.setFilterQuery(currentFilter);
 		filterDialog.setInputQuery(queryString);
 		filterDialog.setAlwaysOnTop(true);

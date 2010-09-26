@@ -25,6 +25,9 @@ public interface SchemaGrabber extends DbGrabber {
 	public Database grabDatabaseBySchema(String connectionName, Connection connection,
 			String databaseName, ReadDepthEnum readDepth) throws SQLException;
 
+	public List<Schema> grabSchema(String connectionName, Connection connection)
+			throws SQLException;
+	
 	public Schema grabSchema(String connectionName, Connection connection, String schemaName)
 			throws SQLException;
 
@@ -32,7 +35,7 @@ public interface SchemaGrabber extends DbGrabber {
 			throws SQLException;
 	
 	public Table grabTable(String connectionName, Connection connection, String schemaName,
-			String tableName, ReadDepthEnum readDepth);
+			String tableName, ReadDepthEnum readDepth) throws SQLException;
 
 	public List<Column> getColumnList(String connectionName, Table table,
 			Connection connection, ReadDepthEnum readDepth) throws SQLException;

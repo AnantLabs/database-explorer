@@ -147,7 +147,7 @@ public class DDLGenerationPanel extends JPanel implements ActionListener,
 		gridBagConstraints.weightx = 1.0;
 		add(ddlToolBar, gridBagConstraints);
 		
-		SqlDocument doc = new SqlDocument();
+		SqlDocument doc = new SqlDocument(connectionProperties.getConnectionName());
 		ddlTextArea = new JTextArea(doc);
 		ddlTextArea.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		ddlTextArea.setEditable(false);

@@ -75,22 +75,36 @@ public class TableDataPanel extends JPanel implements ActionListener{
 		this.schemaName = databaseTable.getSchemaName();
 		this.tableName = databaseTable.getModelName();
 		this.connectionProperties = connectionProperties;
-		paginatedTablePanel = new PaginatedTablePanel(parentFrame, connectionProperties, databaseTable, 
-				"SELECT COUNT(*) FROM " + schemaName + "." + tableName.toUpperCase());
+		paginatedTablePanel = new PaginatedTablePanel(parentFrame, connectionProperties, databaseTable);
 		initComponent();
 		dataToolBar.setVisible(false);
 	}
 
 
 
-	private void showTableData(String query) {
-		try {
+	private void showTableData() {
+		paginatedTablePanel.getPaginationResult().setCurrentPage(1);
+		paginatedTablePanel.showTableData();
+		/*try {
 			dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			dataTable.setCellSelectionEnabled(true);
 			dataTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
 		} catch(Exception e){
 			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
-		}
+		}*/
+		DrawingUtil.updateTableColumnWidth(dataTable);
+	}
+	
+	private void showTableData(String filterSubQuery) {
+		paginatedTablePanel.getPaginationResult().setCurrentPage(1);
+		paginatedTablePanel.showTableData(filterSubQuery);
+		/*try {
+			dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+			dataTable.setCellSelectionEnabled(true);
+			dataTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
+		} catch(Exception e){
+			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
+		}*/
 		DrawingUtil.updateTableColumnWidth(dataTable);
 	}
 
@@ -303,7 +317,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 	
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource().equals(refreshButton)){
-			showTableData(queryString);
+			showTableData();
 		} else if(evt.getSource().equals(filterDataButton)){
 			applyFilter();
 		} else if(evt.getSource().equals(editRecordButton)){
@@ -313,7 +327,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 
 
 	private void applyFilter() {
-		ResultFilterDialog filterDialog = new ResultFilterDialog(getParentFrame(), true);
+		ResultFilterDialog filterDialog = new ResultFilterDialog(getParentFrame(), true, connectionProperties.getConnectionName());
 		filterDialog.setFilterQuery(currentFilter);
 		filterDialog.setInputQuery(queryString);
 		filterDialog.setAlwaysOnTop(true);
@@ -321,9 +335,13 @@ public class TableDataPanel extends JPanel implements ActionListener{
 		int opt = filterDialog.showFilterDialog();
 		if(opt == ApplicationConstants.APPLY_OPTION){
 			currentFilter  = filterDialog.getFilterQuery();
-			showTableData(filterDialog.getOutputQuery());
+			showTableData(currentFilter);
 		}
 	}
+
+	
+
+
 
 	public void editRecord(){
 		TableDataEditorDialog dataEditorDialog = new TableDataEditorDialog(getParentFrame(), dataTable);
@@ -341,7 +359,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 		QuickEditDialog editDialog = new QuickEditDialog(getParentFrame(), vo);
 		int opt = editDialog.showDialog();
 		if(opt == ApplicationConstants.APPLY_OPTION){
-			showTableData(queryString);
+			showTableData();
 		}
 	}
 

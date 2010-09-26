@@ -76,10 +76,10 @@ public class ResultFilterBuilderDialog extends JDialog {
         tableNameTextField = new JTextField();
         queryLabel = new JLabel();
         jScrollPane1 = new JScrollPane();
-        inputQueryTextArea = new JTextArea(new SqlDocument());
+        inputQueryTextArea = new JTextArea(new SqlDocument(""));
         generatedQueryPanel = new JPanel();
         jScrollPane2 = new JScrollPane();
-        generatedQueryTextPane = new JTextPane(new SqlDocument());
+        generatedQueryTextPane = new JTextPane(new SqlDocument(""));
         bottomPanel = new JPanel();
         jLabel1 = new JLabel();
         jLabel2 = new JLabel();

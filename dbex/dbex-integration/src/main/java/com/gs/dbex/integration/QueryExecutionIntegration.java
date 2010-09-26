@@ -45,6 +45,19 @@ public interface QueryExecutionIntegration {
 	public ResultSet getLimitedResultset(
 			Connection connection, Table table,
 			int rowFrom, int rowTo) throws DbexException;
+	
+	/**
+	 * 
+	 * @param connection
+	 * @param table
+	 * @param rowFrom
+	 * @param rowTo
+	 * @return
+	 * @throws DbexException 
+	 */
+	public ResultSetDataTable getLimitedDataTable(
+			ConnectionProperties connectionProperties, Table table,
+			int rowFrom, int rowTo) throws DbexException;
 
 	/**
 	 * 
@@ -132,4 +145,27 @@ public interface QueryExecutionIntegration {
 			? extends Statement, 
 			? extends PreparedStatement, 
 			? extends ResultSet> transaction) throws DbexException;
+	
+	/**
+	 * 
+	 * @param connectionProperties
+	 * @param databaseTable
+	 * @param filterSubQuery
+	 * @return
+	 * @throws DbexException
+	 */
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			Table databaseTable, String filterSubQuery) throws DbexException;
+	
+	/**
+	 * 
+	 * @param connectionProperties
+	 * @param databaseTable
+	 * @param filterSubQuery
+	 * @return
+	 * @throws DbexException
+	 */
+	public ResultSetDataTable getFilteredDataTable(
+			ConnectionProperties connectionProperties, Table databaseTable,
+			String filterSubQuery) throws DbexException;
 }

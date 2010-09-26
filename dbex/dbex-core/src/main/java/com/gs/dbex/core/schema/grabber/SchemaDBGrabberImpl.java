@@ -418,6 +418,11 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 	}
 	
 	
-	
+	@Override
+	public List<Schema> grabSchema(String connectionName, Connection connection)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

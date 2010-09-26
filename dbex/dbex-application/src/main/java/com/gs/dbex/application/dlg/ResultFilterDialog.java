@@ -36,12 +36,14 @@ public class ResultFilterDialog extends JDialog implements ActionListener, Windo
 	private String inputQuery;
 	private String outputQuery;
 	private String filterQuery = "";
+	private String connectionName;
 	
 	private JFrame parentComponent;	
 	
-    public ResultFilterDialog(JFrame parent, boolean modal) {
+    public ResultFilterDialog(JFrame parent, boolean modal, String connectionName) {
         super(parent, modal);
         parentComponent = parent;
+        this.connectionName = connectionName;
         initComponents();
         getRootPane().setDefaultButton(okButton);
         setTitle("Filter");
@@ -57,7 +59,7 @@ public class ResultFilterDialog extends JDialog implements ActionListener, Windo
         jPanel1 = new JPanel();
         jPanel2 = new JPanel();
         jScrollPane1 = new JScrollPane();
-        queryTextPane = new JTextPane( new SqlDocument());
+        queryTextPane = new JTextPane( new SqlDocument(connectionName));
         cancelButton = new JButton();
         okButton = new JButton();
 

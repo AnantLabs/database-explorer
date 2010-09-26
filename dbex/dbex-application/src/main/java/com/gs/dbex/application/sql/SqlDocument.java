@@ -16,6 +16,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
+import com.gs.dbex.model.DatabaseReservedWordsUtil;
 
 public class SqlDocument extends DefaultStyledDocument {
 	 
@@ -26,11 +27,11 @@ public class SqlDocument extends DefaultStyledDocument {
 	private MutableAttributeSet keyword;
 	private MutableAttributeSet comment;
 	private MutableAttributeSet quote;
-	private Hashtable keywords;
+	private Hashtable<String, String> keywords;
 	
 	private JTextArea textArea;
  
-	public SqlDocument() {
+	public SqlDocument(String connectionName) {
 		
 		doc = this;
 		rootElement = doc.getDefaultRootElement();
@@ -47,7 +48,8 @@ public class SqlDocument extends DefaultStyledDocument {
 		Color blue = Color.BLUE;
  
 		StyleConstants.setForeground(keyword, blue);
-		StyleConstants.setFontSize(keyword, 12);
+		//StyleConstants.setFontSize(keyword, 12);
+		StyleConstants.setBold(keyword, true);
 		//StyleConstants.setBold(keyword, true);
 		quote = new SimpleAttributeSet();
 		Color red = Color.RED;
@@ -55,8 +57,7 @@ public class SqlDocument extends DefaultStyledDocument {
 		StyleConstants.setForeground(quote, red);
 		Object dummyObject = new Object();
  
-		keywords = new Hashtable();
-		
+		keywords = DatabaseReservedWordsUtil.getInstance().getAllKeyWords(connectionName);
 		String[] l = ApplicationConstants.SQL_KEYWORD.split(",");
 		for (String s : l) {
 			keywords.put(s.trim(), s.trim());

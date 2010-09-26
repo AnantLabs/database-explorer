@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -133,7 +134,6 @@ public class MysqlDbGrabber implements CatalogGrabber {
 		if(!StringUtil.hasValidContent(schemaName))
 			return null;
 		List<Table> tables = new ArrayList<Table>();
-		List<String> tableNames = new ArrayList<String>();
 		PreparedStatement statement = (PreparedStatement) connection.prepareStatement(MysqlMetaQueryConstants.GET_ALL_TABLE_NAMES_BY_SCHEMA_SQL);
 		statement.setString(1, schemaName);
 		if(logger.isDebugEnabled()){
@@ -144,21 +144,37 @@ public class MysqlDbGrabber implements CatalogGrabber {
 			while(resultSet.next()){
 				String tableName = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_NAME);
 				if(logger.isDebugEnabled()){
-					logger.debug("SCHEMA_NAME found: " + tableName);
+					logger.debug("TABLE_NAME found: " + tableName);
 				}
-				if(StringUtil.hasValidContent(tableName))
-					tableNames.add(tableName);
+				String tableCatalog = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_CATALOG);
+				String tableSchema = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_SCHEMA);
+				Timestamp createTime = resultSet.getTimestamp(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.CREATE_TIME);
+				Timestamp updateTime = resultSet.getTimestamp(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.UPDATE_TIME);
+				String autoInrStr = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.AUTO_INCREMENT);
+				Integer autoIncrementValue = null;
+				try{
+					autoIncrementValue = Integer.parseInt(autoInrStr);
+				}catch (Exception e){
+					// ignore
+				}
+				String tableType = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_TYPE);
+				String tableComment = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.TABLES.TABLE_COMMENT);
+				if(StringUtil.hasValidContent(tableName)){
+					Table table = grabTable(connectionName, connection, schemaName, tableName, ReadDepthEnum.DEEP);
+					table.setTableCatalog(tableCatalog);
+					table.setTableSchema(tableSchema);
+					table.setModelName(tableName);
+					table.setModelType(tableType);
+					table.setAutoIncrementValue(autoIncrementValue);
+					table.setUpdateTime(updateTime);
+					table.setCreateTime(createTime);
+					table.setComments(tableComment);
+					tables.add(table);
+					RESERVED_WORDS_UTIL.addTableName(connectionName, schemaName, tableName);
+				}
 			}
 		}
 		JdbcUtil.close(resultSet, false);
-		if(tableNames.size() > 0){
-			for (String tableName : tableNames) {
-				Table table = grabTable(connectionName, connection, schemaName, tableName, ReadDepthEnum.DEEP);
-				if(null != table)
-					tables.add(table);
-			}
-			
-		}
 		
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: grabTables()");
@@ -269,6 +285,7 @@ public class MysqlDbGrabber implements CatalogGrabber {
 				
 				String columnName = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.COLUMNS.COLUMN_NAME);
 				column.setModelName(columnName);
+				RESERVED_WORDS_UTIL.addColumnName(connectionName, table.getModelName(), columnName);
 				
 				int columnID = resultSet.getInt(MysqlMetadataConstants.INFORMATION_SCHEMA.COLUMNS.ORDINAL_POSITION);
 				column.setColumnID(columnID);
@@ -307,6 +324,9 @@ public class MysqlDbGrabber implements CatalogGrabber {
 				} catch (Exception e) {
 					// do nothing
 				}
+				
+				String privilages = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.COLUMNS.PRIVILEGES);
+				column.setPrivileges(privilages);
 				
 				columns.add(column);
 			}
