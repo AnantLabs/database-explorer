@@ -52,8 +52,25 @@ public class ColumnDetailsPanel extends JPanel implements ActionListener,
 	private JToolBar columnToolBar;
 	private String tableName,schemaName;
 	private ConnectionProperties connectionProperties;
+	private Table databaseTable;
 	
-	public ColumnDetailsPanel(JFrame parent, String schemaName, String tableName, ConnectionProperties connectionProperties) {
+	public ColumnDetailsPanel(JFrame parent, Table table, 
+			ConnectionProperties connectionProperties) {
+		if(logger.isDebugEnabled()){
+			logger.debug("Populating column details for Table : " + 
+					table.getSchemaName() + "." + table.getModelName());
+		}
+		databaseTable = table;
+		this.parentFrame = parent;
+		this.tableName = table.getModelName();
+		this.schemaName = table.getSchemaName();
+		this.connectionProperties = connectionProperties;
+		initComponents();
+		showColumns(table);
+	}
+	
+	public ColumnDetailsPanel(JFrame parent, String schemaName, String tableName, 
+			ConnectionProperties connectionProperties) {
 		if(logger.isDebugEnabled()){
 			logger.debug("Populating column details for Table : " + 
 					schemaName + "." +tableName );
@@ -63,30 +80,33 @@ public class ColumnDetailsPanel extends JPanel implements ActionListener,
 		this.schemaName = schemaName;
 		this.connectionProperties = connectionProperties;
 		initComponents();
-		showColumns();
+		showColumns(null);
 	}
 	
-	private void showColumns() {
-		DatabaseMetadataService metadataService = DbexServiceBeanFactory.getBeanFactory().getDatabaseMetadataService();
-		
-		try {
-			Table table = metadataService.getTableDetails(getConnectionProperties(), schemaName, tableName);
-			List<Column> columnList = new ArrayList<Column>();
-			if(table != null){
-				if(columnList != null){
-					columnList = table.getColumnlist();
-				}
+	private void showColumns(Table table) {
+		DatabaseMetadataService metadataService = DbexServiceBeanFactory.getBeanFactory()
+			.getDatabaseMetadataService();
+		if(null == table){
+			try {
+				table = metadataService.getTableDetails(getConnectionProperties(), schemaName, tableName);
+			} catch(Exception e){
+				e.printStackTrace();
+			}finally{
+				
 			}
-			columDetailsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-			columDetailsTable.setCellSelectionEnabled(true);
-			columDetailsTable.setModel(new ColumnDetailsTableModel(columnList));
-			DrawingUtil.updateTableColumnWidth(columDetailsTable);
-		} catch(Exception e){
-			e.printStackTrace();
-		}finally{
-			
 		}
-		
+		if(null == table)
+			return;
+		List<Column> columnList = new ArrayList<Column>();
+		if(table != null){
+			if(columnList != null){
+				columnList = table.getColumnlist();
+			}
+		}
+		columDetailsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		columDetailsTable.setCellSelectionEnabled(true);
+		columDetailsTable.setModel(new ColumnDetailsTableModel(columnList));
+		DrawingUtil.updateTableColumnWidth(columDetailsTable);
 	}
 
 	private void initComponents() {
@@ -158,8 +178,18 @@ public class ColumnDetailsPanel extends JPanel implements ActionListener,
 	
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource().equals(refreshButton)){
-			showColumns();
+			showColumns(getDatabaseTable());
 		}
+	}
+
+	
+	
+	public Table getDatabaseTable() {
+		return databaseTable;
+	}
+
+	public void setDatabaseTable(Table databaseTable) {
+		this.databaseTable = databaseTable;
 	}
 
 	public String getTableName() {

@@ -156,6 +156,7 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 			targetTable.setModel(dataTableTableModelFactory.getResultSetTableModel(connectionProperties, databaseTable, rowNumFrom, rowNumTo));
 			DrawingUtil.updateTableColumnWidth(targetTable);
 		} catch(Exception e){
+			e.printStackTrace();
 			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		}
 		populatePageLinks();

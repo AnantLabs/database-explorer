@@ -63,9 +63,26 @@ public class OracleDatabaseMetadataIntegrationImpl extends
 
 	
 	public Table readTable(ConnectionProperties connectionProperties,
-			String schemaName, String tableName, ReadDepthEnum readDepthEnum) {
-		// TODO Auto-generated method stub
-		return null;
+			String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException {
+		logger.debug("START:: readTable()");
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		Connection connection = null; 
+		Table table = null;
+		try {
+			connection = connectionProperties.getDataSource().getConnection();
+			if(dbGrabber != null)
+				table = dbGrabber.grabTable(connectionProperties.getConnectionName(), 
+						connection, schemaName, tableName, readDepthEnum);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		logger.debug("END:: readTable()");
+		return table;
 	}
 
 
