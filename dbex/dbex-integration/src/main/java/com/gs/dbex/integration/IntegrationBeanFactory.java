@@ -27,6 +27,7 @@ public final class IntegrationBeanFactory {
 	private XmlReaderIntegration castorXmlReaderIntegration;
 	private QueryExecutionIntegration mysqlQueryExecutionIntegration;
 	private QueryExecutionIntegration sqlServerQueryExecutionIntegration;
+	private QueryExecutionIntegration oracleQueryExecutionIntegration;
 	
 	private IntegrationBeanFactory() {
 		
@@ -74,7 +75,7 @@ public final class IntegrationBeanFactory {
 		if(null == databaseTypeEnum)
 			return null;
 		if(DatabaseTypeEnum.ORACLE.equals(databaseTypeEnum)){
-			
+			return getOracleQueryExecutionIntegration();
 		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
 			return getMysqlQueryExecutionIntegration();
 		}else if(DatabaseTypeEnum.MSSQL_2005.equals(databaseTypeEnum)){
@@ -83,6 +84,17 @@ public final class IntegrationBeanFactory {
 			
 		}
 		return null;
+	}
+
+	@Deprecated
+	public QueryExecutionIntegration getOracleQueryExecutionIntegration() {
+		return oracleQueryExecutionIntegration;
+	}
+
+	@Deprecated
+	public void setOracleQueryExecutionIntegration(
+			QueryExecutionIntegration oracleQueryExecutionIntegration) {
+		this.oracleQueryExecutionIntegration = oracleQueryExecutionIntegration;
 	}
 
 	@Deprecated

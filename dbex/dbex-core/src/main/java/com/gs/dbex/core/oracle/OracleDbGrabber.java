@@ -526,6 +526,22 @@ public class OracleDbGrabber implements SchemaGrabber{
 		}
 		return schemaNames;
 	}
+
+	@Override
+	public List<ForeignKey> grabImportedKeys(String connectionName,
+			Connection connection, String schemaName, String tableName,
+			ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ForeignKey> grabExportedKeys(String connectionName,
+			Connection connection, String schemaName, String tableName,
+			ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

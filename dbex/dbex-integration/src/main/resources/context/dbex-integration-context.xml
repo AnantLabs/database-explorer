@@ -61,6 +61,7 @@
 		<property name="sqlServerDatabaseConnectionIntegration" ref="sqlServerDatabaseConnectionIntegration"></property>
 		<property name="sqlServerDatabaseMetadataIntegration" ref="sqlServerDatabaseMetadataIntegration"></property>
 		<property name="sqlServerQueryExecutionIntegration" ref="sqlServerQueryExecutionIntegration"></property>
+		<property name="oracleQueryExecutionIntegration" ref="oracleQueryExecutionIntegration"></property>
 	</bean>
 	
 	<bean id="oracleDatabaseConnectionHelper"
@@ -122,6 +123,10 @@
 	
 	<bean id="sqlServerQueryExecutionIntegration"
 		class="com.gs.dbex.integration.impl.mssql.SqlServerQueryExecutionIntegration">
+	</bean>
+	
+	<bean id="oracleQueryExecutionIntegration"
+		class="com.gs.dbex.integration.impl.oracle.OracleQueryExecutionIntegration">
 	</bean>
 	
 </beans>

@@ -30,6 +30,8 @@ public class ResultSetTableModel implements TableModel, ActionListener{
 	private int rowCount;
 	
 	public ResultSetTableModel(ResultSet resultSet) throws SQLException {
+		if(null == resultSet)
+			return;
 		setResultSet(resultSet);
 	}
 
