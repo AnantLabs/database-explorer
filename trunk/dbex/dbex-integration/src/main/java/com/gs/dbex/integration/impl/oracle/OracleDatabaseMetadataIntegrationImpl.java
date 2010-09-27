@@ -82,7 +82,7 @@ public class OracleDatabaseMetadataIntegrationImpl extends
 	@Override
 	public ResultSet getAllConstraints(Connection connection,
 			String schemaName, String tableName) throws DbexException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
