@@ -81,7 +81,7 @@ public class TableDetailsPanel extends JPanel implements ActionListener,
 				TableDetailsPanel.class
 				.getResource(ApplicationConstants.IMAGE_PATH
 						+ "columngroup.gif")), 
-				new ColumnDetailsPanel(getParentFrame(),getSchemaName(), getTableName(), getConnectionProperties()));
+				new ColumnDetailsPanel(getParentFrame(),getDatabaseTable(), getConnectionProperties()));
 		tableDetailsTabbedPane.addTab("Constraints",new ImageIcon(
 				TableDetailsPanel.class
 				.getResource(ApplicationConstants.IMAGE_PATH
