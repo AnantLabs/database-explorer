@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<artifactId>dbex</artifactId>
+		<groupId>com.gs.dbex</groupId>
+		<version>${release.version}</version>
+	</parent>
+	
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>dbex-webapps</artifactId>
+	<name>DBEx - WebApps</name>
+	<version>${release.version}</version>
+	<packaging>pom</packaging>
+
+	
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>dbex-serviceprovider</module>
+				<module>dbex-flex</module>
+				<module>dbex-web</module>
+			</modules>
+		</profile>
+		
+		<profile>
+			<id>web-app</id>
+			<modules>
+				<module>dbex-serviceprovider</module>
+				<module>dbex-web</module>
+			</modules>
+		</profile>
+		
+		<profile>
+			<id>only-flex</id>
+			<modules>
+				<module>dbex-flex</module>
+			</modules>
+		</profile>
+	</profiles>
+	
+</project>
