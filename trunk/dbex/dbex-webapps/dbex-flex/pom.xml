@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>dbex-webapps</artifactId>
+		<groupId>com.gs.dbex</groupId>
+		<version>${release.version}</version>
+	</parent>
+	<groupId>com.gs.dbex</groupId>
+	<artifactId>dbex-flex</artifactId>
+	<version>${release.version}</version>
+	<packaging>pom</packaging>
+	<name>DBEX - Flex</name>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<configuration>
+							<tasks>
+								<taskdef resource="flexTasks.tasks" />
+								<mxmlc file="Main.mxml" 
+									   output="target/swf/Main.swf"
+									   link-report="target/report.xml" 
+									   context-root="${web.context.root}"
+									   warnings="false"
+									   incremental="true"
+								>
+									<source-path path-element="${flex.home}/frameworks"/>
+									<compiler.library-path dir="${flex.home}/frameworks" append="true">
+										<include name="libs" />
+									</compiler.library-path>
+									<compiler.source-path path-element="src/main/flex"/>
+								</mxmlc>
+								
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>
