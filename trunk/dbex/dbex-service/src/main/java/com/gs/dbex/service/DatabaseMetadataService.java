@@ -3,10 +3,7 @@
  */
 package com.gs.dbex.service;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.util.List;
-import java.util.Set;
 
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
@@ -15,6 +12,7 @@ import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
+import com.gs.utils.jdbc.ResultSetDataTable;
 
 /**
  * @author sabuj.das
@@ -36,8 +34,8 @@ public interface DatabaseMetadataService {
 	
 	public List<Table> getAllTableDetails(ConnectionProperties connectionProperties) throws DbexException;
 
-	public ResultSet getAllConstraints(ConnectionProperties connectionProperties, Connection connection, String schemaName, String tableName) throws DbexException;
+	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, String schemaName, String tableName) throws DbexException;
 	
-	
+	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, Table table) throws DbexException;
 	
 }

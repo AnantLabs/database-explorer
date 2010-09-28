@@ -17,6 +17,7 @@ import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.service.DatabaseMetadataService;
+import com.gs.utils.jdbc.ResultSetDataTable;
 
 public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 
@@ -122,8 +123,16 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 	}
 
 	@Override
-	public ResultSet getAllConstraints(ConnectionProperties connectionProperties, Connection connection,
-			String schemaName, String tableName) throws DbexException {
+	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, Table table) throws DbexException {
+		if(table != null)
+			return getAllConstraints(connectionProperties, table.getSchemaName(), table.getModelName());
+		return null;
+	}
+
+	@Override
+	public ResultSetDataTable getAllConstraints(
+			ConnectionProperties connectionProperties, String schemaName,
+			String tableName) throws DbexException {
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
@@ -134,8 +143,7 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 		if(integration == null){
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
-		return integration.getAllConstraints(connection, schemaName, tableName);
+		
+		return null;
 	}
-
-
 }
