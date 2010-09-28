@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
+import com.gs.dbex.application.table.model.DataTableTableModelFactory;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
@@ -42,7 +43,7 @@ public class ConstraintsDetailsPanel extends JPanel {
 	private JButton refreshButton, addConstraintButton, editConstraintButton, dropConstraintButton;
 	private JTable constraintDetailsTable;
 	private JToolBar constraintToolBar;
-	private ResultSetTableModelFactory resultSetTableModelFactory;
+	private DataTableTableModelFactory dataTableTableModelFactory;
 	
 	public ConstraintsDetailsPanel(JFrame frame, String schemaName, String tableName,
 			ConnectionProperties connectionProperties) {
@@ -50,13 +51,7 @@ public class ConstraintsDetailsPanel extends JPanel {
 		this.schemaName = schemaName; 
 		this.tableName = tableName;
 		this.connectionProperties = connectionProperties;
-		
-		try {
-			this.resultSetTableModelFactory = new ResultSetTableModelFactory(
-					connectionProperties.getDataSource().getConnection());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		dataTableTableModelFactory = new DataTableTableModelFactory();
 		initComponents();
 	}
 
