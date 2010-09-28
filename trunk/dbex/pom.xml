@@ -7,19 +7,6 @@
 	<version>${release.version}</version>
 	<name>Database Explorer</name>
 
-	<modules>
-		<module>dbex-common</module>
-		<module>dbex-model</module>
-		<module>dbex-core</module>
-		<module>dbex-bod</module>
-		<module>dbex-resources</module>
-		<module>dbex-integration</module>
-		<module>dbex-service</module>
-		<module>dbex-historyMgr</module>
-		<module>dbex-application</module>
-		<module>dbex-design</module>
-		<module>dbex-launcher</module>
-	</modules>
 
 	<dependencyManagement>
 		<dependencies>
@@ -38,6 +25,7 @@
 				<artifactId>commons-logging</artifactId>
 				<version>1.1.1</version>
 			</dependency>
+			
 			<dependency>
 				<groupId>com.gs.utils</groupId>
 				<artifactId>gs-utils</artifactId>
@@ -102,23 +90,117 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>com.adobe.flexant</groupId>
+						<artifactId>flex-ant</artifactId>
+						<version>022607</version>
+						<!--<version>3.1.0</version>-->
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 
+	
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>dbex-common</module>
+				<module>dbex-model</module>
+				<module>dbex-core</module>
+				<module>dbex-bod</module>
+				<module>dbex-resources</module>
+				<module>dbex-integration</module>
+				<module>dbex-service</module>
+				<module>dbex-historyMgr</module>
+				<module>dbex-application</module>
+				<module>dbex-design</module>
+				<module>dbex-launcher</module>
+				<module>dbex-webapps</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>desktop-app</id>
+			<modules>
+				<module>dbex-common</module>
+				<module>dbex-model</module>
+				<module>dbex-core</module>
+				<module>dbex-bod</module>
+				<module>dbex-resources</module>
+				<module>dbex-integration</module>
+				<module>dbex-service</module>
+				<module>dbex-historyMgr</module>
+				<module>dbex-application</module>
+				<module>dbex-design</module>
+				<module>dbex-launcher</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>web-app</id>
+			<modules>
+				<module>dbex-common</module>
+				<module>dbex-model</module>
+				<module>dbex-core</module>
+				<module>dbex-bod</module>
+				<module>dbex-integration</module>
+				<module>dbex-service</module>
+				<module>dbex-webapps</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>only-flex</id>
+			<modules>
+				<module>dbex-webapps</module>
+			</modules>
+		</profile>
+		
+		
+		<profile>
+			<id>site</id>
+			<modules>
+			</modules>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-site-plugin</artifactId>
+							<configuration>
+								<siteDirectory>site</siteDirectory>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
+	</profiles>
+	
+	
 	<properties>
 		<project.title>DBEX</project.title>
-		<project.home>D:/SVN_HOME//MyProjects/database-explorer/trunk</project.home>
+		<project.home>D:/SVN_HOME/database-explorer/trunk</project.home>
 		<release.version>1.0-BETA-1</release.version>
-		<setup.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup</setup.dir>
-		<libs.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup/libs</libs.dir>
-		<release.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/release</release.dir>
+		<setup.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup</setup.dir>
+		<libs.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup/libs</libs.dir>
+		<release.dir>D:/SVN_HOME/database-explorer/trunk/release</release.dir>
 		<jdk.version>1.6</jdk.version>
 		<maven.test.skip>true</maven.test.skip>
 		<maven.jar.sign.skip>true</maven.jar.sign.skip>
-		<staging.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/release/staging</staging.dir>
+		<staging.dir>D:/SVN_HOME/database-explorer/trunk/release/staging</staging.dir>
 		<izpack-standalone.version>4.3.1</izpack-standalone.version>
 		<system.architecture.version>x86</system.architecture.version>
 		<system.classifier>win32</system.classifier>
+		<flex.home>D:/TOOLS/Adobe/Flex Builder 3/sdks/3.1.0.2710</flex.home>
+		
+		<web.context.root>/dbex</web.context.root>
+		<transaction.manager.class>org.springframework.transaction.jta.JtaTransactionManager</transaction.manager.class>
 	</properties>
 
 </project>
