@@ -117,14 +117,14 @@ public class ConstraintsDetailsPanel extends JPanel {
 		
 		DatabaseMetadataService metadataService = DbexServiceBeanFactory.getBeanFactory().getDatabaseMetadataService();
 		
-		try {
+		/*try {
 			ResultSet resultSet = metadataService.getAllConstraints(connectionProperties, resultSetTableModelFactory.getConnection(), schemaName, tableName);
 			constraintDetailsTable.setModel(resultSetTableModelFactory.getResultSetTableModel(resultSet));
 			constraintDetailsTable.updateUI();
 			DrawingUtil.updateTableColumnWidth(constraintDetailsTable);
 		}catch(Exception e){
 			e.printStackTrace();
-		}
+		}*/
 		add(new JScrollPane(constraintDetailsTable), gridBagConstraints);
 	}
 
