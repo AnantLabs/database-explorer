@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="400" height="300"
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="676" height="438"
 	title="New Connection" titleIcon="{DbexImageConstants.getInstance().newConnectionIcon}" showCloseButton="true" 
 	close="{PopUpManager.removePopUp(this)}">
 	<mx:Script>
@@ -7,5 +7,19 @@
 			import mx.managers.PopUpManager;
 		]]>
 	</mx:Script>
+	
+	<mx:HBox width="100%" height="100%">
+		<mx:VBox width="250" height="100%" verticalGap="0" verticalAlign="top">
+			<mx:HBox width="100%" height="100%">
+				<mx:List width="100%" height="100%">
+					
+				</mx:List>
+			</mx:HBox>
+			<mx:HBox width="100%" height="30" horizontalAlign="left">
+				<mx:Button label="Up"/>
+				<mx:Button label="Dn"/>
+			</mx:HBox>
+		</mx:VBox>
+	</mx:HBox>
 	
 </mx:TitleWindow>
