@@ -4,9 +4,35 @@
 	
 		<mx:Script>
 			<![CDATA[
+				import mx.core.Application;
+				import mx.managers.PopUpManager;
+				import com.gs.dbex.visuals.DbexConnectionDialog;
+				import com.gs.dbex.command.UICommandConstants;
+				import mx.controls.Alert;
+				import mx.events.MenuEvent;
 				
+				[Bindable]
 				public var imageConstants:DbexImageConstants = DbexImageConstants.getInstance();
 				
+				
+				public function menuClickHandler(event:MenuEvent):void{
+					//Alert.show("Label: "+event.item.data , "Clicked menu item");
+					if(null != event){
+						if(null != event.item){
+							var actCmd:String = "" + event.item.data;
+							switch(actCmd){
+								case UICommandConstants.NEW_CONNECTION_ACT_CMD:
+									var titleWin:DbexConnectionDialog = PopUpManager.createPopUp(
+										Application.application.applicationResizableBox, DbexConnectionDialog, false) as DbexConnectionDialog;
+                					PopUpManager.centerPopUp(titleWin);
+									break;
+								case UICommandConstants.EXIT_APP_ACT_CMD:
+									Alert.show("Exit Clicked");
+									break;
+							}
+						}
+					}
+				}
 			]]>
 		</mx:Script>
    
@@ -15,8 +41,8 @@
             <mx:Array>
                 <mx:Object label="File" >
                     <mx:children>
-                    	<mx:Object label="Connection" icon="{imageConstants.newConnectionIcon}"/>
-                        <mx:Object label="Exit" icon="{imageConstants.exitIcon}"/>
+                    	<mx:Object label="Connection" icon="{imageConstants.newConnectionIcon}" data="{UICommandConstants.NEW_CONNECTION_ACT_CMD}"/>
+                        <mx:Object label="Exit" icon="{imageConstants.exitIcon}" data="{UICommandConstants.EXIT_APP_ACT_CMD}"/>
                     </mx:children>
                 </mx:Object>
             </mx:Array>
@@ -28,7 +54,8 @@
             labelField="label"
             iconField="icon"
             horizontalCenter="0"
-            width="100%"/>
+            width="100%" height="100%"
+            itemClick="menuClickHandler(event)"/>
 
 	
 	
