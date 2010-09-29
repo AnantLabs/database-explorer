@@ -4,6 +4,8 @@
 	
 		<mx:Script>
 			<![CDATA[
+				import com.gs.dbex.control.DbexWindowManager;
+				import com.gs.dbex.visuals.DatabaseViewerWindow;
 				import mx.core.Application;
 				import mx.managers.PopUpManager;
 				import com.gs.dbex.visuals.DbexConnectionDialog;
@@ -27,7 +29,11 @@
                 					PopUpManager.centerPopUp(titleWin);
 									break;
 								case UICommandConstants.EXIT_APP_ACT_CMD:
-									Alert.show("Exit Clicked");
+									/* var titleWin1:DatabaseViewerWindow = PopUpManager.createPopUp(
+										Application.application.applicationResizableBox, DatabaseViewerWindow, false) as DatabaseViewerWindow;
+                					PopUpManager.centerPopUp(titleWin1); */
+                					var win:DatabaseViewerWindow =
+                						DbexWindowManager.getInstance().openWindow("DatabaseViewerWindow", DatabaseViewerWindow) as DatabaseViewerWindow;
 									break;
 							}
 						}

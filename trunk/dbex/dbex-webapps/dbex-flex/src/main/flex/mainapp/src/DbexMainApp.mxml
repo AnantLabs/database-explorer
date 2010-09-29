@@ -2,25 +2,44 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="vertical"
 	pageTitle="Database Explorer" 
 	verticalGap="0" paddingLeft="0"
-	paddingBottom="0" paddingRight="0" paddingTop="0" xmlns:layout="com.gs.dbex.layout.*">
+	paddingBottom="0" paddingRight="0" paddingTop="0" xmlns:layout="com.gs.dbex.layout.*"
+	creationComplete="loadInitialData()">
 	
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.control.DbexWindowManager;
 			
+			public function loadInitialData():void{
+				DbexWindowManager.getInstance().workArea = applicationResizableBox;
+			}
 		]]>
 	</mx:Script>
 	
 	
+	<!--
 	<mx:Style source="SunNight.css"/>
+	<mx:Style source="assets/styles/DbexStyle.css"/>
+	-->
 	
+	<mx:Style source="SunNight.css"/>
 	
 	<layout:DbexMenuBar width="100%" height="25"/>
 	<layout:DbexToolbar width="100%" height="30"/>
-	<mx:HBox width="100%" height="100%" borderColor="#000000" borderStyle="solid" id="applicationResizableBox">
+	<mx:Canvas width="100%" height="100%" borderColor="#000000" borderStyle="solid" 
+		id="applicationResizableBox">
+		
+	</mx:Canvas>
+	<!--
+	<mx:HBox width="100%" height="35" borderColor="#000000" borderStyle="outset" 
+		id="applicationStatusBox">
 		
 	</mx:HBox>
-	
-	<mx:HBox width="100%" height="25" borderColor="#000000" borderStyle="outset" id="applicationStatusBox">
-		
-	</mx:HBox>
+	-->
+	<mx:Resize id="shrink" widthTo="25" target="{applicationResizableBox}" duration="1000"  />
+    <mx:Resize id="grow" widthTo="180" target="{applicationResizableBox}" duration="1000"  />   
+    <mx:Resize id="InHeight" heightFrom="0" heightTo="55" duration="1000"/>
+    <mx:Resize id="DeHeight" heightFrom="55" heightTo="0" duration="700"/>
+    <mx:Resize id="InHeightOne" heightFrom="0" heightTo="55" duration="1000"/>
+    <mx:Resize id="DeHeightOne" heightFrom="55" heightTo="0" duration="700"/>
+ 	<mx:Fade id="fadeOut" alphaFrom="1" alphaTo="0" duration="500"/> 
 </mx:Application>

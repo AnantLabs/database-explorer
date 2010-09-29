@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ResizableWindow xmlns="com.gs.dbex.layout.*" xmlns:mx="http://www.adobe.com/2006/mxml" 
+	minHeight="400" minWidth="600" showWindowButtons="true" title="Datbase Viewer"
+	titleIcon="{DbexImageConstants.getInstance().newConnectionIcon}">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.gs.dbex.control.DbexResizeEvent;
+			
+			
+			private function changeSize(event:DbexResizeEvent):void
+            {
+            	
+            }
+		]]>
+	</mx:Script>
+	
+	
+	
+</ResizableWindow>
