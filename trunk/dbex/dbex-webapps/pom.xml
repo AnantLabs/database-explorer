@@ -30,6 +30,7 @@
 			<id>web-app</id>
 			<modules>
 				<module>dbex-serviceprovider</module>
+				<module>dbex-flex</module>
 				<module>dbex-web</module>
 			</modules>
 		</profile>
