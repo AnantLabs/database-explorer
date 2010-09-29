@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ApplicationControlBar xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Metadata>
+		[Event(name="menuSelection", type="flash.events.Event")]	
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			private function menuClick():void{
+				dispatchEvent(new Event("menuSelection"));
+			}
+		]]>
+	</mx:Script>
+	<mx:Label text="Minimized Windows: "/>
+	<mx:Image name="menuImage" click="menuClick()"  
+		source="@Embed(source='/assets/icons/window/window-manager.png')" 
+		useHandCursor="true" buttonMode="true"
+		/> 
+</mx:ApplicationControlBar>

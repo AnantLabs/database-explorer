@@ -1,5 +1,7 @@
 echo off
 
+cls
+
 set M2_HOME=D:\TOOLS\maven-2.2.1
 set JAVA_HOME=D:\TOOLS\Java\jdk1.6.0_21
 set Path=%Path%;%M2_HOME%\bin;%JAVA_HOME%
@@ -8,7 +10,7 @@ set Path=%Path%;%M2_HOME%\bin;%JAVA_HOME%
 @if "%1" == "dsk" goto desktop
 @if "%1" == "web" goto web
 @if "%1" == "flex" goto flex
-@if "%1" == "ide" goto eclipse
+@if "%1" == "ecl" goto eclipse
 
 @echo Building DbEx Desktop and WEB Application.
 @echo.

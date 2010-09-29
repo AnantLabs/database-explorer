@@ -27,15 +27,15 @@ Panel{
 	border-style:solid;
 	border-color:#303030;
 	border-thickness:1;
-	border-thickness-top:3;
+	border-thickness-top:1;
 	background-color:#1C1C1C;
-	padding-top:10;
+	padding-top:5;
 	padding-bottom:0;
-	padding-left:8;
-	padding-right:8;
+	padding-left:5;
+	padding-right:5;
 	drop-shadow-enabled:true;
 	corner-radius:0;
-	header-height:32;
+	header-height:25;
 	title-style-name: panelTitle;
 	header-colors:#111,#111;
 	title-background-skin: Embed(
@@ -54,7 +54,7 @@ Panel{
 
 .panelTitle{
 	font-size:13;
-	color:#666;
+	color:#FDF11C;
 }
 
 
