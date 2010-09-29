@@ -225,14 +225,14 @@ MenuBar {
    fillColors: #88a6cb, #0a4c8f;
    rollOverColor: #88a6cb;
    selectionColor: #183d67;
-   textRollOverColor: #ffffff;
+   textRollOverColor: #0000ff;
    textSelectedColor: #0000ff;
    disabledColor: #aab3b3;
    themeColor: #3995ff;
    fontFamily: Tahoma;
    fontSize: 12;
    fontWeight: bold;
-	color: #FFFFFF;
+	color: #219950;
 }
 
 NumericStepper {

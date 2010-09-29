@@ -13,6 +13,10 @@
 	<packaging>pom</packaging>
 	<name>DBEX - Flex</name>
 
+	<properties>
+		<FLEX_HOME>${flex.home}</FLEX_HOME>
+	</properties>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -23,19 +27,37 @@
 						<configuration>
 							<tasks>
 								<taskdef resource="flexTasks.tasks" />
-								<mxmlc file="Main.mxml" 
-									   output="target/swf/Main.swf"
-									   link-report="target/report.xml" 
+								<mxmlc file="src/main/flex/mainapp/src/DbexMainApp.mxml" 
+									   output="target/swf/DbexMainApp.swf"
 									   context-root="${web.context.root}"
 									   warnings="false"
 									   incremental="true"
 								>
-									<source-path path-element="${flex.home}/frameworks"/>
-									<compiler.library-path dir="${flex.home}/frameworks" append="true">
+									<source-path path-element="${FLEX_HOME}/frameworks"/>
+									<compiler.library-path dir="${FLEX_HOME}/frameworks" append="true">
 										<include name="libs" />
 									</compiler.library-path>
 									<compiler.source-path path-element="src/main/flex"/>
+									<compiler.source-path path-element="src/main/flex/mainapp/src"/>
+									<compiler.source-path path-element="src/main/flex/common/src"/>
+									<compiler.source-path path-element="src/main/flex/application/src"/>
+									
+
 								</mxmlc>
+								
+								<html-wrapper 
+											title="DbexMainApp"
+											height="100%"
+											width="100%"
+											bgcolor="red"
+											application="DbexMainApp"
+											swf="DbexMainApp"
+											version-major="9"
+											version-minor="0"
+											version-revision="0"
+											history="true"              
+											template="express-installation"
+											output="target/swf/"/>		
 								
 							</tasks>
 						</configuration>
