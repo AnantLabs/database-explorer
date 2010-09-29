@@ -1,0 +1,421 @@
+Application {
+   backgroundColor: #050c14;
+   backgroundGradientColors: #000000, #07101c;
+   themeColor: #3995ff;
+   color: #ffffff;
+}
+
+Accordion {
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   selectedFillColors: #88a6cb, #183d67;
+   themeColor: #3995ff;
+   backgroundColor: #183d67;
+   borderColor: #112438;
+   textRollOverColor: #3995ff;
+   textSelectedColor: #0066cc;
+   headerStyleName: "myaccordionHeader";
+}
+
+.myaccordionHeader {
+   color: #ffffff;
+   fontFamily: Tahoma;
+   fontWeight: bold;
+}
+
+ApplicationControlBar {
+   highlightAlphas: 0.4, 0;
+   fillAlphas: 0.2, 0.14;
+   fillColors: #88a6cb, #0a4c8f;
+   backgroundColor: #183d67;
+   shadowDistance: 3;
+   shadowDirection: center;
+}
+
+Button {
+   letterSpacing: 0;
+   highlightAlphas: 0.4, 0.16;
+   fillAlphas: 1, 1, 1, 1;
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #0000ff;
+   borderColor: #112438;
+   themeColor: #3995ff;
+   fontFamily: Tahoma;
+   fontSize: 11;
+   fontWeight: normal;
+}
+
+ButtonBar {
+   buttonStyleName: "mybuttonBarButtonStyle";
+   firstButtonStyleName: "mybuttonBarFirstButtonStyle";
+   lastButtonStyleName: "mybuttonBarLastButtonStyle";
+}
+
+.mybuttonBarButtonStyle {
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #0000ff;
+   borderColor: #112438;
+   themeColor: #3995ff;
+   fontFamily: Tahoma;
+   fontSize: 11;
+   fontWeight: normal;
+}
+
+.mybuttonBarFirstButtonStyle {
+}
+
+.mybuttonBarLastButtonStyle {
+}
+
+CheckBox {
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   borderColor: #112438;
+   iconColor: #000000;
+   color: #ffffff;
+   textSelectedColor: #0066cc;
+   textRollOverColor: #3995ff;
+   themeColor: #3995ff;
+   fontFamily: Tahoma;
+}
+
+ComboBox {
+   color: #317acd;
+   borderColor: #112438;
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   selectionColor: #efb97b;
+   rollOverColor: #aadeff;
+   textRollOverColor: #000000;
+   themeColor: #3995ff;
+   alternatingItemColors: #ecd9bb, #e2ceb5;
+   fontFamily: Tahoma;
+   dropdownStyleName: "myComboBoxDropDowns";
+}
+
+.myComboBoxDropDowns {
+   fontFamily: Tahoma;
+}
+
+DataGrid {
+   backgroundColor: #112438;
+   alternatingItemColors: #0a4c8f, #88a6cb;
+   headerColors: #0a4c8f, #88a6cb;
+   horizontalGridLines: true;
+   horizontalGridLineColor: #112438;
+   verticalGridLineColor: #112438;
+   borderColor: #112438;
+   color: #ffffff;
+   dropShadowEnabled: true;
+   fontFamily: Tahoma;
+   headerStyleName: "mydataGridHeaderStyle";
+}
+
+.mydataGridHeaderStyle {
+   color: #ffffff;
+   fontFamily: Tahoma;
+   fontWeight: bold;
+   fontStyle: normal;
+   textDecoration: none;
+}
+
+DateChooser {
+   headerColors: #0a4c8f, #88a6cb;
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   rollOverColor: #0a4c8f;
+   selectionColor: #3995ff;
+   color: #ffffff;
+   borderColor: #112438;
+   backgroundColor: #112438;
+   fontFamily: Tahoma;
+   fontWeight: normal;
+   headerStyleName: "mydateChooserHeaderStyle";   weekDayStyleName: "mydateChooserWeekDayStyle";   todayStyleName: "mydateChooserTodayStyle";
+}
+
+.mydateChooserHeaderStyle {
+   color: #ffffff;
+   fontFamily: Tahoma;
+
+}
+
+.mydateChooserWeekDayStyle {
+   color: #3995ff;
+   fontFamily: Tahoma;
+   fontWeight: bold;
+   fontStyle: normal;
+   textDecoration: none;
+
+}
+
+.mydateChooserTodayStyle {
+   color: #0000ff;
+   fontFamily: Tahoma;
+}
+
+HDividedBox {
+   dividerAffordance: 7;
+   dividerAlpha: 0.56;
+   dividerColor: #0d1725;
+   dividerThickness: 1;
+}
+
+HRule {
+   strokeColor: #009900;
+   shadowColor: #000099;
+}
+
+HScrollBar {
+   fillColors: #183d67, #88a6cb, #88a6cb, #183d67;
+   trackColors: #183d67, #88a6cb;
+   themeColor: #3995ff;
+   borderColor: #112438;
+}
+
+HSlider {
+   tickColor: #009dff;
+   showTrackHighlight: true;
+   invertThumbDirection: false;
+   borderColor: #112438;
+   trackColors: #183d67, #88a6cb;
+   themeColor: #009dff;
+   fillColors: #183d67, #88a6cb, #88a6cb, #183d67;
+   labelStyleName: "myhSliderLabelStyle";
+}
+
+.myhSliderLabelStyle {
+   color: #ffffff;
+   fontFamily: Tahoma;
+}
+
+LinkBar {
+   borderStyle: none;
+   rollOverColor: #183d67;
+   selectionColor: #3995ff;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #0000ff;
+   fontFamily: Tahoma;
+   fontSize: 10;
+   fontWeight: normal;
+   dropShadowEnabled: false;
+   shadowDistance: 10;
+   shadowDirection: right;
+   dropShadowColor: #00ff00;
+}
+
+LinkButton {
+   rollOverColor: #183d67;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #0000ff;
+   fontFamily: Tahoma;
+   fontWeight: normal;
+   textDecoration: underline;
+}
+
+List {
+   backgroundColor: #112438;
+   color: #ffffff;
+}
+
+MenuBar {
+   backgroundColor: #112438;
+   borderColor: #112438;
+   fillColors: #88a6cb, #0a4c8f;
+   rollOverColor: #88a6cb;
+   selectionColor: #183d67;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #0000ff;
+   disabledColor: #aab3b3;
+   themeColor: #3995ff;
+   fontFamily: Tahoma;
+   fontSize: 12;
+   fontWeight: bold;
+	color: #FFFFFF;
+}
+
+NumericStepper {
+   borderStyle: solid;
+   borderColor: #112438;
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   backgroundColor: #112438;
+   color: #ffffff;
+   themeColor: #3995ff;
+   fontFamily: Tahoma;
+}
+
+Panel {
+   borderStyle: none;
+   borderColor: #c8e1e1;
+   borderThicknessLeft: 0;
+   borderThicknessTop: 0;
+   borderThicknessBottom: 0;
+   borderThicknessRight: 0;
+   roundedBottomCorners: true;
+   backgroundAlpha: 0.77;
+   headerColors: #0a4c8f, #88a6cb;
+   footerColors: #88a6cb, #0a4c8f;
+   backgroundColor: #112438;
+   dropShadowEnabled: false;
+   shadowDistance: 0;
+   titleStyleName: "mypanelTitle";
+	controlBarStyleName: panelControlBar;
+}
+
+.mypanelTitle {
+   color: #ffffff;
+   textAlign: left;
+   fontFamily: Tahoma;
+   fontSize: 11;
+   fontWeight: bold;
+}
+
+PopUpButton {
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   iconColor: #ffffff;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #0000ff;
+   borderColor: #112438;
+   themeColor: #3995ff;
+}
+
+ProgressBar {
+   borderColor: #112438;
+   barColor: #000099;
+   trackColors: #183d67, #88a6cb;
+   color: #ffffff;
+   fontFamily: Tahoma;
+   fontSize: 11;
+   fontWeight: normal;
+}
+
+RadioButton {
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   borderColor: #112438;
+   iconColor: #000000;
+   color: #ffffff;
+   textSelectedColor: #0066cc;
+   textRollOverColor: #3995ff;
+   themeColor: #3995ff;
+   fontFamily: Tahoma;
+}
+
+TabNavigator {
+   horizontalAlign: left;
+   backgroundColor: #183d67;
+   borderColor: #112438;
+   color: #ffffff;
+   tabStyleName: "myTabs";
+   firstTabStyleName: "myTabs";
+   lastTabStyleName: "myTabs";
+   selectedTabTextStyleName: "mySelectedTabs";
+}
+
+.myTabs {
+   fillColors: #0a4c8f, #88a6cb;
+   backgroundColor: #112438;
+   borderColor: #112438;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   fontFamily: Tahoma;
+
+}
+
+.mySelectedTabs {
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   fontFamily: Tahoma;
+}
+
+TextArea {
+   fontFamily: Tahoma;
+   fontSize: 12;
+   color: #ffffff;
+   backgroundColor: #112438;
+   borderColor: #183d67;
+}
+
+TextInput {
+   borderColor: #183d67;
+   backgroundColor: #112438;
+   color: #ffffff;
+   fontFamily: Tahoma;
+   fontSize: 12;
+}
+
+ToggleButtonBar {
+   buttonStyleName: "mytoggleButtonBarButtonStyle";
+   firstButtonStyleName: "mytoggleButtonBarFirstButtonStyle";
+   lastButtonStyleName: "mytoggleButtonBarLastButtonStyle";
+   selectedButtonTextStyleName: "mytoggleButtonBarSelectedButtonStyle";
+}
+
+.mytoggleButtonBarButtonStyle {
+   fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   color: #ffffff;
+   textRollOverColor: #ffffff;
+   textSelectedColor: #0000ff;
+   borderColor: #112438;
+   themeColor: #3995ff;
+   fontFamily: Tahoma;
+}
+
+.mytoggleButtonBarFirstButtonStyle {
+}
+
+.mytoggleButtonBarLastButtonStyle {
+}
+
+.mytoggleButtonBarSelectedButtonStyle {
+   color: #ffffff;
+   fontFamily: Tahoma;
+}
+
+ToolTip {
+   fontFamily: Tahoma;
+}
+
+Tree {
+   backgroundColor: #112438;
+   depthColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+   borderColor: #112438;
+   color: #ffffff;
+   fontFamily: Tahoma;
+}
+
+VDividedBox {
+   dividerColor: #0d1725;
+}
+
+VRule {
+   strokeColor: #00cc00;
+   shadowColor: #0000ff;
+}
+
+VScrollBar {
+   fillColors: #183d67, #88a6cb, #88a6cb, #183d67;
+   trackColors: #183d67, #88a6cb;
+   themeColor: #3995ff;
+   borderColor: #112438;
+}
+
+VSlider {
+   tickColor: #009dff;
+   showTrackHighlight: true;
+   borderColor: #112438;
+   trackColors: #183d67, #88a6cb;
+   themeColor: #009dff;
+   fillColors: #183d67, #88a6cb, #88a6cb, #183d67;
+   labelStyleName: "myvSliderLabelStyle";
+}
+
+.myvSliderLabelStyle {
+   color: #ffffff;
+   fontFamily: Tahoma;
+}
+.panelControlBar
+{
+}
+
