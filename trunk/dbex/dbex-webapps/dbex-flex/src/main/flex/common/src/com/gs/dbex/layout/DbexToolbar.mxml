@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" paddingLeft="0"
+	paddingBottom="0" paddingRight="0" paddingTop="0" verticalGap="0" horizontalGap="0">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Array id="toolbarButtons">
+        <mx:Object label="" icon="{imageLocator.newConnectionIcon}" width="20"/>
+    </mx:Array>
+
+	
+	<mx:HBox id="toolBarOutterBox" width="100%" height="100%" borderStyle="outset" borderColor="#000000" borderThickness="0">
+		<mx:HBox id="toolBar" width="100%" height="100%" borderThickness="0">
+			<!--<mx:LinkBar width="100%" height="100%" dataProvider="{toolbarButtons}" iconField="icon" />-->
+			<mx:LinkButton width="25" height="100%" icon="{imageLocator.newConnectionIcon}" />
+		</mx:HBox>
+		<mx:HBox id="windowButtonBar" width="100" height="100%" borderThickness="0">
+			
+		</mx:HBox>
+	</mx:HBox>
+	
+</mx:HBox>
