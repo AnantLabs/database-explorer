@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:MenuBar xmlns:mx="http://www.adobe.com/2006/mxml"
+	labelField="@label" itemClick="menuHandler(event);" 
+	iconField="@icon"
+            dataProvider="{menuBarCollection}" creationComplete="initCollections();">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.gs.dbex.rcs.DbexImageConstants;
+			import mx.controls.Alert;
+			import mx.collections.XMLListCollection;
+			import mx.events.MenuEvent;
+			
+			[Bindable]
+			public var dbexImageConst:DbexImageConstants = new DbexImageConstants();
+			
+			
+            [Bindable]
+        [Embed("assets/images/new_connection.gif")]
+        public var newConnectionIcon:Class;
+    
+            /* 
+            [Bindable]
+            public var menuBarCollection:XMLListCollection;
+            private var menubarXML:XMLList =
+                <>
+                    <menuitem label="File">
+                        <menuitem label="New connection" 
+                        	data="NEW_CONNECTION_MENU_ITEM"
+                        	icon="newConnectionIcon"/>
+                        <menuitem label="Exit" data="EXIT_MENU_ITEM"/>
+                    </menuitem>
+                    <menuitem label="Edit">
+                        <menuitem label="MenuItem 2-A" type="check"  data="2A"/>
+                        <menuitem type="separator" />
+                        <menuitem label="MenuItem 2-B" >
+                            <menuitem label="SubMenuItem 3-A" type="radio"
+                                groupName="one" data="3A"/>
+                            <menuitem label="SubMenuItem 3-B" type="radio"
+                                groupName="one" data="3B"/>
+                        </menuitem>
+                    </menuitem>
+                    <menuitem label="Help">
+                        <menuitem label="About Dbex" data="ABOUT_DBEX"/>
+                        <menuitem label="Help" data="HELP"/>
+                    </menuitem>
+                </>;
+ */
+            // Event handler for the MenuBar control's itemClick event.
+            private function menuHandler(event:MenuEvent):void  {
+                Alert.show("Label: " + event.item.@label + "\n" + 
+                    "Data: " + event.item.@data, "Clicked menu item");
+            }
+
+            // Event handler to initialize the MenuBar control.
+            private function initCollections():void {
+                //menuBarCollection = new XMLListCollection(menubarXML);
+            }
+
+		]]>
+	</mx:Script>
+	
+	<mx:XML id="menuBarCollection" format="e4x">
+		<root>
+		    <menuitem label="File" icon="newConnectionIcon" data="A"></menuitem>
+		    <menuitem label="Exit" icon="newConnectionIcon" data="B"></menuitem>
+		</root>
+	</mx:XML> 
+	<mx:menuBarItems>
+		
+	</mx:menuBarItems>
+</mx:MenuBar>
