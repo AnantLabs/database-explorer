@@ -1,22 +1,242 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="676" height="438"
-	title="New Connection" titleIcon="{DbexImageConstants.getInstance().newConnectionIcon}" showCloseButton="true" 
-	close="{PopUpManager.removePopUp(this)}" paddingTop="0">
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="728" height="482"
+	title="New Connection" 
+	titleIcon="{DbexImageConstants.getInstance().dbex24x24Icon}" showCloseButton="true" 
+	close="{PopUpManager.removePopUp(this)}" paddingTop="0" xmlns:control="com.gs.dbex.control.*"
+	defaultButton="{connectButton}" creationComplete="initilize()">
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.DatabaseTypeEnum;
+			import com.gs.dbex.vo.ConnectionPropertiesVO;
+			import com.gs.dbex.DbexCommonModelLocator;
+			import mx.controls.Alert;
+			import com.gs.dbex.control.DbexCommonEvent;
+			import com.gs.dbex.layout.InputWindow;
 			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			
+			
+			public function addNewConnectionName():void{
+				var titleWin:InputWindow = PopUpManager.createPopUp(
+					this, InputWindow, true) as InputWindow;
+					
+				titleWin.displayLabel.text = "Enter Connection Name";
+				titleWin.addEventListener(DbexCommonEvent.APPLY_EVENT, applyEventHandler);
+				PopUpManager.centerPopUp(titleWin);
+				
+				
+			}
+			
+			public function applyEventHandler(evt:DbexCommonEvent):void{
+				if(null != evt){
+					if(null != evt.data){
+						var connName:String = evt.data.toString();
+						DbexCommonModelLocator.getInstance().connectionNameColl.addItem(connName);
+						var p:ConnectionPropertiesVO = new ConnectionPropertiesVO();
+						p.connectionName = connName;
+						DbexCommonModelLocator.getInstance().connectionPropertiesColl.addItem(p);
+						connectionNameList.selectedItem = p;
+						listSelectionChange();
+						dbTypeCombo.selectedIndex = 3;
+						dbTypeChanged();
+					}
+				}
+			}
+			
+			
+			public function listSelectionChange():void{
+				if(connectionNameList.selectedItem != null){
+					propertyBox.enabled = true;
+					var p:ConnectionPropertiesVO = connectionNameList.selectedItem as ConnectionPropertiesVO;
+					selectedNameLabel.text = p.connectionName;
+				} else {
+					propertyBox.enabled = false;
+				}
+				dbTypeChanged();
+			}
+			
+			public function initilize():void{
+				propertyBox.enabled = false;
+				if(connectionNameList.selectedItem != null){
+					propertyBox.enabled = true;
+					
+				}
+				dbTypeCombo.selectedIndex = 3;
+				dbTypeChanged();
+			}
+			
+			public function dbTypeChanged():void{
+				var dbType:DatabaseTypeEnum = dbTypeCombo.selectedItem as DatabaseTypeEnum;
+				if(null != dbType){
+					if(DatabaseTypeEnum.ORACLE.type == dbType.type){
+						dirverClassTi.text = dbType.driverClass;
+						dirverClassTi.enabled = false;
+					} else if(DatabaseTypeEnum.MYSQL.type == dbType.type){
+						dirverClassTi.text = dbType.driverClass;
+						dirverClassTi.enabled = false;
+					} else if(DatabaseTypeEnum.MSSQL_2005.type == dbType.type){
+						dirverClassTi.text = dbType.driverClass;
+						dirverClassTi.enabled = false;
+					} else if(DatabaseTypeEnum.OTHER.type == dbType.type){
+						dirverClassTi.text = dbType.driverClass;
+						dirverClassTi.enabled = true;
+					}
+				}
+			}
 		]]>
 	</mx:Script>
 	
 	<mx:HBox width="100%" height="100%" paddingTop="0" >
-		<mx:VBox width="250" height="100%" verticalGap="0" verticalAlign="top">
+		<mx:VBox width="200" height="100%" verticalGap="0" verticalAlign="top">
+			<mx:Label text="Connection Names"  />
 			<mx:HBox width="100%" height="100%">
-				<mx:List width="100%" height="100%">
+				<mx:List width="100%" height="100%" id="connectionNameList"
+					dataProvider="{DbexCommonModelLocator.getInstance().connectionPropertiesColl}"
+					selectedIndex="0" itemClick="listSelectionChange()"
+					labelField="connectionName">
 					
 				</mx:List>
 			</mx:HBox>
-			<mx:HBox width="100%" height="30" horizontalAlign="left">
-				<mx:Button label="Dn"/>
+			<mx:HBox width="100%" height="35" horizontalAlign="left" verticalAlign="middle">
+				<mx:Button label="" icon="{imageLocator.moveUpIcon}"/>
+				<mx:Button label="" icon="{imageLocator.moveDownIcon}"/> 
+			</mx:HBox>
+		</mx:VBox>
+		<mx:VBox width="100%" height="100%">
+			<mx:HBox width="100%" height="32" horizontalGap="2" verticalAlign="middle">
+				<control:ToolbarButton label="" icon="{imageLocator.newConnectionIcon}"
+					toolTip="Add new Connection" click="{addNewConnectionName()}"/>
+				<control:ToolbarButton label="" icon="{imageLocator.loadFileIcon}"
+					toolTip="Load connections from file"/>
+				<mx:VRule width="2" height="100%"/>
+				<control:ToolbarButton label="" icon="{imageLocator.saveAllIcon}"
+					toolTip="Save All..."/>
+				<mx:VRule width="2" height="100%"/>
+				<control:ToolbarButton label="" icon="{imageLocator.clearIcon}"
+					toolTip="Clear"/>
+				<control:ToolbarButton label="" icon="{imageLocator.deleteIcon}"
+					toolTip="Delete"/>
+				<mx:VRule width="2" height="100%"/>
+				<control:ToolbarButton label="" icon="{imageLocator.exportIcon}"
+					toolTip="Export"/>
+			</mx:HBox>
+			<mx:VBox id="propertyBox" width="100%" height="100%">
+				<mx:Label id="selectedNameLabel" width="100%" height="25" fontSize="12" fontWeight="bold" fontFamily="Verdana" color="#24EF15"/>
+				<mx:VBox width="100%" height="100%">
+					<mx:Grid width="100%" >
+						<mx:GridRow width="100%" height="100%">
+							<mx:GridItem width="100%" height="100%">
+								<mx:Label text="Database Type"/>
+							</mx:GridItem>
+							<mx:GridItem width="100%" height="100%" colSpan="2">
+								<mx:ComboBox id="dbTypeCombo" width="100%" dataProvider="{DatabaseTypeEnum.getTypes()}"
+									labelField="description" change="dbTypeChanged()"/>
+							</mx:GridItem>
+							
+						</mx:GridRow>
+						<mx:GridRow width="100%" height="100%">
+							<mx:GridItem width="100%" height="100%">
+								<mx:Label text="Driver Class:"/>
+							</mx:GridItem>
+							<mx:GridItem width="100%" height="100%" colSpan="2">
+								<mx:TextInput id="dirverClassTi" width="100%" enabled="false"/>
+							</mx:GridItem>
+							
+						</mx:GridRow>
+						<mx:GridRow width="100%" height="100%">
+							<mx:GridItem width="100%" height="100%">
+							</mx:GridItem>
+							<mx:GridItem width="100%" height="100%">
+							</mx:GridItem>
+							<mx:GridItem width="100" height="100%" horizontalAlign="right">
+								<mx:Button id="manageDriver" label="Manage"/>
+							</mx:GridItem>
+						</mx:GridRow>
+					</mx:Grid>
+					<mx:HRule width="100%"/>
+					<mx:VBox label=" Configuration " width="100%" height="100%">
+						<mx:Grid width="100%" >
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Host Name"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" >
+									<mx:TextInput id="hostNameTi" width="100%"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Port Number"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" >
+									<mx:TextInput id="portNumberTi" width="100%" restrict="[0-9]"/>
+								</mx:GridItem>
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="User Name"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" >
+									<mx:TextInput id="userNameTi" width="100%"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Password"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%">
+									<mx:TextInput id="passwordTi" width="100%" />
+								</mx:GridItem>
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" >
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="2">
+									<mx:CheckBox label="Save Password" id="savePasswordChkBx"/>
+								</mx:GridItem>
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Storage Type"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" >
+									<mx:RadioButton id="catalogRb" label="CATALOG"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="2">
+									<mx:RadioButton id="schemaRb" label="SCHEMA"/>
+								</mx:GridItem>
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Catalog Name" id="catSchNameLabel"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" >
+									<mx:TextInput id="schemaNameTi" width="100%"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="SID/Service Name"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%">
+									<mx:TextInput id="sidServiceNameTi" width="100%" />
+								</mx:GridItem>
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Connection URL" />
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="3">
+									<mx:TextInput id="urlTi" width="100%"/>
+								</mx:GridItem>
+							</mx:GridRow>
+						</mx:Grid>
+					</mx:VBox>
+				</mx:VBox>
+			</mx:VBox>
+			<mx:HBox width="100%" height="35" horizontalAlign="left" verticalAlign="middle">
+				<mx:Button label="Cancel" id="cancelButton"/>
+				<mx:Spacer width="100%"/>
+				<mx:Button label="Test" id="testConnectionButton"/>
+				<mx:Button label="Connect" id="connectButton"/> 
 			</mx:HBox>
 		</mx:VBox>
 	</mx:HBox>

@@ -5,6 +5,12 @@ package com.gs.dbex.model.cfg;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import javax.sql.DataSource;
 
 import com.gs.utils.text.StringUtil;
@@ -13,6 +19,8 @@ import com.gs.utils.text.StringUtil;
  * @author sabuj.das
  * 
  */
+@Entity
+@Table(name="DBEX_CONNECTION_PROPERTIES")
 public class ConnectionProperties implements Serializable,
 		Comparable<ConnectionProperties> {
 
@@ -21,10 +29,14 @@ public class ConnectionProperties implements Serializable,
 	 */
 	private static final long serialVersionUID = 2717753646686919478L;
 
+	@Id
 	private String connectionName;
 	private String databaseType;
 	private String connectionUrl;
 	private Integer displayOrder;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
 	private DatabaseConfiguration databaseConfiguration;
 
 	private transient DataSource dataSource;

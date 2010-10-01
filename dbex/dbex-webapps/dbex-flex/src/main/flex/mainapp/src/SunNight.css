@@ -484,6 +484,11 @@ LinkButton
 LinkBar{
 	separatorColor:#555;
 }
+Label
+{
+	font-size: 11;
+	color: #FFFFFF;
+}
 
 List
 {
@@ -630,6 +635,7 @@ TextInput
 	focusSkin: Embed(source="assets/skins/TextInput_focusSkin.png");
 	color: #DEDEDE;
 	fontFamily: Verdana;
+	font-size: 11;
 }
 
 TitleWindow{

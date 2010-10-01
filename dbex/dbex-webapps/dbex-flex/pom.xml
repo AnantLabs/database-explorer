@@ -15,6 +15,9 @@
 
 	<properties>
 		<FLEX_HOME>${flex.home}</FLEX_HOME>
+		<APP_ROOT></APP_ROOT>
+		<DEPLOY_DIR></DEPLOY_DIR>
+		<basedir>.</basedir>
 	</properties>
 	
 	<build>
@@ -27,20 +30,21 @@
 						<configuration>
 							<tasks>
 								<taskdef resource="flexTasks.tasks" />
-								<mxmlc file="src/main/flex/mainapp/src/DbexMainApp.mxml" 
+								<mxmlc file="${basedir}/src/main/flex/mainapp/src/DbexMainApp.mxml" 
 									   output="target/swf/DbexMainApp.swf"
 									   context-root="${web.context.root}"
 									   warnings="false"
 									   incremental="true"
+									   services="${basedir}/../dbex-web/src/main/webapp/WEB-INF/flex/services-config.xml"
 								>
 									<source-path path-element="${FLEX_HOME}/frameworks"/>
 									<compiler.library-path dir="${FLEX_HOME}/frameworks" append="true">
 										<include name="libs" />
 									</compiler.library-path>
-									<compiler.source-path path-element="src/main/flex"/>
-									<compiler.source-path path-element="src/main/flex/mainapp/src"/>
-									<compiler.source-path path-element="src/main/flex/common/src"/>
-									<compiler.source-path path-element="src/main/flex/application/src"/>
+									<compiler.source-path path-element="${basedir}/src/main/flex"/>
+									<compiler.source-path path-element="${basedir}/src/main/flex/mainapp/src"/>
+									<compiler.source-path path-element="${basedir}/src/main/flex/common/src"/>
+									<compiler.source-path path-element="${basedir}/src/main/flex/application/src"/>
 									
 
 								</mxmlc>

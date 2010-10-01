@@ -5,6 +5,9 @@
 	</mx:Metadata>
 	<mx:Script>
 		<![CDATA[
+		
+			private var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			
 			private function menuClick():void{
 				dispatchEvent(new Event("menuSelection"));
 			}
@@ -12,7 +15,7 @@
 	</mx:Script>
 	<mx:Label text="Minimized Windows: "/>
 	<mx:Image name="menuImage" click="menuClick()"  
-		source="@Embed(source='/assets/icons/window/window-manager.png')" 
+		source="assets/icons/window/window-manager.png" 
 		useHandCursor="true" buttonMode="true"
 		/> 
 </mx:ApplicationControlBar>
