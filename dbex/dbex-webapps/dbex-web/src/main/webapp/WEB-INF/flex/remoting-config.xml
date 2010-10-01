@@ -8,7 +8,7 @@
     </adapters>
 
     <default-channels>
-        <channel ref="default-secure-amf"/>
+        <channel ref="default-amf"/>
     </default-channels>
 
 </service>

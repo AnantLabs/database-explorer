@@ -215,6 +215,7 @@
 				<module>dbex-bod</module>
 				<module>dbex-integration</module>
 				<module>dbex-service</module>
+				<module>dbex-historyMgr</module>
 				<module>dbex-webapps</module>
 			</modules>
 		</profile>
@@ -249,19 +250,19 @@
 	
 	<properties>
 		<project.title>DBEX</project.title>
-		<project.home>D:/SVN_HOME/database-explorer/trunk</project.home>
+		<project.home>D:/SVN_HOME/MyProjects/database-explorer/trunk</project.home>
 		<release.version>1.0-BETA-1</release.version>
-		<setup.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup</setup.dir>
-		<libs.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup/libs</libs.dir>
-		<release.dir>D:/SVN_HOME/database-explorer/trunk/release</release.dir>
+		<setup.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup</setup.dir>
+		<libs.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-setup/libs</libs.dir>
+		<release.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/release</release.dir>
 		<jdk.version>1.6</jdk.version>
 		<maven.test.skip>true</maven.test.skip>
 		<maven.jar.sign.skip>true</maven.jar.sign.skip>
-		<staging.dir>D:/SVN_HOME/database-explorer/trunk/release/staging</staging.dir>
+		<staging.dir>D:/SVN_HOME/MyProjects/database-explorer/trunk/release/staging</staging.dir>
 		<izpack-standalone.version>4.3.1</izpack-standalone.version>
 		<system.architecture.version>x86</system.architecture.version>
 		<system.classifier>win32</system.classifier>
-		<flex.home>D:/TOOLS/Adobe/Flex Builder 3/sdks/3.1.0.2710</flex.home>
+		<flex.home>D:/TOOLS/flex_builder/sdks/3.1.0</flex.home>
 		
 		<web.context.root>/dbex</web.context.root>
 		<transaction.manager.class>org.springframework.transaction.jta.JtaTransactionManager</transaction.manager.class>
