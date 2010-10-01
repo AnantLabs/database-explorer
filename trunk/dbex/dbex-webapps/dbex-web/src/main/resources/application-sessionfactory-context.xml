@@ -16,7 +16,33 @@
 
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="${dbex.datasource.jndi.name}"/>
-	</bean><!--
+	</bean>
+	
+	<bean id="appJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"/>
+	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<constructor-arg>
+			<ref bean="sessionFactory" />
+		</constructor-arg>
+	</bean>
+	
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="annotatedClasses">
+              <list>
+              	<value>full.class.Name</value>
+              </list>
+        </property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+             	<prop key="hibernate.cache.use_second_level_cache">true</prop>
+			</props>
+		</property>
+    </bean>
+	<!--
 	
 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
 		<constructor-arg>
@@ -26,14 +52,10 @@
 	
 	<bean id="appJdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"/>
 	
-    <bean id="sessionFactory" class="com.tavant.lfs.persistence.hibernate.CustomSessionFactoryBean">
-        <property name="HBMFileList">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="annotatedClasses">
               <list>
-              	<ref bean="loanHbms"/>
-				<ref bean="adminHbms"/>
-				<ref bean="infraHbms"/>
-				<ref bean="lepHbms"/>
-				<ref bean="mloHbms"/>
+              	<value>full.class.Name</value>
               </list>
         </property>
 		<property name="hibernateProperties">

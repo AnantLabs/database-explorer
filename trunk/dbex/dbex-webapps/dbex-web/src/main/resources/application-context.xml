@@ -5,6 +5,7 @@
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd"
        default-autowire="byName">
 
+			<import resource="dbex-web/context/application-properties-context.xml"/>
 <!--	<import resource="application-aop-context.xml"/>-->
 <!--	<import resource="application-sessionfactory-context.xml"/>-->
 <!--	<import resource="application-query-context.xml"/>-->
