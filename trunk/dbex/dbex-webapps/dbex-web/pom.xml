@@ -156,12 +156,15 @@
 			<build>
 				
 				<plugins>
+				
+					
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<version>2.1</version>
 						<configuration>
-						  <webappDirectory>./target/exploded/${web.context.root}.war</webappDirectory>
+							<!-- <webappDirectory>./target/exploded/${web.context.root}.war</webappDirectory> -->
+							<webappDirectory>${project.build.directory}/exploded${web.context.root}.war</webappDirectory>
 						</configuration>
 					  </plugin>
 

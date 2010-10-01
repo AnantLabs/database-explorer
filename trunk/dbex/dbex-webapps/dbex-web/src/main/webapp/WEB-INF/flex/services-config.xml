@@ -3,9 +3,6 @@
 
     <services>
         <service-include file-path="remoting-config.xml" />
-        <default-channels>
-  			<channel ref="default-amf" /> 
-  		</default-channels>
     </services>
 
     <channels>
@@ -75,7 +72,4 @@
         </redeploy>
     </system>
 
-	<factories>
-    	<factory id="spring" class="flex.samples.factories.SpringFactory"/>
-	</factories>
 </services-config>
