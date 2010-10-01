@@ -3,6 +3,9 @@
 
     <services>
         <service-include file-path="remoting-config.xml" />
+        <default-channels>
+  			<channel ref="default-amf" /> 
+  		</default-channels>
     </services>
 
     <channels>
@@ -14,6 +17,9 @@
 
         <channel-definition id="default-secure-amf" class="mx.messaging.channels.SecureAMFChannel">
             <endpoint url="https://{server.name}:{server.port}/{context.root}/app/fmb/amfsecure" class="flex.messaging.endpoints.SecureAMFEndpoint"/>
+        	<properties>
+                <add-no-cache-headers>false</add-no-cache-headers>
+            </properties>
         </channel-definition>
 
         <channel-definition id="my-polling-amf" class="mx.messaging.channels.AMFChannel">

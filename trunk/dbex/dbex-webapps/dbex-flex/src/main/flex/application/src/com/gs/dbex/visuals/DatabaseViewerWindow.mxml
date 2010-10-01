@@ -15,6 +15,6 @@
 		]]>
 	</mx:Script>
 	
-	
+	<mx:Label text="DB Explorer..."/>
 	
 </ResizableWindow>
