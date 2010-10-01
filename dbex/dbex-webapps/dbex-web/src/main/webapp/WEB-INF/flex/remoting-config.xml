@@ -4,21 +4,11 @@
     messageTypes="flex.messaging.messages.RemotingMessage">
 
     <adapters>
-	    <!-- <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/> -->
-		<adapter-definition id="java-object" class="com.tavant.pos.common.UniappJavaAdapter" default="true"/>
+        <adapter-definition id="java-object" class="flex.messaging.services.remoting.adapters.JavaAdapter" default="true"/>
     </adapters>
 
     <default-channels>
         <channel ref="default-secure-amf"/>
     </default-channels>
 
-	
-	<!--<destination id="mstrDropDownServiceImpl">
-		<properties>
-			<factory>spring</factory>
-			<source>masterDropDownWebDelegate</source>
-		</properties>
-	</destination>
-
-    -->
 </service>

@@ -15,7 +15,7 @@
 	</mx:Script>
 	<mx:Label text="Minimized Windows: "/>
 	<mx:Image name="menuImage" click="menuClick()"  
-		source="assets/icons/window/window-manager.png" 
+		source="{imageLocator.windowManagerIcon}" 
 		useHandCursor="true" buttonMode="true"
 		/> 
 </mx:ApplicationControlBar>
