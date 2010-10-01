@@ -15,6 +15,9 @@ package
 			return imageLocator;		
 		}
 		
+		[Bindable]
+        [Embed(source="assets/images/dbex_24x24.png")]
+        public var dbex24x24Icon:Class;
 
 		// File Menu
 		[Bindable]
@@ -25,6 +28,46 @@ package
         [Embed(source="assets/images/exit.gif")]
         public var exitIcon:Class; 
 		
+		// window manager
+		[Bindable]
+		[Embed(source='assets/icons/window/window-manager.png')]
+		public var windowManagerIcon:Class;
 		
+		// connection dialog
+		[Bindable]
+        [Embed(source="assets/images/move_down.png")]
+        public var moveDownIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/move_up.png")]
+        public var moveUpIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/folder_download.png")]
+        public var loadFileIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/save_edit.gif")]
+        public var saveIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/saveall_edit.gif")]
+        public var saveAllIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/edit-clear.png")]
+        public var clearIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/delete_edit.gif")]
+        public var deleteIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/export_wiz.gif")]
+        public var exportIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/keyboard_add.png")]
+        public var inputIcon:Class;
 	}
 }

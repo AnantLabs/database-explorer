@@ -1,5 +1,6 @@
 <html>
 <body>
-<h2>Hello World!</h2>
+<h3>Database Exploere</h3>
+<p>Cannot load the application</p>
 </body>
 </html>

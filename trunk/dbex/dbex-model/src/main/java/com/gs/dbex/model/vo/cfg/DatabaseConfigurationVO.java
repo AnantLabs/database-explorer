@@ -1,25 +1,9 @@
-/**
- * 
- */
-package com.gs.dbex.model.cfg;
+package com.gs.dbex.model.vo.cfg;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
 
-/**
- * @author sabuj
- *
- */
-@Entity
-@Table(name="DBEX_DATABASE_CONFIGURATION")
-public class DatabaseConfiguration {
+public class DatabaseConfigurationVO implements Serializable {
 
-	@Id
-	@Column(name="CFG_ID")
-	private Long configurationId;
-	
 	private String hostName;
 	private Integer portNumber;
 	private String driverClassName;
@@ -29,33 +13,13 @@ public class DatabaseConfiguration {
 	private String schemaName;
 	private boolean savePassword;
 	private String sidServiceName;
-	
-	public DatabaseConfiguration() {
-		// TODO Auto-generated constructor stub
+
+	public String getDriverClassName() {
+		return driverClassName;
 	}
 
-	public Long getConfigurationId() {
-		return configurationId;
-	}
-
-	public void setConfigurationId(Long configurationId) {
-		this.configurationId = configurationId;
-	}
-
-	public String getSidServiceName() {
-		return sidServiceName;
-	}
-
-	public void setSidServiceName(String sidServiceName) {
-		this.sidServiceName = sidServiceName;
-	}
-
-	public boolean isSavePassword() {
-		return savePassword;
-	}
-
-	public void setSavePassword(boolean savePassword) {
-		this.savePassword = savePassword;
+	public void setDriverClassName(String driverClassName) {
+		this.driverClassName = driverClassName;
 	}
 
 	public String getHostName() {
@@ -72,14 +36,6 @@ public class DatabaseConfiguration {
 
 	public void setPortNumber(Integer portNumber) {
 		this.portNumber = portNumber;
-	}
-
-	public String getDriverClassName() {
-		return driverClassName;
-	}
-
-	public void setDriverClassName(String driverClassName) {
-		this.driverClassName = driverClassName;
 	}
 
 	public String getUserName() {
@@ -114,6 +70,20 @@ public class DatabaseConfiguration {
 		this.schemaName = schemaName;
 	}
 
-	
-	
+	public boolean isSavePassword() {
+		return savePassword;
+	}
+
+	public void setSavePassword(boolean savePassword) {
+		this.savePassword = savePassword;
+	}
+
+	public String getSidServiceName() {
+		return sidServiceName;
+	}
+
+	public void setSidServiceName(String sidServiceName) {
+		this.sidServiceName = sidServiceName;
+	}
+
 }
