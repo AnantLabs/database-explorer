@@ -5,7 +5,7 @@ package com.gs.dbex.control
 	public class ToolbarButton extends Button
 	{
 		
-		private const BTN_WIDTH:int = 30;
+		private const BTN_WIDTH:int = 35;
 		private const BTN_HEIGHT:int = 30;
 		
 		public function ToolbarButton()
