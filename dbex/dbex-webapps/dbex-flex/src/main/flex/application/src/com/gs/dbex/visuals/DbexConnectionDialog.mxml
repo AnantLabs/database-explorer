@@ -6,6 +6,8 @@
 	defaultButton="{connectButton}" creationComplete="initilize()">
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.vo.DatabaseConfigurationVO;
+			import com.gs.dbex.util.StringUtil;
 			import com.gs.dbex.common.DatabaseTypeEnum;
 			import com.gs.dbex.vo.ConnectionPropertiesVO;
 			import com.gs.dbex.DbexCommonModelLocator;
@@ -85,6 +87,27 @@
 					}
 				}
 			}
+			
+			public function populateToProperties(properties:ConnectionPropertiesVO):ConnectionPropertiesVO{
+				if(null == properties){
+					properties = new ConnectionPropertiesVO();
+					if(StringUtil.hasValidContent(selectedNameLabel.text)){
+						properties.connectionName = selectedNameLabel.text;
+					} else {
+						properties.connectionName = "ConnectionName";
+					}
+				}
+				properties.databaseType = (dbTypeCombo.selectedItem as DatabaseTypeEnum).type;
+				
+				if(properties.databaseConfiguration == null)
+					properties.databaseConfiguration = new DatabaseConfigurationVO();
+				
+				return properties; 
+			}
+			
+			public function saveConnectionProps():void{
+				
+			}
 		]]>
 	</mx:Script>
 	
@@ -112,7 +135,7 @@
 					toolTip="Load connections from file"/>
 				<mx:VRule width="2" height="100%"/>
 				<control:ToolbarButton label="" icon="{imageLocator.saveAllIcon}"
-					toolTip="Save All..."/>
+					toolTip="Save All..." id="saveAllButton" click="saveConnectionProps()"/>
 				<mx:VRule width="2" height="100%"/>
 				<control:ToolbarButton label="" icon="{imageLocator.clearIcon}"
 					toolTip="Clear"/>
