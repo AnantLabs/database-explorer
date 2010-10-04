@@ -6,8 +6,14 @@
         http://www.springframework.org/schema/flex 
  		http://www.springframework.org/schema/flex/spring-flex-1.0.xsd"
 	default-autowire="byName">
+
+	<flex:message-broker/>
+
+	<flex:remoting-destination ref="dbexUserDelegate" />
 	
-	<!-- To Exposes the service bean for BlazeDS remoting, add the following in the bean deff. 
-		<flex:remoting-destination />
-	-->
+	<!-- To Exposes the service bean for BlazeDS remoting, add the following 
+		in the bean deff. <flex:remoting-destination /> -->
+	<bean id="dbexUserDelegate" class="com.gs.dbex.serviceprovider.DbexUserDelegate">
+	</bean>
+
 </beans>

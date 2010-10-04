@@ -12,8 +12,12 @@ package com.gs.dbex.common.business
     * session.
     */
 
+   import com.gs.dbex.common.event.BaseEventDispatcher;
+   import com.gs.dbex.common.event.SyncCallEvent;
+   
    import flash.utils.describeType;
    
+   import mx.controls.Alert;
    import mx.core.UIComponent;
    import mx.messaging.Consumer;
    import mx.messaging.MessageAgent;
@@ -189,6 +193,7 @@ package com.gs.dbex.common.business
        */
       private function getServiceForId( serviceId : String ) : Object
       {
+      	//Alert.show("serviceId=" + serviceId);
          if ( this[ serviceId ] == null )
          {
             throw new RIAError(
@@ -511,7 +516,7 @@ package com.gs.dbex.common.business
        */
       private function getAccessors() : XMLList
       {
-         var description : XML = describeType( this );
+         var description : XML = describeType(this );
          var accessors : XMLList =
             description.accessor.( @access == "readwrite" ).@name;
             

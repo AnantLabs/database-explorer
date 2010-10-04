@@ -76,7 +76,7 @@ package com.gs.dbex.common.event
       /**
        * Dispatches a cairngorm event.
        */       
-      public function dispatchEvent(event:BaseEvent ):Boolean
+      public function dispatchEvent(event:DbexBaseEvent ):Boolean
       {
          return eventDispatcher.dispatchEvent( event );
       }

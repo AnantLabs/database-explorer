@@ -3,6 +3,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.event.BaseEventDispatcher;
+			import com.gs.dbex.common.event.LoginEvent;
 			
 			[Bindable]
 			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
@@ -18,7 +20,11 @@
 			public function login():void{
 				var uN:String = loginUserNameTI.text;
 				var pwd:String = loginPasswordTI.text;
-				
+				var evt:LoginEvent = new LoginEvent();
+				evt.userName = uN;
+				evt.password = pwd;
+				BaseEventDispatcher.getInstance().dispatchEvent(evt);
+				//dispatchEvent(evt);
 			}
 			
 			public function registerUser():void{
