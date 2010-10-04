@@ -18,7 +18,24 @@ package
 		[Bindable]
         [Embed(source="assets/images/dbex_24x24.png")]
         public var dbex24x24Icon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/dbex_128x128.png")]
+        public var dbex128x128Icon:Class;
 
+		// Login
+		[Bindable]
+        [Embed(source="assets/images/guest_user.png")]
+        public var dbexGuestUserIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/locked_user.png")]
+        public var dbexLockedUserIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/user-group-new.png")]
+        public var dbexRegisterUserIcon:Class;
+        
 		// File Menu
 		[Bindable]
         [Embed(source="assets/images/new_connection.gif")]
@@ -69,5 +86,13 @@ package
         [Bindable]
         [Embed(source="assets/images/keyboard_add.png")]
         public var inputIcon:Class;
+        
+       [Bindable]
+        [Embed(source="assets/images/LoginScreenTop.png")]
+        public var loginScreenTopIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/LoginScreenBottom.png")]
+        public var loginScreenBottomIcon:Class;
 	}
 }
