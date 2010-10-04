@@ -9,19 +9,18 @@
      http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd"
      default-autowire="byName" >
 
-   	<bean name="propertiesBean" class="com.tavant.lfs.properties.PropertiesBean" factory-method="getInstance" >
-   		<property name="databasePropertyLoader" ref="databasePropertyLoader"/>
+   	<bean name="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
    		<property name="locations">
    			<list>
-	   			<value>classpath:/application/environment.properties</value>
-	   			<value>classpath:/application/pos.properties</value>
+	   			<value>classpath:/application-data/properties/environment.properties</value>
+	   			<value>classpath:/application-data/properties/dbex.properties</value>
+				<value>classpath:/dbex-web/properties/dbex-database-config.properties</value>
+				<value>classpath:/dbex-web/properties/dbex-deployment-config.properties</value>
+				<value>classpath:/dbex-web/properties/dbex-security-config.properties</value>
    			</list>
    		</property>
-   		<property name="applicationName" value="DdEx"/>
+   		
    	</bean>
 
-	<bean id="propertyDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:DbExDS"/>
-	</bean>
 	
 </beans>
