@@ -23,12 +23,22 @@
 	
 	<mx:Style source="SunNight.css"/>
 	
-	<layout:DbexMenuBar width="100%" height="25"/>
-	<layout:DbexToolbar width="100%" height="30"/>
-	<mx:Canvas width="100%" height="100%" borderColor="#000000" borderStyle="solid" 
-		id="applicationResizableBox">
-		
-	</mx:Canvas>
+	<mx:ViewStack id="appViewStack" width="100%" height="100%" selectedIndex="1">
+		<mx:HBox width="100%" height="100%" id="loginBox">
+			<layout:DbexLoginBox width="100%" height="100%">
+				
+			</layout:DbexLoginBox>
+		</mx:HBox>
+		<mx:VBox width="100%" height="100%" id="applicationBox" verticalGap="0">
+			<layout:DbexMenuBar width="100%" height="25"/>
+			<layout:DbexToolbar width="100%" height="30"/>
+			<mx:Canvas width="100%" height="100%" borderColor="#000000" borderStyle="solid" 
+				id="applicationResizableBox">
+				
+			</mx:Canvas>
+		</mx:VBox>
+	</mx:ViewStack>
+	
 	<!--
 	<mx:HBox width="100%" height="35" borderColor="#000000" borderStyle="outset" 
 		id="applicationStatusBox">

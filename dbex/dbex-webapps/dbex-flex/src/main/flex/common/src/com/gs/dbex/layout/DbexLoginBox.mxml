@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			
+			public function loginAsGuest():void{
+				
+			}
+			
+			public function loginAsOther():void{
+				switchUserStack.selectedIndex = 1;
+			}
+			
+			public function login():void{
+				var uN:String = loginUserNameTI.text;
+				var pwd:String = loginPasswordTI.text;
+				
+			}
+			
+			public function registerUser():void{
+				switchUserStack.selectedIndex = 3;
+			}
+			
+			public function cancel():void{
+				switchUserStack.selectedIndex = 0;
+			}
+		]]>
+	</mx:Script>
+	
+	
+	
+	<mx:VBox width="100%" height="100%" verticalGap="0">
+		<mx:HBox width="100%" height="50"/>
+		<!--<mx:HBox width="100%" height="10" 
+			backgroundColor="#4E7BEB" backgroundAlpha="0.52" 
+			borderColor="#4E7BEB" themeColor="#4E7BEB"/>-->
+		<mx:HBox width="100%" height="100%">
+			<mx:VBox width="50%" height="100%" verticalAlign="middle" horizontalAlign="right" paddingRight="10">
+				<mx:HBox width="100%" height="131" horizontalAlign="right" verticalAlign="bottom">
+					<mx:VBox width="100%" height="100%" horizontalAlign="right" verticalAlign="bottom">
+						<mx:Label text="Welcome to" fontStyle="italic" fontFamily="Georgia" color="#84FD9B" textAlign="right" fontSize="12"/>
+						<mx:Label text="Database Explorer" fontStyle="italic" fontFamily="Georgia" color="#84FD9B" textAlign="right" fontSize="24" fontWeight="bold"/>
+					</mx:VBox>
+					<mx:Image width="130" height="130" minHeight="130" minWidth="130"
+						source="{imageLocator.dbex128x128Icon}" />
+				</mx:HBox>
+				
+				<mx:HBox width="100%" height="42" horizontalAlign="right" verticalAlign="middle">
+					<mx:Label text="New User ? " fontStyle="italic" fontFamily="Georgia" color="#84D1FD" textAlign="right" fontSize="12"/>
+					<mx:LinkButton label="Register" id="registerButton" height="100%" click="registerUser()"/>
+				</mx:HBox>
+			</mx:VBox>
+			<mx:HBox width="3" height="100%" 
+				backgroundColor="#A9A9A9" backgroundAlpha="0.52" 
+				borderColor="#A9A9A9" themeColor="#A9A9A9"/>
+			<mx:VBox width="450" height="100%" verticalAlign="middle" horizontalAlign="left" paddingLeft="10" >
+				<mx:ViewStack width="100%" height="350" id="switchUserStack">
+					<mx:VBox id="switchUserBox" width="100%" height="100%" horizontalAlign="left" verticalAlign="middle">
+						<mx:Spacer width="100%" height="20"/>
+						<mx:ApplicationControlBar width="264" height="65" verticalAlign="bottom" >
+							<mx:Image width="75" height="100%" source="{imageLocator.dbexGuestUserIcon}" verticalAlign="bottom"/>
+							<mx:LinkButton label="Login as Guest" textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"
+								id="guestLoginButton" click="loginAsGuest()"/>
+						</mx:ApplicationControlBar>
+						<mx:Spacer width="100%" height="20"/>
+						<mx:ApplicationControlBar width="264" height="65" verticalAlign="bottom" >
+							<mx:Image width="75" height="100%" source="{imageLocator.dbexLockedUserIcon}" verticalAlign="bottom"/>
+							<mx:LinkButton label="Click To Login" textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"
+								id="otherLoginButton" click="loginAsOther()"/>
+						</mx:ApplicationControlBar>
+						<mx:Spacer width="100%" height="20"/>
+					</mx:VBox>
+					<mx:VBox id="loginUserBox" width="100%" height="100%" verticalAlign="middle" horizontalAlign="left">
+						<mx:ApplicationControlBar width="364" height="65" verticalAlign="bottom">
+							<mx:Image width="65" height="100%" source="{imageLocator.dbexLockedUserIcon}" verticalAlign="bottom"/>
+							<mx:Label text="Login to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"/>
+						</mx:ApplicationControlBar>
+						<mx:Spacer width="100%" height="20"/>
+						<mx:Grid width="345" height="156">
+							<mx:GridRow width="100%" height="35">
+								<mx:GridItem width="100%" height="100%" verticalAlign="middle">
+									<mx:Label text="User Name"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="2" verticalAlign="middle">
+									<mx:TextInput width="100%" id="loginUserNameTI"/>
+								</mx:GridItem>
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="35">
+								<mx:GridItem width="100%" height="100%" verticalAlign="middle">
+									<mx:Label text="Password"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="2" verticalAlign="middle">
+									<mx:TextInput width="100%" displayAsPassword="true" id="loginPasswordTI"/>
+								</mx:GridItem>
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="44">
+								<mx:GridItem width="100%" height="100%">
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" horizontalAlign="left" verticalAlign="middle">
+									<mx:Button label="Cancel" click="cancel()"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" horizontalAlign="right" verticalAlign="middle">
+									<mx:Button label="Login" click="login()"/>
+								</mx:GridItem>
+							</mx:GridRow>
+						</mx:Grid>
+						<mx:Spacer width="100%" height="20"/>
+						<mx:Label id="loginFailLabel"  fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#FF0000"
+							visible="false" text="Login Failed !!!"/>
+					</mx:VBox>
+					<mx:VBox width="100%" height="100%" id="loginProgressBox">
+						<mx:ApplicationControlBar width="364" height="65" verticalAlign="bottom">
+							<mx:Image width="75" height="100%" source="{imageLocator.dbexRegisterUserIcon}" verticalAlign="bottom"/>
+							<mx:Label text="Logging In to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"/>
+						</mx:ApplicationControlBar>
+						<mx:Label text="Please Wait ..."  textDecoration="underline" fontSize="12" fontFamily="Georgia" color="#0BDC15"/>
+						<mx:ProgressBar indeterminate="true" width="200" label="Logging in..."/>
+					</mx:VBox>
+					<mx:VBox width="100%" height="100%" id="registrationBox">
+						<mx:ApplicationControlBar width="364" height="65" verticalAlign="bottom">
+							<mx:Image width="75" height="100%" source="{imageLocator.dbexRegisterUserIcon}" verticalAlign="bottom"/>
+							<mx:Label text="Register to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"/>
+						</mx:ApplicationControlBar>
+						<mx:Grid width="345">
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="User Name"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="2">
+									<mx:TextInput  width="100%"/>
+								</mx:GridItem>
+								
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Password"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="2">
+									<mx:TextInput  width="100%" displayAsPassword="true"/>
+								</mx:GridItem>
+								
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Full Name"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="2">
+									<mx:TextInput  width="100%"/>
+								</mx:GridItem>
+								
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%">
+									<mx:Label text="Email ID"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" colSpan="2">
+									<mx:TextInput  width="100%"/>
+								</mx:GridItem>
+								
+							</mx:GridRow>
+							<mx:GridRow width="100%" height="100%">
+								<mx:GridItem width="100%" height="100%" horizontalAlign="right">
+									<mx:Button label="Cancel" click="cancel()"/>
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" horizontalAlign="left" verticalAlign="middle">
+									<mx:Button label="Reset" />
+								</mx:GridItem>
+								<mx:GridItem width="100%" height="100%" horizontalAlign="right" verticalAlign="middle">
+									<mx:Button label="Submit" />
+								</mx:GridItem>
+							</mx:GridRow>
+						</mx:Grid>
+						<mx:Spacer height="20"/>
+						<mx:Label id="registrationFailLabel"  fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#FF0000"
+							visible="true" text="Registration Failed !!!"/>
+					</mx:VBox>
+					<mx:VBox width="100%" height="100%" id="registerProgressBox">
+						<mx:ApplicationControlBar width="364" height="65" verticalAlign="bottom">
+							<mx:Image width="75" height="100%" source="{imageLocator.dbexRegisterUserIcon}" verticalAlign="bottom"/>
+							<mx:Label text="Registering to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"/>
+						</mx:ApplicationControlBar>
+						<mx:Label text="Please Wait ..."  textDecoration="underline" fontSize="12" fontFamily="Georgia" color="#0BDC15"/>
+						<mx:ProgressBar indeterminate="true" width="200" label="Registering..."/>
+					</mx:VBox>
+				</mx:ViewStack>
+			</mx:VBox>
+		</mx:HBox>	
+		<!--<mx:HBox width="100%" height="10" 
+			backgroundColor="#4E7BEB" backgroundAlpha="0.52" 
+			borderColor="#4E7BEB" themeColor="#4E7BEB"/>-->
+		<mx:HBox width="100%" height="50"/>	
+	</mx:VBox>
+</mx:HBox>

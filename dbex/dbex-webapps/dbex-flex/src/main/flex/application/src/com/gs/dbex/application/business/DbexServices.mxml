@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DbexApplicationServiceLocator xmlns="com.gs.dbex.application.business.*" xmlns:mx="http://www.adobe.com/2006/mxml">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.tavant.pos.common.framework.business.ResponseHandler;
+		]]>
+	</mx:Script>
+	
+	<mx:RemoteObject id="loginService" destination="MyLoginServiceImpl"
+							showBusyCursor="true"
+							result="event.token.resultHandler( event );"
+							fault="ResponseHandler.faultHandler( event );">
+							
+</DbexApplicationServiceLocator>
