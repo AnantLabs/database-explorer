@@ -43,6 +43,24 @@
 	    </servlet-class>
 	</servlet>
 
+	<!-- The front controller of this Spring Web application, responsible for 
+		handling all application requests -->
+	<!--
+	<servlet>
+		<servlet-name>SpringMVCDispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:application-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>-->
+	<!-- Map all /messagbroker requests to the DispatcherServlet for handling -->
+	<!--<servlet-mapping>
+	    <servlet-name>SpringMVCDispatcherServlet</servlet-name>
+	    <url-pattern>/app/fmb/*</url-pattern>
+	</servlet-mapping>   
+-->
 	<servlet>
 		<servlet-name>MessageBrokerServlet</servlet-name>
 		<display-name>MessageBrokerServlet</display-name>
@@ -51,18 +69,17 @@
 			<param-name>services.configuration.file</param-name>
 			<param-value>/WEB-INF/flex/services-config.xml</param-value>
 		</init-param>
-		<init-param>
-			<param-name>messageBrokerId</param-name>
-			<param-value>DbexApplication</param-value>
-		</init-param>
+		 
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+
 	
 	<servlet-mapping>
 		<servlet-name>MessageBrokerServlet</servlet-name>
 		<url-pattern>/app/fmb/*</url-pattern>
 	</servlet-mapping>
 
+	
 	<servlet-mapping>
 		<servlet-name>CXFServlet</servlet-name>
 		<url-pattern>/services/*</url-pattern>
@@ -71,11 +88,11 @@
 
 
 	<session-config>
-    	<session-timeout>60</session-timeout>
-    </session-config>
-    
-    <welcome-file-list>
-        <welcome-file>/swf/DbexMainApp.html</welcome-file>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+	<welcome-file-list>
+		<welcome-file>swf/DbexMainApp.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>
