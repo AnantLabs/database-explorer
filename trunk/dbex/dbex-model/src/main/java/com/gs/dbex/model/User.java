@@ -4,28 +4,41 @@
 package com.gs.dbex.model;
 
 import java.io.Serializable;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import com.gs.dbex.model.cfg.ConnectionProperties;
+
 
 /**
  * @author sabuj.das
  *
  */
 @Entity
-@Table(name="DBEX_USER")
+@Table(name="DBEX_USER", uniqueConstraints = {@UniqueConstraint(columnNames={"USER_NAME", "EMAIL_ID"})})
 public class User implements Serializable, Comparable<User> {
 
-	@Id
 	private Long userId;
-	
 	private String userName;
 	private String fullName;
 	private String emailAddress;
-	
 	private String password;
+	private Set<ConnectionProperties> connectionProperties;
 
+	@Id
+	@Column(name="USER_ID")
+	@GeneratedValue
 	public Long getUserId() {
 		return userId;
 	}
@@ -34,6 +47,7 @@ public class User implements Serializable, Comparable<User> {
 		this.userId = userId;
 	}
 
+	@Column(name="USER_NAME", nullable=false)
 	public String getUserName() {
 		return userName;
 	}
@@ -42,6 +56,7 @@ public class User implements Serializable, Comparable<User> {
 		this.userName = userName;
 	}
 
+	@Column(name="FULL_NAME", nullable=false)
 	public String getFullName() {
 		return fullName;
 	}
@@ -50,6 +65,7 @@ public class User implements Serializable, Comparable<User> {
 		this.fullName = fullName;
 	}
 
+	@Column(name="EMAIL_ID", nullable=false)
 	public String getEmailAddress() {
 		return emailAddress;
 	}
@@ -66,6 +82,18 @@ public class User implements Serializable, Comparable<User> {
 		this.password = password;
 	}
 	
+	@OneToMany(targetEntity=ConnectionProperties.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="CONNECTION_PROP_ID")
+    @OrderBy(value="displayOrder")
+	public Set<ConnectionProperties> getConnectionProperties() {
+		return connectionProperties;
+	}
+
+	public void setConnectionProperties(
+			Set<ConnectionProperties> connectionProperties) {
+		this.connectionProperties = connectionProperties;
+	}
+
 	@Override
 	public int compareTo(User o) {
 		return this.userId.compareTo(o.userId);

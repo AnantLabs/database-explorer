@@ -6,7 +6,9 @@ package com.gs.dbex.model.cfg;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -29,18 +31,28 @@ public class ConnectionProperties implements Serializable,
 	 */
 	private static final long serialVersionUID = 2717753646686919478L;
 
-	@Id
+	private Long connectionPropId;
 	private String connectionName;
 	private String databaseType;
 	private String connectionUrl;
 	private Integer displayOrder;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
 	private DatabaseConfiguration databaseConfiguration;
 
 	private transient DataSource dataSource;
 	private transient boolean propertySaved = true;
+
+	
+	@Id
+	@Column(name="CONNECTION_PROP_ID")
+	@GeneratedValue
+	public Long getConnectionPropId() {
+		return connectionPropId;
+	}
+
+	public void setConnectionPropId(Long connectionPropId) {
+		this.connectionPropId = connectionPropId;
+	}
 
 	public ConnectionProperties() {
 		this("UN-NAMED");
@@ -136,6 +148,8 @@ public class ConnectionProperties implements Serializable,
 		this.displayOrder = displayOrder;
 	}
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@PrimaryKeyJoinColumn
 	public DatabaseConfiguration getDatabaseConfiguration() {
 		return databaseConfiguration;
 	}
