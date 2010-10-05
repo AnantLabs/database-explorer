@@ -489,7 +489,11 @@ Label
 	font-size: 11;
 	color: #FFFFFF;
 }
-
+.LabelOverBlack
+{
+	font-size: 11;
+	color: #FFFFFF;
+}
 List
 {
 	borderSkin: Embed(source="assets/skins/List_borderSkin.png");
