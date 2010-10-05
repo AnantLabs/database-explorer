@@ -6,10 +6,14 @@
 	default-autowire="byName">
 
 	<import resource="dbex-web/context/application-properties-context.xml" />
-	<!-- <import resource="application-aop-context.xml"/> -->
-	<!-- <import resource="application-sessionfactory-context.xml"/> -->
-	<!-- <import resource="application-query-context.xml"/> -->
-	
+	<import resource="application-flex-context.xml"/>
+	<import resource="application-aop-context.xml"/>
+	<import resource="application-sessionfactory-context.xml"/> 
+	<import resource="application-query-context.xml"/> 
+
 	<import resource="context/dbex-serviceprovider-context.xml" />
-	
+	<import resource="context/dbex-service-context.xml" />
+	<import resource="context/dbex-historyMgr-context.xml" />
+	<import resource="context/dbex-integration-context.xml" />
+
 </beans>
