@@ -5,6 +5,7 @@ package com.gs.dbex.model.cfg;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -16,10 +17,7 @@ import javax.persistence.Table;
 @Table(name="DBEX_DATABASE_CONFIGURATION")
 public class DatabaseConfiguration {
 
-	@Id
-	@Column(name="CFG_ID")
 	private Long configurationId;
-	
 	private String hostName;
 	private Integer portNumber;
 	private String driverClassName;
@@ -34,6 +32,9 @@ public class DatabaseConfiguration {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Id
+	@Column(name="CFG_ID")
+	@GeneratedValue
 	public Long getConfigurationId() {
 		return configurationId;
 	}
