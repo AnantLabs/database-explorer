@@ -34,7 +34,7 @@
 		<listener-class>flex.messaging.HttpFlexSession</listener-class>
 	</listener>
 
-	<!-- MessageBroker Servlet -->
+	<!-- MessageBroker CXFServlet -->
 	<servlet>
 		<servlet-name>CXFServlet</servlet-name>
 		<display-name>CXF Servlet</display-name>
@@ -43,39 +43,16 @@
 	    </servlet-class>
 	</servlet>
 
-	<!-- The front controller of this Spring Web application, responsible for 
-		handling all application requests -->
-	<!--
+	<!-- The front controller of this Spring Web application, responsible 
+		for handling all application requests -->
 	<servlet>
-		<servlet-name>SpringMVCDispatcherServlet</servlet-name>
+		<servlet-name>FlexServlet</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:application-context.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>-->
-	<!-- Map all /messagbroker requests to the DispatcherServlet for handling -->
-	<!--<servlet-mapping>
-	    <servlet-name>SpringMVCDispatcherServlet</servlet-name>
-	    <url-pattern>/app/fmb/*</url-pattern>
-	</servlet-mapping>   
--->
-	<servlet>
-		<servlet-name>MessageBrokerServlet</servlet-name>
-		<display-name>MessageBrokerServlet</display-name>
-		<servlet-class>flex.messaging.MessageBrokerServlet</servlet-class>
-		<init-param>
-			<param-name>services.configuration.file</param-name>
-			<param-value>/WEB-INF/flex/services-config.xml</param-value>
-		</init-param>
-		 
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	
 	<servlet-mapping>
-		<servlet-name>MessageBrokerServlet</servlet-name>
+		<servlet-name>FlexServlet</servlet-name>
 		<url-pattern>/app/fmb/*</url-pattern>
 	</servlet-mapping>
 
@@ -92,7 +69,7 @@
 	</session-config>
 
 	<welcome-file-list>
-		<welcome-file>swf/DbexMainApp.html</welcome-file>
+		<welcome-file>/swf/DbexMainApp</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>

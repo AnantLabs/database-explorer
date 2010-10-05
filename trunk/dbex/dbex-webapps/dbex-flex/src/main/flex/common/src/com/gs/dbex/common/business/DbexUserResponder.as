@@ -1,5 +1,8 @@
 package com.gs.dbex.common.business
 {
+	import com.gs.dbex.application.view.DbexApplicationViewHelper;
+	import com.gs.dbex.common.view.ViewLocator;
+	
 	import mx.controls.Alert;
 	
 	public class DbexUserResponder implements BaseResponder
@@ -11,8 +14,14 @@ package com.gs.dbex.common.business
 
 		public function onResult(event:*=null):void
 		{
-			Alert.show("DbexUserResponder.onResult()");
+			if(ViewLocator.getInstance().registrationExistsFor("DbexApplicationViewHelper")){
+				var viewHelper:DbexApplicationViewHelper = ViewLocator.getInstance().getViewHelper("DbexApplicationViewHelper") as DbexApplicationViewHelper;
+				if(null != viewHelper){
+					viewHelper.handelLoginSuccess(event.result);
+				}
+			}
 		}
+		
 		
 		public function onFault(event:*=null):void
 		{
