@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" >
 	
 	<mx:Script>
 		<![CDATA[
@@ -24,6 +24,7 @@
 				evt.userName = uN;
 				evt.password = pwd;
 				BaseEventDispatcher.getInstance().dispatchEvent(evt);
+				switchUserStack.selectedIndex = 2;
 				//dispatchEvent(evt);
 			}
 			
@@ -94,7 +95,7 @@
 						<mx:Grid width="345" height="156">
 							<mx:GridRow width="100%" height="35">
 								<mx:GridItem width="100%" height="100%" verticalAlign="middle">
-									<mx:Label text="User Name"/>
+									<mx:Label text="User Name" styleName="LabelOverBlack"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" colSpan="2" verticalAlign="middle">
 									<mx:TextInput width="100%" id="loginUserNameTI"/>
@@ -102,7 +103,7 @@
 							</mx:GridRow>
 							<mx:GridRow width="100%" height="35">
 								<mx:GridItem width="100%" height="100%" verticalAlign="middle">
-									<mx:Label text="Password"/>
+									<mx:Label text="Password" styleName="LabelOverBlack"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" colSpan="2" verticalAlign="middle">
 									<mx:TextInput width="100%" displayAsPassword="true" id="loginPasswordTI"/>
