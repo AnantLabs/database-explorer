@@ -10,9 +10,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.sql.DataSource;
 
 import com.gs.utils.text.StringUtil;
@@ -32,11 +35,11 @@ public class ConnectionProperties implements Serializable,
 	private static final long serialVersionUID = 2717753646686919478L;
 
 	private Long connectionPropId;
+	private Long userId;
 	private String connectionName;
 	private String databaseType;
 	private String connectionUrl;
 	private Integer displayOrder;
-	
 	private DatabaseConfiguration databaseConfiguration;
 
 	private transient DataSource dataSource;
@@ -52,6 +55,15 @@ public class ConnectionProperties implements Serializable,
 
 	public void setConnectionPropId(Long connectionPropId) {
 		this.connectionPropId = connectionPropId;
+	}
+	
+	@Column(name="USER_ID", nullable=false)
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public ConnectionProperties() {
@@ -72,6 +84,7 @@ public class ConnectionProperties implements Serializable,
 		dataSource = null;
 	}
 
+	@Transient
 	public boolean isPropertySaved() {
 		return propertySaved;
 	}
@@ -128,6 +141,7 @@ public class ConnectionProperties implements Serializable,
 	/**
 	 * @return the dataSource
 	 */
+	@Transient
 	public DataSource getDataSource() {
 		return dataSource;
 	}

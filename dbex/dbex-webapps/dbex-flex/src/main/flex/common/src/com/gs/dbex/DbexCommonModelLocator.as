@@ -1,5 +1,7 @@
 package com.gs.dbex
 {
+	import com.gs.dbex.vo.UserVO;
+	
 	import mx.collections.ArrayCollection;
 	
 	[Bindable]
@@ -18,5 +20,7 @@ package com.gs.dbex
 		public var connectionPropertiesColl:ArrayCollection = new ArrayCollection();
 		
 		public var connectionNameColl:ArrayCollection = new ArrayCollection();
+		
+		public var loggedInUserVO:UserVO;
 	}
 }

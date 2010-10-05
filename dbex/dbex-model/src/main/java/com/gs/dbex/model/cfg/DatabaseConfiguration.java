@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -18,6 +19,7 @@ import javax.persistence.Table;
 public class DatabaseConfiguration {
 
 	private Long configurationId;
+	private Long connectionPropId;
 	private String hostName;
 	private Integer portNumber;
 	private String driverClassName;
@@ -41,6 +43,15 @@ public class DatabaseConfiguration {
 
 	public void setConfigurationId(Long configurationId) {
 		this.configurationId = configurationId;
+	}
+
+	@Column(name="CONNECTION_PROP_ID", nullable=false)
+	public Long getConnectionPropId() {
+		return connectionPropId;
+	}
+
+	public void setConnectionPropId(Long connectionPropId) {
+		this.connectionPropId = connectionPropId;
 	}
 
 	public String getSidServiceName() {
