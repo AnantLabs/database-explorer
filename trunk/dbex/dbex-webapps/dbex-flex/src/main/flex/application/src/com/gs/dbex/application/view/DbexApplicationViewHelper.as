@@ -1,6 +1,7 @@
 package com.gs.dbex.application.view
 {
 	import com.gs.dbex.common.view.ViewHelper;
+	import com.gs.dbex.vo.UserVO;
 
 	public class DbexApplicationViewHelper extends ViewHelper
 	{
@@ -9,12 +10,10 @@ package com.gs.dbex.application.view
 			super();
 		}
 		
-		public function handelLoginSuccess(data:Object):void{
+		public function handelLoginSuccess(data:UserVO):void{
 			if(null != data){
-				var mainApp:DbexMainApp = view as DbexMainApp;
-				if(null != mainApp){
-					mainApp.appViewStack.selectedIndex = 1;
-				}
+				view.appViewStack.selectedIndex = 1;
+				view.dbexToolbar.loggedInUserFullNameLabel.text = data.fullName;
 			}
 		}
 	}

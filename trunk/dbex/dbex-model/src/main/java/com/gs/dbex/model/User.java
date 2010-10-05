@@ -18,6 +18,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Check;
+
 import com.gs.dbex.model.cfg.ConnectionProperties;
 
 
@@ -83,7 +85,7 @@ public class User implements Serializable, Comparable<User> {
 	}
 	
 	@OneToMany(targetEntity=ConnectionProperties.class, cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name="CONNECTION_PROP_ID")
+    @JoinColumn(name="USER_ID")
     @OrderBy(value="displayOrder")
 	public Set<ConnectionProperties> getConnectionProperties() {
 		return connectionProperties;

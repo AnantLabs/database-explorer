@@ -10,11 +10,29 @@ import com.gs.dbex.model.cfg.DatabaseConfiguration;
  */
 public class ConnectionPropertiesVO implements Serializable {
 
+	private Long connectionPropId;
 	private String connectionName;
+	private Long userId;
 	private String databaseType;
 	private String connectionUrl;
 	private Integer displayOrder;
 	private DatabaseConfigurationVO databaseConfiguration;
+
+	public Long getConnectionPropId() {
+		return connectionPropId;
+	}
+
+	public void setConnectionPropId(Long connectionPropId) {
+		this.connectionPropId = connectionPropId;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
 
 	public String getConnectionName() {
 		return connectionName;

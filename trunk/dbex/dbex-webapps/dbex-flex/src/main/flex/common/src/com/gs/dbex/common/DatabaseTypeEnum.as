@@ -1,5 +1,7 @@
 package com.gs.dbex.common
 {
+	import com.gs.dbex.util.StringUtil;
+	
 	import mx.collections.ArrayCollection;
 	
 	public class DatabaseTypeEnum
@@ -38,6 +40,22 @@ package com.gs.dbex.common
 			coll.addItem(MSSQL_2005);
 			coll.addItem(OTHER);
 			return coll;
+		}
+		
+		public static function getDatabaseTypeEnum(dbType:String):DatabaseTypeEnum{
+			if(!StringUtil.hasValidContent(dbType)){
+				return OTHER;
+			}
+			if(ORACLE.type == dbType){
+				return ORACLE;
+			} else if(ORACLE.type == dbType){
+				return ORACLE;
+			} else if(MYSQL.type == dbType){
+				return MYSQL;
+			} else if(MSSQL_2005.type == dbType){
+				return MSSQL_2005;
+			}
+			return OTHER;
 		}
 	
 	}

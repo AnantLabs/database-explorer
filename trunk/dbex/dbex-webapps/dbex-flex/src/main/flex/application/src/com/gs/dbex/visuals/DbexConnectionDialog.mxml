@@ -6,6 +6,7 @@
 	defaultButton="{connectButton}" creationComplete="initilize()">
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.StorageTypeEnum;
 			import com.gs.dbex.vo.DatabaseConfigurationVO;
 			import com.gs.dbex.util.StringUtil;
 			import com.gs.dbex.common.DatabaseTypeEnum;
@@ -52,7 +53,7 @@
 				if(connectionNameList.selectedItem != null){
 					propertyBox.enabled = true;
 					var p:ConnectionPropertiesVO = connectionNameList.selectedItem as ConnectionPropertiesVO;
-					selectedNameLabel.text = p.connectionName;
+					populateFromProperties(p);
 				} else {
 					propertyBox.enabled = false;
 				}
@@ -63,28 +64,60 @@
 				propertyBox.enabled = false;
 				if(connectionNameList.selectedItem != null){
 					propertyBox.enabled = true;
-					
+					var p:ConnectionPropertiesVO = connectionNameList.selectedItem as ConnectionPropertiesVO;
+					populateFromProperties(p);
+				} else{
+					dbTypeCombo.selectedIndex = 3;
 				}
-				dbTypeCombo.selectedIndex = 3;
 				dbTypeChanged();
 			}
 			
 			public function dbTypeChanged():void{
 				var dbType:DatabaseTypeEnum = dbTypeCombo.selectedItem as DatabaseTypeEnum;
 				if(null != dbType){
+					var storageType:StorageTypeEnum = StorageTypeEnum.CATALOG;
 					if(DatabaseTypeEnum.ORACLE.type == dbType.type){
 						dirverClassTi.text = dbType.driverClass;
 						dirverClassTi.enabled = false;
+						catalogRb.selected = false;
+						schemaRb.selected = true;
+						catalogRb.enabled = false;
+						schemaRb.enabled = false;
+						storageType = StorageTypeEnum.SCHEMA;
+						sidServiceNameTi.visible = true;
+						sidServiceNameLabel.visible = true;
 					} else if(DatabaseTypeEnum.MYSQL.type == dbType.type){
 						dirverClassTi.text = dbType.driverClass;
 						dirverClassTi.enabled = false;
+						catalogRb.selected = true;
+						schemaRb.selected = false;
+						catalogRb.enabled = false;
+						schemaRb.enabled = false;
+						sidServiceNameTi.visible = false;
+						sidServiceNameLabel.visible = false;
+						storageType = StorageTypeEnum.CATALOG;
 					} else if(DatabaseTypeEnum.MSSQL_2005.type == dbType.type){
 						dirverClassTi.text = dbType.driverClass;
 						dirverClassTi.enabled = false;
+						catalogRb.selected = true;
+						schemaRb.selected = false;
+						catalogRb.enabled = false;
+						schemaRb.enabled = false;
+						sidServiceNameTi.visible = false;
+						sidServiceNameLabel.visible = false;
+						storageType = StorageTypeEnum.CATALOG;
 					} else if(DatabaseTypeEnum.OTHER.type == dbType.type){
 						dirverClassTi.text = dbType.driverClass;
 						dirverClassTi.enabled = true;
+						catalogRb.selected = true;
+						schemaRb.selected = false;
+						catalogRb.enabled = true;
+						schemaRb.enabled = true;
+						sidServiceNameTi.visible = true;
+						sidServiceNameLabel.visible = true;
+						storageType = StorageTypeEnum.CATALOG;
 					}
+					catSchNameLabel.text = storageType.description + " Name";
 				}
 			}
 			
@@ -105,6 +138,25 @@
 				return properties; 
 			}
 			
+			public function populateFromProperties(properties:ConnectionPropertiesVO):void{
+				if(null == properties)
+					return;
+				selectedNameLabel.text = properties.connectionName;
+				dbTypeCombo.selectedItem = DatabaseTypeEnum.getDatabaseTypeEnum(properties.databaseType);
+				urlTi.text = properties.connectionUrl;
+				var cfg:DatabaseConfigurationVO = properties.databaseConfiguration;
+				if(null != cfg){
+					hostNameTi.text = cfg.hostName;
+					portNumberTi.text = (!isNaN(cfg.portNumber)) ? cfg.portNumber.toString() : ""; 
+					userNameTi.text = cfg.userName;
+					passwordTi.text = cfg.password;
+					savePasswordChkBx.selected = cfg.savePassword;
+					schemaNameTi.text = cfg.schemaName;
+					sidServiceNameTi.text = cfg.sidServiceName;
+				}
+				
+			}
+			
 			public function saveConnectionProps():void{
 				
 			}
@@ -118,7 +170,7 @@
 				<mx:List width="100%" height="100%" id="connectionNameList"
 					dataProvider="{DbexCommonModelLocator.getInstance().connectionPropertiesColl}"
 					selectedIndex="0" itemClick="listSelectionChange()"
-					labelField="connectionName">
+					labelField="connectionName" >
 					
 				</mx:List>
 			</mx:HBox>
@@ -206,7 +258,7 @@
 									<mx:Label text="Password"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%">
-									<mx:TextInput id="passwordTi" width="100%" />
+									<mx:TextInput id="passwordTi" width="100%" displayAsPassword="true"/>
 								</mx:GridItem>
 							</mx:GridRow>
 							<mx:GridRow width="100%" height="100%">
@@ -223,10 +275,10 @@
 									<mx:Label text="Storage Type"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" >
-									<mx:RadioButton id="catalogRb" label="CATALOG"/>
+									<mx:RadioButton id="catalogRb" label="{StorageTypeEnum.CATALOG.description}"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" colSpan="2">
-									<mx:RadioButton id="schemaRb" label="SCHEMA"/>
+									<mx:RadioButton id="schemaRb" label="{StorageTypeEnum.SCHEMA.description}"/>
 								</mx:GridItem>
 							</mx:GridRow>
 							<mx:GridRow width="100%" height="100%">
@@ -237,7 +289,7 @@
 									<mx:TextInput id="schemaNameTi" width="100%"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%">
-									<mx:Label text="SID/Service Name"/>
+									<mx:Label text="SID/Service Name" id="sidServiceNameLabel"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%">
 									<mx:TextInput id="sidServiceNameTi" width="100%" />

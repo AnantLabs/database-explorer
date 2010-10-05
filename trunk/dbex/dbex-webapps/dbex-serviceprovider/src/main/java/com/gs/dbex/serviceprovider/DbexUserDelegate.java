@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.model.User;
+import com.gs.dbex.model.converter.UserVoConverter;
+import com.gs.dbex.model.vo.UserVO;
 import com.gs.dbex.service.DbexUserService;
 
 /**
@@ -29,16 +31,19 @@ public class DbexUserDelegate {
 		this.dbexUserService = dbexUserService;
 	}
 
-	public User login(String loginName, String password) throws DbexException {
+	public UserVO login(String loginName, String password) throws DbexException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("ENTER::- login() with loginName:=" + loginName
 					+ " password:=" + password);
 		}
-		User u = getDbexUserService().login(loginName, password);
+		User dbexUser = getDbexUserService().login(loginName, password);
 		if (logger.isDebugEnabled()) {
 			logger.debug("EXIT::- login()");
 		}
-		return u;
+		if(dbexUser != null){
+			return UserVoConverter.convertModelToVO(dbexUser);
+		}
+		return null;
 	}
 
 }

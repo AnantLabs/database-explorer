@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 public class DatabaseConfigurationVO implements Serializable {
 
+	private Long configurationId;
+	private Long connectionPropId;
 	private String hostName;
 	private Integer portNumber;
 	private String driverClassName;
@@ -13,6 +15,22 @@ public class DatabaseConfigurationVO implements Serializable {
 	private String schemaName;
 	private boolean savePassword;
 	private String sidServiceName;
+
+	public Long getConfigurationId() {
+		return configurationId;
+	}
+
+	public void setConfigurationId(Long configurationId) {
+		this.configurationId = configurationId;
+	}
+
+	public Long getConnectionPropId() {
+		return connectionPropId;
+	}
+
+	public void setConnectionPropId(Long connectionPropId) {
+		this.connectionPropId = connectionPropId;
+	}
 
 	public String getDriverClassName() {
 		return driverClassName;
