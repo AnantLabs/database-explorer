@@ -165,7 +165,7 @@
 	
 	<mx:HBox width="100%" height="100%" paddingTop="0" >
 		<mx:VBox width="200" height="100%" verticalGap="0" verticalAlign="top">
-			<mx:Label text="Connection Names"  />
+			<mx:Label text="Connection Names"   height="32" fontSize="14" fontWeight="normal"/>
 			<mx:HBox width="100%" height="100%">
 				<mx:List width="100%" height="100%" id="connectionNameList"
 					dataProvider="{DbexCommonModelLocator.getInstance().connectionPropertiesColl}"

@@ -45,5 +45,9 @@ public class DbexUserDelegate {
 		}
 		return null;
 	}
+	
+	public UserVO register(UserVO userVO){
+		
+	}
 
 }

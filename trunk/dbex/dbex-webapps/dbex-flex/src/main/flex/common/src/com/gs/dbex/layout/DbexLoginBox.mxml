@@ -10,7 +10,13 @@
 			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
 			
 			public function loginAsGuest():void{
-				
+				var uN:String = "guest";
+				var pwd:String = "guest";
+				var evt:LoginEvent = new LoginEvent();
+				evt.userName = uN;
+				evt.password = pwd;
+				BaseEventDispatcher.getInstance().dispatchEvent(evt);
+				switchUserStack.selectedIndex = 2;
 			}
 			
 			public function loginAsOther():void{

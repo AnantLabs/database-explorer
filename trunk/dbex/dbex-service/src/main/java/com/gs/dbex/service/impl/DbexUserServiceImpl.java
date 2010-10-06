@@ -33,6 +33,9 @@ public class DbexUserServiceImpl implements DbexUserService {
 		if(null == user){
 			throw new DbexException("INVALID_USER_NAME", "Invalid User Name");
 		}
+		if(null != password && password.equals(user.getPassword())){
+			throw new DbexException("INVALID_PASSWORD", "Invalid Password");
+		}
 		return user;
 	}
 }
