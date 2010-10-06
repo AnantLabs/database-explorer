@@ -23,7 +23,7 @@
 	<mx:Style source="assets/styles/DbexStyle.css"/>
 	<mx:Style source="assets/skins/vistaremix/vistaremix.css"/>
 	-->
-	<mx:Style source="SunNight.css"/>
+	<mx:Style source="assets/skins/vistaremix/vistaremix.css"/>
 	
 	<view:DbexApplicationViewHelper id="DbexApplicationViewHelper"/>
 	
