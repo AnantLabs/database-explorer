@@ -6,6 +6,10 @@
 	defaultButton="{connectButton}" creationComplete="initilize()">
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.event.BaseEventDispatcher;
+			import com.gs.dbex.common.event.DbexEventDispatcher;
+			import com.gs.dbex.common.event.DbexBaseEvent;
+			import com.gs.dbex.application.event.DatabaseConnectionEvent;
 			import com.gs.dbex.common.StorageTypeEnum;
 			import com.gs.dbex.vo.DatabaseConfigurationVO;
 			import com.gs.dbex.util.StringUtil;
@@ -160,6 +164,13 @@
 			public function saveConnectionProps():void{
 				
 			}
+			
+			public function connectToDB():void{
+				var p:ConnectionPropertiesVO = connectionNameList.selectedItem as ConnectionPropertiesVO;
+				var evt:DatabaseConnectionEvent = new DatabaseConnectionEvent(DatabaseConnectionEvent.CONNECT_EVENT);
+				evt.connectionProppertiesVO = p;
+				BaseEventDispatcher.getInstance().dispatchEvent(evt);
+			}
 		]]>
 	</mx:Script>
 	
@@ -311,7 +322,7 @@
 				<mx:Button label="Cancel" id="cancelButton"/>
 				<mx:Spacer width="100%"/>
 				<mx:Button label="Test" id="testConnectionButton"/>
-				<mx:Button label="Connect" id="connectButton"/> 
+				<mx:Button label="Connect" id="connectButton" click="connectToDB()"/> 
 			</mx:HBox>
 		</mx:VBox>
 	</mx:HBox>

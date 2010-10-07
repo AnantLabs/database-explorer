@@ -3,13 +3,13 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import com.tavant.pos.common.framework.business.ResponseHandler;
+			import com.gs.dbex.common.business.ResponseHandler;
 		]]>
 	</mx:Script>
 	
-	<mx:RemoteObject id="loginService" destination="MyLoginServiceImpl"
+	<mx:RemoteObject id="databaseConnectionDelegate" destination="databaseConnectionDelegate"
 							showBusyCursor="true"
 							result="event.token.resultHandler( event );"
-							fault="ResponseHandler.faultHandler( event );">
+							fault="ResponseHandler.faultHandler( event );"/>
 							
 </DbexApplicationServiceLocator>
