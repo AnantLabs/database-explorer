@@ -19,6 +19,11 @@
 		<flex:remoting-destination />
 		<property name="dbexUserService" ref="dbexUserService"></property>
 	</bean>
+	
+	<bean id="databaseConnectionDelegate" class="com.gs.dbex.serviceprovider.DatabaseConnectionDelegate">
+		<flex:remoting-destination />
+<!--		<property name="dbexUserService" ref="dbexUserService"></property>-->
+	</bean>
 
 
 	<!-- Services -->
