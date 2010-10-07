@@ -3,6 +3,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.event.RegisterEvent;
+			import com.gs.dbex.vo.UserVO;
 			import com.gs.dbex.common.event.BaseEventDispatcher;
 			import com.gs.dbex.common.event.LoginEvent;
 			
@@ -42,8 +44,21 @@
 				switchUserStack.selectedIndex = 0;
 			}
 			
+			public function reset():void{
+				
+			}
+			
 			public function doRegister():void{
-				switchUserStack.selectedIndex = 1;
+				var userVo:UserVO = new UserVO();
+				userVo.userName = registerUserNameTI.text;
+				userVo.password = registerPasswordTI.text;
+				userVo.fullName = registerFullNameTI.text;
+				userVo.emailAddress = registerEmailTI.text;
+				var evt:RegisterEvent = new RegisterEvent();
+				evt.userVO = userVo;
+				BaseEventDispatcher.getInstance().dispatchEvent(evt);
+				
+				switchUserStack.selectedIndex = 4;
 			}
 		]]>
 	</mx:Script>
@@ -149,7 +164,7 @@
 									<mx:Label text="User Name"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" colSpan="2">
-									<mx:TextInput  width="100%"/>
+									<mx:TextInput  width="100%" id="registerUserNameTI"/>
 								</mx:GridItem>
 								
 							</mx:GridRow>
@@ -158,7 +173,7 @@
 									<mx:Label text="Password"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" colSpan="2">
-									<mx:TextInput  width="100%" displayAsPassword="true"/>
+									<mx:TextInput  width="100%" displayAsPassword="true" id="registerPasswordTI"/>
 								</mx:GridItem>
 								
 							</mx:GridRow>
@@ -167,7 +182,7 @@
 									<mx:Label text="Full Name"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" colSpan="2">
-									<mx:TextInput  width="100%"/>
+									<mx:TextInput  width="100%" id="registerFullNameTI"/>
 								</mx:GridItem>
 								
 							</mx:GridRow>
@@ -176,7 +191,7 @@
 									<mx:Label text="Email ID"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" colSpan="2">
-									<mx:TextInput  width="100%"/>
+									<mx:TextInput  width="100%" id="registerEmailTI"/>
 								</mx:GridItem>
 								
 							</mx:GridRow>
@@ -185,7 +200,7 @@
 									<mx:Button label="Cancel" click="cancel()"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" horizontalAlign="left" verticalAlign="middle">
-									<mx:Button label="Reset" />
+									<mx:Button label="Reset" click="reset()"/>
 								</mx:GridItem>
 								<mx:GridItem width="100%" height="100%" horizontalAlign="right" verticalAlign="middle">
 									<mx:Button label="Submit" click="doRegister()"/>

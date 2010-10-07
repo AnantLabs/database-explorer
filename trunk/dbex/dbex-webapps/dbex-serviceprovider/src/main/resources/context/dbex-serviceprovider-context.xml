@@ -6,8 +6,14 @@
         http://www.springframework.org/schema/flex 
  		http://www.springframework.org/schema/flex/spring-flex-1.0.xsd"
 	default-autowire="byName">
+	
+	<bean id="dbexFlexExceptionTranslator"
+		class="com.gs.dbex.serviceprovider.flex.exception.DbexFlexExceptionTranslator">
+	</bean>
 
-	<flex:message-broker />
+	<flex:message-broker>
+		<flex:exception-translator ref="dbexFlexExceptionTranslator" />
+	</flex:message-broker>
 
 	<bean id="dbexUserDelegate" class="com.gs.dbex.serviceprovider.DbexUserDelegate">
 		<flex:remoting-destination />
@@ -16,5 +22,5 @@
 
 
 	<!-- Services -->
-	
+
 </beans>

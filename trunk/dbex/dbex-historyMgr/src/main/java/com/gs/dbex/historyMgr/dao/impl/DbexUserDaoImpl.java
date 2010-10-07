@@ -44,4 +44,15 @@ public class DbexUserDaoImpl implements DbexUserDao {
 		return null;
 	}
 	
+	public User getUser(String userName, String emailAddress){
+		DetachedCriteria criteria = DetachedCriteria.forClass(User.class)
+			.add(Restrictions.eq("userName", userName))
+			.add(Restrictions.eq("emailAddress", emailAddress));
+		List userList = getHibernateTemplate().findByCriteria(criteria);
+		if(null != userList && userList.size() > 0){
+			return (User) userList.get(0);
+		}
+		return null;
+	}
+	
 }

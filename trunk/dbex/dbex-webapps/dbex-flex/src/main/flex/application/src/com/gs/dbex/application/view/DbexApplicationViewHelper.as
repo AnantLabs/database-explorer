@@ -16,5 +16,11 @@ package com.gs.dbex.application.view
 				view.dbexToolbar.loggedInUserFullNameLabel.text = data.fullName;
 			}
 		}
+		
+		
+		public function moveToLoginScreen():void{
+			view.appViewStack.selectedIndex = 0;
+			view.dbexLoginBox.switchUserStack.selectedIndex = 0;
+		}
 	}
 }

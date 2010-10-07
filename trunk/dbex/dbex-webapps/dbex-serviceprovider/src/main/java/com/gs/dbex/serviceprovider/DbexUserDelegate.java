@@ -46,8 +46,18 @@ public class DbexUserDelegate {
 		return null;
 	}
 	
-	public UserVO register(UserVO userVO){
-		
+	public UserVO register(UserVO userVO) throws DbexException{
+		if (logger.isDebugEnabled()) {
+			logger.debug("ENTER::- login() ");
+		}
+		User dbexUser = getDbexUserService().register(userVO);
+		if (logger.isDebugEnabled()) {
+			logger.debug("EXIT::- login()");
+		}
+		if(dbexUser != null){
+			return UserVoConverter.convertModelToVO(dbexUser);
+		}
+		return null;
 	}
 
 }

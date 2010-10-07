@@ -29,7 +29,7 @@
 	
 	<mx:ViewStack id="appViewStack" width="100%" height="100%" selectedIndex="0">
 		<mx:HBox width="100%" height="100%" id="loginBox">
-			<layout:DbexLoginBox width="100%" height="100%"/>
+			<layout:DbexLoginBox width="100%" height="100%" id="dbexLoginBox"/>
 		</mx:HBox>
 		<mx:VBox width="100%" height="100%" id="applicationBox" verticalGap="0">
 			<layout:DbexMenuBar width="100%" height="25"/>
