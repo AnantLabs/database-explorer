@@ -5,6 +5,11 @@ package com.gs.dbex.serviceprovider;
 
 import org.apache.log4j.Logger;
 
+import com.gs.dbex.common.enums.ReadDepthEnum;
+import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.common.exception.ErrorCodeConstants;
+import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.converter.ConnectionPropertiesVOConverter;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.vo.cfg.ConnectionPropertiesVO;
 import com.gs.dbex.service.DatabaseConnectionService;
@@ -45,15 +50,25 @@ public class DatabaseConnectionDelegate {
 
 
 
-	public Database connect(ConnectionPropertiesVO connectionPropertiesVO){
+	public Database connect(ConnectionPropertiesVO connectionPropertiesVO) throws DbexException{
 		if (logger.isDebugEnabled()) {
 			logger.debug("ENTER::- connect()");
 		}
-		
+		ConnectionProperties connectionProperties 
+			= ConnectionPropertiesVOConverter.convertVoToModel(connectionPropertiesVO);
+		if(null == connectionProperties){
+			throw new DbexException(ErrorCodeConstants.INVALID_CONNECTION_PROPERTIES, 
+					"Invalid Connection Configuration.");
+		}
+		Database database = null;
+		Boolean connected = getDatabaseConnectionService().connectToDatabase(connectionProperties);
+		if(connected){
+			database = getDatabaseMetadataService().getDatabaseDetails(connectionProperties, ReadDepthEnum.DEEP);
+		}
 		if (logger.isDebugEnabled()) {
 			logger.debug("EXIT::- connect()");
 		}
-		return new Database();
+		return database;
 	}
 	
 	public Boolean testConnection(ConnectionPropertiesVO connectionPropertiesVO){

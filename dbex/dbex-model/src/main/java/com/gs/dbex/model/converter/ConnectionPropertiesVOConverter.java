@@ -51,4 +51,39 @@ public class ConnectionPropertiesVOConverter {
 		}
 		return connectionPropertiesVOs;
 	}
+
+	public static ConnectionProperties convertVoToModel(
+			ConnectionPropertiesVO connectionPropertiesVO) {
+		if(logger.isDebugEnabled()){
+			logger.debug("ENTER::- convertVoToModel()");
+		}
+		if(null == connectionPropertiesVO){
+			return null;
+		}
+		ConnectionProperties connectionPropertiesModel = new ConnectionProperties();
+		Long propId = connectionPropertiesVO.getConnectionPropId();
+		if(null != propId){
+			connectionPropertiesModel.setConnectionPropId((propId.longValue()==0L) ? null : propId);
+		} else{
+			connectionPropertiesModel.setConnectionPropId(null);
+		}
+		Long userId = connectionPropertiesVO.getUserId();
+		if(null != userId){
+			connectionPropertiesModel.setUserId((userId.longValue()==0L) ? null : userId);
+		} else{
+			connectionPropertiesModel.setUserId(null);
+		}
+		connectionPropertiesModel.setConnectionPropId(connectionPropertiesVO.getConnectionPropId());
+		connectionPropertiesModel.setUserId(connectionPropertiesVO.getUserId());
+		connectionPropertiesModel.setConnectionName(connectionPropertiesVO.getConnectionName());
+		connectionPropertiesModel.setConnectionUrl(connectionPropertiesVO.getConnectionUrl());
+		connectionPropertiesModel.setDatabaseType(connectionPropertiesVO.getDatabaseType());
+		connectionPropertiesModel.setDisplayOrder(connectionPropertiesVO.getDisplayOrder());
+		connectionPropertiesModel.setDatabaseConfiguration(
+				DatabaseConfigurationVOConverter.convertVoToModel(connectionPropertiesVO.getDatabaseConfiguration()));
+		if(logger.isDebugEnabled()){
+			logger.debug("EXIT::- convertVoToModel()");
+		}
+		return connectionPropertiesModel;
+	}
 }

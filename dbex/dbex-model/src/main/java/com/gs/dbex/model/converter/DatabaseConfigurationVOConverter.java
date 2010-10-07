@@ -41,4 +41,41 @@ public class DatabaseConfigurationVOConverter {
 		return databaseConfigurationVO;
 	}
 
+	public static DatabaseConfiguration convertVoToModel(
+			DatabaseConfigurationVO databaseConfigurationVO) {
+		if(logger.isDebugEnabled()){
+			logger.debug("ENTER::- convertVoToModel()");
+		}
+		if(null == databaseConfigurationVO)
+			return null;
+		DatabaseConfiguration databaseConfigurationModel = new DatabaseConfiguration();
+		Long propId = databaseConfigurationVO.getConnectionPropId();
+		if(null != propId){
+			databaseConfigurationModel.setConnectionPropId((propId.longValue()==0L) ? null : propId);
+		} else{
+			databaseConfigurationModel.setConnectionPropId(null);
+		}
+		Long cfgId = databaseConfigurationVO.getConfigurationId();
+		if(null != cfgId){
+			databaseConfigurationModel.setConfigurationId((cfgId.longValue()==0L) ? null : cfgId);
+		} else{
+			databaseConfigurationModel.setConfigurationId(null);
+		}
+		databaseConfigurationModel.setConfigurationId(databaseConfigurationVO.getConfigurationId());
+		databaseConfigurationModel.setConnectionPropId(databaseConfigurationVO.getConnectionPropId());
+		databaseConfigurationModel.setDriverClassName(databaseConfigurationVO.getDriverClassName());
+		databaseConfigurationModel.setHostName(databaseConfigurationVO.getHostName());
+		databaseConfigurationModel.setPassword(databaseConfigurationVO.getPassword());
+		databaseConfigurationModel.setPortNumber(databaseConfigurationVO.getPortNumber());
+		databaseConfigurationModel.setSavePassword(databaseConfigurationVO.isSavePassword());
+		databaseConfigurationModel.setSchemaName(databaseConfigurationVO.getSchemaName());
+		databaseConfigurationModel.setSidServiceName(databaseConfigurationVO.getSidServiceName());
+		databaseConfigurationModel.setStorageType(databaseConfigurationVO.getStorageType());
+		databaseConfigurationModel.setUserName(databaseConfigurationVO.getUserName());
+		if(logger.isDebugEnabled()){
+			logger.debug("EXIT::- convertVoToModel()");
+		}
+		return databaseConfigurationModel;
+	}
+
 }

@@ -2,6 +2,7 @@ package com.gs.dbex.common.model
 {
 	import com.gs.dbex.IDbexObject;
 
+	[RemoteClass(alias="com.gs.dbex.model.BaseDbModel")]
 	public class BaseDbModel implements IDbexObject
 	{
 		
