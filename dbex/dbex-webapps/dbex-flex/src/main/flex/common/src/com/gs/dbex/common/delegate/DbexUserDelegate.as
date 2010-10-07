@@ -2,6 +2,7 @@ package com.gs.dbex.common.delegate
 {
 	import com.gs.dbex.common.business.BaseResponder;
 	import com.gs.dbex.common.business.CommonServiceLocator;
+	import com.gs.dbex.vo.UserVO;
 	
 	import mx.rpc.AsyncToken;
 	
@@ -23,6 +24,12 @@ package com.gs.dbex.common.delegate
 			var token:AsyncToken = service.login(userName, password); 
 			token.resultHandler = responder.onResult;
 			token.faultHandler = responder.onFault;	
+		}
+		
+		public function register(userVo:UserVO):void{
+			var token:AsyncToken = service.register(userVo); 
+			token.resultHandler = responder.onResult;
+			token.faultHandler = responder.onFault;
 		}
 	}
 }

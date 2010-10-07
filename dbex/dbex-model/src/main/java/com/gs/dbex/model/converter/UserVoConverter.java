@@ -36,5 +36,29 @@ public class UserVoConverter {
 		}
 		return userVO;
 	}
+	
+	public static User convertVoToModel(UserVO userVO){
+		if (logger.isDebugEnabled()) {
+			logger.debug("ENTER::- convertVoToModel()");
+		}
+		if (null == userVO)
+			return null;
+		User userModel = new User();
+		Long id = userVO.getUserId();
+		if(null != id){
+			userModel.setUserId((id.longValue()==0L) ? null : id);
+		} else{
+			userModel.setUserId(null);
+		}
+		userModel.setUserName(userVO.getUserName());
+		userModel.setPassword(userVO.getPassword());
+		userModel.setEmailAddress(userVO.getEmailAddress());
+		userModel.setFullName(userVO.getFullName());
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("EXIT::- convertVoToModel()");
+		}
+		return userModel;
+	}
 
 }
