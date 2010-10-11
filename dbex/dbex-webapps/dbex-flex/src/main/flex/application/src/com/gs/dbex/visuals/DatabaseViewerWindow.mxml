@@ -1,20 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ResizableWindow xmlns="com.gs.dbex.layout.*" xmlns:mx="http://www.adobe.com/2006/mxml" 
-	height="6400" width="800" showWindowButtons="true" title="Datbase Viewer"
-	titleIcon="{DbexImageConstants.getInstance().newConnectionIcon}">
+	height="540" width="800" showWindowButtons="true" 
+	titleIcon="{DbexImageConstants.getInstance().dbex24x24Icon}"
+	creationComplete="onCreationComplete()">
 	
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.model.db.Column;
+			import com.gs.dbex.common.model.db.Table;
+			import mx.controls.TabBar;
+			import com.gs.dbex.common.model.db.Schema;
+			import com.gs.dbex.common.model.db.Database;
+			import com.gs.dbex.control.TreeNode;
+			import com.gs.dbex.DbexCommonModelLocator;
+			import com.gs.dbex.common.business.DbexCommonController;
+			import com.gs.dbex.application.DbexApplicationModelLocator;
+			import com.gs.dbex.command.UICommandConstants;
 			import com.gs.dbex.control.DbexResizeEvent;
 			
+			[Bindable]
+			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			[Bindable]
+			private var commonModelLocator:DbexCommonModelLocator = DbexCommonModelLocator.getInstance();
+			[Bindable]
+			private var applicationModelLocator:DbexApplicationModelLocator = DbexApplicationModelLocator.getInstance();
 			
 			private function changeSize(event:DbexResizeEvent):void
             {
             	
             }
+            
+            public function onCreationComplete():void{
+            	if(null != commonModelLocator.selectedConnectionProps){
+            		if(null != commonModelLocator.selectedConnectionProps.databaseConfiguration){
+            			title = commonModelLocator.selectedConnectionProps.databaseConfiguration.userName
+            				+ "@" + commonModelLocator.selectedConnectionProps.databaseConfiguration.hostName
+            		}
+            	}
+            	
+            	if(null != applicationModelLocator.databaseModel){
+            		var treeRoot:TreeNode = new TreeNode();
+            		var database:Database = applicationModelLocator.databaseModel;
+            		treeRoot.data = database;
+            		treeRoot.icon = imageLocator.databaseIcon;
+            		treeRoot.name = "Database";
+            		
+            		if(null != database.schemaList){
+            			for each(var schema:Schema in database.schemaList){
+            				var schemaNode:TreeNode = new TreeNode();
+            				schemaNode.data = schema;
+            				schemaNode.name = schema.toString();
+            				schemaNode.icon = imageLocator.schemaIcon;
+            				
+            				if(null != schema.tableList){
+            					var tableFolderNode:TreeNode = new TreeNode();
+            					tableFolderNode.name = "Tables";
+            					for each(var table:Table in schema.tableList){
+            						var tableNode:TreeNode = new TreeNode();
+            						tableNode.data = table;
+		            				tableNode.name = table.toString();
+		            				tableNode.icon = imageLocator.tableIcon;
+			            				
+		            				if(null != table.columnlist){
+		            					var columnFolderNode:TreeNode = new TreeNode();
+			            				columnFolderNode.name = "Columns";
+		            					for each(var column:Column in table.columnlist){
+		            						var columnNode:TreeNode = new TreeNode();
+		            						columnNode.data = column;
+				            				columnNode.name = column.toString();
+				            				columnNode.icon = imageLocator.columnIcon;
+				            				columnFolderNode.addChild(columnNode);
+		            					}
+		            					tableNode.addChild(columnFolderNode);
+		            				}
+		            				tableFolderNode.addChild(tableNode);
+            					}
+            					schemaNode.addChild(tableFolderNode);
+            				}
+            				
+            				treeRoot.addChild(schemaNode);
+            			}
+            		}
+            		
+            		databaseTree.dataProvider = treeRoot;
+            		databaseTree.setItemIcon(databaseTree.dataProvider.getItemAt(0), 
+            		imageLocator.databaseIcon, imageLocator.databaseIcon);
+            	}
+            }
+            
+            public function setIcons():void{
+            	/* databaseTree.setItemIcon(databaseTree.dataProvider.getItemAt(0), 
+            		imageLocator.databaseIcon, imageLocator.databaseIcon); */
+            }
 		]]>
 	</mx:Script>
 	
-	<mx:Label text="DB Explorer..."/>
+	<mx:ArrayCollection id="arrColl">
+        <mx:source>
+            <mx:Array>
+                <mx:Object label="Database" icon="{imageLocator.clearIcon}">
+                    <mx:children>
+                    	<mx:Object label="Connection" icon="{imageLocator.newConnectionIcon}" data="{UICommandConstants.NEW_CONNECTION_ACT_CMD}">
+                    		<mx:children>
+                    			<mx:Object label="Exit" icon="{imageLocator.exitIcon}" data="{UICommandConstants.EXIT_APP_ACT_CMD}"/>
+                    		</mx:children>
+                    	</mx:Object>
+                        <mx:Object label="Exit" icon="{imageLocator.exitIcon}" data="{UICommandConstants.EXIT_APP_ACT_CMD}"/>
+                    </mx:children>
+                </mx:Object>
+            </mx:Array>
+        </mx:source>
+    </mx:ArrayCollection>
+	
+	<mx:HDividedBox width="100%" height="100%">
+		<mx:VBox width="30%" height="100%">
+			<mx:HBox width="100%" height="35" id="databaseTreeToolbar">
+				<mx:LinkButton width="25" height="100%" icon="{imageLocator.refreshIcon}" 
+					toolTip="Reload Database"/>
+				<mx:LinkButton width="25" height="100%" icon="{imageLocator.expandAllIcon}" 
+					toolTip="Expand All"/>
+				<mx:LinkButton width="25" height="100%" icon="{imageLocator.collaspeAllIcon}" 
+					toolTip="Collaspe All"/>
+			</mx:HBox>
+			<mx:HBox width="100%" height="100%" id="databaseTreeBox">
+				<mx:Tree id="databaseTree" width="100%" height="100%"
+					labelField="name" showRoot="true" iconField="icon"
+					creationComplete="setIcons()"/>
+			</mx:HBox>
+		</mx:VBox>
+		<mx:VDividedBox width="70%" height="100%">
+			<mx:HBox width="100%" height="70%" id="sqlQueryBox">
+				
+			</mx:HBox>
+			<mx:HBox width="100%" height="30%" id="queryMessageBox">
+				
+			</mx:HBox>
+		</mx:VDividedBox>
+	</mx:HDividedBox>
 	
 </ResizableWindow>

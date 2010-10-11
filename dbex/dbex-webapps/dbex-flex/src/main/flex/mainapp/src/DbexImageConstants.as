@@ -94,5 +94,50 @@ package
         [Bindable]
         [Embed(source="assets/images/LoginScreenBottom.png")]
         public var loginScreenBottomIcon:Class;
+        
+        // Database Viewer
+        [Bindable]
+        [Embed(source="assets/images/DB_dev_perspective.gif")]
+        public var databaseIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/expandall.gif")]
+        public var expandAllIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/collapseall.gif")]
+        public var collaspeAllIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/reload_green.png")]
+        public var refreshIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/schema.gif")]
+        public var schemaIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/table.gif")]
+        public var tableIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/columns.gif")]
+        public var columnIcon:Class;
+        
+        /* [Bindable]
+        [Embed(source="assets/images/DB_dev_perspective.gif")]
+        public var databaseIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/DB_dev_perspective.gif")]
+        public var databaseIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/DB_dev_perspective.gif")]
+        public var databaseIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/DB_dev_perspective.gif")]
+        public var databaseIcon:Class; */
 	}
 }
