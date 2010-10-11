@@ -1,6 +1,5 @@
 package com.gs.dbex.common.model
 {
-	import com.gs.dbex.IDbexObject;
 
 	[RemoteClass(alias="com.gs.dbex.model.BaseDbModel")]
 	public class BaseDbModel implements IDbexObject
@@ -35,7 +34,7 @@ package com.gs.dbex.common.model
 			if (modelName == null) {
 				if (other.modelName != null)
 					return false;
-			} else if (!modelName.equals(other.modelName))
+			} else if (modelName != other.modelName)
 				return false;
 			return true;
 		}

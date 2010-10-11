@@ -1,5 +1,6 @@
 package com.gs.dbex
 {
+	import com.gs.dbex.vo.ConnectionPropertiesVO;
 	import com.gs.dbex.vo.UserVO;
 	
 	import mx.collections.ArrayCollection;
@@ -18,7 +19,7 @@ package com.gs.dbex
 		}
 
 		public var connectionPropertiesColl:ArrayCollection = new ArrayCollection();
-		
+		public var selectedConnectionProps:ConnectionPropertiesVO;
 		public var connectionNameColl:ArrayCollection = new ArrayCollection();
 		
 		public var loggedInUserVO:UserVO;

@@ -24,9 +24,12 @@
 							var actCmd:String = "" + event.item.data;
 							switch(actCmd){
 								case UICommandConstants.NEW_CONNECTION_ACT_CMD:
-									var titleWin:DbexConnectionDialog = PopUpManager.createPopUp(
+									/* var titleWin:DbexConnectionDialog = PopUpManager.createPopUp(
 										Application.application.applicationResizableBox, DbexConnectionDialog, false) as DbexConnectionDialog;
-                					PopUpManager.centerPopUp(titleWin);
+                					PopUpManager.centerPopUp(titleWin); */
+                					var connWin:DbexConnectionDialog = 
+                						DbexWindowManager.getInstance().openWindow
+                							(DbexWindowManager.DBEX_CONNECTION_DIALOG, DbexConnectionDialog) as DbexConnectionDialog;
 									break;
 								case UICommandConstants.EXIT_APP_ACT_CMD:
 									/* var titleWin1:DatabaseViewerWindow = PopUpManager.createPopUp(
@@ -42,7 +45,7 @@
 			]]>
 		</mx:Script>
    
-        <mx:ArrayCollection id="arrColl">
+	<mx:ArrayCollection id="arrColl">
         <mx:source>
             <mx:Array>
                 <mx:Object label="File" >

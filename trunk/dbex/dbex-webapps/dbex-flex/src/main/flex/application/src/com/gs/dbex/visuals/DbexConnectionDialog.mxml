@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="728" height="482"
+<ResizableWindow xmlns="com.gs.dbex.layout.*" xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" width="728" height="482"
 	title="New Connection" 
-	titleIcon="{DbexImageConstants.getInstance().dbex24x24Icon}" showCloseButton="true" 
+	titleIcon="{DbexImageConstants.getInstance().dbex24x24Icon}" 
 	close="{PopUpManager.removePopUp(this)}" paddingTop="0" xmlns:control="com.gs.dbex.control.*"
-	defaultButton="{connectButton}" creationComplete="initilize()">
+	defaultButton="{connectButton}" creationComplete="initilize()" showWindowButtons="true">
 	<mx:Script>
 		<![CDATA[
 			import com.gs.dbex.common.event.BaseEventDispatcher;
@@ -169,6 +169,7 @@
 				var p:ConnectionPropertiesVO = connectionNameList.selectedItem as ConnectionPropertiesVO;
 				var evt:DatabaseConnectionEvent = new DatabaseConnectionEvent(DatabaseConnectionEvent.CONNECT_EVENT);
 				evt.connectionProppertiesVO = p;
+				DbexCommonModelLocator.getInstance().selectedConnectionProps = p;
 				BaseEventDispatcher.getInstance().dispatchEvent(evt);
 			}
 		]]>
@@ -328,4 +329,4 @@
 	</mx:HBox>
 	
 	
-</mx:TitleWindow>
+</ResizableWindow>

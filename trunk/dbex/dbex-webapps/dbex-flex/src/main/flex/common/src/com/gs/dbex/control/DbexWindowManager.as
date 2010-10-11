@@ -13,6 +13,8 @@ package com.gs.dbex.control
 	public class DbexWindowManager
 	{
 		
+		public static const DBEX_CONNECTION_DIALOG:String = "DBEX_CONNECTION_DIALOG";
+		
 		private static var manager:DbexWindowManager = new DbexWindowManager();
 		private var openWindows:Object = new Object();
 		private var openPopups:Object = new Object();
@@ -67,6 +69,17 @@ package com.gs.dbex.control
 			var window:ResizableWindow = PopUpManager.createPopUp(workArea, windowClass, false) as ResizableWindow;
 			window.x = workAreaOrigin.x;
 			window.y = workAreaOrigin.y;
+			register(key, window);
+			return window;
+		}
+		
+		public function openCenterWindow(key:String, windowClass:Class):ResizableWindow{
+			if(openWindowKeys.contains(key)){
+				unregister(key, true);
+			}
+			var window:ResizableWindow = PopUpManager.createPopUp(workArea, windowClass, false) as ResizableWindow;
+			window.x = workAreaOrigin.width/2 - window.width/2;
+			window.y = workAreaOrigin.height/2 - window.height/2;
 			register(key, window);
 			return window;
 		}

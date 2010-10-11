@@ -82,7 +82,7 @@ CheckBox {
 }
 
 ComboBox {
-   color: #317acd;
+   color: #00ff00;
    borderColor: #112438;
    fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
    selectionColor: #efb97b;
@@ -188,6 +188,19 @@ HSlider {
    fontFamily: Tahoma;
 }
 
+Label
+{
+	font-size: 11;
+	color: #FFFFFF;
+	fontFamily: Tahoma;
+}
+.LabelOverBlack
+{
+	font-size: 11;
+	color: #FFFFFF;
+	fontFamily: Tahoma;
+}
+
 LinkBar {
    borderStyle: none;
    rollOverColor: #183d67;
@@ -261,6 +274,11 @@ Panel {
    shadowDistance: 0;
    titleStyleName: "mypanelTitle";
 	controlBarStyleName: panelControlBar;
+	cornerRadius: 0;
+	padding-bottom: 5;
+	padding-left: 5;
+	padding-right: 5;
+	padding-top: 2;
 }
 
 .mypanelTitle {
@@ -311,6 +329,36 @@ TabNavigator {
    firstTabStyleName: "myTabs";
    lastTabStyleName: "myTabs";
    selectedTabTextStyleName: "mySelectedTabs";
+}
+TitleWindow
+{
+	borderStyle: none;
+	   borderColor: #c8e1e1;
+	   borderThicknessLeft: 0;
+	   borderThicknessTop: 0;
+	   borderThicknessBottom: 0;
+	   borderThicknessRight: 0;
+	   roundedBottomCorners: true;
+	   backgroundAlpha: 0.77;
+	   headerColors: #0a4c8f, #88a6cb;
+	   footerColors: #88a6cb, #0a4c8f;
+	   backgroundColor: #112438;
+	   dropShadowEnabled: false;
+	   shadowDistance: 0;
+	   titleStyleName: "myWindowTitle";
+	controlBarStyleName: panelControlBar;
+	cornerRadius: 0;
+	padding-bottom: 5;
+	padding-left: 5;
+	padding-right: 5;
+	padding-top: 2;
+}
+.mypanelTitle {
+   color: #ffffff;
+   textAlign: left;
+   fontFamily: Tahoma;
+   fontSize: 11;
+   fontWeight: bold;
 }
 
 .myTabs {
