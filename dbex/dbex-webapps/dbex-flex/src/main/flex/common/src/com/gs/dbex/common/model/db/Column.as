@@ -70,7 +70,8 @@ package com.gs.dbex.common.model.db
 		
 		public override function toString():String
 		{
-			return super.modelName;
+			return super.modelName  + " [ " + typeName + ", " + ((!isNaN(size)) ? "(" + size + ") " : "")
+				+ ((nullable) ? "NULL" : "NOTNULL") + " ]";
 		}
 		
 		public override function equals(obj:Object):Boolean {

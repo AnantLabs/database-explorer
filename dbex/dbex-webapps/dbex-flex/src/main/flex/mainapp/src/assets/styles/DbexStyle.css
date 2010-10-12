@@ -4,6 +4,14 @@ Application {
    themeColor: #3995ff;
    color: #ffffff;
 }
+.ToolBar
+{
+	borderThickness: 0;
+	borderColor: #4DB0F6;
+	fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
+	themeColor: #3995ff;
+    backgroundColor: #183d67;
+}
 
 Accordion {
    fillColors: #0a4c8f, #183d67, #88a6cb, #183d67;
@@ -62,12 +70,15 @@ ButtonBar {
    fontFamily: Tahoma;
    fontSize: 11;
    fontWeight: normal;
+	cornerRadius: 0;
 }
 
 .mybuttonBarFirstButtonStyle {
+	cornerRadius: 0;
 }
 
 .mybuttonBarLastButtonStyle {
+	cornerRadius: 0;
 }
 
 CheckBox {
@@ -220,7 +231,7 @@ LinkBar {
 LinkButton {
    rollOverColor: #183d67;
    color: #ffffff;
-   textRollOverColor: #ffffff;
+   textRollOverColor: #000000;
    textSelectedColor: #0000ff;
    fontFamily: Tahoma;
    fontWeight: normal;

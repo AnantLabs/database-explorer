@@ -280,13 +280,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 					InputStream defaultValue; // Holds the LONG data
 			        StringBuffer dataBuffer = new StringBuffer();
 			        int chunk;
-			        // Obtain the LONG data into a byte array. LONG data can be accessed in
-			        // two ways: 1) By retrieving all the data in one shot (getBytes method)
-			        // 2) By using streams. The LONG data is made available to the program
-			        // as an Ascii or Unicode stream, and the data can be retrieved chunk by
-			        // chunk, which is more eficient in terms of memory usage
-			        // In this sample we illustrate retrieval using streams
-			        defaultValue = resultSet.getAsciiStream(10);//OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_DEFAULT);
+			        defaultValue = resultSet.getAsciiStream(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_DEFAULT);
 			        if(null != defaultValue){
 						while ((chunk = defaultValue.read()) != -1) {
 							dataBuffer.append((char) chunk);

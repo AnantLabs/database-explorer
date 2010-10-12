@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" >
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable]
+			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Array id="toolbarButtons">
+        <mx:Object label="" icon="{imageLocator.newConnectionIcon}" width="20" />
+    </mx:Array>
+    
+	<mx:ButtonBar width="100%" height="30" dataProvider="{toolbarButtons}" buttonWidth="30" horizontalAlign="left"/>
+	
+	<mx:TextArea width="100%" height="100%"/>
+	
+</mx:VBox>

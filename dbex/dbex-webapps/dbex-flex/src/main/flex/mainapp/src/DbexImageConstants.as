@@ -124,20 +124,15 @@ package
         [Embed(source="assets/images/columns.gif")]
         public var columnIcon:Class;
         
-        /* [Bindable]
-        [Embed(source="assets/images/DB_dev_perspective.gif")]
-        public var databaseIcon:Class;
-        
         [Bindable]
-        [Embed(source="assets/images/DB_dev_perspective.gif")]
-        public var databaseIcon:Class;
+        [Embed(source="assets/images/PrimaryKeyColumn.gif")]
+        public var pkColumnIcon:Class;
         
-        [Bindable]
-        [Embed(source="assets/images/DB_dev_perspective.gif")]
-        public var databaseIcon:Class;
+		[Bindable]
+        [Embed(source="assets/images/ForeignKeyColumn.gif")]
+        public var fkColumnIcon:Class;
         
-        [Bindable]
-        [Embed(source="assets/images/DB_dev_perspective.gif")]
-        public var databaseIcon:Class; */
+        
+        
 	}
 }
