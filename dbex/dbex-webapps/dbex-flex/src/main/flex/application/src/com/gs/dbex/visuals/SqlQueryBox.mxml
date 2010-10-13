@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" >
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" verticalGap="0">
 	
 	<mx:Script>
 		<![CDATA[
@@ -15,7 +15,7 @@
         <mx:Object label="" icon="{imageLocator.newConnectionIcon}" width="20" />
     </mx:Array>
     
-	<mx:ButtonBar width="100%" height="30" dataProvider="{toolbarButtons}" buttonWidth="30" horizontalAlign="left"/>
+	<mx:ButtonBar width="100%" height="25" dataProvider="{toolbarButtons}" buttonWidth="30" horizontalAlign="left"/>
 	
 	<mx:TextArea width="100%" height="100%"/>
 	
