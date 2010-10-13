@@ -1,9 +1,7 @@
 echo off
 
-cls
-
-set M2_HOME=D:\TOOLS\maven-2.2.1
-set JAVA_HOME=D:\TOOLS\Java\jdk1.6.0_21
+set M2=D:\TOOLS\M2_Branch
+set JAVA_HOME=%JAVA_6_HOME%
 set Path=%Path%;%M2_HOME%\bin;%JAVA_HOME%
 
 @if "%1" == "clean" goto clean
@@ -11,6 +9,7 @@ set Path=%Path%;%M2_HOME%\bin;%JAVA_HOME%
 @if "%1" == "web" goto web
 @if "%1" == "flex" goto flex
 @if "%1" == "ecl" goto eclipse
+@if "%1" == "findbugs" goto findbugs
 
 @echo Building DbEx Desktop and WEB Application.
 @echo.
@@ -43,6 +42,12 @@ goto end
 :flex
 @echo Building DbEx FLEX Application.
 call mvn package -P only-flex
+goto end
+
+:findbugs
+@echo Running findbugs on java code
+@echo.
+call mvn compile findbugs:check -e
 goto end
 
 :end

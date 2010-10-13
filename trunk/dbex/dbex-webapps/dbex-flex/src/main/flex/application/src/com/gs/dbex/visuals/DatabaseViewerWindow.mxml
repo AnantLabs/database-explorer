@@ -2,10 +2,11 @@
 <ResizableWindow xmlns="com.gs.dbex.layout.*" xmlns:mx="http://www.adobe.com/2006/mxml" 
 	height="540" width="800" showWindowButtons="true" 
 	titleIcon="{DbexImageConstants.getInstance().dbex24x24Icon}"
-	creationComplete="onCreationComplete()" xmlns:visuals="com.gs.dbex.visuals.*">
+	creationComplete="onCreationComplete()" xmlns:visuals="com.gs.dbex.visuals.*" xmlns:code="http://code.google.com/p/flexlib/">
 	
 	<mx:Script>
 		<![CDATA[
+			import flexlib.controls.tabBarClasses.SuperTab;
 			import com.gs.dbex.common.model.db.Column;
 			import com.gs.dbex.common.model.db.Table;
 			import mx.controls.TabBar;
@@ -141,12 +142,27 @@
 			</mx:HBox>
 		</mx:VBox>
 		<mx:VDividedBox width="70%" height="100%">
-			<mx:HBox width="100%" height="70%" id="sqlQueryBox">
-				<visuals:SqlQueryBox width="100%" height="100%"/>
-			</mx:HBox>
-			<mx:HBox width="100%" height="30%" id="queryMessageBox">
-				
-			</mx:HBox>
+			<!--<mx:TabNavigator width="100%" height="100%" >
+				<mx:HBox width="100%" height="70%" id="sqlQueryBox" label="SQL Query" icon="{imageLocator.clearIcon}">
+					<visuals:SqlQueryBox width="100%" height="100%"/>
+				</mx:HBox>
+			</mx:TabNavigator>-->
+			<code:SuperTabNavigator closePolicy="{SuperTab.CLOSE_ROLLOVER}" width="100%" height="100%">
+				<mx:HBox width="100%" height="70%" id="sqlQueryBox" label="SQL Query" icon="{imageLocator.clearIcon}">
+					<visuals:SqlQueryBox width="100%" height="100%"/>
+				</mx:HBox>
+			</code:SuperTabNavigator>
+			<mx:VBox width="100%" height="30%" id="queryMessageBox">
+				<mx:TabNavigator width="100%" height="100%" id="queryMessageTabNavigator">
+					<mx:Canvas label="Result" width="100%" height="100%">
+					</mx:Canvas>
+					<mx:Canvas label="Message" width="100%" height="100%">
+					</mx:Canvas>
+				</mx:TabNavigator>
+				<mx:HBox width="100%" height="25" horizontalAlign="left">
+					
+				</mx:HBox>
+			</mx:VBox>
 		</mx:VDividedBox>
 	</mx:HDividedBox>
 	
