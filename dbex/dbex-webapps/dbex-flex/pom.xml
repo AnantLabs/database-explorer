@@ -41,6 +41,9 @@
 									<compiler.library-path dir="${FLEX_HOME}/frameworks" append="true">
 										<include name="libs" />
 									</compiler.library-path>
+									<compiler.library-path dir="${libs.dir}" append="true">
+										<include name="*.swc" />
+									</compiler.library-path>
 									<compiler.source-path path-element="${basedir}/src/main/flex"/>
 									<compiler.source-path path-element="${basedir}/src/main/flex/mainapp/src"/>
 									<compiler.source-path path-element="${basedir}/src/main/flex/common/src"/>

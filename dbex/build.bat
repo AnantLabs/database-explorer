@@ -1,8 +1,9 @@
 echo off
 
-set M2=D:\TOOLS\M2_Branch
-set JAVA_HOME=%JAVA_6_HOME%
+set M2_HOME=D:\TOOLS\maven-2.2.1
+set JAVA_HOME=D:\TOOLS\Java\jdk1.6.0
 set Path=%Path%;%M2_HOME%\bin;%JAVA_HOME%
+set MAVEN_OPTS=-Xmx1024m -Xms512m
 
 @if "%1" == "clean" goto clean
 @if "%1" == "dsk" goto desktop
@@ -36,7 +37,7 @@ goto end
 
 :web
 @echo Building DbEx WEB Application.
-call mvn package -P web-app
+call mvn package -P web-app 
 goto end
 
 :flex
