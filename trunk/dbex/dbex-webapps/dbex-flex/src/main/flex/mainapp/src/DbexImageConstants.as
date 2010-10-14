@@ -68,6 +68,10 @@ package
         public var saveIcon:Class;
         
         [Bindable]
+        [Embed(source="assets/images/saveas_edit.gif")]
+        public var saveAsIcon:Class;
+        
+        [Bindable]
         [Embed(source="assets/images/saveall_edit.gif")]
         public var saveAllIcon:Class;
         
@@ -132,7 +136,45 @@ package
         [Embed(source="assets/images/ForeignKeyColumn.gif")]
         public var fkColumnIcon:Class;
         
+        [Bindable]
+        [Embed(source="assets/images/sql_editor.gif")]
+        public var sqlEditorIcon:Class;
         
+        [Bindable]
+        [Embed(source="assets/images/executesql.gif")]
+        public var executeSqlIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/execution_obj.gif")]
+        public var runSqlQueryIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/sql_execute_selection.gif")]
+        public var runSelectedSqlQueryIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/sql_execute.gif")]
+        public var runSqlScriptIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/nav_stop.gif")]
+        public var stopIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/commit.gif")]
+        public var commitIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/rollback.png")]
+        public var rollbackIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/open.gif")]
+        public var openFolderIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/clear_co.gif")]
+        public var clearTextIcon:Class;
         
 	}
 }
