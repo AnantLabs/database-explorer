@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" verticalGap="0">
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" verticalGap="0" xmlns:control="com.gs.dbex.control.*">
 	
 	<mx:Script>
 		<![CDATA[
@@ -7,16 +7,52 @@
 			[Bindable]
 			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
 			
+			public function buttonBarCreationComplete():void{
+				stopButton.enabled=false;
+			}
+			
+			public function runSqlQueryButtonClick(event:Event){
+				queryTextArea.text += "runSqlQueryButtonClick\n";
+			}
 			
 		]]>
 	</mx:Script>
 	
 	<mx:Array id="toolbarButtons">
-        <mx:Object label="" icon="{imageLocator.newConnectionIcon}" width="20" />
+        
     </mx:Array>
     
-	<mx:ButtonBar width="100%" height="25" dataProvider="{toolbarButtons}" buttonWidth="30" horizontalAlign="left"/>
+	<mx:HBox width="100%" height="30" horizontalAlign="left" horizontalGap="0" verticalAlign="middle">
+		<control:ToolbarButton label="" icon="{imageLocator.runSqlQueryIcon}" toolTip="Run the Last Query" id="runSqlQueryButton" click="runSqlQueryButtonClick(event)"/>
+        <control:ToolbarButton label="" icon="{imageLocator.runSelectedSqlQueryIcon}" toolTip="Run Selected Query" id="runSelectedSqlQueryButton"/>
+        <control:ToolbarButton label="" icon="{imageLocator.runSqlScriptIcon}" toolTip="Run Script" id="runSqlScripButton"/>
+        <control:ToolbarButton label="" icon="{imageLocator.stopIcon}" toolTip="Stop" enabled="false" id="stopButton"/>
+        <mx:Spacer width="2"/>
+        <mx:VRule height="100%"/>
+        <mx:Spacer width="1"/>
+        <control:ToolbarButton label="" icon="{imageLocator.commitIcon}" toolTip="Commit" id="commitButton" enabled="false"/>
+        <control:ToolbarButton label="" icon="{imageLocator.rollbackIcon}" toolTip="Rollback" id="rollbackButton" enabled="false"/>
+        <mx:Spacer width="2"/>
+        <mx:VRule height="100%"/>
+        <mx:Spacer width="1"/>
+        <control:ToolbarButton label="" icon="{imageLocator.openFolderIcon}" toolTip="Open SQL File" id="openSqlFileButton"/>
+        <control:ToolbarButton label="" icon="{imageLocator.saveIcon}" toolTip="Save" id="saveButton"/>
+        <control:ToolbarButton label="" icon="{imageLocator.saveAsIcon}" toolTip="Save As..." id="saveAsButton"/>
+        <control:ToolbarButton label="" icon="{imageLocator.saveAllIcon}" toolTip="Save All..." id="saveAllButton"/>
+        <control:ToolbarButton label="" icon="{imageLocator.clearTextIcon}" toolTip="Clear Text" id="clearTextButton"/>
+        <mx:Spacer width="2"/>
+        <mx:VRule height="100%"/>
+        <mx:Spacer width="1"/>
+        <mx:Label text="SCHEMA: "/>
+        <mx:ComboBox width="100"/>
+        <mx:Spacer width="2"/>
+        <mx:VRule height="100%"/>
+        <mx:Spacer width="1"/>
+        <mx:Label text="FILE: "/>
+        <mx:TextInput width="100%" />
+        <control:ToolbarButton label="" icon="{imageLocator.openFolderIcon}" toolTip="Re-Load File" id="reloadFileButton"/>
+	</mx:HBox>
 	
-	<mx:TextArea width="100%" height="100%"/>
+	<mx:TextArea width="100%" height="100%" id="queryTextArea"/>
 	
 </mx:VBox>

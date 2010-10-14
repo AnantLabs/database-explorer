@@ -776,3 +776,19 @@ CursorManager
 {
 	busyCursor: Embed(source="vistaremix.swf", symbol="BusyCursor");
 }
+
+.ToolbarButton{
+	buttonStyleName: "buttonBarButton"; 
+    firstButtonStyleName: "firstButtonBarButton"; 
+    lastButtonStyleName: "lastButtonBarButton";
+	
+}
+
+
+
+
+
+
+
+
+
