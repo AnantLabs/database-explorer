@@ -50,7 +50,8 @@
             <mx:Array>
                 <mx:Object label="File" >
                     <mx:children>
-                    	<mx:Object label="Connection" icon="{imageConstants.newConnectionIcon}" data="{UICommandConstants.NEW_CONNECTION_ACT_CMD}"/>
+                    	<mx:Object label="New Connection" icon="{imageConstants.newConnectionIcon}" data="{UICommandConstants.NEW_CONNECTION_ACT_CMD}"/>
+                        <mx:Object type="separator"/>     
                         <mx:Object label="Exit" icon="{imageConstants.exitIcon}" data="{UICommandConstants.EXIT_APP_ACT_CMD}"/>
                     </mx:children>
                 </mx:Object>

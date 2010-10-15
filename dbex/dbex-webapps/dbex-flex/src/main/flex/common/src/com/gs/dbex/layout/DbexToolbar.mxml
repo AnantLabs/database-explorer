@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" paddingLeft="0" maxHeight="30"
 	paddingBottom="0" paddingRight="0" paddingTop="0" verticalGap="0" horizontalGap="0"
-	styleName="ToolBar">
+	styleName="ToolBar" >
 	
 	<mx:Script>
 		<![CDATA[
@@ -17,15 +17,15 @@
 	
 	<mx:Array id="toolbarButtons">
         <mx:Object label="" icon="{imageLocator.newConnectionIcon}" width="20" />
+        <mx:Object label="" icon="{imageLocator.newConnectionIcon}" width="20" />
+        <mx:Object label="" icon="{imageLocator.newConnectionIcon}" width="20" />
     </mx:Array>
 	
 		
 	
 	<mx:HBox id="toolBarOutterBox" width="100%" height="100%" borderStyle="outset" borderColor="#000000" borderThickness="0"
-		verticalGap="0">
-		<mx:ButtonBar width="100%" height="100%" dataProvider="{toolbarButtons}" buttonWidth="30" horizontalAlign="left">
-			
-		</mx:ButtonBar>
+		verticalGap="0" verticalAlign="middle">
+		<mx:LinkBar height="100%" dataProvider="{toolbarButtons}"/>
 		<mx:HBox width="100%" height="100%" verticalGap="0" horizontalAlign="right" verticalAlign="middle">
 			<mx:Label id="loggedInUserFullNameLabel" text="Guest" color="#84FD9B" textAlign="right" fontSize="11"/>
 			<mx:LinkButton label="Log Out" textDecoration="underline" fontWeight="bold" fontSize="10" fontFamily="Georgia" color="#0BDC15"
