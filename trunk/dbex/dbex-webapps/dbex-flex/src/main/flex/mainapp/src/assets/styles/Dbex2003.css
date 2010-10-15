@@ -1,0 +1,367 @@
+/* CSS file */
+Application
+{
+	backgroundGradientAlphas: 1.0, 1.0;
+	backgroundGradientColors: #C7DAF0, #85A1C0;
+	color: #000000;
+	borderColor: #000080;
+}
+Label
+{
+	fontFamily: TAHOMA;
+	color: #000000;
+	fontSize: 11;
+}
+Button
+{
+	color: #000000;
+	disabledColor: #636767;
+	borderColor: #023B73;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #DDECFE, #87ADE4, #FFF2C9, #FFD193;
+	cornerRadius: 3;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	fontWeight: normal;
+}
+Accordion
+{
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	fontWeight: bold;
+	headerStyleName: accordionHeader;
+	selectedFillColors: #FFF2C9, #FFD193;
+	borderColor: #000080;
+	backgroundColor: #C7DAF0;
+}
+ApplicationControlBar
+{
+	fillAlphas: 1.0, 1.0;
+	fillColors: #ABC8F6, #87ADE4;
+	backgroundDisabledColor: #7E9CB8;
+	color: #000000;
+	fontSize: 11;
+	fontFamily: TAHOMA;
+	fontWeight: bold;
+	dropShadowEnabled: false;
+}
+Panel
+{
+	controlBarStyleName: panelControlBar;
+	headerColors: #DDECFE, #87ADE4;
+	footerColors: #88a6cb, #0a4c8f;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+	borderThicknessLeft: 0;
+	borderThicknessRight: 0;
+	backgroundColor: #ECE9D8;
+	borderColor: #255290;
+	roundedBottomCorners: false;
+	statusStyleName: panelStatus;
+	dropShadowEnabled: false;
+}
+ComboBase
+{
+}
+ComboBox
+{
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	fontWeight: normal;
+	dropdownStyleName: comboBoxDropdown;
+	borderColor: #000080;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #DDECFE, #87ADE4, #FFF2C9, #FFD193;
+	cornerRadius: 0;
+}
+Alert
+{
+	borderColor: #000080;
+	cornerRadius: 4;
+	roundedBottomCorners: true;
+	backgroundColor: #ECE9D8;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+	controlBarStyleName: titleWindowControlBar;
+	titleStyleName: titleWindowTitle;
+}
+Text
+{
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+}
+TextArea
+{
+	borderColor: #7E9CB8;
+	backgroundColor: #FFFFFF;
+	backgroundDisabledColor: #F5F4EA;
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+}
+TextInput
+{
+	borderColor: #7E9CB8;
+	backgroundDisabledColor: #F5F4EA;
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+}
+PanelBackgroundSkin
+{
+}
+@font-face
+{
+	fontFamily: GOTHIC;
+	fontWeight: normal;
+	fontStyle: normal;
+	src: url("../fonts/GOTHIC.TTF");
+}
+@font-face
+{
+	fontFamily: TAHOMABD;
+	fontWeight: normal;
+	fontStyle: normal;
+	src: url("../fonts/TAHOMABD.TTF");
+}
+@font-face
+{
+	fontFamily: TAHOMA;
+	fontWeight: normal;
+	fontStyle: normal;
+	src: url("../fonts/TAHOMA.TTF");
+}
+
+.panelControlBar
+{
+	color: #000000;
+	fontFamily: GOTHIC;
+	fontWeight: bold;
+	fontSize: 11;
+}
+
+.panelStatus
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+}
+.accordionHeader
+{
+	fontSize: 11;
+	fontFamily: TAHOMA;
+}
+TitleWindow
+{
+	borderAlpha: 1.0;
+	borderColor: #87ADE4;
+	headerColors: #ABC8F6, #87ADE4;
+	footerColors: #87ADE4, #ABC8F6;
+	controlBarStyleName: titleWindowControlBar;
+	titleStyleName: titleWindowTitle;
+	dropShadowEnabled: false;
+	shadowDistance: 0;
+	cornerRadius: 0;
+	backgroundColor: #C7DAF0;
+	borderThicknessLeft: 5;
+    borderThicknessTop: 5;
+    borderThicknessBottom: 5;
+    borderThicknessRight: 5;
+}
+.titleWindowControlBar
+{
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	fontWeight: bold;
+}
+
+.titleWindowTitle
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+	fontWeight: bold;
+}
+TabNavigator
+{
+	selectedTabTextStyleName: tabNavigatorSelectedTabText;
+	backgroundColor: #C7DAF0;
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	borderColor: #BFCDDB;
+	borderThickness: 3;
+	borderStyle: solid;
+}
+TabBar
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+	selectedTabTextStyleName: tabBarSelectedTabText;
+}
+
+.comboBoxDropdown
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	rollOverColor: #FFEDC2;
+	selectionColor: #FFD193;
+	backgroundColor: #87ADE4;
+}
+.alertControlBar
+{
+	fontFamily: TAHOMA;
+}
+.tabNavigatorSelectedTabText
+{
+	fontFamily: TAHOMA;
+	fontWeight: bold;
+	fontSize: 11;
+}
+Box
+{
+	borderColor: #000080;
+	
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+}
+
+LinkButton
+{
+	rollOverColor: #FFF2C9;
+	selectionColor: #FFD193;
+}
+LinkBar
+{
+	backgroundColor: #87ADE4;
+	rollOverColor: #FFF2C9;
+	selectionColor: #FFD193;
+	separatorColor: #F1F9FF;
+	fill-colors: #DDECFE, #87ADE4, #FFF2C9, #FFD193;
+	horizontalGap: 6;
+	
+}
+Menu
+{
+	rollOverColor: #FFEDC2;
+	selectionColor: #FFD193;
+	color: #000000;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	borderColor: #000080;
+	backgroundColor: #F6F6F6;
+	separatorSkin: Embed(source="../images/MenuSeparator.png");
+}
+DataGrid
+{
+	headerColors: #E3F7FF, #93C9E3;
+	borderColor: #000080;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+	headerStyleName: dataGridHeader;
+	selectionColor: #FFD193;
+	rollOverColor: #FFEDC2;
+	alternatingItemColors: #FFFFFF, #FFFFFF;
+	verticalAlign: middle;
+}
+ProgressBar
+{
+	borderColor: #023B73;
+	barColor: #1CE032;
+	verticalGap: 0;
+	trackHeight: 10;
+	color: #000000;
+	fontWeight: normal;
+	fontFamily: verdana;
+	fontSize: 9;
+	textAlign: center;
+}
+
+MenuBar
+{
+	fillAlphas: 1.0, 1.0;
+	fillColors: #ABC8F6, #87ADE4, #FFF2C9, #FFD193;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+	borderColor: #000080;
+}
+ScrollBar
+{
+	fillAlphas: 1.0, 1.0;
+	fillColors: #ABC8F6, #87ADE4, #FFF2C9, #FFD193;
+	trackColors: #B7CAF4, #B7CAF4;
+	borderColor: #7E9CB8;
+	cornerRadius: 3;
+}
+
+.tabBarSelectedTabText
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	fontWeight: bold;
+	color: #000000;
+}
+
+.ToolBar{
+	color: #000000;
+	disabledColor: #636767;
+	borderColor: #023B73;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #DDECFE, #87ADE4;
+	cornerRadius: 3;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	fontWeight: normal;
+}
+.ToolBarButton
+{
+	color: #000000;
+	disabledColor: #636767;
+	fillAlphas: 1.0, 1.0;
+	fillColors: #DDECFE, #87ADE4, #FFF2C9, #FFD193;
+	cornerRadius: 3;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	fontWeight: normal;
+	border-style: none;
+	border-thickness: 0;
+}
+CheckBox
+{
+}
+RadioButton
+{
+}
+.dataGridHeader
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+	fontWeight: bold;
+}
+VDividedBox
+{
+}
+HDividedBox
+{
+}
+HRule
+{
+	strokeColor: #85A1C0;
+}
+VRule
+{
+	strokeColor: #85A1C0;
+}
+
+

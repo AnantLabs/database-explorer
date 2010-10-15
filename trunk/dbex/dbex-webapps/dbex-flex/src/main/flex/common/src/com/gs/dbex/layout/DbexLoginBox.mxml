@@ -75,15 +75,15 @@
 			<mx:VBox width="50%" height="100%" verticalAlign="middle" horizontalAlign="right" paddingRight="10">
 				<mx:HBox width="100%" height="131" horizontalAlign="right" verticalAlign="bottom">
 					<mx:VBox width="100%" height="100%" horizontalAlign="right" verticalAlign="bottom">
-						<mx:Label text="Welcome to" fontStyle="italic" fontFamily="Georgia" color="#84FD9B" textAlign="right" fontSize="12"/>
-						<mx:Label text="Database Explorer" fontStyle="italic" fontFamily="Georgia" color="#84FD9B" textAlign="right" fontSize="24" fontWeight="bold"/>
+						<mx:Label text="Welcome to" fontStyle="italic" fontFamily="Georgia" textAlign="right" fontSize="12"/>
+						<mx:Label text="Database Explorer" fontStyle="italic" fontFamily="Georgia" textAlign="right" fontSize="24" fontWeight="bold"/>
 					</mx:VBox>
 					<mx:Image width="130" height="130" minHeight="130" minWidth="130"
 						source="{imageLocator.dbex128x128Icon}" />
 				</mx:HBox>
 				
 				<mx:HBox width="100%" height="42" horizontalAlign="right" verticalAlign="middle">
-					<mx:Label text="New User ? " fontStyle="italic" fontFamily="Georgia" color="#84D1FD" textAlign="right" fontSize="12"/>
+					<mx:Label text="New User ? " fontStyle="italic" fontFamily="Georgia" textAlign="right" fontSize="12"/>
 					<mx:LinkButton label="Register" id="registerButton" height="100%" click="registerUser()"/>
 				</mx:HBox>
 			</mx:VBox>
@@ -96,13 +96,13 @@
 						<mx:Spacer width="100%" height="20"/>
 						<mx:ApplicationControlBar width="264" height="65" verticalAlign="bottom" >
 							<mx:Image width="75" height="100%" source="{imageLocator.dbexGuestUserIcon}" verticalAlign="bottom"/>
-							<mx:LinkButton label="Login as Guest" textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"
+							<mx:LinkButton label="Login as Guest" textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia"
 								id="guestLoginButton" click="loginAsGuest()"/>
 						</mx:ApplicationControlBar>
 						<mx:Spacer width="100%" height="20"/>
 						<mx:ApplicationControlBar width="264" height="65" verticalAlign="bottom" >
 							<mx:Image width="75" height="100%" source="{imageLocator.dbexLockedUserIcon}" verticalAlign="bottom"/>
-							<mx:LinkButton label="Click To Login" textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"
+							<mx:LinkButton label="Click To Login" textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia"
 								id="otherLoginButton" click="loginAsOther()"/>
 						</mx:ApplicationControlBar>
 						<mx:Spacer width="100%" height="20"/>
@@ -110,7 +110,7 @@
 					<mx:VBox id="loginUserBox" width="100%" height="100%" verticalAlign="middle" horizontalAlign="left">
 						<mx:ApplicationControlBar width="364" height="65" verticalAlign="bottom">
 							<mx:Image width="65" height="100%" source="{imageLocator.dbexLockedUserIcon}" verticalAlign="bottom"/>
-							<mx:Label text="Login to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"/>
+							<mx:Label text="Login to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" />
 						</mx:ApplicationControlBar>
 						<mx:Spacer width="100%" height="20"/>
 						<mx:Grid width="345" height="156">
@@ -148,15 +148,15 @@
 					<mx:VBox width="100%" height="100%" id="loginProgressBox">
 						<mx:ApplicationControlBar width="364" height="65" verticalAlign="bottom">
 							<mx:Image width="75" height="100%" source="{imageLocator.dbexRegisterUserIcon}" verticalAlign="bottom"/>
-							<mx:Label text="Logging In to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"/>
+							<mx:Label text="Logging In to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia"/>
 						</mx:ApplicationControlBar>
-						<mx:Label text="Please Wait ..."  textDecoration="underline" fontSize="12" fontFamily="Georgia" color="#0BDC15"/>
+						<mx:Label text="Please Wait ..."  textDecoration="underline" fontSize="12" fontFamily="Georgia"/>
 						<mx:ProgressBar indeterminate="true" width="200" label="Logging in..."/>
 					</mx:VBox>
 					<mx:VBox width="100%" height="100%" id="registrationBox">
 						<mx:ApplicationControlBar width="364" height="65" verticalAlign="bottom">
 							<mx:Image width="75" height="100%" source="{imageLocator.dbexRegisterUserIcon}" verticalAlign="bottom"/>
-							<mx:Label text="Register to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"/>
+							<mx:Label text="Register to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" />
 						</mx:ApplicationControlBar>
 						<mx:Grid width="345">
 							<mx:GridRow width="100%" height="100%">
@@ -214,9 +214,9 @@
 					<mx:VBox width="100%" height="100%" id="registerProgressBox">
 						<mx:ApplicationControlBar width="364" height="65" verticalAlign="bottom">
 							<mx:Image width="75" height="100%" source="{imageLocator.dbexRegisterUserIcon}" verticalAlign="bottom"/>
-							<mx:Label text="Registering to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia" color="#0BDC15"/>
+							<mx:Label text="Registering to Database Explorer"  textDecoration="underline" fontWeight="bold" fontSize="14" fontFamily="Georgia"/>
 						</mx:ApplicationControlBar>
-						<mx:Label text="Please Wait ..."  textDecoration="underline" fontSize="12" fontFamily="Georgia" color="#0BDC15"/>
+						<mx:Label text="Please Wait ..."  textDecoration="underline" fontSize="12" fontFamily="Georgia" />
 						<mx:ProgressBar indeterminate="true" width="200" label="Registering..."/>
 					</mx:VBox>
 				</mx:ViewStack>
