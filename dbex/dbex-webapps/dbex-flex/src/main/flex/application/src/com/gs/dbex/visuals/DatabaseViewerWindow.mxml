@@ -6,6 +6,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ListEvent;
+			import mx.controls.Alert;
 			import flexlib.controls.tabBarClasses.SuperTab;
 			import com.gs.dbex.common.model.db.Column;
 			import com.gs.dbex.common.model.db.Table;
@@ -25,13 +27,44 @@
 			private var commonModelLocator:DbexCommonModelLocator = DbexCommonModelLocator.getInstance();
 			[Bindable]
 			private var applicationModelLocator:DbexApplicationModelLocator = DbexApplicationModelLocator.getInstance();
+			[Bindable]
+            public var databaseTreeMenu:ContextMenu = new ContextMenu();
+            public var lastTreeItem:ListEvent;
+
+			
+			
+			public function setLastTreeItem(event:ListEvent):void
+            {
+                lastTreeItem = event;
+            }
 			
 			private function changeSize(event:DbexResizeEvent):void
             {
             	
             }
             
+            public function databaseTreeMenuTriggered(event:ContextMenuEvent):void
+            {
+                databaseTreeMenu.customItems = new Array();
+                    
+                if( lastTreeItem != null )
+                {
+                    if( lastTreeItem.itemRenderer.data.TargetType == TreeNode.TARGET_TYPE_TABLE ){
+                        var addParentMenuItem:ContextMenuItem = new ContextMenuItem('Add Column');
+                        databaseTreeMenu.customItems.push(addParentMenuItem);
+                    } else {
+                        var addChildMenuItem:ContextMenuItem = new ContextMenuItem('rename');
+                        databaseTreeMenu.customItems.push(addChildMenuItem);
+                    }
+                }
+            }
+
+            
             public function onCreationComplete():void{
+            	databaseTreeMenu.addEventListener(ContextMenuEvent.MENU_SELECT, databaseTreeMenuTriggered);
+                databaseTreeMenu.hideBuiltInItems();
+
+            	
             	if(null != commonModelLocator.selectedConnectionProps){
             		if(null != commonModelLocator.selectedConnectionProps.databaseConfiguration){
             			title = commonModelLocator.selectedConnectionProps.databaseConfiguration.userName
@@ -45,6 +78,7 @@
             		treeRoot.data = database;
             		treeRoot.icon = imageLocator.databaseIcon;
             		treeRoot.name = "Database";
+            		treeRoot.TargetType = TreeNode.TARGET_TYPE_DATABASE;
             		databaseTree.dataProvider = treeRoot;
             		databaseTree.setItemIcon(databaseTree.dataProvider.getItemAt(nodeCount), imageLocator.databaseIcon, imageLocator.databaseIcon);
             		if(null != database.schemaList){
@@ -53,12 +87,14 @@
             				schemaNode.data = schema;
             				schemaNode.name = schema.toString();
             				schemaNode.icon = imageLocator.schemaIcon;
+            				schemaNode.TargetType = TreeNode.TARGET_TYPE_SCHEMA;
             				nodeCount++;
             				databaseTree.setItemIcon(
             					schemaNode, 
             					imageLocator.schemaIcon, imageLocator.schemaIcon);
             				if(null != schema.tableList){
             					var tableFolderNode:TreeNode = new TreeNode();
+            					tableFolderNode.contextMenu = tableContextMenu();
             					tableFolderNode.name = "Tables";
             					for each(var table:Table in schema.tableList){
             						var tableNode:TreeNode = new TreeNode();
@@ -69,11 +105,13 @@
             						databaseTree.setItemIcon(tableNode, imageLocator.tableIcon, imageLocator.tableIcon);
 		            				if(null != table.columnlist){
 		            					var columnFolderNode:TreeNode = new TreeNode();
+		            					tableNode.TargetType = TreeNode.TARGET_TYPE_TABLE;
 			            				columnFolderNode.name = "Columns";
 		            					for each(var column:Column in table.columnlist){
 		            						var columnNode:TreeNode = new TreeNode();
 		            						columnNode.data = column;
 				            				columnNode.name = column.toString();
+				            				columnNode.TargetType = TreeNode.TARGET_TYPE_COLUMN;
 				            				if(column.primaryKey){
 				            					columnNode.icon = imageLocator.pkColumnIcon;
 				            				}
@@ -104,6 +142,24 @@
             public function setIcons():void{
             	/* databaseTree.setItemIcon(databaseTree.dataProvider.getItemAt(0), 
             		imageLocator.databaseIcon, imageLocator.databaseIcon); */
+            }
+            
+            public function treeClicked(event:MouseEvent):void{
+            	
+            }
+            
+            public function sayHello(evt:ContextMenuEvent):void{
+            	Alert.show("sayHello");
+            }
+            
+            public function tableContextMenu():ContextMenu{
+            	var contextMenu:ContextMenu = new ContextMenu();
+            	
+            	var menuItem:ContextMenuItem = new ContextMenuItem("Change Color");
+				menuItem.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, sayHello);
+				contextMenu.customItems.push(menuItem);
+				contextMenu.hideBuiltInItems();
+				return contextMenu;
             }
 		]]>
 	</mx:Script>
@@ -138,7 +194,8 @@
 			<mx:HBox width="100%" height="100%" id="databaseTreeBox">
 				<mx:Tree id="databaseTree" width="100%" height="100%"
 					labelField="name" showRoot="true" iconField="icon"
-					creationComplete="setIcons()"/>
+					contextMenu="{databaseTreeMenu}"
+        			itemRollOver="setLastTreeItem(event)"/>
 			</mx:HBox>
 		</mx:VBox>
 		<mx:VDividedBox width="70%" height="100%">
@@ -147,7 +204,8 @@
 					<visuals:SqlQueryBox width="100%" height="100%"/>
 				</mx:HBox>
 			</mx:TabNavigator>-->
-			<code:SuperTabNavigator closePolicy="{SuperTab.CLOSE_ROLLOVER}" width="100%" height="100%">
+			<code:SuperTabNavigator closePolicy="{SuperTab.CLOSE_ROLLOVER}" width="100%" height="100%"
+				id="detailsTab" >
 				<mx:HBox width="100%" height="70%" id="sqlQueryBox" label="SQL Query" icon="{imageLocator.clearIcon}">
 					<visuals:SqlQueryBox width="100%" height="100%"/>
 				</mx:HBox>

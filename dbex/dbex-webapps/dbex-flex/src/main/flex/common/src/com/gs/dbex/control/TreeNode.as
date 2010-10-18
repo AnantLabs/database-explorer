@@ -2,10 +2,20 @@ package com.gs.dbex.control
 {
 	import com.gs.dbex.common.model.IDbexObject;
 	
+	import flash.ui.ContextMenu;
+	
 	import mx.collections.ArrayCollection;
 	
 	public class TreeNode
 	{
+		
+		public static const TARGET_TYPE_DATABASE:String = "TARGET_TYPE_DATABASE" ;
+		public static const TARGET_TYPE_SCHEMA:String = "TARGET_TYPE_SCHEMA" ;
+		public static const TARGET_TYPE_TABLE:String = "TARGET_TYPE_TABLE" ;
+		public static const TARGET_TYPE_COLUMN:String = "TARGET_TYPE_COLUMN" ;
+		public static const TARGET_TYPE_DATABASE_TREE:String = "TARGET_TYPE_DATABASE_TREE" ;
+		public static const TARGET_TYPE_:String = "TARGET_TYPE_" ;
+		
 		private var _type:String="";
         private var _name:String="";
         private var _isLeaf:Boolean;
@@ -13,6 +23,8 @@ package com.gs.dbex.control
         private var _parentNode:TreeNode;
         private var _data:IDbexObject;
         private var _icon:Class;
+        private var _contextMenu:ContextMenu;
+        private var _TargetType:String;
 
         public function TreeNode()
         {
@@ -30,10 +42,24 @@ package com.gs.dbex.control
             this.isLeaf = false;      
         }
         
+        public function get TargetType():String{
+        	return _TargetType;
+        }
+        public function set TargetType(value:String):void{
+        	_TargetType = value;
+        }
+        
+        public function get contextMenu():ContextMenu{
+        	return _contextMenu;
+        }
+        public function set contextMenu(value:ContextMenu):void{
+        	_contextMenu = value;
+        }
+        
         public function get type():String{
         	return _type;
         }
-        public function set (value:String):void{
+        public function set type(value:String):void{
         	_type = value;
         }
         
