@@ -161,6 +161,15 @@
 				contextMenu.hideBuiltInItems();
 				return contextMenu;
             }
+            
+            public function itemDoubleClicked(event:MouseEvent):void{
+            	var selectedNode:TreeNode = databaseTree.selectedItem as TreeNode;
+            	if(null != selectedNode && TreeNode.TARGET_TYPE_TABLE == selectedNode.TargetType){
+            		applicationModelLocator.selectedTable = selectedNode.data as Table;
+            		detailsTab.addChild(new ColumnDetailsPanel());
+            	}
+            }
+            
 		]]>
 	</mx:Script>
 	
@@ -194,8 +203,8 @@
 			<mx:HBox width="100%" height="100%" id="databaseTreeBox">
 				<mx:Tree id="databaseTree" width="100%" height="100%"
 					labelField="name" showRoot="true" iconField="icon"
-					contextMenu="{databaseTreeMenu}"
-        			itemRollOver="setLastTreeItem(event)"/>
+					contextMenu="{databaseTreeMenu}" doubleClickEnabled="true"
+        			itemRollOver="setLastTreeItem(event)" doubleClick="itemDoubleClicked(event)"/>
 			</mx:HBox>
 		</mx:VBox>
 		<mx:VDividedBox width="70%" height="100%">

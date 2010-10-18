@@ -26,6 +26,10 @@
 		<property name="databaseMetadataService" ref="databaseMetadataService"></property>
 	</bean>
 
+	<bean id="queryRunnerDelegate"
+		class="com.gs.dbex.serviceprovider.QueryRunnerDelegate">
+		<flex:remoting-destination />
+	</bean>
 
 	<!-- Services -->
 

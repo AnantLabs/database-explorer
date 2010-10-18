@@ -1,6 +1,7 @@
 package com.gs.dbex.application
 {
 	import com.gs.dbex.common.model.db.Database;
+	import com.gs.dbex.common.model.db.Table;
 	
 	[Bindable]
 	public class DbexApplicationModelLocator
@@ -17,6 +18,6 @@ package com.gs.dbex.application
 
 
 		public var databaseModel:Database;
-		
+		public var selectedTable:Table;
 	}
 }

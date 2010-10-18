@@ -1,5 +1,6 @@
 package com.gs.dbex.control
 {
+	import com.gs.dbex.common.model.BaseDbModel;
 	import com.gs.dbex.common.model.IDbexObject;
 	
 	import flash.ui.ContextMenu;
@@ -21,7 +22,7 @@ package com.gs.dbex.control
         private var _isLeaf:Boolean;
         private var _children:ArrayCollection;
         private var _parentNode:TreeNode;
-        private var _data:IDbexObject;
+        private var _data:BaseDbModel;
         private var _icon:Class;
         private var _contextMenu:ContextMenu;
         private var _TargetType:String;
@@ -91,11 +92,11 @@ package com.gs.dbex.control
         	_parentNode = value;
         }
         
-        public function get data():IDbexObject{
+        public function get data():BaseDbModel{
         	return _data;
         }
-        public function set data(value:IDbexObject):void{
-        	_data = data;
+        public function set data(value:BaseDbModel):void{
+        	_data = value;
         }
         
         public function get icon():Class{
