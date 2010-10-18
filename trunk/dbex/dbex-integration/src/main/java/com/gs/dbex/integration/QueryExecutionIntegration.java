@@ -168,4 +168,7 @@ public interface QueryExecutionIntegration {
 	public ResultSetDataTable getFilteredDataTable(
 			ConnectionProperties connectionProperties, Table databaseTable,
 			String filterSubQuery) throws DbexException;
+
+	public ResultSetDataTable executeQuery(
+			ConnectionProperties connectionProperties, String query) throws DbexException;
 }

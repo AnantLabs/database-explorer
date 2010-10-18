@@ -21,8 +21,8 @@ package com.gs.dbex.application.delegate
 			return _responder;
 		}
 
-		public function runSingleQuery(sql:String, connProp:ConnectionPropertiesVO):void{
-			var token:AsyncToken = service.executeSingleQuery(sql, connProp); 
+		public function runSingleQuery(sql:String, connPropName:String):void{
+			var token:AsyncToken = service.executeSingleQuery(sql, connPropName); 
 			
 			token.resultHandler = responder.onResult;
 			token.faultHandler = responder.onFault;	

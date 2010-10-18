@@ -371,4 +371,49 @@ public class SqlServerQueryExecutionIntegration implements
 		}
 		return rows;
 	}
+	
+	
+	@Override
+	public ResultSetDataTable executeQuery(
+			ConnectionProperties connectionProperties, String query)
+			throws DbexException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: executeQuery()");
+		}
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		if(!StringUtil.hasValidContent(query))
+			return null;
+		Connection connection = null;
+		ResultSet resultSet = null;
+		ResultSetDataTable dataTable = null;
+		try {
+			connection = (Connection) connectionProperties.getDataSource().getConnection();
+			if(connection == null){
+				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+			}
+			//connection.setCatalog(connectionProperties.getTableSchema());
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
+					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + query + " ]");
+			}
+			resultSet = preparedStatement.executeQuery();
+			dataTable = new ResultSetDataTable(resultSet);
+		} catch (SQLException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} catch (UtilityException e) {
+			logger.error(e);
+			throw new DbexException(null, e.getMessage());
+		} finally {
+			JdbcUtil.close(resultSet, true);
+			JdbcUtil.close(connection);
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Exit:: executeQuery()");
+		}
+		return dataTable;
+	}
 }
