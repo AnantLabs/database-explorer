@@ -176,5 +176,9 @@ package
         [Embed(source="assets/images/clear_co.gif")]
         public var clearTextIcon:Class;
         
+        [Bindable]
+        [Embed(source="assets/images/columngroup.gif")]
+        public var columnGroupIcon:Class;
+        
 	}
 }

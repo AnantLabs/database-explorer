@@ -3,6 +3,10 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.event.BaseEventDispatcher;
+			import com.gs.dbex.DbexCommonModelLocator;
+			import com.gs.dbex.application.DbexApplicationModelLocator;
+			import com.gs.dbex.application.event.QueryRunnerEvent;
 			
 			[Bindable]
 			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
@@ -12,7 +16,11 @@
 			}
 			
 			public function runSqlQueryButtonClick(event:Event){
-				queryTextArea.text += "runSqlQueryButtonClick\n";
+				var query:String = queryTextArea.text;
+				var evt:QueryRunnerEvent = new QueryRunnerEvent(QueryRunnerEvent.RUN_SINGLE_SQL_EVENT);
+				evt.singleSql = query;
+				evt.connectionProperties = DbexCommonModelLocator.getInstance().selectedConnectionProps;
+				BaseEventDispatcher.getInstance().dispatchEvent(evt);
 			}
 			
 		]]>

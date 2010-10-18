@@ -12,4 +12,9 @@
 							result="event.token.resultHandler( event );"
 							fault="ResponseHandler.faultHandler( event );"/>
 							
+	<mx:RemoteObject id="queryRunnerDelegate" destination="queryRunnerDelegate"
+							showBusyCursor="true"
+							result="event.token.resultHandler( event );"
+							fault="ResponseHandler.faultHandler( event );"/>
+							
 </DbexApplicationServiceLocator>

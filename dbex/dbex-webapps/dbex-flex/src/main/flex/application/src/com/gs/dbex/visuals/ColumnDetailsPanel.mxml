@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
+	creationComplete="initPanel()">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.gs.dbex.application.DbexApplicationModelLocator;
+			
+			[Bindable]
+			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			[Bindable]
+			private var appModelLocator:DbexApplicationModelLocator = DbexApplicationModelLocator.getInstance();
+			
+			public function initPanel():void{
+				if(null != appModelLocator.selectedTable){
+					title = "Columns for Table: [ " + appModelLocator.selectedTable.modelName + " ]";
+					titleIcon = imageLocator.columnGroupIcon;
+					columnsDataGrid.dataProvider = appModelLocator.selectedTable.columnlist;
+				}
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:DataGrid width="100%" height="100%" id="columnsDataGrid" editable="false">
+		<mx:columns>
+			<mx:DataGridColumn headerText="COLUMN_NAME" dataField="modelName"/>
+			<mx:DataGridColumn headerText="COLUMN_ID" dataField="columnID"/>
+			<mx:DataGridColumn headerText="NULL_ABLE" dataField="nullable" rendererIsEditor="false"
+				editorDataField="nullable" paddingLeft="5" editable="false">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox selected="{data.nullable}" enabled="false"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="DATA_TYPE_NAME" dataField="typeName"/>
+			<mx:DataGridColumn headerText="COLUMN_PRECISION" dataField="precision"/>
+			<mx:DataGridColumn headerText="COLUMN_SCALE" dataField="size"/>
+			
+			<mx:DataGridColumn headerText="DEFAULT_VALUE" dataField="defaultValue"/>
+			<mx:DataGridColumn headerText="IS_PRIMARY_KEY" dataField="primaryKey"
+				rendererIsEditor="false" editable="false" editorDataField="primaryKey" paddingLeft="5">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox selected="{data.primaryKey}" enabled="false"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+			<mx:DataGridColumn headerText="IS_FOREIGN_KEY" dataField="foreignKey"
+				rendererIsEditor="false" editable="false" editorDataField="foreignKey" paddingLeft="5">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:CheckBox selected="{data.foreignKey}" enabled="false"/>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:DataGridColumn>
+		</mx:columns>
+	</mx:DataGrid>
+	
+</mx:Panel>

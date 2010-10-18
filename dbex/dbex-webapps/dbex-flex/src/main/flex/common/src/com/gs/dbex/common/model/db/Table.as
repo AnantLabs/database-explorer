@@ -1,11 +1,12 @@
 package com.gs.dbex.common.model.db
 {
 	import com.gs.dbex.common.model.BaseDbModel;
+	import com.gs.dbex.common.model.IDbexObject;
 	
 	import mx.collections.ArrayCollection;
 
 	[RemoteClass(alias="com.gs.dbex.model.db.Table")]
-	public class Table extends BaseDbModel
+	public class Table extends BaseDbModel implements IDbexObject
 	{
 		public var tableCatalog:String;
 		public var tableSchema:String;
