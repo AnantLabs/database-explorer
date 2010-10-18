@@ -67,4 +67,9 @@ public interface QueryExecutionService {
 
 	public int getTotalRecords(ConnectionProperties connectionProperties,
 			Table databaseTable, String filterSubQuery) throws DbexException;
+	
+	public ResultSetDataTable executeQuery(
+			ConnectionProperties connectionProperties,
+			SqlQuery sqlQuery)
+			throws DbexException ;
 }

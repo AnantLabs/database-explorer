@@ -213,5 +213,18 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 		return integration.abortTransaction(connectionProperties, transaction);
 	}
 	
-	
+	public ResultSetDataTable executeQuery(
+			ConnectionProperties connectionProperties,
+			SqlQuery sqlQuery)
+			throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		QueryExecutionIntegration integration = getIntegrationPoint(connectionProperties);
+		if(integration == null){
+			logger.debug("Integration point not found.");
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		return integration.executeQuery(connectionProperties, sqlQuery.getQuery());
+	}
 }

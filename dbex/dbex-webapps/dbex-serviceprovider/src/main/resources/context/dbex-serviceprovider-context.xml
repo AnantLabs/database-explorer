@@ -29,6 +29,7 @@
 	<bean id="queryRunnerDelegate"
 		class="com.gs.dbex.serviceprovider.QueryRunnerDelegate">
 		<flex:remoting-destination />
+		<property name="queryExecutionService" ref="queryExecutionService"></property>
 	</bean>
 
 	<!-- Services -->

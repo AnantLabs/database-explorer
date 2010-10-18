@@ -22,7 +22,7 @@ package com.gs.dbex.application.command
 			if(QueryRunnerEvent.RUN_SINGLE_SQL_EVENT == queryRunnerEvent.type){
 				responder = DbexResponderFactory.getInstance().getResponder(SingleQueryRunnerResponder);
 				var delegate:QueryRunnerDelegate = new QueryRunnerDelegate(responder);
-				delegate.runSingleQuery(queryRunnerEvent.singleSql, queryRunnerEvent.connectionProperties);
+				delegate.runSingleQuery(queryRunnerEvent.singleSql, queryRunnerEvent.connectionProperties.connectionName);
 			}
 		}
 		

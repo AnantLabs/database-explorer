@@ -23,6 +23,8 @@ public class DatabaseConnectionDelegate {
 
 	private static final Logger logger = Logger.getLogger(DatabaseConnectionDelegate.class);
 	
+	private static final DbexServiceProviderContext serviceProviderContext = DbexServiceProviderContext.getInstance();
+	
 	private DatabaseConnectionService databaseConnectionService;
 	private DatabaseMetadataService databaseMetadataService;
 	
@@ -63,6 +65,7 @@ public class DatabaseConnectionDelegate {
 		Database database = null;
 		Boolean connected = getDatabaseConnectionService().connectToDatabase(connectionProperties);
 		if(connected){
+			serviceProviderContext.connectedConnectionPropertiesMap.put(connectionProperties.getConnectionName(), connectionProperties);
 			database = getDatabaseMetadataService().getDatabaseDetails(connectionProperties, ReadDepthEnum.DEEP);
 		}
 		if (logger.isDebugEnabled()) {
