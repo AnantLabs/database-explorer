@@ -200,8 +200,8 @@ package com.tavant.pos.common.component
 		     	}
 		     	else if(integerPart == 0){
 		     		REMoneyControlsString  =  
-		        	new RegExp("((^\\-\\0\\.\\d{0," + decimalPart +"}$)|(^\\-\\d{0,"+ integerPart + "}$)|(^\\-\\.\\d{1,"+ decimalPart + "}$))"+
- 						"|((^\\d{0," + integerPart + "}\\.\\d{0," + decimalPart +"}$)|(^\\d{0,"+ integerPart + "}$)|(^\\.\\d{1,"+ decimalPart + "}$))");
+		        	new RegExp("((^\\-\\0\\.\\d{0," + decimalPart +"}$)|(^\\-\\0)|(^\\-\\.\\d{1,"+ decimalPart + "}$))"+
+ 						"|((^\\0\\.\\d{0," + decimalPart +"}$)|(^\\0)|(^\\.\\d{1,"+ decimalPart + "}$))");
 		     	}
 		     	else{
 		        	REMoneyControlsString  =  
@@ -211,7 +211,11 @@ package com.tavant.pos.common.component
 		     }else{
 		     	if(decimalPart == 0){
 		        	REMoneyControlsString  =  new RegExp("(^\\d{0," + integerPart + "}$)|(^\\d{0,"+ integerPart + "}$)");     	
-		     	}else{
+		     	}
+		     	else if(integerPart == 0){
+		     		REMoneyControlsString  =  new RegExp("(^\\0\\.\\d{0," + decimalPart +"}$)|(^\\0)|(^\\.\\d{1,"+ decimalPart + "}$)");
+		     	}
+		     	else{
 		        	REMoneyControlsString  =  new RegExp("(^\\d{0," + integerPart + "}\\.\\d{0," + decimalPart +"}$)|(^\\d{0,"+ integerPart + "}$)|(^\\.\\d{1,"+ decimalPart + "}$)");     	
 		     	}
 		     }
