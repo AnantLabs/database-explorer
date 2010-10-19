@@ -19,9 +19,5 @@
 		<property name="databaseMetadataService" ref="databaseMetadataService"></property>
 		<property name="queryExecutionService" ref="queryExecutionService"></property>
 	</bean>
-	
-	<bean id="dbexUserService" class="com.gs.dbex.service.impl.DbexUserServiceImpl">
-		<property name="dbexUserDao" ref="dbexUserDao"></property>
-	</bean>
-	
+
 </beans>

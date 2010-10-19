@@ -156,14 +156,65 @@
 			<build>
 				
 				<plugins>
-				
+					
+					<plugin>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<executions>
+							<!-- Coping SWF and  assets-->
+							<execution>
+								<id>defaultcopy</id>
+								<phase>test</phase>
+								<configuration>
+									<tasks>
+										<!-- Copy SWF and HTML Files-->
+										<copy todir="dbex-flex/swf/"
+											overwrite="false" failonerror="true" includeEmptyDirs="false">
+											<fileset dir="../dbex-flex/target/swf">
+												<include name="**/*.swf" />
+												<include name="**/*.xml" />
+												<include name="**/*.html" />
+											</fileset>
+										</copy>
+										
+										<!-- Copy SWF and HTML to exploded war -->
+										<copy todir="${project.build.directory}/exploded${web.context.root}.war/swf/assets"
+											overwrite="true" failonerror="true" includeEmptyDirs="false">
+											<fileset dir="../dbex-flex/src/main/flex/mainapp/src/assets">
+												<exclude name="**/*.svn" />
+											</fileset>
+										</copy>
+										<copy todir="${project.build.directory}/exploded${web.context.root}.war/swf"
+											overwrite="true" failonerror="true" includeEmptyDirs="false">
+											<fileset dir="dbex-flex/swf/">
+												<include name="**/*.swf" />
+												<include name="**/*.xml" />
+												<include name="**/*.html" />
+											</fileset>
+										</copy>
+									</tasks>
+								</configuration>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 					
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<version>2.1</version>
 						<configuration>
-							<!-- <webappDirectory>./target/exploded/${web.context.root}.war</webappDirectory> -->
+							<webResources>
+								<resource>
+									<!-- this is relative to the pom.xml directory -->
+									<directory>../dbex-flex/target</directory>
+									<!-- there's no default value for this -->
+									<excludes>
+										<exclude>**/swf</exclude>
+									</excludes>
+								</resource>
+							</webResources>
 							<webappDirectory>${project.build.directory}/exploded${web.context.root}.war</webappDirectory>
 						</configuration>
 					  </plugin>
