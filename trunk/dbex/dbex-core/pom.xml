@@ -72,7 +72,7 @@
 			<artifactId>sqlserver</artifactId>
 			<version>2.0</version>
 		</dependency>
-		
+		<!--
 		<dependency>
 			<groupId>com.microsoft.sqlserver.auth</groupId>
 			<artifactId>sqlserver-auth</artifactId>
@@ -80,7 +80,7 @@
 			<scope>system</scope>
 			<classifier>${system.classifier}</classifier>
 			<systemPath>${libs.dir}/sqlserver-auth/${system.architecture.version}/sqljdbc_auth.dll</systemPath>
-		</dependency> 
+		</dependency> -->
 	
 	</dependencies>
 </project>

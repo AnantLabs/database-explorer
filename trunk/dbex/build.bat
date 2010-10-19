@@ -1,7 +1,7 @@
 echo off
-
-set M2_HOME=D:\TOOLS\maven-2.2.1
-set JAVA_HOME=D:\TOOLS\Java\jdk1.6.0
+cls
+set M2=D:\TOOLS\M2_Branch
+set JAVA_HOME=%JAVA_6_HOME%
 set Path=%Path%;%M2_HOME%\bin;%JAVA_HOME%
 set MAVEN_OPTS=-Xmx1024m -Xms512m
 
@@ -11,6 +11,7 @@ set MAVEN_OPTS=-Xmx1024m -Xms512m
 @if "%1" == "flex" goto flex
 @if "%1" == "ecl" goto eclipse
 @if "%1" == "findbugs" goto findbugs
+@if "%1" == "site" goto site
 
 @echo Building DbEx Desktop and WEB Application.
 @echo.
@@ -48,7 +49,13 @@ goto end
 :findbugs
 @echo Running findbugs on java code
 @echo.
-call mvn compile findbugs:check -e
+call mvn compile findbugs:check
+goto end
+
+:site
+@echo Running sites
+@echo.
+call mvn site:site
 goto end
 
 :end
