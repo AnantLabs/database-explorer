@@ -16,5 +16,25 @@ package com.gs.dbex.common.model.db
 		public var dataTable:Array;
 		[ArrayElementType("String")]
 		public var columnnames:Array;
+		
+		private var _dataTableArray:Array;
+		
+		public function getDataTableArray():Array{
+			populateDataTableArray();
+			return _dataTableArray;
+		}
+		
+		private function populateDataTableArray():void{
+			_dataTableArray = new Array();
+			if(columnCount > 0){
+				for (var row:int = 0; row < rowCount; row++) {
+					var obj:Object = new Object();
+					for (var col:int = 0; col< columnCount; col++) {
+						obj[columnnames[col]] = dataTable[row][col];
+					}
+					_dataTableArray.push(obj);
+				}
+			}
+		}
 	}
 }
