@@ -13,7 +13,8 @@
 
 	<import resource="context/dbex-serviceprovider-context.xml" />
 	<import resource="context/dbex-service-context.xml" />
-	<import resource="context/dbex-historyMgr-context.xml" />
+	<import resource="context/dbex-service-web-context.xml" />
+	<import resource="context/dbex-historyMgr-web-context.xml" />
 	<import resource="context/dbex-integration-context.xml" />
 
 </beans>

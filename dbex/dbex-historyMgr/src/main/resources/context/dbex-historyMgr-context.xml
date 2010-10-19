@@ -15,10 +15,5 @@
 		<property name="connectionPropertiesBodGenerator" ref="connectionPropertiesBodGenerator" />
 		<property name="styleConfigurationXmlTransformer" ref="styleConfigurationXmlTransformer"></property>
 	</bean>
-	
-	<bean id="dbexUserDao"
-		class="com.gs.dbex.historyMgr.dao.impl.DbexUserDaoImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate"></property>
-	</bean>
 
 </beans>
