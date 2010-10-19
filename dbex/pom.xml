@@ -165,11 +165,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.0.1</version>
-			</plugin>
+			
 		</plugins>
 	</build>
 
@@ -232,26 +228,30 @@
 		</profile>
 		
 		
-		<profile>
-			<id>site</id>
-			<modules>
-			</modules>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-site-plugin</artifactId>
-							<configuration>
-								<siteDirectory>site</siteDirectory>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
+		
 	</profiles>
 	
+	<reporting>
+	  <plugins>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>findbugs-maven-plugin</artifactId>
+			<version>2.0.1</version>
+			<configuration>
+				<failOnError>false</failOnError>
+				<effort>Max</effort>
+				<findbugsXmlOutput>true</findbugsXmlOutput>
+				<xmlOutput>true</xmlOutput>
+				<debug>false</debug>
+				<findbugsXmlOutputDirectory>${findbugs.output.directory}\${artifactId}</findbugsXmlOutputDirectory>
+				<outputDirectory>${findbugs.output.directory}\${artifactId}</outputDirectory>
+				<xmlOutputDirectory>${findbugs.output.directory}\${artifactId}</xmlOutputDirectory>
+				<excludeFilterFile>findbugs-exclusion-filter.xml</excludeFilterFile>
+			</configuration>
+		</plugin>
+	  </plugins>
+	</reporting>
+
 	
 	<properties>
 		<project.title>DBEX</project.title>
@@ -271,7 +271,8 @@
 		<spring-version>3.0.0.RELEASE</spring-version>
 		<web.context.root>/dbex</web.context.root>
 		
-		<findbugs.reports.directory>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-findbugs/</findbugs.reports.directory>
+		<reporting.output.directory>D:/SVN_HOME/MyProjects/database-explorer/trunk/dbex-reportings</reporting.output.directory>
+		<findbugs.output.directory>${reporting.output.directory}/findbugs</findbugs.output.directory>
 	</properties>
 
 </project>

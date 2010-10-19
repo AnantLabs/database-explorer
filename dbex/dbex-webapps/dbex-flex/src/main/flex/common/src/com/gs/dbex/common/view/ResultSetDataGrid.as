@@ -14,7 +14,6 @@ package com.gs.dbex.common.view
 		public function ResultSetDataGrid()
 		{
 			super();
-			columnWidth = 100;
 		}
 		
 		/* 
@@ -35,10 +34,12 @@ package com.gs.dbex.common.view
 				for (var col:int = 0; col< value.columnCount; col++) {
 					var column:DataGridColumn = new DataGridColumn();
 					column.headerText = value.columnnames[col];
+					column.width = 100;
 					column.dataField = value.columnnames[col];
 					columns.push(column);
 				}
 				super.columns = columns;
+				validateNow();
 				dataProvider =  value.getDataTableArray();
 			}
 			validateNow();
