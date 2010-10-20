@@ -25,6 +25,18 @@ Button
 	textSelectedColor: #154299;
 	disabledColor: #717171;
 }
+LinkButton
+{
+	cornerRadius: 0;
+}
+LinkBar
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	borderColor: #7597C0;
+	rollOverColor: #FDF3CE;
+	selectionColor: #FFD14E;
+}
 VBox
 {
 }
@@ -264,5 +276,12 @@ MenuBar
 	fontSize: 11;
 	color: #154299;
 	borderColor: #000080;
+}
+@font-face
+{
+	fontFamily: TAHOMA;
+	fontWeight: normal;
+	fontStyle: normal;
+	src: url("../fonts/TAHOMA.TTF");
 }
 
