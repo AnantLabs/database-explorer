@@ -166,8 +166,9 @@
             	var selectedNode:TreeNode = databaseTree.selectedItem as TreeNode;
             	if(null != selectedNode && TreeNode.TARGET_TYPE_TABLE == selectedNode.TargetType){
             		applicationModelLocator.selectedTable = selectedNode.data as Table;
-            		detailsTab.addChild(new ColumnDetailsPanel());
+            		rightPanelTabNavigator.addChild(new TableDetailsPanel());
             	}
+            	rightPanelTabNavigator.validateNow();
             }
             
 		]]>
@@ -194,12 +195,13 @@
 	
 	<mx:HDividedBox width="100%" height="100%">
 		<mx:VBox width="30%" height="100%">
-			<mx:HBox width="100%" height="35" id="databaseTreeToolbar">
-				<mx:LinkButton width="25" height="100%" icon="{imageLocator.refreshIcon}" 
+			<mx:HBox width="100%" height="25" id="databaseTreeToolbar">
+				<mx:LinkButton width="24" height="100%" icon="{imageLocator.refreshIcon}" 
 					toolTip="Reload Database"/>
-				<mx:LinkButton width="25" height="100%" icon="{imageLocator.expandAllIcon}" 
+				<mx:VRule height="90%"/>
+				<mx:LinkButton width="24" height="100%" icon="{imageLocator.expandAllIcon}" 
 					toolTip="Expand All"/>
-				<mx:LinkButton width="25" height="100%" icon="{imageLocator.collaspeAllIcon}" 
+				<mx:LinkButton width="24" height="100%" icon="{imageLocator.collaspeAllIcon}" 
 					toolTip="Collaspe All"/>
 			</mx:HBox>
 			<mx:HBox width="100%" height="100%" id="databaseTreeBox">
@@ -209,31 +211,15 @@
         			itemRollOver="setLastTreeItem(event)" doubleClick="itemDoubleClicked(event)"/>
 			</mx:HBox>
 		</mx:VBox>
-		<mx:VDividedBox width="70%" height="100%">
-			<!--<mx:TabNavigator width="100%" height="100%" >
-				<mx:HBox width="100%" height="70%" id="sqlQueryBox" label="SQL Query" icon="{imageLocator.clearIcon}">
-					<visuals:SqlQueryBox width="100%" height="100%"/>
-				</mx:HBox>
-			</mx:TabNavigator>-->
+		<mx:VBox width="100%" height="100%" >
 			<code:SuperTabNavigator closePolicy="{SuperTab.CLOSE_ROLLOVER}" width="100%" height="100%"
-				id="detailsTab" >
-				<mx:HBox width="100%" height="70%" id="sqlQueryBox" label="SQL Query" icon="{imageLocator.clearIcon}">
-					<visuals:SqlQueryBox width="100%" height="100%"/>
-				</mx:HBox>
+					id="rightPanelTabNavigator" >
+				<visuals:SqlQueryBox width="100%" height="100%" id="sqlQueryBox" label="SQL Query" icon="{imageLocator.sqlEditorIcon}"/>
 			</code:SuperTabNavigator>
-			<mx:VBox width="100%" height="30%" id="queryMessageBox">
-				<mx:TabNavigator width="100%" height="100%" id="queryMessageTabNavigator">
-					<mx:Canvas label="Result" width="100%" height="100%">
-						<view:ResultSetDataGrid id="resultsetDataGrid" width="100%" height="100%"/>
-					</mx:Canvas>
-					<mx:Canvas label="Message" width="100%" height="100%" horizontalScrollPolicy="auto" verticalScrollPolicy="auto">
-					</mx:Canvas>
-				</mx:TabNavigator>
-				<mx:HBox width="100%" height="25" horizontalAlign="left">
-					
-				</mx:HBox>
-			</mx:VBox>
-		</mx:VDividedBox>
+			<mx:HBox width="100%" height="25" horizontalAlign="left">
+				
+			</mx:HBox>
+		</mx:VBox>
 	</mx:HDividedBox>
 	
 </ResizableWindow>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" height="30"
+	paddingLeft="5" paddingRight="5" horizontalAlign="center" verticalAlign="middle">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			import com.gs.dbex.application.DbexApplicationModelLocator;
+			
+			[Bindable]
+			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			[Bindable]
+			private var appModelLocator:DbexApplicationModelLocator = DbexApplicationModelLocator.getInstance();
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:LinkButton id="goToPreviousPage" icon="{imageLocator.clearIcon}" label="Previous"/>
+	<mx:Spacer width="100%"/>
+	<mx:LinkButton id="goToNextPage" icon="{imageLocator.clearIcon}" label="Next" />
+	
+</mx:HBox>

@@ -3,6 +3,13 @@ Box
 {
 	backgroundColor: #C8DBEE;
 }
+.BorderedBox
+{
+	backgroundColor: #C8DBEE;
+	borderColor: #BDD1E9;
+	cornerRadius: 2;
+	border-style:solid;
+}
 Application
 {
 	backgroundGradientAlphas: 0.5, 0.5;
@@ -37,12 +44,7 @@ LinkBar
 	rollOverColor: #FDF3CE;
 	selectionColor: #FFD14E;
 }
-VBox
-{
-}
-HBox
-{
-}
+
 Panel
 {
 	borderColor: #BDD1E9;

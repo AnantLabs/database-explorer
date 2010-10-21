@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml" 
-	creationComplete="initPanel()">
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+	creationComplete="initPanel()" creationPolicy="all">
 	
 	<mx:Script>
 		<![CDATA[
@@ -13,8 +13,8 @@
 			
 			public function initPanel():void{
 				if(null != appModelLocator.selectedTable){
-					title = "Columns for Table: [ " + appModelLocator.selectedTable.modelName + " ]";
-					titleIcon = imageLocator.columnGroupIcon;
+					//title = "Columns for Table: [ " + appModelLocator.selectedTable.modelName + " ]";
+					//titleIcon = imageLocator.columnGroupIcon;
 					columnsDataGrid.dataProvider = appModelLocator.selectedTable.columnlist;
 				}
 			}
@@ -59,4 +59,4 @@
 		</mx:columns>
 	</mx:DataGrid>
 	
-</mx:Panel>
+</mx:VBox>
