@@ -180,5 +180,13 @@ package
         [Embed(source="assets/images/columngroup.gif")]
         public var columnGroupIcon:Class;
         
+        [Bindable]
+        [Embed(source="assets/images/table_data.gif")]
+        public var tableDataIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/table_relationship.png")]
+        public var tableRelationshipIcon:Class;
+        
 	}
 }
