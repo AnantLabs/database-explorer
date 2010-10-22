@@ -25,6 +25,9 @@ package com.gs.dbex.common.business
 			addCommand( DatabaseConnectionEvent.DISCONNECT_EVENT, DatabaseConnectionCommand );
 			
 			addCommand( QueryRunnerEvent.RUN_SINGLE_SQL_EVENT, QueryRunnerCommand );
+			addCommand( QueryRunnerEvent.GET_PAGINATED_TABLE_DATA_EVENT, QueryRunnerCommand );
+			addCommand( QueryRunnerEvent.GET_FILTERED_PAGINATED_TABLE_DATA_EVENT, QueryRunnerCommand );
+			addCommand( QueryRunnerEvent.GET_CURRENT_PAGE_EVENT, QueryRunnerCommand );
 		}
 		
 	}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
 	icon="{imageLocator.tableIcon}" creationComplete="initPanel()" label="Data" xmlns:layout="com.gs.dbex.layout.*"
-	verticalGap="0">
+	verticalGap="0" xmlns:view="com.gs.dbex.application.view.*">
 	
 	<mx:Script>
 		<![CDATA[
@@ -15,12 +15,14 @@
 			
 			public function initPanel():void{
 				if(null != appModelLocator.selectedTable){
-					label = appModelLocator.selectedTable.modelName;
+					var tableName:String = appModelLocator.selectedTable.modelName;
+					
 				}
 			}
 			
 		]]>
 	</mx:Script>
+	
 	
 	<mx:VBox width="100%" height="100%" verticalGap="0">
 		<mx:HBox id="actionBox" width="100%" height="28" paddingLeft="5" paddingRight="5" horizontalAlign="left" verticalAlign="middle" styleName="BorderedBox"
@@ -37,7 +39,7 @@
 			<mx:ComboBox id="exportTypeCombo" width="120"/>
 			<mx:Button id="exportDataBtn" icon="{imageLocator.refreshIcon}" width="25" height="25"  toolTip="Export"/>
 		</mx:HBox>
-		<layout:PaginatedDataPanel width="100%" height="100%"/>
+		<layout:PaginatedDataPanel width="100%" height="100%" id="paginatedDataPanel"/>
 		<!--<mx:ViewStack width="100%" height="100%" id="dataStack">
 			<mx:HBox width="100%" height="100%" horizontalAlign="left" paddingLeft="10" paddingTop="10">
 				<mx:Label text="No Records Found !!!" id="noRecordsLabel" fontSize="16" fontWeight="bold" color="#E20505"/>

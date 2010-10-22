@@ -3,14 +3,18 @@
  */
 package com.gs.dbex.model.vo;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.util.List;
+
+import com.gs.dbex.model.db.Table;
+import com.gs.utils.jdbc.ResultSetDataTable;
 
 /**
  * @author sabuj.das
  *
  */
-public class PaginationResult {
+public class PaginationResult implements Serializable{
 
 	private int totalRows;
 	private int startRow;
@@ -21,7 +25,10 @@ public class PaginationResult {
     private boolean previousPage;
     private int totalPages;
 	
-	private ResultSet resultSet;
+	private transient ResultSet resultSet;
+	private ResultSetDataTable dataTable;
+	
+	private Table currentTable;
 	
 	public PaginationResult() {
 		// TODO Auto-generated constructor stub
@@ -39,6 +46,7 @@ public class PaginationResult {
 		this.startRow = (currentPage - 1) * rowsPerPage;
 		this.resultSet = resultSet;
 	}
+	
 	public void setRowAttributes(int totalRows) {
 
 		if (totalRows == 0){
@@ -77,6 +85,19 @@ public class PaginationResult {
 			}
 			
 		}
+	}
+	
+	public Table getCurrentTable() {
+		return currentTable;
+	}
+	public void setCurrentTable(Table currentTable) {
+		this.currentTable = currentTable;
+	}
+	public ResultSetDataTable getDataTable() {
+		return dataTable;
+	}
+	public void setDataTable(ResultSetDataTable dataTable) {
+		this.dataTable = dataTable;
 	}
 	/**
 	 * @return the totalRows

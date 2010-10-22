@@ -188,5 +188,36 @@ package
         [Embed(source="assets/images/table_relationship.png")]
         public var tableRelationshipIcon:Class;
         
+        [Bindable]
+        [Embed(source="assets/images/previousPage_normal.png")]
+        public var previousPageLinkNormalIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/previousPage_over.png")]
+        public var previousPageLinkOverIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/nextPage_normal.png")]
+        public var nextPageLinkNormalIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/nextPage_over.png")]
+        public var nextPageLinkOverIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/first_page.png")]
+        public var goToFirstPageIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/previous_page.png")]
+        public var goToPreviousPageIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/next_page.png")]
+        public var goToNextPageIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/last_page.png")]
+        public var goToLastPageIcon:Class;
 	}
 }

@@ -1,4 +1,18 @@
 /* CSS file */
+Tree
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #000000;
+	disclosureOpenIcon: Embed(source="../images/collapse.gif");
+	disclosureClosedIcon: Embed(source="../images/expand.gif");
+	backgroundColor: #C8DBEE;
+	borderColor: #BDD1E9;
+	cornerRadius: 2;
+	border-style:solid;
+	rollOverColor: #FDF3CE;
+	selectionColor: #FFD14E;
+}
 Box
 {
 	backgroundColor: #C8DBEE;
