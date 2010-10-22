@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ResizableWindow xmlns="com.gs.dbex.layout.*" xmlns:mx="http://www.adobe.com/2006/mxml" 
 	height="540" width="800" showWindowButtons="true" 
-	titleIcon="{DbexImageConstants.getInstance().dbex24x24Icon}"
-	creationComplete="onCreationComplete()" xmlns:visuals="com.gs.dbex.visuals.*" xmlns:code="http://code.google.com/p/flexlib/" xmlns:view="com.gs.dbex.common.view.*" xmlns:view1="com.gs.dbex.application.view.*">
+	titleIcon="{DbexImageConstants.getInstance().dbex24x24Icon}" creationPolicy="all"
+	creationComplete="onCreationComplete()" xmlns:visuals="com.gs.dbex.visuals.*" xmlns:code="http://code.google.com/p/flexlib/" 
+	xmlns:view="com.gs.dbex.common.view.*" xmlns:view1="com.gs.dbex.application.view.*">
 	
 	<mx:Script>
 		<![CDATA[
@@ -166,7 +167,25 @@
             	var selectedNode:TreeNode = databaseTree.selectedItem as TreeNode;
             	if(null != selectedNode && TreeNode.TARGET_TYPE_TABLE == selectedNode.TargetType){
             		applicationModelLocator.selectedTable = selectedNode.data as Table;
-            		rightPanelTabNavigator.addChild(new TableDetailsPanel());
+            		var tabOpen:Boolean = false;
+            		if(null != rightPanelTabNavigator){
+						var childArr:Array = rightPanelTabNavigator.getChildren();
+						if(null != childArr){
+							var count:int = 0;
+							for each ( var child:Object in childArr){
+								if(applicationModelLocator.selectedTable.modelName == child.label){
+									rightPanelTabNavigator.selectedIndex = count;
+									tabOpen = true;
+									break;
+								}
+								count ++;
+							}
+						}
+					}
+					if(!tabOpen){
+            			rightPanelTabNavigator.addChild(new TableDetailsPanel());
+            			rightPanelTabNavigator.selectedIndex = rightPanelTabNavigator.getChildren().length-1;
+     				}
             	}
             	rightPanelTabNavigator.validateNow();
             }
@@ -216,9 +235,6 @@
 					id="rightPanelTabNavigator" >
 				<visuals:SqlQueryBox width="100%" height="100%" id="sqlQueryBox" label="SQL Query" icon="{imageLocator.sqlEditorIcon}"/>
 			</code:SuperTabNavigator>
-			<mx:HBox width="100%" height="25" horizontalAlign="left">
-				
-			</mx:HBox>
 		</mx:VBox>
 	</mx:HDividedBox>
 	

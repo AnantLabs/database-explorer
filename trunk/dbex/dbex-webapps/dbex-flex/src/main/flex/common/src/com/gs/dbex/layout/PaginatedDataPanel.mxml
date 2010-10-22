@@ -4,6 +4,11 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.event.BaseEventDispatcher;
+			import com.gs.dbex.DbexCommonModelLocator;
+			import com.gs.dbex.application.event.QueryRunnerEvent;
+			import com.gs.dbex.common.model.db.Table;
+			import com.gs.dbex.vo.PaginationResultVO;
 			
 			import com.gs.dbex.application.DbexApplicationModelLocator;
 			
@@ -12,36 +17,211 @@
 			[Bindable]
 			private var appModelLocator:DbexApplicationModelLocator = DbexApplicationModelLocator.getInstance();
 			
+			private var _currentTable:Table;
+			
+			public function set  currentTable(value:Table):void{
+				_currentTable = value;
+			}
+			public function get  currentTable():Table{
+				return _currentTable;
+			}
+		   
+		    private function populatePageLinks() :void{
+		    	var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+		    	if(paginationResult.previousPage){
+					goToPreviousPageLink.enabled = true;
+					goToPreviousPageBtn.setVisible(true);
+					goToFirstPageBtn.setVisible(true);
+				}else{
+					goToPreviousPageLink.enabled = (false);
+					goToPreviousPageBtn.setVisible(false);
+					goToFirstPageBtn.setVisible(false);
+				}
+				if(paginationResult.nextPage){
+					goToNextPageLink.enabled = (true);
+					goToNextPageBtn.setVisible(true);
+					goToLastPageBtn.setVisible(true);
+				}else{
+					goToNextPageLink.enabled = (false);
+					goToNextPageBtn.setVisible(false);
+					goToLastPageBtn.setVisible(false);
+				}
+				
+				totaPageslLabel.text = "Page "+ paginationResult.currentPage
+						+ " of " + paginationResult.totalPages + " page(s). { Total " +
+						paginationResult.totalRows + " records. }";
+				
+				alterPageNumbers();
+			}
+		    
+		    public function alterPageNumbers():void{
+		    	var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+				resetPageNumbers();
+				var first:int = getFirstPage();
+				if(first>0){
+					firstPageLinkLabel.label = (""+first);
+					if(first == paginationResult.currentPage){
+						firstPageLinkLabel.setStyle("color", "#0000FF");
+					}else{
+						firstPageLinkLabel.setStyle("color", "#000000");
+					}
+					if(first+1 <= paginationResult.totalPages){
+						secondPageLinkLabel.label = (""+(first+1));
+						if(first+1 == paginationResult.currentPage){
+							secondPageLinkLabel.setStyle("color", "#0000FF");
+						}else{
+							secondPageLinkLabel.setStyle("color", "#000000");
+						}
+						if(first+2 <= paginationResult.totalPages){
+							thirdPageLinkLabel.label = (""+(first+2));
+							if(first+2 == paginationResult.currentPage){
+								thirdPageLinkLabel.setStyle("color", "#0000FF");
+							}else{
+								thirdPageLinkLabel.setStyle("color", "#000000");
+							}
+							if(first+3 <= paginationResult.totalPages){
+								fourthPageLinkLabel.label = (""+(first+3));
+								if(first+3 == paginationResult.currentPage){
+									fourthPageLinkLabel.setStyle("color", "#0000FF");
+								}else{
+									fourthPageLinkLabel.setStyle("color", "#000000");
+								}
+								if(first+4 <= paginationResult.totalPages){
+									fifthPageLinkLabel.label = (""+(first+4));
+									if(first+4 == paginationResult.currentPage){
+										fifthPageLinkLabel.setStyle("color", "#0000FF");
+									}else{
+										fifthPageLinkLabel.setStyle("color", "#000000");
+									}
+								}
+							}
+						}
+					}
+				}
+				
+			}
+		    
+		    private function resetPageNumbers():void{
+				firstPageLinkLabel.label = "";
+				secondPageLinkLabel.label = "";
+				thirdPageLinkLabel.label = "";
+				fourthPageLinkLabel.label = "";
+				fifthPageLinkLabel.label = "";
+			}
+		    
+		    private function getFirstPage():int{
+		    	var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+				var page:int = 0;
+				if(paginationResult.totalPages <= 5 || paginationResult.currentPage <=3){
+					page = 1;
+				}else if(paginationResult.currentPage + 1 > paginationResult.totalPages){
+					page = paginationResult.currentPage - 4;
+				}else if(paginationResult.currentPage+2 > paginationResult.totalPages){
+					page = paginationResult.currentPage-3;
+				}else{
+					page = paginationResult.currentPage-2;
+				}
+				return page;
+			}
+			
+			public function gotoFirstPage() : void{
+				gotoPage(getFirstPage());
+			}
+		
+			public function gotoNextPage() : void{
+				var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+		    	if(paginationResult.currentPage >= paginationResult.totalPages){
+		    		return ;
+		    	}
+		    	paginationResult.currentPage = paginationResult.currentPage + 1;
+		    	gotoPage(paginationResult.currentPage);
+		    }
+		    
+		    public function gotoPreviousPage():void{
+		    	var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+		    	if(paginationResult.currentPage <= 0){
+		    		return ;
+		    	}
+		    	paginationResult.currentPage =  	paginationResult.currentPage - 1;
+		    	gotoPage(paginationResult.currentPage);
+		    }
+		    
+		    public function gotoPage(pageNumber:int):void{
+		    	var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+		    	populatePaginatedResult(pageNumber);
+		    }
+		    
+		    public function populatePaginatedResult(pageNumber:int):void{
+		        var queryRunnerEvent:QueryRunnerEvent = new QueryRunnerEvent(QueryRunnerEvent.GET_PAGINATED_TABLE_DATA_EVENT);
+		        var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+		    	paginationResult.currentPage = (pageNumber);
+				paginationResult.rowsPerPage = 25;
+				paginationResult.dataTable = null;
+				queryRunnerEvent.paginationResult = paginationResult;
+				queryRunnerEvent.connectionProperties = DbexCommonModelLocator.getInstance().selectedConnectionProps;
+				queryRunnerEvent.selectedTable = appModelLocator.selectedTable;
+				BaseEventDispatcher.getInstance().dispatchEvent(queryRunnerEvent);
+		    }
+		    
+		     public function showTableData():void {
+		    	var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+		    	paginatedRSDataGrid.resultSetDataTable = paginationResult.dataTable;
+		    	paginatedRSDataGrid.visible = true;
+		    	populatePageLinks();
+			}
+			
+			public function populateTableData(paginationResult:PaginationResultVO):void{
+				currentTable = paginationResult.currentTable;
+				showTableData();
+			}
+			
+			public function gotoLastPage():void{
+				var paginationResult:PaginationResultVO = appModelLocator.paginationResultVoMap[currentTable.modelName];
+				gotoPage(paginationResult.totalPages);
+			}
+			
+			public function gotoLabeledPage(lnk:LinkButton):void{
+				if(null != lnk){
+					var pageNumber:Number = new Number(lnk.label);
+					if(!isNaN(pageNumber)){
+						gotoPage(pageNumber);
+					}
+				}
+			}
 			
 		]]>
 	</mx:Script>
 	
 	<mx:HBox width="100%" height="30" paddingLeft="5" paddingRight="5" horizontalAlign="center" verticalAlign="middle" styleName="BorderedBox">
-		<mx:LinkButton id="goToPreviousPageBtn" icon="{imageLocator.clearIcon}" label="Previous"/>
+		<mx:LinkButton id="goToPreviousPageLink" icon="{imageLocator.previousPageLinkNormalIcon}" label="Previous" overIcon="{imageLocator.previousPageLinkOverIcon}"/>
+		<mx:Spacer width="20"/>
+		<mx:Label text="Records per page: "/>
+		<mx:TextInput id="recordsPerPageTI" textAlign="center" width="50" fontWeight="bold"/>
+		<mx:Button id="refreshNowDataBtn" icon="{imageLocator.refreshIcon}" width="25" height="25"  toolTip="Refresh"/>
 		<mx:Spacer width="100%"/>
-		<mx:LinkButton id="goToNextPageBtn" icon="{imageLocator.clearIcon}" label="Next" />
+		<mx:LinkButton id="goToNextPageLink" icon="{imageLocator.nextPageLinkNormalIcon}" label="Next" overIcon="{imageLocator.nextPageLinkOverIcon}"/>
 	</mx:HBox>
 	<mx:HBox width="100%" height="100%">
 		<view:ResultSetDataGrid width="100%" height="100%" id="paginatedRSDataGrid" visible="false"/>
 	</mx:HBox>
 	<mx:HBox width="100%" height="30" paddingLeft="5" paddingRight="5" horizontalAlign="center" verticalAlign="middle" styleName="BorderedBox">
 		<mx:HBox width="100%" height="100%" horizontalAlign="left" verticalAlign="middle">
-			<mx:Label id="rowCountLabel" text="Page 1 of 100 page(s). Total 12345 records."/>
+			<mx:Label id="totaPageslLabel" text=""/>
 		</mx:HBox>
 		<mx:HBox horizontalAlign="center" verticalAlign="middle"
-			horizontalGap="1" width="249" height="100%">
-			<mx:Button width="25" height="25" icon="{imageLocator.clearIcon}" id=""/>
-			<mx:Button width="25" height="25" label="M"/>
-			<mx:LinkButton label="H" width="25" height="25"/>
-			<mx:LinkButton label="H" width="25" height="25"/>
-			<mx:LinkButton label="H" width="25" height="25"/>
-			<mx:LinkButton label="H" width="25" height="25"/>
-			<mx:LinkButton label="H" width="25" height="25"/>
-			<mx:Button width="25" height="25" label="M"/>
-			<mx:Button width="25" height="25" label="WJ"/>
+			horizontalGap="1" width="300" height="100%" minWidth="300">
+			<mx:Button width="25" height="25" icon="{imageLocator.goToFirstPageIcon}" id="goToFirstPageBtn" click="{gotoFirstPage()}"/>
+			<mx:Button width="25" height="25" id="goToPreviousPageBtn" icon="{imageLocator.goToPreviousPageIcon}" click="{gotoPreviousPage()}"/>
+			<mx:LinkButton width="35" height="25" id="firstPageLinkLabel" click="{gotoLabeledPage(firstPageLinkLabel)}"/>
+			<mx:LinkButton width="35" height="25" id="secondPageLinkLabel" click="{gotoLabeledPage(secondPageLinkLabel)}"/>
+			<mx:LinkButton width="35" height="25" id="thirdPageLinkLabel" click="{gotoLabeledPage(thirdPageLinkLabel)}"/>
+			<mx:LinkButton width="35" height="25" id="fourthPageLinkLabel" click="{gotoLabeledPage(fourthPageLinkLabel)}"/>
+			<mx:LinkButton width="35" height="25" id="fifthPageLinkLabel" click="{gotoLabeledPage(fifthPageLinkLabel)}"/>
+			<mx:Button width="25" height="25" id="goToNextPageBtn" icon="{imageLocator.goToNextPageIcon}" click="{gotoNextPage()}"/>
+			<mx:Button width="25" height="25" id="goToLastPageBtn" icon="{imageLocator.goToLastPageIcon}" click="{gotoLastPage()}"/>
 		</mx:HBox>
 		<mx:Label text="Go To "/>
 		<mx:TextInput id="pageNumberTextinput" width="50" textAlign="center"/>
-		<mx:Button width="25" height="25" label="WJ"/>
+		<mx:Button width="25" height="25" />
 	</mx:HBox>
 </mx:VBox>

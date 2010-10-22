@@ -32,7 +32,7 @@
     </mx:Array>
     
     <mx:VDividedBox width="100%" height="100%">
-		<mx:VBox width="100%" height="60%">
+		<mx:VBox width="100%" height="50%">
 			<mx:HBox width="100%" height="30" horizontalAlign="left" horizontalGap="0" verticalAlign="middle">
 				<control:ToolbarButton label="" icon="{imageLocator.runSqlQueryIcon}" toolTip="Run the Last Query" id="runSqlQueryButton" click="runSqlQueryButtonClick(event)"/>
 		        <control:ToolbarButton label="" icon="{imageLocator.runSelectedSqlQueryIcon}" toolTip="Run Selected Query" id="runSelectedSqlQueryButton"/>
@@ -65,14 +65,19 @@
 			</mx:HBox>
 			<mx:TextArea width="100%" height="100%" id="queryTextArea"/>
 		</mx:VBox>
-		<mx:VBox width="100%" height="40%" id="queryMessageBox">
-			<mx:TabNavigator width="100%" height="100%" id="queryMessageTabNavigator">
-				<mx:Canvas label="Result" width="100%" height="100%">
-					<view:ResultSetDataGrid id="resultsetDataGrid" width="100%" height="100%"/>
-				</mx:Canvas>
-				<mx:Canvas label="Message" width="100%" height="100%" horizontalScrollPolicy="auto" verticalScrollPolicy="auto">
-				</mx:Canvas>
-			</mx:TabNavigator>
+		<mx:VBox width="100%" height="50%" id="queryMessageBox">
+			<mx:HBox width="100%" height="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+				<mx:TabNavigator width="100%" height="100%" id="queryMessageTabNavigator">
+					<mx:Canvas label="Result" width="100%" height="100%" >
+						<view:ResultSetDataGrid id="resultsetDataGrid" width="100%" height="100%"/>
+					</mx:Canvas>
+					<mx:Canvas label="Message" width="100%" height="100%" horizontalScrollPolicy="auto" verticalScrollPolicy="auto">
+					</mx:Canvas>
+				</mx:TabNavigator>
+			</mx:HBox>
+			<mx:HBox width="100%" height="25" horizontalAlign="left">
+				
+			</mx:HBox>
 		</mx:VBox>
     </mx:VDividedBox>
 	

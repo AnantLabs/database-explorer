@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" creationPolicy="all"
 	icon="{imageLocator.tableIcon}" creationComplete="initPanel()" xmlns:visuals="com.gs.dbex.visuals.*">
 	
 	<mx:Script>
 		<![CDATA[
+			import com.gs.dbex.common.event.BaseEventDispatcher;
+			import com.gs.dbex.DbexCommonModelLocator;
+			import com.gs.dbex.vo.PaginationResultVO;
+			import com.gs.dbex.application.event.QueryRunnerEvent;
 			import com.gs.dbex.application.DbexApplicationModelLocator;
 			
 			[Bindable]
 			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
 			[Bindable]
 			private var appModelLocator:DbexApplicationModelLocator = DbexApplicationModelLocator.getInstance();
+			[Bindable]
+			private var commonModelLocator:DbexCommonModelLocator = DbexCommonModelLocator.getInstance();
 			
 			public function initPanel():void{
 				if(null != appModelLocator.selectedTable){
 					label = appModelLocator.selectedTable.modelName;
+					
+					var queryRunnerEvent:QueryRunnerEvent = new QueryRunnerEvent(QueryRunnerEvent.GET_PAGINATED_TABLE_DATA_EVENT);
+					var paginationResult:PaginationResultVO = new PaginationResultVO();
+					paginationResult.rowsPerPage = 25;
+					paginationResult.currentPage = 1;
+					queryRunnerEvent.paginationResult = paginationResult;
+					queryRunnerEvent.connectionProperties = commonModelLocator.selectedConnectionProps;
+					queryRunnerEvent.selectedTable = appModelLocator.selectedTable;
+					BaseEventDispatcher.getInstance().dispatchEvent(queryRunnerEvent);
 				}
 			}
 			
 		]]>
 	</mx:Script>
 	
+	
+	
 	<mx:TabNavigator id="tableDetailsTabs" width="100%" height="100%">
-		<visuals:TableDataPanel width="100%" height="100%" label="Data" icon="{imageLocator.tableDataIcon}"/>
+		<visuals:TableDataPanel width="100%" height="100%" label="Data" icon="{imageLocator.tableDataIcon}" id="tableDataPanel"/>
 		<visuals:ColumnDetailsPanel width="100%" height="100%" label="Columns" icon="{imageLocator.columnGroupIcon}"/>
 	</mx:TabNavigator>
 	

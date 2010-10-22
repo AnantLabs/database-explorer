@@ -36,6 +36,10 @@ public class Column extends BaseDbModel implements Serializable,
 	private Boolean foreignKey;
 	private String privileges;
 
+	public Column() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public Column(Table table) {
 		parentTable = table;
 	}

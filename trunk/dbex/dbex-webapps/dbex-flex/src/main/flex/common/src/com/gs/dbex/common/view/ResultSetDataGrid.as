@@ -2,6 +2,8 @@ package com.gs.dbex.common.view
 {
 	import com.gs.dbex.common.model.db.ResultSetDataTable;
 	
+	import flash.geom.Rectangle;
+	
 	import mx.controls.DataGrid;
 	import mx.controls.dataGridClasses.DataGridColumn;
 
@@ -42,6 +44,12 @@ package com.gs.dbex.common.view
 				validateNow();
 				dataProvider =  value.getDataTableArray();
 			}
+			//width = value.columnCount * 100;
+			/*if(null == scrollRect){
+				scrollRect = new Rectangle(x, y, value.columnCount * 100, height);
+			} */
+			horizontalScrollPolicy ="on";
+			verticalScrollPolicy ="on";
 			validateNow();
 		}
 	}
