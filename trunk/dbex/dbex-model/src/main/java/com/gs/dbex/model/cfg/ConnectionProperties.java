@@ -8,15 +8,25 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.sql.DataSource;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.ForeignKey;
 
 import com.gs.utils.text.StringUtil;
 
@@ -25,7 +35,10 @@ import com.gs.utils.text.StringUtil;
  * 
  */
 @Entity
-@Table(name="DBEX_CONNECTION_PROPERTIES")
+@Table(
+		name="DBEX_CONNECTION_PROPERTIES", 
+		schema="dbex_configuration"
+	)
 public class ConnectionProperties implements Serializable,
 		Comparable<ConnectionProperties> {
 
@@ -41,6 +54,8 @@ public class ConnectionProperties implements Serializable,
 	private String connectionUrl;
 	private Integer displayOrder;
 	private DatabaseConfiguration databaseConfiguration;
+	
+	private Integer versionNumber;
 
 	private transient DataSource dataSource;
 	private transient boolean propertySaved = true;
@@ -48,7 +63,7 @@ public class ConnectionProperties implements Serializable,
 	
 	@Id
 	@Column(name="CONNECTION_PROP_ID")
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getConnectionPropId() {
 		return connectionPropId;
 	}
@@ -162,8 +177,22 @@ public class ConnectionProperties implements Serializable,
 		this.displayOrder = displayOrder;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@PrimaryKeyJoinColumn
+	//@OneToOne(cascade = CascadeType.ALL)
+	//@JoinColumn(columnDefinition="CONNECTION_PROP_ID")
+	//@JoinTable(name = "DBEX_DATABASE_CONFIGURATION",
+		//	joinColumns = @JoinColumn(name="CONNECTION_PROP_ID")
+			//, inverseJoinColumns = @JoinColumn(name="passport_fk")
+	//)
+	//@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+	/*@OneToOne(targetEntity=DatabaseConfiguration.class,
+			//mappedBy="CONNECTION_PROP_ID",
+			cascade=CascadeType.ALL, 
+			fetch=FetchType.EAGER)
+    @JoinColumn(referencedColumnName="CONNECTION_PROP_ID")*/
+	
+	
+	@OneToOne(targetEntity=DatabaseConfiguration.class, cascade=CascadeType.ALL)
+	@JoinColumn(name="CONNECTION_PROP_ID")
 	public DatabaseConfiguration getDatabaseConfiguration() {
 		return databaseConfiguration;
 	}
@@ -171,6 +200,16 @@ public class ConnectionProperties implements Serializable,
 	public void setDatabaseConfiguration(
 			DatabaseConfiguration databaseConfiguration) {
 		this.databaseConfiguration = databaseConfiguration;
+	}
+	
+	@Version
+	@Column(name="VERSION_NUMBER")
+	public Integer getVersionNumber() {
+		return versionNumber;
+	}
+
+	public void setVersionNumber(Integer versionNumber) {
+		this.versionNumber = versionNumber;
 	}
 
 	@Override

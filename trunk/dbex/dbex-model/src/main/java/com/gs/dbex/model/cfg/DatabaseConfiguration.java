@@ -3,19 +3,24 @@
  */
 package com.gs.dbex.model.cfg;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
+
+import org.hibernate.annotations.ForeignKey;
 
 /**
  * @author sabuj
  *
  */
 @Entity
-@Table(name="DBEX_DATABASE_CONFIGURATION")
+@Table(name="DBEX_DATABASE_CONFIGURATION", schema="dbex_configuration")
 public class DatabaseConfiguration {
 
 	private Long configurationId;
@@ -29,6 +34,8 @@ public class DatabaseConfiguration {
 	private String schemaName;
 	private boolean savePassword;
 	private String sidServiceName;
+	
+	private Integer versionNumber;
 	
 	public DatabaseConfiguration() {
 		// TODO Auto-generated constructor stub
@@ -124,6 +131,16 @@ public class DatabaseConfiguration {
 
 	public void setSchemaName(String schemaName) {
 		this.schemaName = schemaName;
+	}
+
+	@Version
+	@Column(name="VERSION_NUMBER")
+	public Integer getVersionNumber() {
+		return versionNumber;
+	}
+
+	public void setVersionNumber(Integer versionNumber) {
+		this.versionNumber = versionNumber;
 	}
 
 	

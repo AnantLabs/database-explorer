@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.gs.dbex.model.cfg.ConnectionProperties" 
+    table="dbex_connection_properties" catalog="dbex_configuration">
+        <id name="connectionPropId" type="java.lang.Long">
+            <column name="CONNECTION_PROP_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="userId" type="java.lang.Long">
+            <column name="USER_ID" not-null="true" />
+        </property>
+        <property name="versionNumber" type="java.lang.Integer">
+        	<column name="VERSION_NUMBER" not-null="true" default="0"/>
+        </property>
+        <property name="connectionName" type="string">
+            <column name="connectionName" />
+        </property>
+        <property name="connectionUrl" type="string">
+            <column name="connectionUrl" />
+        </property>
+        <property name="databaseType" type="string">
+            <column name="databaseType" />
+        </property>
+        <property name="displayOrder" type="java.lang.Integer">
+            <column name="displayOrder" />
+        </property>
+        <one-to-one name="databaseConfiguration" 
+        	class="com.gs.dbex.model.cfg.DatabaseConfiguration" 
+        	property-ref="connectionPropId">
+        </one-to-one>
+        
+    </class>
+</hibernate-mapping>

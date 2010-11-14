@@ -4,6 +4,7 @@ package com.gs.dbex.application.delegate
 	import com.gs.dbex.common.business.BaseResponder;
 	import com.gs.dbex.vo.ConnectionPropertiesVO;
 	
+	import mx.collections.ArrayCollection;
 	import mx.rpc.AsyncToken;
 	
 	public class DatabaseConnectionDelegate
@@ -38,5 +39,16 @@ package com.gs.dbex.application.delegate
 			token.faultHandler = responder.onFault;	
 		}
 
+		public function saveConnectionProperties(props:ConnectionPropertiesVO):void{
+			var token:AsyncToken = service.saveConnectionProperties(props); 
+			token.resultHandler = responder.onResult;
+			token.faultHandler = responder.onFault;	
+		}
+		
+		public function saveAllConnectionProperties(propsList:ArrayCollection):void{
+			var token:AsyncToken = service.saveAllConnectionProperties(propsList); 
+			token.resultHandler = responder.onResult;
+			token.faultHandler = responder.onFault;	
+		}
 	}
 }

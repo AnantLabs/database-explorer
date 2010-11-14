@@ -25,6 +25,16 @@ public class DbexException extends Exception {
 		this.exceptionMessage = exceptionMessage;
 	}
 
+	public DbexException(String message, Throwable cause) {
+		super(message, cause);
+		// TODO Auto-generated constructor stub
+	}
+
+	public DbexException(Throwable cause) {
+		super(cause);
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getExceptionCode() {
 		return exceptionCode;
 	}

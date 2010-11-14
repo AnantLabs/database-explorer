@@ -1,10 +1,13 @@
 package com.gs.dbex.model.converter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.vo.cfg.ConnectionPropertiesVO;
 
@@ -36,7 +39,7 @@ public class ConnectionPropertiesVOConverter {
 		return connectionPropertiesVO;
 	}
 	
-	public static Set<ConnectionPropertiesVO> convertModelsToVOs(Set<ConnectionProperties> connectionPropertiesModels){
+	public static Set<ConnectionPropertiesVO> convertModelsToVOSet(Set<ConnectionProperties> connectionPropertiesModels){
 		if(logger.isDebugEnabled()){
 			logger.debug("ENTER::- convertModelsToVOs()");
 		}
@@ -50,6 +53,38 @@ public class ConnectionPropertiesVOConverter {
 			logger.debug("EXIT::- convertModelsToVOs()");
 		}
 		return connectionPropertiesVOs;
+	}
+	
+	public static List<ConnectionPropertiesVO> convertModelsToVOList(List<ConnectionProperties> connectionPropertiesModels){
+		if(logger.isDebugEnabled()){
+			logger.debug("ENTER::- convertModelsToVOList()");
+		}
+		if(null == connectionPropertiesModels)
+			return null;
+		List<ConnectionPropertiesVO> connectionPropertiesVOs = new ArrayList<ConnectionPropertiesVO>();
+		for (ConnectionProperties connectionProperties : connectionPropertiesModels) {
+			connectionPropertiesVOs.add(convertModelToVO(connectionProperties));
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("EXIT::- convertModelsToVOList()");
+		}
+		return connectionPropertiesVOs;
+	}
+	
+	public static List<ConnectionProperties> convertVOsToModelList(List<ConnectionPropertiesVO> connectionPropertiesVos){
+		if(logger.isDebugEnabled()){
+			logger.debug("ENTER::- convertVOsToModelList()");
+		}
+		if(null == connectionPropertiesVos)
+			return null;
+		List<ConnectionProperties> connectionPropertiesModels = new ArrayList<ConnectionProperties>();
+		for (ConnectionPropertiesVO connectionProperties : connectionPropertiesVos) {
+			connectionPropertiesModels.add(convertVoToModel(connectionProperties));
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("EXIT::- convertVOsToModelList()");
+		}
+		return connectionPropertiesModels;
 	}
 
 	public static ConnectionProperties convertVoToModel(
@@ -71,16 +106,15 @@ public class ConnectionPropertiesVOConverter {
 		if(null != userId){
 			connectionPropertiesModel.setUserId((userId.longValue()==0L) ? null : userId);
 		} else{
-			connectionPropertiesModel.setUserId(null);
+			connectionPropertiesModel.setUserId(DbexCommonContext.loggedInUserID);
 		}
-		connectionPropertiesModel.setConnectionPropId(connectionPropertiesVO.getConnectionPropId());
-		connectionPropertiesModel.setUserId(connectionPropertiesVO.getUserId());
 		connectionPropertiesModel.setConnectionName(connectionPropertiesVO.getConnectionName());
 		connectionPropertiesModel.setConnectionUrl(connectionPropertiesVO.getConnectionUrl());
 		connectionPropertiesModel.setDatabaseType(connectionPropertiesVO.getDatabaseType());
 		connectionPropertiesModel.setDisplayOrder(connectionPropertiesVO.getDisplayOrder());
 		connectionPropertiesModel.setDatabaseConfiguration(
 				DatabaseConfigurationVOConverter.convertVoToModel(connectionPropertiesVO.getDatabaseConfiguration()));
+		connectionPropertiesModel.setVersionNumber(0);
 		if(logger.isDebugEnabled()){
 			logger.debug("EXIT::- convertVoToModel()");
 		}

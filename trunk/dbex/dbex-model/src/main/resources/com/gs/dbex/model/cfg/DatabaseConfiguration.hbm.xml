@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.gs.dbex.model.cfg.DatabaseConfiguration" 
+    table="dbex_database_configuration" catalog="dbex_configuration">
+        <id name="configurationId" type="java.lang.Long">
+            <column name="CFG_ID" />
+            <generator class="identity" />
+        </id>
+        <property name="connectionPropId" type="java.lang.Long">
+            <column name="CONNECTION_PROP_ID" not-null="true" />
+        </property>
+        <property name="driverClassName" type="string">
+            <column name="driverClassName" />
+        </property>
+        <property name="hostName" type="string">
+            <column name="hostName" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" />
+        </property>
+        <property name="portNumber" type="java.lang.Integer">
+            <column name="portNumber" />
+        </property>
+        <property name="savePassword" type="boolean">
+            <column name="savePassword" not-null="true" />
+        </property>
+        <property name="schemaName" type="string">
+            <column name="schemaName" />
+        </property>
+        <property name="sidServiceName" type="string">
+            <column name="sidServiceName" />
+        </property>
+        <property name="storageType" type="string">
+            <column name="storageType" />
+        </property>
+        <property name="userName" type="string">
+            <column name="userName" />
+        </property>
+        <property name="versionNumber" type="java.lang.Integer">
+        	<column name="VERSION_NUMBER" not-null="true" default="0"/>
+        </property>
+    </class>
+</hibernate-mapping>

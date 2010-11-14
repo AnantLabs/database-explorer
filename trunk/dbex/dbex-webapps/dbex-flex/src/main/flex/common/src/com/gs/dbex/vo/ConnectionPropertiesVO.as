@@ -11,6 +11,11 @@ package com.gs.dbex.vo
 		public var displayOrder:Number = 0;
 		public var databaseConfiguration:DatabaseConfigurationVO = new DatabaseConfigurationVO();
 		
+		public function ConnectionPropertiesVO(){
+			_connectionPropId = NaN;
+			_userId = NaN;
+		}
+		
 		public function get connectionPropId():Number{
   			return _connectionPropId;
 	  	}

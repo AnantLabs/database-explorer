@@ -30,7 +30,7 @@ public class UserVoConverter {
 		userVO.setEmailAddress(userModel.getEmailAddress());
 		userVO.setFullName(userModel.getFullName());
 		userVO.setConnectionPropertiesVOs(ConnectionPropertiesVOConverter
-				.convertModelsToVOs(userModel.getConnectionProperties()));
+				.convertModelsToVOSet(userModel.getConnectionProperties()));
 		if (logger.isDebugEnabled()) {
 			logger.debug("EXIT::- convertModelToVO()");
 		}
@@ -54,7 +54,7 @@ public class UserVoConverter {
 		userModel.setPassword(userVO.getPassword());
 		userModel.setEmailAddress(userVO.getEmailAddress());
 		userModel.setFullName(userVO.getFullName());
-		
+		userModel.setVersionNumber(0);
 		if (logger.isDebugEnabled()) {
 			logger.debug("EXIT::- convertVoToModel()");
 		}

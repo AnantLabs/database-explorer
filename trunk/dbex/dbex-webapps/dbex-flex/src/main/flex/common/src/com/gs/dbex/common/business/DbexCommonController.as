@@ -23,6 +23,8 @@ package com.gs.dbex.common.business
 			addCommand( DatabaseConnectionEvent.CONNECT_EVENT, DatabaseConnectionCommand );
 			addCommand( DatabaseConnectionEvent.TEST_CONNECTION_EVENT, DatabaseConnectionCommand );
 			addCommand( DatabaseConnectionEvent.DISCONNECT_EVENT, DatabaseConnectionCommand );
+			addCommand( DatabaseConnectionEvent.SAVE_CONN_PROPS_EVENT, DatabaseConnectionCommand );
+			addCommand( DatabaseConnectionEvent.SAVE_ALL_CONN_PROPS_EVENT, DatabaseConnectionCommand );
 			
 			addCommand( QueryRunnerEvent.RUN_SINGLE_SQL_EVENT, QueryRunnerCommand );
 			addCommand( QueryRunnerEvent.GET_PAGINATED_TABLE_DATA_EVENT, QueryRunnerCommand );

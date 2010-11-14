@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 public final class DbexCommonContext implements DbexCommonConstants{
 
 	private static DbexCommonContext instance;
+	public static Long loggedInUserID = null;
 	
 	private DbexCommonContext() {
 		initContext();
