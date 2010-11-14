@@ -6,6 +6,7 @@
 	defaultButton="{connectButton}" creationComplete="initilize()" showWindowButtons="true">
 	<mx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
 			import com.gs.dbex.common.event.BaseEventDispatcher;
 			import com.gs.dbex.common.event.DbexEventDispatcher;
 			import com.gs.dbex.common.event.DbexBaseEvent;
@@ -23,7 +24,8 @@
 			
 			[Bindable]
 			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
-			
+			[Bindable]
+			private var commonModelLocator:DbexCommonModelLocator = DbexCommonModelLocator.getInstance();
 			
 			public function addNewConnectionName():void{
 				var titleWin:InputWindow = PopUpManager.createPopUp(
@@ -125,20 +127,39 @@
 				}
 			}
 			
-			public function populateToProperties(properties:ConnectionPropertiesVO):ConnectionPropertiesVO{
-				if(null == properties){
+			public function populateToProperties():ConnectionPropertiesVO{
+				var properties:ConnectionPropertiesVO = connectionNameList.selectedItem as ConnectionPropertiesVO;
+				if(properties == null){
 					properties = new ConnectionPropertiesVO();
-					if(StringUtil.hasValidContent(selectedNameLabel.text)){
-						properties.connectionName = selectedNameLabel.text;
-					} else {
-						properties.connectionName = "ConnectionName";
-					}
+					properties.displayOrder = (commonModelLocator.connectionPropertiesColl.length + 1);
 				}
-				properties.databaseType = (dbTypeCombo.selectedItem as DatabaseTypeEnum).type;
-				
-				if(properties.databaseConfiguration == null)
-					properties.databaseConfiguration = new DatabaseConfigurationVO();
-				
+				properties.userId = commonModelLocator.loggedInUserVO.userId;
+				properties.connectionName = selectedNameLabel.text;
+				var dbType:DatabaseTypeEnum = dbTypeCombo.selectedItem as DatabaseTypeEnum;
+				if(null != dbType){
+					properties.databaseType = dbType.type;
+				}
+				properties.connectionUrl = urlTi.text;
+				properties.databaseConfiguration.connectionPropId = properties.connectionPropId;
+				properties.databaseConfiguration.hostName = hostNameTi.text;
+				if(StringUtil.hasValidContent(portNumberTi.text)){
+					properties.databaseConfiguration.portNumber = Number(portNumberTi.text);
+				}
+				properties.databaseConfiguration.userName = userNameTi.text;
+				properties.databaseConfiguration.driverClassName = dirverClassTi.text;
+				properties.databaseConfiguration.password = passwordTi.text;
+				properties.databaseConfiguration.schemaName = schemaNameTi.text;
+				properties.databaseConfiguration.sidServiceName = sidServiceNameTi.text;
+				properties.databaseConfiguration.savePassword = savePasswordChkBx.selected;
+				if(schemaRb.selected){
+					properties.databaseConfiguration.storageType = "SCHEMA";
+				}
+				else if(catalogRb.selected){
+					properties.databaseConfiguration.storageType = "CATALOG";
+				}
+				else {
+					properties.databaseConfiguration.storageType = "";
+				}
 				return properties; 
 			}
 			
@@ -157,12 +178,46 @@
 					savePasswordChkBx.selected = cfg.savePassword;
 					schemaNameTi.text = cfg.schemaName;
 					sidServiceNameTi.text = cfg.sidServiceName;
+				} else {
+					hostNameTi.text = "";
+					portNumberTi.text = ""; 
+					userNameTi.text = "";
+					passwordTi.text = "";
+					savePasswordChkBx.selected = false;
+					schemaNameTi.text = "";
+					sidServiceNameTi.text = "";
 				}
 				
 			}
 			
 			public function saveConnectionProps():void{
-				
+				var properties:ConnectionPropertiesVO = connectionNameList.selectedItem as ConnectionPropertiesVO;
+				properties = populateToProperties();
+				for each (var prop:ConnectionPropertiesVO in commonModelLocator.connectionPropertiesColl){
+					if(prop.connectionName == properties.connectionName){
+						prop = properties;
+						break;
+					}
+				}
+				var evt:DatabaseConnectionEvent = new DatabaseConnectionEvent(
+					DatabaseConnectionEvent.SAVE_CONN_PROPS_EVENT);
+				evt.connectionProppertiesVO = properties;
+				BaseEventDispatcher.getInstance().dispatchEvent(evt);
+			}
+			
+			public function saveAllConnectionProps():void{
+				var properties:ConnectionPropertiesVO = connectionNameList.selectedItem as ConnectionPropertiesVO;
+				properties = populateToProperties();
+				for each (var prop:ConnectionPropertiesVO in commonModelLocator.connectionPropertiesColl){
+					if(prop.connectionName == properties.connectionName){
+						prop = properties;
+						break;
+					}
+				}
+				var evt:DatabaseConnectionEvent = new DatabaseConnectionEvent(
+					DatabaseConnectionEvent.SAVE_ALL_CONN_PROPS_EVENT);
+				evt.connectionProppertiesVOList = commonModelLocator.connectionPropertiesColl;
+				BaseEventDispatcher.getInstance().dispatchEvent(evt);
 			}
 			
 			public function connectToDB():void{
@@ -171,6 +226,29 @@
 				evt.connectionProppertiesVO = p;
 				DbexCommonModelLocator.getInstance().selectedConnectionProps = p;
 				BaseEventDispatcher.getInstance().dispatchEvent(evt);
+			}
+			
+			public function loadFile():void{
+				var win:LoadFileDialog = PopUpManager.createPopUp(this, LoadFileDialog, true) as LoadFileDialog;
+				PopUpManager.centerPopUp(win);
+			}
+			
+			public function clearFields():void{
+				hostNameTi.text = "";
+				portNumberTi.text = ""; 
+				userNameTi.text = "";
+				passwordTi.text = "";
+				savePasswordChkBx.selected = false;
+				schemaNameTi.text = "";
+				sidServiceNameTi.text = "";
+			}
+			
+			public function deleteProperties():void{
+				
+			}
+			
+			public function exportProperties():void{
+				
 			}
 		]]>
 	</mx:Script>
@@ -196,18 +274,20 @@
 				<control:ToolbarButton label="" icon="{imageLocator.newConnectionIcon}"
 					toolTip="Add new Connection" click="{addNewConnectionName()}"/>
 				<control:ToolbarButton label="" icon="{imageLocator.loadFileIcon}"
-					toolTip="Load connections from file"/>
+					toolTip="Load connections from file" click="loadFile()"/>
 				<mx:VRule width="2" height="100%"/>
+				<control:ToolbarButton label="" icon="{imageLocator.saveIcon}"
+					toolTip="Save" id="saveButton" click="saveConnectionProps()"/>
 				<control:ToolbarButton label="" icon="{imageLocator.saveAllIcon}"
-					toolTip="Save All..." id="saveAllButton" click="saveConnectionProps()"/>
+					toolTip="Save All..." id="saveAllButton" click="saveAllConnectionProps()"/>
 				<mx:VRule width="2" height="100%"/>
 				<control:ToolbarButton label="" icon="{imageLocator.clearIcon}"
-					toolTip="Clear"/>
+					toolTip="Clear" click="clearFields()"/>
 				<control:ToolbarButton label="" icon="{imageLocator.deleteIcon}"
-					toolTip="Delete"/>
+					toolTip="Delete" click="deleteProperties()"/>
 				<mx:VRule width="2" height="100%"/>
 				<control:ToolbarButton label="" icon="{imageLocator.exportIcon}"
-					toolTip="Export"/>
+					toolTip="Export" click="exportProperties()"/>
 			</mx:HBox>
 			<mx:VBox id="propertyBox" width="100%" height="100%">
 				<mx:Label id="selectedNameLabel" width="100%" height="25" fontSize="12" fontWeight="bold"/>

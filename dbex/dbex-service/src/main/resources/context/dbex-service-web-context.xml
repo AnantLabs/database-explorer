@@ -8,4 +8,8 @@
 		<property name="dbexUserDao" ref="dbexUserDao"></property>
 	</bean>
 	
+	<bean id="connectionPropertiesService" class="com.gs.dbex.service.impl.ConnectionPropertiesServiceImpl">
+		<property name="connectionPropertiesDao" ref="connectionPropertiesDao"></property>
+	</bean>
+	
 </beans>

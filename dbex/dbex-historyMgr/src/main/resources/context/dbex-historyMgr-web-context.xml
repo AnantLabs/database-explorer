@@ -9,4 +9,9 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate"></property>
 	</bean>
 
+	<bean id="connectionPropertiesDao"
+		class="com.gs.dbex.historyMgr.dao.impl.ConnectionPropertiesDaoImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate"></property>
+	</bean>
+	
 </beans>

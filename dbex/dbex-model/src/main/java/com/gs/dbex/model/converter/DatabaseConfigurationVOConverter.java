@@ -61,8 +61,6 @@ public class DatabaseConfigurationVOConverter {
 		} else{
 			databaseConfigurationModel.setConfigurationId(null);
 		}
-		databaseConfigurationModel.setConfigurationId(databaseConfigurationVO.getConfigurationId());
-		databaseConfigurationModel.setConnectionPropId(databaseConfigurationVO.getConnectionPropId());
 		databaseConfigurationModel.setDriverClassName(databaseConfigurationVO.getDriverClassName());
 		databaseConfigurationModel.setHostName(databaseConfigurationVO.getHostName());
 		databaseConfigurationModel.setPassword(databaseConfigurationVO.getPassword());
@@ -72,6 +70,7 @@ public class DatabaseConfigurationVOConverter {
 		databaseConfigurationModel.setSidServiceName(databaseConfigurationVO.getSidServiceName());
 		databaseConfigurationModel.setStorageType(databaseConfigurationVO.getStorageType());
 		databaseConfigurationModel.setUserName(databaseConfigurationVO.getUserName());
+		databaseConfigurationModel.setVersionNumber(0);
 		if(logger.isDebugEnabled()){
 			logger.debug("EXIT::- convertVoToModel()");
 		}

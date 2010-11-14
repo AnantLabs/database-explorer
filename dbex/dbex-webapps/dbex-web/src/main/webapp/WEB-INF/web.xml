@@ -29,12 +29,12 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<!-- Http Flex Session attribute and binding listener support -->
+<!-- Http Flex Session attribute and binding listener support -->
 	<listener>
 		<listener-class>flex.messaging.HttpFlexSession</listener-class>
 	</listener>
 
-	<!-- MessageBroker CXFServlet -->
+<!-- MessageBroker CXFServlet -->
 	<servlet>
 		<servlet-name>CXFServlet</servlet-name>
 		<display-name>CXF Servlet</display-name>
@@ -43,7 +43,7 @@
 	    </servlet-class>
 	</servlet>
 
-	<!-- The front controller of this Spring Web application, responsible 
+<!-- The front controller of this Spring Web application, responsible 
 		for handling all application requests -->
 	<servlet>
 		<servlet-name>FlexServlet</servlet-name>
@@ -62,14 +62,28 @@
 		<url-pattern>/services/*</url-pattern>
 	</servlet-mapping>
 
+<!-- User-defined Servlets  -->
+	<servlet>
+		<servlet-name>DbexFileServlet</servlet-name>
+		<display-name>File Servlet</display-name>
+		<servlet-class>com.gs.dbex.web.DbexFileServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DbexFileServlet</servlet-name>
+		<url-pattern>/app/DbexFileServlet</url-pattern>
+	</servlet-mapping>
 
-
+<!-- Session Info  -->
 	<session-config>
 		<session-timeout>60</session-timeout>
 	</session-config>
 
+<!-- Welcome files  -->
 	<welcome-file-list>
 		<welcome-file>/swf/DbexMainApp</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+	
+	
+	
 </web-app>

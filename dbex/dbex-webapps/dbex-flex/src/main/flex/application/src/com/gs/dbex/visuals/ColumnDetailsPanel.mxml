@@ -16,6 +16,7 @@
 					//title = "Columns for Table: [ " + appModelLocator.selectedTable.modelName + " ]";
 					//titleIcon = imageLocator.columnGroupIcon;
 					columnsDataGrid.dataProvider = appModelLocator.selectedTable.columnlist;
+					
 				}
 			}
 			

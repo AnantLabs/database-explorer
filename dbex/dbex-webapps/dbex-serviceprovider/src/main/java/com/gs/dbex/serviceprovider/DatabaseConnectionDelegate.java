@@ -3,6 +3,8 @@
  */
 package com.gs.dbex.serviceprovider;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.gs.dbex.common.enums.ReadDepthEnum;
@@ -12,6 +14,7 @@ import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.converter.ConnectionPropertiesVOConverter;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.vo.cfg.ConnectionPropertiesVO;
+import com.gs.dbex.service.ConnectionPropertiesService;
 import com.gs.dbex.service.DatabaseConnectionService;
 import com.gs.dbex.service.DatabaseMetadataService;
 
@@ -27,11 +30,21 @@ public class DatabaseConnectionDelegate {
 	
 	private DatabaseConnectionService databaseConnectionService;
 	private DatabaseMetadataService databaseMetadataService;
+	private ConnectionPropertiesService connectionPropertiesService;
 	
 	public DatabaseConnectionDelegate() {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public ConnectionPropertiesService getConnectionPropertiesService() {
+		return connectionPropertiesService;
+	}
+
+	public void setConnectionPropertiesService(
+			ConnectionPropertiesService connectionPropertiesService) {
+		this.connectionPropertiesService = connectionPropertiesService;
+	}
+
 	public DatabaseConnectionService getDatabaseConnectionService() {
 		return databaseConnectionService;
 	}
@@ -95,4 +108,43 @@ public class DatabaseConnectionDelegate {
 		}
 		return true;
 	}
+	
+	public ConnectionPropertiesVO saveConnectionProperties(ConnectionPropertiesVO connectionPropertiesVO){
+		if(null == connectionPropertiesVO)
+			return null;
+		if (logger.isDebugEnabled()) {
+			logger.debug("ENTER::- saveConnectionProperties()");
+		}
+		ConnectionProperties connectionProperties = ConnectionPropertiesVOConverter.convertVoToModel(connectionPropertiesVO);
+		try {
+			connectionProperties = getConnectionPropertiesService().saveConnectionProperties(connectionProperties);
+		} catch (DbexException e) {
+			e.printStackTrace();
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("EXIT::- saveConnectionProperties()");
+		}
+		return ConnectionPropertiesVOConverter.convertModelToVO(connectionProperties);
+	}
+	
+	public List<ConnectionPropertiesVO> saveAllConnectionProperties(List<ConnectionPropertiesVO> connectionPropertiesVOList){
+		if(null == connectionPropertiesVOList)
+			return null;
+		if (logger.isDebugEnabled()) {
+			logger.debug("ENTER::- saveAllConnectionProperties()");
+		}
+		List<ConnectionProperties> props = null;
+		try {
+			props = getConnectionPropertiesService().saveAllConnectionProperties(
+					ConnectionPropertiesVOConverter.convertVOsToModelList(connectionPropertiesVOList));
+		} catch (DbexException e) {
+			e.printStackTrace();
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("EXIT::- saveAllConnectionProperties()");
+		}
+		return ConnectionPropertiesVOConverter.convertModelsToVOList(props);
+	}
+	
+	
 }
