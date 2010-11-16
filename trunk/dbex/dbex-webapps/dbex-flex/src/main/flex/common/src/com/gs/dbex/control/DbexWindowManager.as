@@ -14,6 +14,7 @@ package com.gs.dbex.control
 	{
 		
 		public static const DBEX_CONNECTION_DIALOG:String = "DBEX_CONNECTION_DIALOG";
+		public static const JDBC_DRIVER_MANAGER_DIALOG:String = "JDBC_DRIVER_MANAGER_DIALOG";
 		
 		private static var manager:DbexWindowManager = new DbexWindowManager();
 		private var openWindows:Object = new Object();

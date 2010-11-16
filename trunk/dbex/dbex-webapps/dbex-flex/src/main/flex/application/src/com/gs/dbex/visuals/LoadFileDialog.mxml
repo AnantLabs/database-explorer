@@ -61,6 +61,7 @@
             private function fileRef_complete(evt:Event):void {
                 message.text += " (complete)";
                 progressBar.visible = false;
+                PopUpManager.removePopUp(this);
             }
 		]]>
 	</mx:Script>
