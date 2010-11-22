@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ResizableWindow xmlns="com.gs.dbex.layout.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="692" height="470"
-	title="JDBC Driver Manager" 
+	title="JDBC Driver Manager" creationPolicy="all"
 	titleIcon="{DbexImageConstants.getInstance().dbex24x24Icon}" 
 	close="{PopUpManager.removePopUp(this)}" paddingTop="0" xmlns:control="com.gs.dbex.control.*"
 	defaultButton="{okButton}" creationComplete="initilize()" showWindowButtons="true">
@@ -13,17 +13,30 @@
 			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
 			
 			public function initilize():void{
+				driverLoaderStatusBox.visible = false;
+				driverLoaderStatusBox.height = 0;
+			}
+			
+			public function loadJar():void{
 				
 			}
+			
+			public function removeJar():void{
+				
+			}
+			
+			/* public function initilize():void{
+				
+			} */
 		]]>
 	</mx:Script>
 	
 	
 	<mx:VBox width="100%" height="100%" verticalGap="0">
-		<mx:HBox width="100%" height="30" horizontalAlign="left" verticalAlign="middle">
-			<mx:Label width="100%" height="29" text="Driver Manager" 
-				fontFamily="Georgia" fontSize="18" fontWeight="normal" fontStyle="normal"/>
-			<mx:Image width="24" height="24" source="{DbexImageConstants.getInstance().dbex24x24Icon}"/>
+		<mx:HBox width="100%" height="64" horizontalAlign="left" verticalAlign="middle">
+			<mx:Label width="100%" height="100%" text="Driver Manager" 
+				fontFamily="Georgia" fontSize="24" fontWeight="normal" fontStyle="normal"/>
+			<mx:Image width="64" height="64" source="{DbexImageConstants.getInstance().driderManager64x64Icon}"/>
 		</mx:HBox>
 		<mx:HRule width="100%"/>
 		<mx:HBox width="100%" height="100%">
@@ -31,25 +44,18 @@
 				<mx:List width="100%" height="100%"/>
 				<mx:HBox width="100%" height="30" horizontalAlign="left" verticalAlign="middle"
 					paddingLeft="5" paddingRight="5">
-					<mx:Button label="Add"/>
+					<control:ToolbarButton label="" icon="{imageLocator.addPlusIcon}" toolTip="Add Database Type" />
+					<control:ToolbarButton label="" icon="{imageLocator.deleteIcon}" toolTip="Delete Database Type" />
 					<mx:Spacer width="100%"/>
-					<mx:Button label="Rem"/>
+					<control:ToolbarButton label="" icon="{imageLocator.moveUpIcon}" toolTip="Move Up" />
+					<control:ToolbarButton label="" icon="{imageLocator.moveDownIcon}" toolTip="Move Down" />
 				</mx:HBox>
 			</mx:VBox>
 			<mx:VBox width="100%" height="100%">
 				<mx:TabNavigator width="100%" height="100%">
 					<mx:VBox label="Driver Info" width="100%" height="100%" >
+						<mx:Label text="Driver Informations:" fontWeight="bold"/>
 						<mx:Grid width="100%">
-							<mx:GridRow width="100%" height="100%">
-								<mx:GridItem width="100%" height="100%">
-									<mx:Label text="Driver Informations:" fontWeight="bold"/>
-								</mx:GridItem>
-								<mx:GridItem width="100%" height="100%">
-								</mx:GridItem>
-								<mx:GridItem width="36" height="100%" rowSpan="3">
-									<mx:Image width="24" height="24" source="{DbexImageConstants.getInstance().dbex128x128Icon}"/>
-								</mx:GridItem>
-							</mx:GridRow>
 							<mx:GridRow width="100%" height="100%">
 								<mx:GridItem width="100%" height="100%">
 									<mx:Label text="Database Name"/>
@@ -57,7 +63,6 @@
 								<mx:GridItem width="100%" height="100%" colSpan="2">
 									<mx:TextInput width="185"/>
 								</mx:GridItem>
-								
 							</mx:GridRow>
 							<mx:GridRow width="100%" height="100%">
 								<mx:GridItem width="100%" height="100%">
@@ -66,7 +71,6 @@
 								<mx:GridItem width="100%" height="100%" colSpan="2">
 									<mx:TextInput width="185"/>
 								</mx:GridItem>
-								
 							</mx:GridRow>
 							<mx:GridRow width="100%" height="100%">
 								<mx:GridItem width="100%" height="100%">
@@ -75,21 +79,23 @@
 								<mx:GridItem width="100%" height="100%" colSpan="2">
 									<mx:TextInput width="100%"/>
 								</mx:GridItem>
-								
 							</mx:GridRow>
 						</mx:Grid>
 						<mx:HRule width="100%"/>
 						<mx:HBox width="100%" height="30" verticalAlign="middle">
-							<mx:CheckBox label="Copy Jar" selected="true" width="90"/>
+							<mx:CheckBox label="Copy Jar" selected="true" width="90" id="copyJarChkbox"/>
 							<mx:HBox width="100%" height="100%" horizontalAlign="right" verticalAlign="middle">
-								<mx:Button label="Load"/>
-								<mx:Button label="Remove"/>
+								<mx:Button label="Load" id="loadJarButton"/>
+								<mx:Button label="Remove" id="removeJarButton"/>
 							</mx:HBox> 
 						</mx:HBox>
-						<mx:List width="100%" height="100%"/>
-						<mx:HBox width="100%" height="30" verticalAlign="middle">
-							<mx:Label text="Loading Driver ... " width="106"/>
-							<mx:ProgressBar indeterminate="true" width="236"/>
+						<mx:Tree width="100%" height="100%" 
+							id="jdbcDriverTree"/>
+						<mx:HBox width="100%" height="30" verticalAlign="middle" id="driverLoaderStatusBox">
+							<!--<mx:Label text="Loading Driver ... " width="106"/>-->
+							<mx:Label id="driverLoaderStatusLabel" width="100%" textAlign="left"/>
+							<mx:ProgressBar indeterminate="true" width="236" label="Loading Driver ... "
+								id="driverLoaderProgressBar"/>
 						</mx:HBox>
 					</mx:VBox>
 					<mx:VBox label="Database Configuration" width="100%" height="100%">
@@ -168,9 +174,9 @@
 		<mx:HRule width="100%"/>
 		<mx:HBox width="100%" height="30" horizontalAlign="center" verticalAlign="middle"
 			paddingLeft="5" paddingRight="5">
-			<mx:Button label="Cancel"/>
+			<mx:Button label="Cancel" width="60"/>
 			<mx:Spacer width="100%"/>
-			<mx:Button label="Ok" id="okButton"/>
+			<mx:Button label="Ok" id="okButton" width="60"/>
 		</mx:HBox>
 	</mx:VBox>
 </ResizableWindow>

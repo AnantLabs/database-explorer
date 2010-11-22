@@ -255,7 +255,7 @@
 			public function manageDriver():void{
 				var manageDriverWin:JdbcDriverManagerWindow = 
 					DbexWindowManager.getInstance().openWindow
-						(DbexWindowManager.JDBC_DRIVER_MANAGER_DIALOG, JdbcDriverManagerWindow) as JdbcDriverManagerWindow;
+						(DbexWindowManager.JDBC_DRIVER_MANAGER_DIALOG, JdbcDriverManagerWindow, true) as JdbcDriverManagerWindow;
 			}
 			
 		]]>

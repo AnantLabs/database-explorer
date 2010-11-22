@@ -27,7 +27,7 @@
                 </executions>
                 <configuration>
                     <download>true</download>		
-		    <memoryMaximumSize>512M</memoryMaximumSize>					
+		    		<memoryMaximumSize>512M</memoryMaximumSize>					
                 </configuration>
             </plugin>
 			<plugin>
