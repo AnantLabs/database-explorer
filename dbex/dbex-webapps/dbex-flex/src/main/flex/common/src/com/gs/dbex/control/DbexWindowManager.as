@@ -63,22 +63,22 @@ package com.gs.dbex.control
 			return openWindows[key];
 		}
 		
-		public function openWindow(key:String, windowClass:Class):ResizableWindow{
+		public function openWindow(key:String, windowClass:Class, modal:Boolean=false):ResizableWindow{
 			if(openWindowKeys.contains(key)){
 				unregister(key, true);
 			}
-			var window:ResizableWindow = PopUpManager.createPopUp(workArea, windowClass, false) as ResizableWindow;
+			var window:ResizableWindow = PopUpManager.createPopUp(workArea, windowClass, modal) as ResizableWindow;
 			window.x = workAreaOrigin.x;
 			window.y = workAreaOrigin.y;
 			register(key, window);
 			return window;
 		}
 		
-		public function openCenterWindow(key:String, windowClass:Class):ResizableWindow{
+		public function openCenterWindow(key:String, windowClass:Class, modal:Boolean=false):ResizableWindow{
 			if(openWindowKeys.contains(key)){
 				unregister(key, true);
 			}
-			var window:ResizableWindow = PopUpManager.createPopUp(workArea, windowClass, false) as ResizableWindow;
+			var window:ResizableWindow = PopUpManager.createPopUp(workArea, windowClass, modal) as ResizableWindow;
 			window.x = workAreaOrigin.width/2 - window.width/2;
 			window.y = workAreaOrigin.height/2 - window.height/2;
 			register(key, window);

@@ -1,0 +1,68 @@
+
+Application
+{
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #FAFAFA;
+	borderColor: #333;
+	backgroundGradientAlphas: 1.0, 1.0;
+	backgroundGradientColors: #262626, #1C1C1C;
+	themeColor:#FC0;
+	backgroundColor:#2A2A2A;
+}
+ApplicationControlBar
+{
+	fillAlphas: 1.0, 1.0;
+	fillColors: #060606, #060606;
+	fontFamily: TAHOMA;
+	fontSize: 11;
+	color: #F6FF04;
+}
+Accordion
+{
+	borderColor: #333;
+	backgroundColor: #2A2A2A;
+	fontFamily: TAHOMABD;
+	fontSize: 11;
+	color: #FAFAFA;
+	headerStyleName: accordionHeader;
+	fontWeight: bold;
+}
+Alert
+{
+}
+Box
+{
+}
+.accordionHeader
+{
+	fillAlphas: 1.0, 1.0;
+	fillColors: #2A2A2A, #2A2A2A;
+	borderColor: #000333;
+	fontFamily: TAHOMA;
+	color: #FAFAFA;
+	textSelectedColor: #F6FF04;
+}
+
+
+@font-face
+{
+	fontFamily: TAHOMA;
+	fontWeight: normal;
+	fontStyle: normal;
+	src: url("../fonts/TAHOMA.TTF");
+}
+@font-face
+{
+	fontFamily: GOTHIC;
+	fontWeight: normal;
+	fontStyle: normal;
+	src: url("../fonts/GOTHIC.TTF");
+}
+@font-face
+{
+	fontFamily: TAHOMABD;
+	fontWeight: normal;
+	fontStyle: normal;
+	src: url("../fonts/TAHOMABD.TTF");
+}

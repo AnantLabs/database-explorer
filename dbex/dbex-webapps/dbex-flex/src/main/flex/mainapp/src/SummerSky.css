@@ -6,13 +6,7 @@ Application{
 	themeColor:#2AE;
 }
 
-@font-face
-{
-	fontFamily: Verdana;
-	fontWeight: normal;
-	fontStyle: normal;
-	src: local("Verdana");
-}
+
 
 Alert{
 	border-style:solid;
@@ -652,14 +646,14 @@ TextArea
 	focusSkin: Embed(source="assets/skins/summerSky/TextArea_focusSkin.png");
 	color: #444;
 	paddingLeft: 2;
-	fontFamily: Verdana;
+	fontFamily: TAHOMA;
 }
 TextInput
 {
 	borderSkin: Embed(source="assets/skins/summerSky/TextInput_borderSkin.png");
 	focusSkin: Embed(source="assets/skins/summerSky/TextInput_focusSkin.png");
 	color: #444;
-	fontFamily: Verdana;
+	fontFamily: TAHOMA;
 }
 
 TitleWindow{
@@ -763,5 +757,12 @@ VScrollBar
 	upArrowDownSkin: Embed(source="assets/skins/summerSky/HScrollBar_upArrowDownSkin.png");
 	upArrowOverSkin: Embed(source="assets/skins/summerSky/HScrollBar_upArrowOverSkin.png");
 	upArrowUpSkin: Embed(source="assets/skins/summerSky/HScrollBar_upArrowUpSkin.png"); */
+}
+@font-face
+{
+	fontFamily: TAHOMA;
+	fontWeight: normal;
+	fontStyle: normal;
+	src: url("assets/fonts/TAHOMA.TTF");
 }
 

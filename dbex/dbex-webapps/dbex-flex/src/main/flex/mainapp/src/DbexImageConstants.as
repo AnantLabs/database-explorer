@@ -219,5 +219,27 @@ package
         [Bindable]
         [Embed(source="assets/images/last_page.png")]
         public var goToLastPageIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/driver_manager_64x64.png")]
+        public var driderManager64x64Icon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/jar_label.png")]
+        public var jarFileIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/add_plus.png")]
+        public var addPlusIcon:Class;
+        
+        [Bindable]
+        [Embed(source="assets/images/driver.png")]
+        public var jdbcDriverIcon:Class; 
+        
+        /* [Bindable]
+        [Embed(source="assets/images/add_plus.png")]
+        public var addPlusIcon:Class; 
+         */
+        
 	}
 }

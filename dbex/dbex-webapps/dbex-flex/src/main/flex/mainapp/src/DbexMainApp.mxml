@@ -19,14 +19,13 @@
 	<!--
 	<mx:Style source="SunNight.css"/>
 	<mx:Style source="SummerSky.css"/>
-	<mx:Style source="assets/styles/wmp11.css"/>
 	<mx:Style source="assets/styles/DbexStyle.css"/>
 	<mx:Style source="assets/styles/Dbex2003.css"/>
+	<mx:Style source="assets/styles/DbexBlack.css"/>
 	<mx:Style source="assets/styles/Office2007Blue.css"/>
 	<mx:Style source="assets/skins/vistaremix/vistaremix.css"/>
 	-->
-	
-	<mx:Style source="assets/styles/Office2007Blue.css"/>
+	<mx:Style source="assets/styles/DbexStyle.css"/>
 	
 	<view:DbexApplicationViewHelper id="DbexApplicationViewHelper"/>
 	
