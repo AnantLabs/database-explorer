@@ -212,6 +212,7 @@ public class ConnectionProperties implements Serializable,
 		this.versionNumber = versionNumber;
 	}
 
+	
 	@Override
 	public String toString() {
 		return (StringUtil.hasValidContent(getConnectionName())) ? getConnectionName()

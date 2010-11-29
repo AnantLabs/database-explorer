@@ -957,7 +957,8 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 	}                                                   
 
 	private void loadConnectionsButtonActionPerformed(ActionEvent evt) {                                                      
-		// TODO add your handling code here:
+		ConnectionPropertiesLoaderDialog dialog = new ConnectionPropertiesLoaderDialog(getParentFrame(), true);
+		dialog.setVisible(true);
 	}                                                     
 
 	private void saveButtonActionPerformed(ActionEvent evt) {                                           
