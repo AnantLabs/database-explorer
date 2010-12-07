@@ -34,10 +34,10 @@ public final class MySqlIntegrationHelper {
 		}
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("SELECT ")
-				.append(table.getColumnNames(','))
-				.append(" FROM ")
-				.append(table.getSchemaName().toUpperCase() + "." + table.getModelName().toUpperCase())
-				.append(" LIMIT ? , ? ");
+				.append(table.getColumnNames(',', '`'))
+				.append(" FROM `")
+				.append(table.getSchemaName().toUpperCase() + "`.`" + table.getModelName().toUpperCase())
+				.append("` LIMIT ? , ? ");
 		if(logger.isDebugEnabled()){
 			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
 			logger.debug("Exit:: preparePaginationQuery()");
@@ -50,8 +50,8 @@ public final class MySqlIntegrationHelper {
 			logger.debug("Enter:: prepareTotalRecordsSQL() for table:= " + databaseTable.getModelName());
 		}
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT COUNT(*) FROM " )
-			.append(databaseTable.getSchemaName().toUpperCase() + "." + databaseTable.getModelName().toUpperCase());
+		buffer.append("SELECT COUNT(*) FROM `" )
+			.append(databaseTable.getSchemaName().toUpperCase() + "`.`" + databaseTable.getModelName().toUpperCase() + "`");
 		if (logger.isDebugEnabled()) {
 			logger.debug("Generated SQL: [ " + buffer.toString() + " ]");
 			logger.debug("Exit:: prepareTotalRecordsSQL()");
@@ -66,8 +66,8 @@ public final class MySqlIntegrationHelper {
 					+ " With filterSubQuery:= " + filterSubQuery);
 		}
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("SELECT COUNT(*) FROM " )
-			.append(databaseTable.getSchemaName().toUpperCase() + "." + databaseTable.getModelName().toUpperCase());
+		buffer.append("SELECT COUNT(*) FROM `" )
+			.append(databaseTable.getSchemaName().toUpperCase() + "`.`" + databaseTable.getModelName().toUpperCase() + "`");
 		if(StringUtil.hasValidContent(filterSubQuery)){
 			buffer.append(" WHERE ").append(filterSubQuery);
 		}
@@ -85,9 +85,9 @@ public final class MySqlIntegrationHelper {
 		}
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("SELECT ")
-				.append(table.getColumnNames(','))
-				.append(" FROM ")
-				.append(table.getSchemaName().toUpperCase() + "." + table.getModelName().toUpperCase());
+				.append(table.getColumnNames(',', '`'))
+				.append(" FROM `")
+				.append(table.getSchemaName().toUpperCase() + "`.`" + table.getModelName().toUpperCase()+"`");
 		if(StringUtil.hasValidContent(filterSubQuery)){
 			buffer.append(" WHERE ").append(filterSubQuery);
 		}

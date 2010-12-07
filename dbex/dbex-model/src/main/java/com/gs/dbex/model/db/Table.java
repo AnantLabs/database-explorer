@@ -125,6 +125,22 @@ public class Table extends BaseDbModel implements Serializable {
 		return buffer.toString();
 	}
 	
+	public String getColumnNames(char separator, char bound){
+		StringBuffer buffer = new StringBuffer();
+		List<Column> cList = getColumnlist();
+		if(cList != null){
+			for (int i = 0; i < cList.size(); i++) {
+				Column c = cList.get(i);
+				buffer.append(bound).append(c.getModelName()).append(bound);
+				if(i != cList.size()-1){
+					buffer.append(" ").append(separator);
+				}
+			}
+		}
+		
+		return buffer.toString();
+	}
+	
 	public boolean hasExportedTableForColumn(Column column){
 		if(null != column && null != getExportedKeys() && getExportedKeys().size() > 0){
 			for (ForeignKey expKey : getExportedKeys()) {

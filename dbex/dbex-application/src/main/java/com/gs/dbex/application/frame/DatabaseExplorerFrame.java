@@ -17,9 +17,13 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
+import org.fife.plaf.Office2003.Office2003LookAndFeel;
+import org.fife.plaf.VisualStudio2005.VisualStudio2005LookAndFeel;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.iframe.DatabaseViewerInternalFrame;
@@ -27,6 +31,8 @@ import com.gs.dbex.application.menu.MenuBarItems;
 import com.gs.dbex.application.panel.StatusBar;
 import com.gs.dbex.application.toolbar.ToolbarButtons;
 import com.gs.utils.swing.window.WindowUtil;
+
+import de.muntjak.tinylookandfeel.TinyLookAndFeel;
 
 /**
  * @author sabuj.das
@@ -52,6 +58,21 @@ public class DatabaseExplorerFrame extends JFrame implements WindowListener{
     private StatusBar statusBar;
 
 	public DatabaseExplorerFrame() {
+		try {
+			UIManager.setLookAndFeel(VisualStudio2005LookAndFeel.class.getCanonicalName());
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		logger.info("Starting application.");
 		initComponents();
 		setInitialProperties();

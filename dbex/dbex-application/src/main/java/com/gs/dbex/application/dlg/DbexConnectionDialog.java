@@ -3,6 +3,7 @@
  */
 package com.gs.dbex.application.dlg;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,6 +13,8 @@ import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -64,6 +67,8 @@ import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.constants.GuiCommandConstants;
 import com.gs.dbex.application.context.ApplicationCommonContext;
 import com.gs.dbex.application.event.ApplicationEventHandler;
+import com.gs.dbex.application.event.ComponentUpdateEvent;
+import com.gs.dbex.application.event.ComponentUpdateEventListener;
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.common.enums.DatabaseStorageTypeEnum;
 import com.gs.dbex.common.enums.DatabaseTypeEnum;
@@ -78,7 +83,8 @@ import com.gs.utils.text.StringUtil;
  *
  */
 public class DbexConnectionDialog extends JDialog 
-implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyListener, WindowListener {
+implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyListener, WindowListener,
+	ComponentUpdateEventListener{
 
 	/**
 	 * 	Generated :: serialVersionUID = 1803937201488762305L
@@ -173,6 +179,18 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
         initComponents();
         populateInitialData();
         databaseTypeChanged();
+        
+        Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+			
+			@Override
+			public void eventDispatched(AWTEvent event) {
+				if(null != event){
+					if(event.getSource() instanceof ComponentUpdateEvent){
+						updateComponentUI((ComponentUpdateEvent) event.getSource());
+					}
+				}
+			}
+		}, AWTEvent.COMPONENT_EVENT_MASK);
     }
 
     public int showDialog(){
@@ -958,6 +976,49 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 
 	private void loadConnectionsButtonActionPerformed(ActionEvent evt) {                                                      
 		ConnectionPropertiesLoaderDialog dialog = new ConnectionPropertiesLoaderDialog(getParentFrame(), true);
+		dialog.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				populateInitialData();
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		dialog.setVisible(true);
 	}                                                     
 
@@ -1305,6 +1366,13 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 		if(p != null){
 			p.setPropertySaved(false);
 			changeButtonEnabled(p);
+		}
+	}
+	
+	@Override
+	public void updateComponentUI(ComponentUpdateEvent componentUpdateEvent) {
+		if(null != componentUpdateEvent){
+			
 		}
 	}
 	
