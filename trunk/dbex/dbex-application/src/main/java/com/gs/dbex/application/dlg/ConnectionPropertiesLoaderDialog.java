@@ -1,5 +1,6 @@
 package com.gs.dbex.application.dlg;
 
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -11,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -38,9 +41,13 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
+import com.gs.dbex.application.context.ApplicationCommonContext;
+import com.gs.dbex.application.event.ComponentUpdateEvent;
 import com.gs.dbex.application.sql.processor.StringTokenizer;
 import com.gs.dbex.application.tree.DatabaseDirectoryTree;
 import com.gs.dbex.application.tree.cfg.ConnectionPropertyTreeNode;
+import com.gs.dbex.historyMgr.ApplicationDataHistoryMgr;
+import com.gs.dbex.historyMgr.DbexHistoryMgrBeanFactory;
 import com.gs.dbex.integration.xmlbeans.ConnectionPropertiesXmlTransformer;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.utils.collection.CollectionUtils;
@@ -356,8 +363,60 @@ public class ConnectionPropertiesLoaderDialog extends JDialog implements ActionL
 				}
 			}
 		} else if(loadButton.equals(e.getSource())){
-			
+			loadAll();
 		} else if(cancelButton.equals(e.getSource())){
+			dispose();
+		}
+	}
+
+
+
+	public void loadAll() {
+		if(fileConPropMap.isEmpty()){
+			return;
+		}
+		ApplicationCommonContext.getInstance().getConnectionPropertiesMap();
+		ApplicationDataHistoryMgr dataHistoryMgr = DbexHistoryMgrBeanFactory.getInstance().getApplicationDataHistoryMgr();
+		
+		Collection<List<ConnectionProperties>> listColl = fileConPropMap.values();
+		List<ConnectionProperties> connPropList = new ArrayList<ConnectionProperties>();
+		for (List<ConnectionProperties> list : listColl) {
+			connPropList.addAll(list);
+		}
+		int count = 0;
+		for (ConnectionProperties connectionProperties : connPropList) {
+			if(null != connectionProperties){
+				if(StringUtil.hasValidContent(connectionProperties.getConnectionName())){
+					if(ApplicationCommonContext.getInstance().getConnectionPropertiesMap()
+							.containsKey(connectionProperties.getConnectionName())){
+						connectionProperties.setConnectionName(
+								connectionProperties.getConnectionName() + "_" + (count++));
+					}
+					ApplicationCommonContext.getInstance().getConnectionPropertiesMap()
+						.put(connectionProperties.getConnectionName(), connectionProperties);
+				}
+			}
+		}
+		connPropList.clear();
+		connPropList.addAll(ApplicationCommonContext.getInstance().getConnectionPropertiesMap().values());
+		
+		boolean b = dataHistoryMgr.saveAllConnectionProperties(connPropList);
+		if(b){
+			closeAfterSave();
+		} else {
+			DisplayUtils.displayMessage(parentFrame, 
+					"Cannot save the Connection Properties !!!\n" +
+					"Please try again.", DisplayTypeEnum.ERROR);
+		}
+	}
+
+
+
+	private void closeAfterSave() {
+		int opt = DisplayUtils.confirmOkCancel(parentFrame, 
+				"Connection Properties saved successfully.\n" +
+				"Do you want to load other Properties?", DisplayTypeEnum.INFO);
+		if(JOptionPane.OK_OPTION != opt){
 			dispose();
 		}
 	}
