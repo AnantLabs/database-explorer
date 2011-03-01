@@ -57,7 +57,7 @@ import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.common.enums.TableDataExportTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
-import com.gs.dbex.design.util.DrawingUtil;
+import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.PaginationResult;
@@ -154,7 +154,7 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
     	int rowNumTo = paginationResult.getEndRow();
     	try {
 			targetTable.setModel(dataTableTableModelFactory.getResultSetTableModel(connectionProperties, databaseTable, rowNumFrom, rowNumTo));
-			DrawingUtil.updateTableColumnWidth(targetTable);
+			DesignUtil.updateTableColumnWidth(targetTable);
 		} catch(Exception e){
 			e.printStackTrace();
 			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
@@ -171,7 +171,7 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
     	try {
     		DataTableTableModel tableModel = dataTableTableModelFactory.getResultSetTableModel(connectionProperties, databaseTable, filterSubQuery);
 			targetTable.setModel(tableModel);
-			DrawingUtil.updateTableColumnWidth(targetTable);
+			DesignUtil.updateTableColumnWidth(targetTable);
 		} catch(Exception e){
 			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		}

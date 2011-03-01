@@ -24,7 +24,7 @@ import com.gs.dbex.application.table.model.DataTableTableModelFactory;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
-import com.gs.dbex.design.util.DrawingUtil;
+import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.service.DatabaseMetadataService;
 import com.gs.dbex.service.DbexServiceBeanFactory;

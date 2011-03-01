@@ -31,7 +31,7 @@ import com.gs.dbex.application.table.model.ColumnDetailsTableModel;
 import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
-import com.gs.dbex.design.util.DrawingUtil;
+import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
@@ -106,7 +106,7 @@ public class ColumnDetailsPanel extends JPanel implements ActionListener,
 		columDetailsTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		columDetailsTable.setCellSelectionEnabled(true);
 		columDetailsTable.setModel(new ColumnDetailsTableModel(columnList));
-		DrawingUtil.updateTableColumnWidth(columDetailsTable);
+		DesignUtil.updateTableColumnWidth(columDetailsTable);
 	}
 
 	private void initComponents() {
