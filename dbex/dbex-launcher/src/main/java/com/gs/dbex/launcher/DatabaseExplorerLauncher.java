@@ -39,7 +39,8 @@ public class DatabaseExplorerLauncher {
 	 */
 	public static void main(String[] args) {
 		logger.info("Launching Database Explorer.");
-		
+		System.setProperty("awt.useSystemAAFontSettings","on");
+		System.setProperty("swing.aatext", "true");
 		logger.info("Creating Spring Beans");
 		dbexCommonContext.applicationSpringContext = new ClassPathXmlApplicationContext(
 				new String[] { "/context/dbex-launcher-context.xml"});

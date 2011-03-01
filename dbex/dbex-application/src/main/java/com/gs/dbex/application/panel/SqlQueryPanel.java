@@ -85,7 +85,7 @@ import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.application.util.SwingUtilities;
 import com.gs.dbex.common.enums.QueryTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
-import com.gs.dbex.design.util.DrawingUtil;
+import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.sql.SqlQuery;
@@ -1304,7 +1304,7 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 		if(null != dataTable){
 			if(dataTable.getColumnCount() > 0){
 				queryResultTable.setModel(new DataTableTableModel(dataTable));
-				DrawingUtil.updateTableColumnWidth(queryResultTable);
+				DesignUtil.updateTableColumnWidth(queryResultTable);
 			}
 		}
 	}

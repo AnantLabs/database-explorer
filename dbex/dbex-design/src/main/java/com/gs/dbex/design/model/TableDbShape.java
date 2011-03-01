@@ -17,7 +17,7 @@ import java.util.Map;
 import com.gs.dbex.design.DbexColorConstants;
 import com.gs.dbex.design.DbexDesignConstants;
 import com.gs.dbex.design.model.dependency.TableDependency;
-import com.gs.dbex.design.util.DrawingUtil;
+import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
 import com.gs.utils.text.StringUtil;
@@ -67,15 +67,15 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 		if(null != canvasSize)
 			setCanvasSize(canvasSize);
 		
-		setWidth(DrawingUtil.calculateTableWidth(getGraphics(), getDbModel(), true));
-		setHeight(DrawingUtil.calculateTableHeight(getGraphics(), getDbModel(), true));
+		setWidth(DesignUtil.calculateTableWidth(getGraphics(), getDbModel(), true));
+		setHeight(DesignUtil.calculateTableHeight(getGraphics(), getDbModel(), true));
 		if(getX() == 0 && getY() == 0){
 			setX(canvasSize.width - (canvasSize.width/2 - getWidth()/2));
 			setY(DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH);
 		}
 		int colStart_X = getX() + 1;
-		int colStart_Y = getY() + DrawingUtil.calculateCellHeight(getGraphics()) + 2;
-		int cellHeight = DrawingUtil.calculateCellHeight(getGraphics());
+		int colStart_Y = getY() + DesignUtil.calculateCellHeight(getGraphics()) + 2;
+		int cellHeight = DesignUtil.calculateCellHeight(getGraphics());
 		if(null != columnDbShapes){
 			for (int i = 0; i < columnDbShapes.size(); i++) {
 				ColumnDbShape columnDbShape = columnDbShapes.get(i);
@@ -182,19 +182,19 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 			graphics.fillRect(location.x+1, location.y+1, size.width-1, size.height-1);
 			// draw the header
 			graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
-			graphics.drawRect(location.x, location.y, size.width, DrawingUtil.calculateCellHeight(graphics));
+			graphics.drawRect(location.x, location.y, size.width, DesignUtil.calculateCellHeight(graphics));
 			graphics.setColor(DbexColorConstants.TABLE_HEADER_BG_COLOR);
-			graphics.fillRect(location.x+1, location.y+1, size.width-1, DrawingUtil.calculateCellHeight(graphics)-1);
+			graphics.fillRect(location.x+1, location.y+1, size.width-1, DesignUtil.calculateCellHeight(graphics)-1);
 			graphics.setColor(DbexColorConstants.TABLE_HEADER_FG_COLOR);
 			graphics.drawString(table.getModelName(), location.x+2, 
-					location.y+DrawingUtil.calculateCellHeight(graphics)-4);
+					location.y+DesignUtil.calculateCellHeight(graphics)-4);
 			// draw the left margin
 			graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
-			graphics.drawRect(location.x, location.y + DrawingUtil.calculateCellHeight(graphics),
-					DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH, size.height-DrawingUtil.calculateCellHeight(graphics));
+			graphics.drawRect(location.x, location.y + DesignUtil.calculateCellHeight(graphics),
+					DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH, size.height-DesignUtil.calculateCellHeight(graphics));
 			graphics.setColor(DbexColorConstants.TABLE_LEFT_MARGIN_BG_COLOR);
-			graphics.fillRect(location.x+1, location.y + DrawingUtil.calculateCellHeight(graphics)+1,
-					DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH-1, size.height-1-DrawingUtil.calculateCellHeight(graphics));
+			graphics.fillRect(location.x+1, location.y + DesignUtil.calculateCellHeight(graphics)+1,
+					DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH-1, size.height-1-DesignUtil.calculateCellHeight(graphics));
 			
 			// draw columns
 			if(null != columnDbShapes){

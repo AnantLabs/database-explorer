@@ -30,7 +30,7 @@ import com.gs.dbex.design.DbexDesignConstants;
 import com.gs.dbex.design.model.dependency.ExportedTableRelation;
 import com.gs.dbex.design.model.dependency.ImportedTableRelation;
 import com.gs.dbex.design.model.dependency.TableDependency;
-import com.gs.dbex.design.util.DrawingUtil;
+import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.ForeignKey;
 import com.gs.dbex.model.db.Table;
@@ -129,8 +129,8 @@ public class DependencyGraphPanel extends JPanel {
 		
 		graphics.setFont(DEFAULT_TEXT_FONT);
 		
-		int tableWidth = DrawingUtil.calculateTableWidth(graphics, dependency.getCurrentTable(), showCompleteTable);
-		int tableHeight = DrawingUtil.calculateTableHeight(graphics, dependency.getCurrentTable(), showCompleteTable);
+		int tableWidth = DesignUtil.calculateTableWidth(graphics, dependency.getCurrentTable(), showCompleteTable);
+		int tableHeight = DesignUtil.calculateTableHeight(graphics, dependency.getCurrentTable(), showCompleteTable);
 		int panelWidth = 0;
 		int panelHeight = 0;
 		if(panelWidth < tableWidth){
@@ -158,8 +158,8 @@ public class DependencyGraphPanel extends JPanel {
 			for (ImportedTableRelation r : importedRelations) {
 				Table t = r.getImportedTable();
 				int w = 0, h = 0;
-				w = DrawingUtil.calculateTableWidth(graphics, t, showCompleteTable);
-				h = DrawingUtil.calculateTableHeight(graphics, t, showCompleteTable);
+				w = DesignUtil.calculateTableWidth(graphics, t, showCompleteTable);
+				h = DesignUtil.calculateTableHeight(graphics, t, showCompleteTable);
 				size.setSize(w, h);
 				drawTable(graphics, location, size, t, IMPORTED_TABLE);
 				location.setLocation(imp_X, location.y + h + 5);
@@ -178,8 +178,8 @@ public class DependencyGraphPanel extends JPanel {
 			for (ExportedTableRelation r : exportedRelations) {
 				Table t = r.getExportedTable();
 				int w = 0, h = 0;
-				w = DrawingUtil.calculateTableWidth(graphics, t, showCompleteTable);
-				h = DrawingUtil.calculateTableHeight(graphics, t, showCompleteTable);
+				w = DesignUtil.calculateTableWidth(graphics, t, showCompleteTable);
+				h = DesignUtil.calculateTableHeight(graphics, t, showCompleteTable);
 				size.setSize(w, h);
 				x = imp_X - w;
 				if(count == 0){
@@ -241,24 +241,24 @@ public class DependencyGraphPanel extends JPanel {
 		graphics.fillRect(location.x+1, location.y+1, size.width-1, size.height-1);
 		// draw the header
 		graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
-		graphics.drawRect(location.x, location.y, size.width, DrawingUtil.calculateCellHeight(graphics));
+		graphics.drawRect(location.x, location.y, size.width, DesignUtil.calculateCellHeight(graphics));
 		graphics.setColor(DbexColorConstants.TABLE_HEADER_BG_COLOR);
-		graphics.fillRect(location.x+1, location.y+1, size.width-1, DrawingUtil.calculateCellHeight(graphics)-1);
+		graphics.fillRect(location.x+1, location.y+1, size.width-1, DesignUtil.calculateCellHeight(graphics)-1);
 		graphics.setColor(DbexColorConstants.TABLE_HEADER_FG_COLOR);
 		graphics.drawString(table.getModelName(), location.x+2, 
-				location.y+DrawingUtil.calculateCellHeight(graphics)-4);
+				location.y+DesignUtil.calculateCellHeight(graphics)-4);
 		// draw the left margin
 		graphics.setColor(DbexColorConstants.TABLE_BORDER_COLOR);
-		graphics.drawRect(location.x, location.y + DrawingUtil.calculateCellHeight(graphics),
-				DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH, size.height-DrawingUtil.calculateCellHeight(graphics));
+		graphics.drawRect(location.x, location.y + DesignUtil.calculateCellHeight(graphics),
+				DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH, size.height-DesignUtil.calculateCellHeight(graphics));
 		graphics.setColor(DbexColorConstants.TABLE_LEFT_MARGIN_BG_COLOR);
-		graphics.fillRect(location.x+1, location.y + DrawingUtil.calculateCellHeight(graphics)+1,
-				DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH-1, size.height-1-DrawingUtil.calculateCellHeight(graphics));
+		graphics.fillRect(location.x+1, location.y + DesignUtil.calculateCellHeight(graphics)+1,
+				DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH-1, size.height-1-DesignUtil.calculateCellHeight(graphics));
 		
 		// draw columns
 		int colStart_X = location.x + DbexDesignConstants.TABLE_LEFT_MARGIN_WIDTH + 5;
-		int colStart_Y = location.y + DrawingUtil.calculateCellHeight(graphics) + 2;
-		int cellHeight = DrawingUtil.calculateCellHeight(graphics);
+		int colStart_Y = location.y + DesignUtil.calculateCellHeight(graphics) + 2;
+		int cellHeight = DesignUtil.calculateCellHeight(graphics);
 		List<Column> columnList = table.getColumnlist();
 		for(int i = 0; i<columnList.size(); i++){
 			Column c = columnList.get(i);

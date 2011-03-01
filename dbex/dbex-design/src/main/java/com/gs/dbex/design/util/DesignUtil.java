@@ -16,7 +16,7 @@ import com.gs.utils.text.StringUtil;
  * @author sabuj.das
  *
  */
-public class DrawingUtil{
+public class DesignUtil{
 
 	
 	public static int calculateTableWidth(Graphics graphics, Table table, boolean isComplete){
@@ -82,7 +82,7 @@ public class DrawingUtil{
 						String header = col.getHeaderValue().toString();
 						int width = 128;
 						if(g != null){
-							width = DrawingUtil.calculateTextWidth(g, header);
+							width = DesignUtil.calculateTextWidth(g, header);
 						}
 						col.setPreferredWidth(width);
 					}

@@ -39,7 +39,7 @@ import com.gs.dbex.application.util.MenuBarUtil;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
-import com.gs.dbex.design.util.DrawingUtil;
+import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.QuickEditVO;
@@ -92,7 +92,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 		} catch(Exception e){
 			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		}*/
-		DrawingUtil.updateTableColumnWidth(dataTable);
+		DesignUtil.updateTableColumnWidth(dataTable);
 	}
 	
 	private void showTableData(String filterSubQuery) {
@@ -105,7 +105,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 		} catch(Exception e){
 			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
 		}*/
-		DrawingUtil.updateTableColumnWidth(dataTable);
+		DesignUtil.updateTableColumnWidth(dataTable);
 	}
 
 
