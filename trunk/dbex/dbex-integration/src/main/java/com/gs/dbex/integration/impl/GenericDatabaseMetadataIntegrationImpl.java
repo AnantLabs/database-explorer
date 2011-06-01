@@ -6,6 +6,7 @@ package com.gs.dbex.integration.impl;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,7 @@ import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.common.exception.ErrorCodeConstants;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.db.Constraint;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
@@ -28,7 +30,12 @@ public class GenericDatabaseMetadataIntegrationImpl extends
 
 	private static Logger logger = Logger.getLogger(GenericDatabaseMetadataIntegrationImpl.class);
 	
-	
+	@Override
+	public Set<String> getAvailableSchemaNames(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	public Database readDatabase(ConnectionProperties connectionProperties,
 			ReadDepthEnum readDepthEnum) throws DbexException {
@@ -41,7 +48,7 @@ public class GenericDatabaseMetadataIntegrationImpl extends
 		try {
 			connection = connectionProperties.getDataSource().getConnection();
 			OracleDbGrabber dbGrabber = new OracleDbGrabber();
-			database = dbGrabber.grabDatabaseBySchema(connectionProperties.getConnectionName(), connection, "", readDepthEnum);
+			database = dbGrabber.grabDatabaseBySchema(connectionProperties, "", readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
@@ -67,10 +74,9 @@ public class GenericDatabaseMetadataIntegrationImpl extends
 	}
 
 
-	@Override
-	public ResultSet getAllConstraints(Connection connection,
+	public Set<Constraint> getAllConstraints(ConnectionProperties connectionProperties,
 			String schemaName, String tableName) throws DbexException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

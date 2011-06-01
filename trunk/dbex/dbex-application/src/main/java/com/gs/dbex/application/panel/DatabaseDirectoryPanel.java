@@ -50,6 +50,7 @@ import com.gs.dbex.application.tree.db.ColumnNode;
 import com.gs.dbex.application.tree.db.DatabaseNode;
 import com.gs.dbex.application.tree.db.FolderNode;
 import com.gs.dbex.application.tree.db.TableNode;
+import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.enums.ResourceEditTypeEnum;
 import com.gs.dbex.common.enums.ResourceTypeEnum;
@@ -60,7 +61,9 @@ import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.service.DatabaseMetadataService;
 import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.impl.DatabaseMetadataServiceImpl;
 
 /**
  * @author sabuj.das
@@ -573,12 +576,14 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 			if(table != null){
 				boolean showCompleteTable = false;
 				if(table.getColumnlist() == null || table.getColumnlist().size() <= 0){
-					Connection connection = null;
 					try {
-						connection = connectionProperties.getDataSource().getConnection();
-						table = new OracleDbGrabber().grabTable(connectionProperties.getConnectionName(), connection, 
-								table.getTableCatalog(), table.getModelName(), ReadDepthEnum.MEDIUM);
-					} catch (SQLException e) {
+						table = ((DatabaseMetadataService) ApplicationContextProvider.getInstance()
+								.getApplicationContext().getBean(DatabaseMetadataService.BEAN_NAME))
+								.getTableDetails(connectionProperties, table.getSchemaName(), table.getModelName());
+					} catch (DbexException e) {
+						e.printStackTrace();
+						showCompleteTable = true;
+					} catch (Exception e) {
 						e.printStackTrace();
 						showCompleteTable = true;
 					}

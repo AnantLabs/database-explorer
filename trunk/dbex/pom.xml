@@ -267,7 +267,7 @@
 		<izpack-standalone.version>4.3.1</izpack-standalone.version>
 		<system.architecture.version>x86</system.architecture.version>
 		<system.classifier>win32</system.classifier>
-		<flex.home>D:/TOOLS/Adobe/Flex Builder 3/sdks/3.1.0.2710</flex.home>
+		<flex.home>C:\TOOLS\Flex-sdk-3.1.0</flex.home>
 		<spring-version>3.0.0.RELEASE</spring-version>
 		<web.context.root>/dbex</web.context.root>
 		

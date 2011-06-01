@@ -25,7 +25,7 @@
 	<mx:Style source="assets/styles/Office2007Blue.css"/>
 	<mx:Style source="assets/skins/vistaremix/vistaremix.css"/>
 	-->
-	<mx:Style source="assets/styles/DbexStyle.css"/>
+	<mx:Style source="assets/styles/Office2007Blue.css"/>
 	
 	<view:DbexApplicationViewHelper id="DbexApplicationViewHelper"/>
 	

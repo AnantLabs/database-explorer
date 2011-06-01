@@ -47,6 +47,19 @@ public class TestDependencyPanel extends JFrame {
 			Column c = new Column(t);
 			c.setModelName("COLUMN_" + (i+1));
 			t.getColumnlist().add(c);
+			t.getExportedKeys();
+		}
+		
+		return t;
+	}
+	
+	private Table getDemoTable(){
+		Table t = new Table();
+		t.setModelName("TABLE");
+		for(int i=0; i<5; i++){
+			Column c = new Column(t);
+			c.setModelName("COLUMN_" + (i+1));
+			t.getColumnlist().add(c);
 		}
 		
 		return t;

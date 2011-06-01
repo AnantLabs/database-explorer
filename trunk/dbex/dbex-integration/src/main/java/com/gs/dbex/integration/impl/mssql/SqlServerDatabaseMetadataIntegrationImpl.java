@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,7 @@ import com.gs.dbex.core.CatalogGrabber;
 import com.gs.dbex.core.mysql.MysqlMetaQueryConstants;
 import com.gs.dbex.integration.impl.DatabaseMetadataIntegrationImpl;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.db.Constraint;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
@@ -38,6 +40,14 @@ public class SqlServerDatabaseMetadataIntegrationImpl extends
 		this.dbGrabber = dbGrabber;
 	}
 
+	
+	@Override
+	public Set<String> getAvailableSchemaNames(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public Database readDatabase(ConnectionProperties connectionProperties,
 			ReadDepthEnum readDepthEnum) throws DbexException {
 		logger.debug("START:: Reading Full database.");
@@ -88,7 +98,6 @@ public class SqlServerDatabaseMetadataIntegrationImpl extends
 		return table;
 	}
 
-	@Override
 	public ResultSet getAllConstraints(Connection connection,
 			String schemaName, String tableName) throws DbexException {
 		if(logger.isDebugEnabled()){
@@ -120,5 +129,9 @@ public class SqlServerDatabaseMetadataIntegrationImpl extends
 		return resultSet;
 	}
 
-
+	public Set<Constraint> getAllConstraints(ConnectionProperties connectionProperties,
+			String schemaName, String tableName) throws DbexException {
+		
+		return null;
+	}
 }

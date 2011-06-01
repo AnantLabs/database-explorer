@@ -35,9 +35,12 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.design.graph.DependencyGraphPanel;
-import com.gs.dbex.design.model.dependency.TableDependency;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.dependency.TableDependency;
+import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.DependencyService;
 
 /**
  * @author sabuj.das
@@ -322,17 +325,15 @@ public class TableDependencyPanel extends JPanel {
 		Runnable r = new Runnable(){
 			public void run() {
 				loadingLabel.setVisible(true);
-				//DependencyService dependencyService = new DependencyServiceImpl();
+				DependencyService dependencyService = DbexServiceBeanFactory.getBeanFactory().getDependencyService();
 				TableDependency dependency = null;
-				/*try {
+				try {
 					dependency = dependencyService.generateTableDependency(
-							connectionProperties.getDataSource().getConnection(), 
-							schemaName, tableName);
-				} catch (ApplicationException e) {
+							connectionProperties, 
+							tableName);
+				} catch (DbexException e) {
 					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}*/
+				} 
 				graphHolderPanel = new DependencyGraphPanel(dependency);
 				graphHolderPanel.addMouseMotionListener(new FormListener());
 				graphHolderPanel.setShowCompleteTable(showCompleteTableToggleBtn.isSelected());

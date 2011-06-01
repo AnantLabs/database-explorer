@@ -9,6 +9,28 @@ package com.gs.dbex.core.oracle;
  */
 public final class OracleMetaQueryConstants {
 
+	private static OracleMetaQueryConstants instance;
+	
+	private OracleMetaQueryConstants(){}
+	
+	
+	public synchronized static OracleMetaQueryConstants getInstance() {
+		if(null == instance){
+			instance = new OracleMetaQueryConstants();
+		}
+		return instance;
+	}
+
+	private String availableSchemaSql;
+	private String allTableSql;
+	private String allColumnsSql;
+	private String allConstraintsForTableSql;
+	private String allConstraintsByTypeForTableSql;
+	private String allPkForTableSql;
+	private String allImportedKeyForTableSql;
+	private String allExportedKeyForTableSql;
+
+
 	public static final String AVAILABLE_SCHEMA_SQL = 
 		"SELECT DISTINCT OWNER FROM ALL_CATALOG";
 
@@ -39,5 +61,77 @@ public final class OracleMetaQueryConstants {
 		+ " AND COLS.TABLE_NAME=?"
 		+ " AND CONS.CONSTRAINT_TYPE = ?"
 		+ " ORDER BY COLS.TABLE_NAME";
+
+	/* --------------- */
+	
+	public String getAvailableSchemaSql() {
+		return availableSchemaSql;
+	}
+
+	public void setAvailableSchemaSql(String availableSchemaSql) {
+		this.availableSchemaSql = availableSchemaSql;
+	}
+
+	public String getAllTableSql() {
+		return allTableSql;
+	}
+
+	public void setAllTableSql(String allTableSql) {
+		this.allTableSql = allTableSql;
+	}
+
+	public String getAllColumnsSql() {
+		return allColumnsSql;
+	}
+
+	public void setAllColumnsSql(String allColumnsSql) {
+		this.allColumnsSql = allColumnsSql;
+	}
+
+	public String getAllConstraintsForTableSql() {
+		return allConstraintsForTableSql;
+	}
+
+	public void setAllConstraintsForTableSql(String allConstraintsForTableSql) {
+		this.allConstraintsForTableSql = allConstraintsForTableSql;
+	}
+
+	public String getAllPkForTableSql() {
+		return allPkForTableSql;
+	}
+
+	public void setAllPkForTableSql(String allPkForTableSql) {
+		this.allPkForTableSql = allPkForTableSql;
+	}
+
+	public String getAllImportedKeyForTableSql() {
+		return allImportedKeyForTableSql;
+	}
+
+	public void setAllImportedKeyForTableSql(String allImportedKeyForTableSql) {
+		this.allImportedKeyForTableSql = allImportedKeyForTableSql;
+	}
+
+	public String getAllExportedKeyForTableSql() {
+		return allExportedKeyForTableSql;
+	}
+
+	public void setAllExportedKeyForTableSql(String allExportedKeyForTableSql) {
+		this.allExportedKeyForTableSql = allExportedKeyForTableSql;
+	}
+
+
+	public String getAllConstraintsByTypeForTableSql() {
+		return allConstraintsByTypeForTableSql;
+	}
+
+
+	public void setAllConstraintsByTypeForTableSql(
+			String allConstraintsByTypeForTableSql) {
+		this.allConstraintsByTypeForTableSql = allConstraintsByTypeForTableSql;
+	}
+	
+	
+	
 	
 }

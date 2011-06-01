@@ -416,7 +416,7 @@ public class ApplicationEventHandler implements ActionListener,
 				Connection con = null;
 				try {
 					con = dbIframe.getConnectionProperties().getDataSource().getConnection();
-					Table table = dbGrabber.grabTable(dbIframe.getConnectionProperties().getConnectionName(), con, schemaName, tableName, ReadDepthEnum.DEEP);
+					Table table = dbGrabber.grabTable(dbIframe.getConnectionProperties(), schemaName, tableName, ReadDepthEnum.DEEP);
 					if(table != null){
 						if(!isTableContent)
 							openTableDetails(dbIframe, table);

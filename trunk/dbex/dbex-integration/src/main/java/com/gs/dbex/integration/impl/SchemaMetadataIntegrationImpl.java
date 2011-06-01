@@ -2,12 +2,14 @@ package com.gs.dbex.integration.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.Set;
 
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.core.SchemaGrabber;
 import com.gs.dbex.integration.DatabaseMetadataIntegration;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.db.Constraint;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
@@ -20,6 +22,13 @@ public class SchemaMetadataIntegrationImpl implements
 		DatabaseMetadataIntegration {
 
 	private SchemaGrabber dbGrabber;
+	
+	@Override
+	public Set<String> getAvailableSchemaNames(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	@Override
 	public Database readDatabase(ConnectionProperties connectionProperties,
@@ -50,10 +59,9 @@ public class SchemaMetadataIntegrationImpl implements
 		this.dbGrabber = dbGrabber;
 	}
 
-	@Override
-	public ResultSet getAllConstraints(Connection connection,
+	public Set<Constraint> getAllConstraints(ConnectionProperties connectionProperties,
 			String schemaName, String tableName) throws DbexException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

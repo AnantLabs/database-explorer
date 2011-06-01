@@ -27,13 +27,13 @@ import javax.swing.border.LineBorder;
 
 import com.gs.dbex.design.DbexColorConstants;
 import com.gs.dbex.design.DbexDesignConstants;
-import com.gs.dbex.design.model.dependency.ExportedTableRelation;
-import com.gs.dbex.design.model.dependency.ImportedTableRelation;
-import com.gs.dbex.design.model.dependency.TableDependency;
 import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.ForeignKey;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.model.dependency.ExportedTableRelation;
+import com.gs.dbex.model.dependency.ImportedTableRelation;
+import com.gs.dbex.model.dependency.TableDependency;
 
 /**
  * @author sabuj.das

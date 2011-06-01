@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+	<bean id="oracleMetaQueryConstants" class="com.gs.dbex.core.oracle.OracleMetaQueryConstants" factory-method="getInstance">
+		<property name="availableSchemaSql">
+			<value>
+			<![CDATA[
+				SELECT DISTINCT OWNER 
+				FROM ALL_CATALOG
+			]]>
+			</value>
+		</property>
+	
+		<property name="allTableSql">
+			<value>
+			<![CDATA[
+				SELECT OWNER, TABLE_NAME, NUM_ROWS, TEMPORARY, DROPPED 
+				FROM ALL_TABLES 
+				WHERE OWNER = ?
+			]]>
+			</value>
+		</property>
+		
+		<property name="allColumnsSql">
+			<value>
+			<![CDATA[
+				SELECT 
+					T.OWNER, 
+					T.TABLE_NAME, 
+					T.COLUMN_NAME, 
+					T.DATA_TYPE,  
+					T.DATA_LENGTH, 
+					T.DATA_PRECISION, 
+					T.DATA_SCALE, 
+					T.NULLABLE,  
+					T.COLUMN_ID, 
+					T.DEFAULT_LENGTH, 
+					T.DATA_DEFAULT, 
+					T.CHARACTER_SET_NAME, 
+					P.COMMENTS   
+				FROM 
+					ALL_TAB_COLUMNS T, 
+					ALL_COL_COMMENTS P  
+				WHERE 
+				T.OWNER=?
+				AND T.TABLE_NAME=? 
+				AND T.OWNER = P.OWNER 
+				AND T.TABLE_NAME =P.TABLE_NAME 
+				AND T.COLUMN_NAME = P.COLUMN_NAME 
+			]]>
+			</value>
+		</property>
+		
+		<property name="allConstraintsForTableSql">
+			<value>
+			<![CDATA[
+				SELECT 
+					COLS.TABLE_NAME, 
+					COLS.COLUMN_NAME, 
+					CONS.STATUS, 
+					CONS.OWNER,
+					CONS.CONSTRAINT_TYPE
+				FROM 
+					ALL_CONSTRAINTS CONS, ALL_CONS_COLUMNS COLS
+				WHERE 
+				    CONS.CONSTRAINT_NAME = COLS.CONSTRAINT_NAME
+				    AND CONS.OWNER = COLS.OWNER
+				    AND CONS.TABLE_NAME = COLS.TABLE_NAME
+				    AND COLS.OWNER=?
+				    AND COLS.TABLE_NAME=?
+				ORDER BY COLS.TABLE_NAME
+			]]>
+			</value>
+		</property>
+		
+		<property name="allConstraintsByTypeForTableSql">
+			<value>
+			<![CDATA[
+				SELECT 
+					COLS.TABLE_NAME, 
+					COLS.COLUMN_NAME, 
+					CONS.STATUS, 
+					CONS.OWNER,
+					CONS.CONSTRAINT_TYPE
+				FROM 
+					ALL_CONSTRAINTS CONS, ALL_CONS_COLUMNS COLS
+				WHERE 
+				    CONS.CONSTRAINT_NAME = COLS.CONSTRAINT_NAME
+				    AND CONS.OWNER = COLS.OWNER
+				    AND CONS.TABLE_NAME = COLS.TABLE_NAME
+				    AND COLS.OWNER=?
+				    AND COLS.TABLE_NAME=?
+				    AND CONS.CONSTRAINT_TYPE = ?
+				ORDER BY COLS.TABLE_NAME
+			]]>
+			</value>
+		</property>
+		
+		<property name="allPkForTableSql">
+			<value>
+			<![CDATA[
+				SELECT 
+					COLS.COLUMN_NAME
+				FROM ALL_CONSTRAINTS CONS, ALL_CONS_COLUMNS COLS
+				WHERE 
+					CONSTRAINT_TYPE IN ('P','U') 
+					AND CONS.CONSTRAINT_NAME = COLS.CONSTRAINT_NAME
+				    AND CONS.OWNER = COLS.OWNER
+				    AND CONS.TABLE_NAME = COLS.TABLE_NAME
+				    AND COLS.OWNER=?
+				    AND COLS.TABLE_NAME=?
+			]]>
+			</value>
+		</property>
+		
+		<property name="allImportedKeyForTableSql">
+			<value>
+			<![CDATA[
+				SELECT 
+					C.OWNER,
+					C.CONSTRAINT_NAME,
+					C.CONSTRAINT_TYPE,
+					C.TABLE_NAME, 
+					COLS.COLUMN_NAME,
+					C.R_OWNER,
+					C.R_CONSTRAINT_NAME
+				FROM 
+					ALL_CONSTRAINTS C, 
+					ALL_CONS_COLUMNS COLS
+				WHERE 
+					C.CONSTRAINT_TYPE IN ('P','U')
+					AND C.CONSTRAINT_NAME = COLS.CONSTRAINT_NAME
+					AND C.CONSTRAINT_NAME IN 
+					(
+						SELECT 
+							C1.R_CONSTRAINT_NAME 
+						FROM ALL_CONSTRAINTS C1
+						WHERE 
+							C1.CONSTRAINT_TYPE IN ('R')
+							AND C1.OWNER = ? 
+							AND C1.TABLE_NAME=?
+					)
+			]]>
+			</value>
+		</property>
+		
+		<property name="allExportedKeyForTableSql">
+			<value>
+			<![CDATA[
+				SELECT 
+					C.OWNER,
+					C.CONSTRAINT_NAME,
+					C.CONSTRAINT_TYPE,
+					C.TABLE_NAME, 
+					COLS.COLUMN_NAME,
+					C.R_OWNER,
+					C.R_CONSTRAINT_NAME
+				FROM 
+					ALL_CONSTRAINTS C, 
+					ALL_CONS_COLUMNS COLS
+				WHERE 
+					C.CONSTRAINT_TYPE='R'
+					AND C.CONSTRAINT_NAME = COLS.CONSTRAINT_NAME
+					AND C.R_CONSTRAINT_NAME IN 
+					(
+						SELECT 
+							C1.CONSTRAINT_NAME 
+						FROM 
+							ALL_CONSTRAINTS C1
+						WHERE 
+							C1.CONSTRAINT_TYPE IN ('P','U') 
+							AND C1.TABLE_NAME=?
+					)
+			]]>
+			</value>
+		</property>
+	</bean>
+
+
+</beans>

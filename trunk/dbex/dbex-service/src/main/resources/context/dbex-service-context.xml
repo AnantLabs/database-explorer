@@ -13,11 +13,16 @@
 		class="com.gs.dbex.service.impl.QueryExecutionServiceImpl">
 	</bean>
 	
+	<bean id="dependencyService"
+		class="com.gs.dbex.service.impl.DependencyServiceImpl">
+	</bean>
+	
 	<bean id="DbexServiceBeanFactory"
 		class="com.gs.dbex.service.DbexServiceBeanFactory" factory-method="getBeanFactory">
 		<property name="databaseConnectionService" ref="databaseConnectionService"></property>
 		<property name="databaseMetadataService" ref="databaseMetadataService"></property>
 		<property name="queryExecutionService" ref="queryExecutionService"></property>
+		<property name="dependencyService" ref="dependencyService" />
 	</bean>
 
 </beans>
