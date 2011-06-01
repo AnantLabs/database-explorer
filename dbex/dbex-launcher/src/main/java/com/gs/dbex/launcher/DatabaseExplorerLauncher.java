@@ -6,14 +6,20 @@ package com.gs.dbex.launcher;
 import java.io.File;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import sun.swing.SwingUtilities2;
 
 import com.gs.dbex.application.context.ApplicationCommonContext;
 import com.gs.dbex.application.frame.DatabaseExplorerFrame;
+import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.launcher.splash.DbexSplashWindow;
 
@@ -39,13 +45,26 @@ public class DatabaseExplorerLauncher {
 	 */
 	public static void main(String[] args) {
 		logger.info("Launching Database Explorer.");
-		System.setProperty("awt.useSystemAAFontSettings","on");
-		System.setProperty("swing.aatext", "true");
-		logger.info("Creating Spring Beans");
-		dbexCommonContext.applicationSpringContext = new ClassPathXmlApplicationContext(
-				new String[] { "/context/dbex-launcher-context.xml"});
+		//System.setProperty("awt.useSystemAAFontSettings","lcd");
+		//System.setProperty("swing.aatext", "true");
+		try {
+        	logger.info("Load Spring ApplicationContext.....................................");
+            ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+                    new String[] { "/context/dbex-launcher-context.xml"});
+            System.out.println("ApplicationContext is loaded.....................................");
+            logger.info("ApplicationContext is loaded.....................................");
+        } catch (Exception e) {
+        	logger.info("Cannot Load ApplicationContext.....................................");
+        	System.out.println("Cannot Load ApplicationContext.....................................");
+            logger.error(e);
+            JOptionPane.showMessageDialog(null, "System Error.\n\nCannot load the application.");
+            System.exit(0);
+        }
 		
-		DatabaseExplorerLauncher launcher = (DatabaseExplorerLauncher) dbexCommonContext.applicationSpringContext.getBean("databaseExplorerLauncher");
+		ApplicationContextProvider contextProvider = ApplicationContextProvider.getInstance();
+		
+		
+		DatabaseExplorerLauncher launcher = (DatabaseExplorerLauncher) contextProvider.getApplicationContext().getBean("databaseExplorerLauncher");
 		DbexSplashWindow splashWindow = new DbexSplashWindow(launcher);
 	}
 	
@@ -66,7 +85,7 @@ public class DatabaseExplorerLauncher {
         
         DatabaseExplorerFrame explorerFrame = new DatabaseExplorerFrame();
 		if(explorerFrame != null){
-			explorerFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			explorerFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			explorerFrame.setVisible(true);
 		}
      

@@ -35,11 +35,14 @@ import org.apache.log4j.Logger;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.util.DisplayUtils;
+import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.enums.ObjectTypeEnum;
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.vo.TableSearchCriteria;
 import com.gs.dbex.model.vo.TableSearchResult;
+import com.gs.dbex.service.DatabaseMetadataService;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -63,11 +66,10 @@ public class SearchTablePanel extends JPanel implements ActionListener {
 			ConnectionProperties connectionProperties) {
     	this.connectionProperties = connectionProperties;
     	this.parentFrame = parentFrame;
-    	Connection connection = null;
     	String[] schemaNames = null;
 		try{
-			connection = connectionProperties.getDataSource().getConnection();
-			Set<String> schemas = new OracleDbGrabber().getAvailableSchemaNames(connectionProperties.getConnectionName(), connection);
+			Set<String> schemas = ((DatabaseMetadataService) ApplicationContextProvider.getInstance().getApplicationContext()
+    				.getBean(DatabaseMetadataService.BEAN_NAME)).getAvailableSchemaNames(connectionProperties); 
 			if(logger.isDebugEnabled()){
 				logger.debug("[ " + schemas.size() + " ] available schema found.");
 			}
@@ -77,16 +79,10 @@ public class SearchTablePanel extends JPanel implements ActionListener {
 				schemaNames[i++] = s;
 			}
 			availableSchemaNames = schemaNames;
-		}catch(SQLException se){
+		}catch(DbexException se){
 			logger.error("Cannot copy table", se);
-		}finally{
-			if(connection != null){
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+		}catch(Exception se){
+			logger.error("Cannot copy table", se);
 		}
     	
         initComponents();

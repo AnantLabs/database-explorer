@@ -25,8 +25,17 @@ public final class DbexServiceBeanFactory {
 	private DatabaseConnectionService databaseConnectionService;
 	private DatabaseMetadataService databaseMetadataService;
 	private QueryExecutionService queryExecutionService;
+	private DependencyService dependencyService;
 
 	
+	public DependencyService getDependencyService() {
+		return dependencyService;
+	}
+
+	public void setDependencyService(DependencyService dependencyService) {
+		this.dependencyService = dependencyService;
+	}
+
 	public QueryExecutionService getQueryExecutionService() {
 		return queryExecutionService;
 	}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gs.dbex.design.model.dependency;
+package com.gs.dbex.model.dependency;
 
 import java.io.Serializable;
 

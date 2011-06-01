@@ -8,11 +8,13 @@ import java.util.Vector;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.gs.dbex.application.tree.DatabaseDirectoryTree;
+import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.service.DatabaseMetadataService;
 import com.gs.utils.swing.tree.IconData;
 
 public class TableNode implements DatabaseNode<Table>, Comparable<TableNode> {
@@ -61,12 +63,13 @@ public class TableNode implements DatabaseNode<Table>, Comparable<TableNode> {
 		List<Column> columns = table.getColumnlist();
 		boolean hasCols = false;
 		if (columns == null || columns.size() <= 0) {
-			Connection connection = null;
 			try {
-				connection = connectionProperties.getDataSource().getConnection();
-				table = new OracleDbGrabber().grabTable(connectionProperties.getConnectionName(), connection, 
-						table.getSchemaName(), table.getModelName(), ReadDepthEnum.MEDIUM);
-			} catch (SQLException e) {
+				table = ((DatabaseMetadataService)
+						ApplicationContextProvider.getInstance().getApplicationContext()
+						.getBean(DatabaseMetadataService.BEAN_NAME)
+					).getTableDetails(connectionProperties, 
+						table.getSchemaName(), table.getModelName());
+			} catch (Exception e) {
 				e.printStackTrace();
 				return true;
 			}

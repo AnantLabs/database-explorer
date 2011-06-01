@@ -36,6 +36,7 @@ import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
 import org.omg.CORBA.portable.ApplicationException;
+import org.springframework.beans.BeansException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.panel.ResourceCommentPanel;
@@ -45,12 +46,15 @@ import com.gs.dbex.application.table.CopyTablePanel;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.SqlGeneratorUtil;
 import com.gs.dbex.application.util.WindowUtil;
+import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.enums.ResourceEditTypeEnum;
 import com.gs.dbex.common.enums.ResourceTypeEnum;
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.service.DatabaseMetadataService;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -135,11 +139,10 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		setTitle("Copy Table");
         		logger.info("Copy Table");
         		copyTablePanel = new CopyTablePanel();
-        		Connection connection = null;
         		String[] schemaNames = null;
         		try{
-        			connection = getConnectionProperties().getDataSource().getConnection();
-        			Set<String> schemas = new OracleDbGrabber().getAvailableSchemaNames(connectionProperties.getConnectionName(), connection);
+        			Set<String> schemas = ((DatabaseMetadataService) ApplicationContextProvider.getInstance().getApplicationContext()
+        				.getBean(DatabaseMetadataService.BEAN_NAME)).getAvailableSchemaNames(connectionProperties); 
         			if(logger.isDebugEnabled()){
         				logger.debug("[ " + schemas.size() + " ] available schema found.");
         			}
@@ -148,17 +151,11 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         			for (String s : schemas) {
 						schemaNames[i++] = s;
 					}
-        		}catch(SQLException se){
-        			logger.error("Cannot copy table", se);
-        		}finally{
-        			if(connection != null){
-        				try {
-							connection.close();
-						} catch (SQLException e) {
-							e.printStackTrace();
-						}
-        			}
-        		}
+        		} catch (DbexException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
         		copyTablePanel.setSchemaNames(schemaNames);
         		copyTablePanel.setSourceTableName(table.getModelName());
         		copyTablePanel.getNewSchemaListComboBox().addActionListener(this);

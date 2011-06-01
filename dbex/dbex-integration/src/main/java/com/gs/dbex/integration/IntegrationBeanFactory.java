@@ -28,6 +28,7 @@ public final class IntegrationBeanFactory {
 	private QueryExecutionIntegration mysqlQueryExecutionIntegration;
 	private QueryExecutionIntegration sqlServerQueryExecutionIntegration;
 	private QueryExecutionIntegration oracleQueryExecutionIntegration;
+	private DependencyIntegration oracleDependencyIntegration;
 	
 	private IntegrationBeanFactory() {
 		
@@ -84,6 +85,33 @@ public final class IntegrationBeanFactory {
 			
 		}
 		return null;
+	}
+
+	public DependencyIntegration getDependencyIntegration(DatabaseTypeEnum databaseTypeEnum) {
+		if(null == databaseTypeEnum)
+			return null;
+		if(DatabaseTypeEnum.ORACLE.equals(databaseTypeEnum)){
+			return getOracleDependencyIntegration();
+		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
+			return null;
+		}else if(DatabaseTypeEnum.MSSQL_2005.equals(databaseTypeEnum)){
+			return null;
+		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
+			
+		}
+		return null;
+	}
+	
+	
+	@Deprecated
+	public DependencyIntegration getOracleDependencyIntegration() {
+		return oracleDependencyIntegration;
+	}
+
+	@Deprecated
+	public void setOracleDependencyIntegration(
+			DependencyIntegration oracleDependencyIntegration) {
+		this.oracleDependencyIntegration = oracleDependencyIntegration;
 	}
 
 	@Deprecated

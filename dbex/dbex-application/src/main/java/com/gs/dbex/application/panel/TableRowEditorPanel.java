@@ -6,8 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,12 +18,12 @@ import javax.swing.JTextField;
 import javax.swing.table.TableModel;
 
 import com.gs.dbex.application.comps.ColumnRow;
-import com.gs.dbex.common.enums.ReadDepthEnum;
-import com.gs.dbex.core.oracle.OracleDbGrabber;
+import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.PrimaryKey;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.service.DatabaseMetadataService;
 
 
 /**
@@ -65,10 +63,12 @@ public class TableRowEditorPanel extends JPanel implements ActionListener {
 	
 
 	private void grabTable(){
-		Connection con = null;
 		try{
-			con = getConnectionProperties().getDataSource().getConnection();
-			databaseTable = new OracleDbGrabber().grabTable(connectionProperties.getConnectionName(), con, schemaName, tableName, ReadDepthEnum.DEEP);
+			databaseTable = 
+				(
+					(DatabaseMetadataService)ApplicationContextProvider.getInstance().getApplicationContext()
+					.getBean(DatabaseMetadataService.BEAN_NAME)
+				).getTableDetails(connectionProperties, schemaName, tableName);
 			List<PrimaryKey> primaryKeyList = databaseTable.getPrimaryKeys();
 			for (PrimaryKey pk : primaryKeyList) {
 				primaryKeyColumnNameList.add(pk.getColumnName());
@@ -80,14 +80,6 @@ public class TableRowEditorPanel extends JPanel implements ActionListener {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-		}finally{
-			if(con != null){
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 	

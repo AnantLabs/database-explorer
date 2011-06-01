@@ -57,11 +57,12 @@
 		<property name="mysqlDatabaseConnectionIntegration" ref="mysqlDatabaseConnectionIntegration"></property>
 		<property name="castorXmlReaderIntegration" ref="castorXmlReaderIntegration"></property>
 		<property name="genericDatabaseConnectionIntegration" ref="genericDatabaseConnectionIntegration"></property>
-		<property name="mysqlQueryExecutionIntegration" ref="mysqlQueryExecutionIntegration"></property>
-		<property name="sqlServerDatabaseConnectionIntegration" ref="sqlServerDatabaseConnectionIntegration"></property>
-		<property name="sqlServerDatabaseMetadataIntegration" ref="sqlServerDatabaseMetadataIntegration"></property>
-		<property name="sqlServerQueryExecutionIntegration" ref="sqlServerQueryExecutionIntegration"></property>
-		<property name="oracleQueryExecutionIntegration" ref="oracleQueryExecutionIntegration"></property>
+		<property name="mysqlQueryExecutionIntegration" ref="mysqlQueryExecutionIntegration" />
+		<property name="sqlServerDatabaseConnectionIntegration" ref="sqlServerDatabaseConnectionIntegration" />
+		<property name="sqlServerDatabaseMetadataIntegration" ref="sqlServerDatabaseMetadataIntegration" />
+		<property name="sqlServerQueryExecutionIntegration" ref="sqlServerQueryExecutionIntegration" />
+		<property name="oracleQueryExecutionIntegration" ref="oracleQueryExecutionIntegration" />
+		<property name="oracleDependencyIntegration" ref="oracleDependencyIntegration" />
 	</bean>
 	
 	<bean id="oracleDatabaseConnectionHelper"
@@ -127,6 +128,11 @@
 	
 	<bean id="oracleQueryExecutionIntegration"
 		class="com.gs.dbex.integration.impl.oracle.OracleQueryExecutionIntegration">
+	</bean>
+	
+	<bean id="oracleDependencyIntegration"
+		class="com.gs.dbex.integration.impl.oracle.OracleDependencyIntegrationImpl">
+		<property name="dbGrabber" ref="oracleDBGrabber"></property>
 	</bean>
 	
 </beans>

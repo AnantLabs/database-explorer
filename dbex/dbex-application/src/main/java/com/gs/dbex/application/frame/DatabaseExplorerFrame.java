@@ -58,21 +58,6 @@ public class DatabaseExplorerFrame extends JFrame implements WindowListener{
     private StatusBar statusBar;
 
 	public DatabaseExplorerFrame() {
-		try {
-			UIManager.setLookAndFeel(VisualStudio2005LookAndFeel.class.getCanonicalName());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		logger.info("Starting application.");
 		initComponents();
 		setInitialProperties();

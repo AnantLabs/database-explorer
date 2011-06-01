@@ -21,6 +21,7 @@ import com.gs.dbex.common.enums.PKMetaDataEnum;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.enums.TableMetaDataEnum;
 import com.gs.dbex.core.SchemaGrabber;
+import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.ForeignKey;
@@ -416,13 +417,85 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 		
 		return schemaNames;
 	}
-	
-	
+
 	@Override
-	public List<Schema> grabSchema(String connectionName, Connection connection)
+	public Database grabDatabaseBySchema(
+			ConnectionProperties connectionProperties, String databaseName,
+			ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Schema> grabSchema(ConnectionProperties connectionProperties)
 			throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Schema grabSchema(ConnectionProperties connectionProperties,
+			String schemaName) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<String> getAvailableSchemaNames(
+			ConnectionProperties connectionProperties) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Table grabTable(ConnectionProperties connectionProperties,
+			String schemaName, String tableName, ReadDepthEnum readDepth)
+			throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Column> getColumnList(
+			ConnectionProperties connectionProperties, Table table,
+			ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Column> getColumnList(
+			ConnectionProperties connectionProperties, String tableName,
+			ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<PrimaryKey> grabPrimaryKeys(
+			ConnectionProperties connectionProperties, String schemaName,
+			String tableName, ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ForeignKey> grabImportedKeys(
+			ConnectionProperties connectionProperties, Table table,
+			ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ForeignKey> grabExportedKeys(
+			ConnectionProperties connectionProperties, Table table,
+			ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
 
 }

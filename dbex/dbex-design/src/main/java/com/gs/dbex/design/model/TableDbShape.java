@@ -6,21 +6,19 @@ package com.gs.dbex.design.model;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.gs.dbex.design.DbexColorConstants;
 import com.gs.dbex.design.DbexDesignConstants;
-import com.gs.dbex.design.model.dependency.TableDependency;
 import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
-import com.gs.utils.text.StringUtil;
 
 /**
  * @author Sabuj Das
@@ -169,7 +167,7 @@ public class TableDbShape extends BaseDbShape<Table> implements Serializable,
 
 	@Override
 	public void drawShape() {
-		Graphics graphics = getGraphics();
+		Graphics2D graphics = (Graphics2D) getGraphics();
 		Color oldFg = graphics.getColor();
 		Table table = getDbModel();
 		if(null != table){

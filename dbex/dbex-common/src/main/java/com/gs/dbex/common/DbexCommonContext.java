@@ -32,7 +32,6 @@ public final class DbexCommonContext implements DbexCommonConstants{
 	public final Map<String, String> APP_PROPERTIES_MAP = new HashMap<String, String>();
 	private int defaultPortNumber = 1521;
 	private String defaultHostName = "localhost";
-	public ApplicationContext applicationSpringContext;
 	
 	/* -----------  Utility methods  --------------------------------------- */
 	private void initContext() {

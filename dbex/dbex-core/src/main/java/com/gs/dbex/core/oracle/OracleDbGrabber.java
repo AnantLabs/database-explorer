@@ -5,28 +5,20 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import oracle.jdbc.driver.OracleConnection;
-
 import org.apache.log4j.Logger;
 
-import com.gs.dbex.common.enums.ColumnMetaDataEnum;
 import com.gs.dbex.common.enums.ForeignKeyMetaDataEnum;
-import com.gs.dbex.common.enums.PKMetaDataEnum;
 import com.gs.dbex.common.enums.ReadDepthEnum;
-import com.gs.dbex.common.enums.TableMetaDataEnum;
 import com.gs.dbex.core.SchemaGrabber;
-import com.gs.dbex.core.metadata.enums.MysqlMetadataConstants;
 import com.gs.dbex.core.metadata.enums.OracleMetadataConstants;
-import com.gs.dbex.core.mysql.MysqlMetaQueryConstants;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
+import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.ForeignKey;
@@ -66,38 +58,38 @@ public class OracleDbGrabber implements SchemaGrabber{
 	 * @return
 	 * @throws SQLException
 	 */
-	public Database grabDatabaseBySchema(String connectionName, Connection connection, String schemaName, ReadDepthEnum readDepth) throws SQLException{
+	public Database grabDatabaseBySchema(ConnectionProperties connectionProperties, String schemaName, ReadDepthEnum readDepth) throws SQLException{
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabDatabaseBySchema() for schemaName: " + schemaName);
 		}
-		if(connection == null){
+		if(connectionProperties == null){
 			return null;
 		}
 		Database database = new Database();
 		if(!StringUtil.hasValidContent(schemaName))
-			database.getSchemaList().addAll(grabSchema(connectionName, connection));
+			database.getSchemaList().addAll(grabSchema(connectionProperties));
 		else
-			database.getSchemaList().add(grabSchema(connectionName, connection, schemaName.toUpperCase()));
+			database.getSchemaList().add(grabSchema(connectionProperties, schemaName.toUpperCase()));
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: grabDatabaseBySchema()");
 		}
 		return database;
 	}
 	
-	public List<Schema> grabSchema(String connectionName, Connection connection)
+	public List<Schema> grabSchema(ConnectionProperties connectionProperties)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabCatalog()");
 		}
-		if(connection == null){
+		if(connectionProperties == null){
 			return null;
 		}
 		List<Schema> schemas = new ArrayList<Schema>();
-		Set<String> schemaNames = getAvailableSchemaNames(connectionName, connection);
+		Set<String> schemaNames = getAvailableSchemaNames(connectionProperties);
 		if(null != schemaNames && schemaNames.size() > 0){
 			for (String schemaName : schemaNames) {
-				RESERVED_WORDS_UTIL.addSchemaName(connectionName, schemaName);
-				Schema schema = grabSchema(connectionName, connection, schemaName);
+				RESERVED_WORDS_UTIL.addSchemaName(connectionProperties.getConnectionName(), schemaName);
+				Schema schema = grabSchema(connectionProperties, schemaName);
 				if(null != schema)
 					schemas.add(schema);
 			}
@@ -108,63 +100,74 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return schemas;
 	}
 
-	public Schema grabSchema(String connectionName, Connection connection, String schemaName) throws SQLException{
+	public Schema grabSchema(ConnectionProperties connectionProperties, String schemaName) throws SQLException{
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabSchema() for schema: " + schemaName);
 		}
-		if(connection == null){
+		if(connectionProperties == null){
 			return null;
 		}
 		if(!StringUtil.hasValidContent(schemaName))
 			return null;
-		RESERVED_WORDS_UTIL.addSchemaName(connectionName, schemaName);
+		RESERVED_WORDS_UTIL.addSchemaName(connectionProperties.getConnectionName(), schemaName);
 		Schema schema = new Schema();
 		schema.setSchemaName(schemaName);
 		schema.setModelName(schemaName);
-		schema.setTableList(grabTables(connectionName, connection, schemaName));
+		schema.setTableList(grabTables(connectionProperties, schemaName));
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: grabSchema()");
 		}
 		return schema;
 	}
 	
-	public List<Table> grabTables(String connectionName, Connection connection, String schemaName)throws SQLException  {
+	public List<Table> grabTables(ConnectionProperties connectionProperties, String schemaName)throws SQLException  {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabTables() for schemaName: " + schemaName);
 		}
-		if(connection == null){
+		if(connectionProperties == null){
 			return null;
 		}
 		if(!StringUtil.hasValidContent(schemaName))
 			return null;
 		List<Table> tables = new ArrayList<Table>();
-		PreparedStatement statement = connection.prepareStatement(OracleMetaQueryConstants.ALL_TABLES_SQL);
-		statement.setString(1, schemaName.toUpperCase());
-		if(logger.isDebugEnabled()){
-			logger.debug("Executing SQL: [ " + OracleMetaQueryConstants.ALL_TABLES_SQL + " ]");
-		}
-		ResultSet resultSet = statement.executeQuery();
-		if(null != resultSet){
-			while(resultSet.next()){
-				String tableName = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.TABLE_NAME);
-				if(logger.isDebugEnabled()){
-					logger.debug("TABLE_NAME found: " + tableName);
-				}
-				String tableCatalog = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.OWNER);
-				String tableSchema = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.OWNER);
-				String dropped = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.DROPPED);
-				
-				if(StringUtil.hasValidContent(tableName)){
-					Table table = grabTable(connectionName, connection, schemaName, tableName, ReadDepthEnum.DEEP);
-					table.setTableCatalog(tableCatalog);
-					table.setTableSchema(tableSchema);
-					table.setModelName(tableName);
-					tables.add(table);
-					RESERVED_WORDS_UTIL.addTableName(connectionName, schemaName, tableName);
+		
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			statement = connection.prepareStatement(OracleMetaQueryConstants.ALL_TABLES_SQL);
+			statement.setString(1, schemaName.toUpperCase());
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + OracleMetaQueryConstants.ALL_TABLES_SQL + " ]");
+			}
+			resultSet = statement.executeQuery();
+			if(null != resultSet){
+				while(resultSet.next()){
+					String tableName = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.TABLE_NAME);
+					if(logger.isDebugEnabled()){
+						logger.debug("TABLE_NAME found: " + tableName);
+					}
+					String tableCatalog = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.OWNER);
+					String tableSchema = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.OWNER);
+					String dropped = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.DROPPED);
+					
+					if(StringUtil.hasValidContent(tableName)){
+						Table table = grabTable(connectionProperties, schemaName, tableName, ReadDepthEnum.DEEP);
+						table.setTableCatalog(tableCatalog);
+						table.setTableSchema(tableSchema);
+						table.setModelName(tableName);
+						tables.add(table);
+						RESERVED_WORDS_UTIL.addTableName(connectionProperties.getConnectionName(), schemaName, tableName);
+					}
 				}
 			}
+		} finally{
+			JdbcUtil.close(resultSet, false);
+			JdbcUtil.close(connection);
 		}
-		JdbcUtil.close(resultSet, false);
+		
+		
 		
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: grabTables()");
@@ -172,20 +175,6 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return tables;
 	}
 	
-	public ResultSet grabColumnDetails(String connectionName, String schemaName, String tableName, Connection connection) throws SQLException{
-		DatabaseMetaData metaData = connection.getMetaData();
-		return metaData.getColumns("", schemaName, tableName, "%");
-	}
-	
-	public int grabColumnCount(String connectionName, String schemaName, String tableName, Connection connection) throws SQLException{
-		DatabaseMetaData metaData = connection.getMetaData();
-		ResultSet rs = metaData.getColumns("", schemaName, tableName, "%");
-		int count = 0;
-		while(rs.next()){
-			count ++;
-		}
-		return count;
-	}
 	
 	/**
 	 * 
@@ -195,12 +184,12 @@ public class OracleDbGrabber implements SchemaGrabber{
 	 * @param readDepth
 	 * @return
 	 */
-	public Table grabTable(String connectionName, Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException {
+	public Table grabTable(ConnectionProperties connectionProperties, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException {
 		
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabTable()");
 		}
-		if(connection == null){
+		if(connectionProperties == null){
 			return null;
 		}
 		if(!StringUtil.hasValidContent(tableName))
@@ -210,22 +199,22 @@ public class OracleDbGrabber implements SchemaGrabber{
 		table.setModelName(tableName);
 		table.setSchemaName(schemaName);
 		
-		List<PrimaryKey> primaryKeys = grabPrimaryKeys(connectionName, connection, schemaName, tableName, readDepth);
+		List<PrimaryKey> primaryKeys = grabPrimaryKeys(connectionProperties, schemaName, tableName, readDepth);
 		if(null != primaryKeys){
 			table.getPrimaryKeys().addAll(primaryKeys);
 		}
 		
-		List<Column> columns = getColumnList(connectionName, table, connection, ReadDepthEnum.DEEP);
+		List<Column> columns = getColumnList(connectionProperties, table, ReadDepthEnum.DEEP);
 		if(null != columns){
 			table.getColumnlist().addAll(columns);
 		}
 		
-		List<ForeignKey> importedKeys = grabImportedKeys(connectionName, connection, table, readDepth);
+		List<ForeignKey> importedKeys = grabImportedKeys(connectionProperties, table, readDepth);
 		if(null != importedKeys){
 			table.getImportedKeys().addAll(importedKeys);
 		}
 		
-		List<ForeignKey> exportedKeys = grabExportedKeys(connectionName, connection, table, readDepth);
+		List<ForeignKey> exportedKeys = grabExportedKeys(connectionProperties, table, readDepth);
 		if(null != exportedKeys){
 			table.getExportedKeys().addAll(exportedKeys);
 		}
@@ -238,108 +227,122 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return table;
 	}
 	
-	public List<Column> getColumnList(String connectionName, Table table, Connection connection, ReadDepthEnum readDepth) throws SQLException{
+	public List<Column> getColumnList(ConnectionProperties connectionProperties, Table table, ReadDepthEnum readDepth) throws SQLException{
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: getColumnList()");
 		}
-		if(connection == null){
+		if(connectionProperties == null){
 			return null;
 		}
 		if(null == table)
 			return null;
 		List<Column> columns = new ArrayList<Column>();
-		PreparedStatement statement = (PreparedStatement) connection.prepareStatement(OracleMetaQueryConstants.ALL_COLUMNS_SQL);
-		statement.setString(1, table.getSchemaName().toUpperCase());
-		statement.setString(2, table.getModelName().toUpperCase());
-		if(logger.isDebugEnabled()){
-			logger.debug("Executing SQL: [ " + OracleMetaQueryConstants.ALL_COLUMNS_SQL + " ]");
-		}
-		Column pkCol = table.getPrimaryKeyColumn();
 		
-		ResultSet resultSet = statement.executeQuery();
-		if(null != resultSet){
-			while(resultSet.next()){
-				Column column = new Column(table);
-				column.setTableName(table.getModelName());
-				column.setSchemaName(table.getSchemaName());
-				
-				String columnName = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.COLUMN_NAME);
-				column.setModelName(columnName);
-				column.setPrimaryKey(table.isPrimaryKeyColumn(columnName));
-				RESERVED_WORDS_UTIL.addColumnName(connectionName, table.getModelName(), columnName);
-				
-				int columnID = resultSet.getInt(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.COLUMN_ID);
-				column.setColumnID(columnID);
-				
-				String comments = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.COMMENTS);
-				column.setComments(comments);
-				
-				String typeName = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_TYPE);
-				column.setTypeName(typeName);
-				try{
-					InputStream defaultValue; // Holds the LONG data
-			        StringBuffer dataBuffer = new StringBuffer();
-			        int chunk;
-			        defaultValue = resultSet.getAsciiStream(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_DEFAULT);
-			        if(null != defaultValue){
-						while ((chunk = defaultValue.read()) != -1) {
-							dataBuffer.append((char) chunk);
-						}
-						column.setDefaultValue(dataBuffer.toString());
-			        }
-				}catch(Exception e){
-					logger.error("Cannot read DATA_DEFAULT for column: " + columnName);
-					logger.error(e.getMessage());
-				}
-				Boolean nullable = Boolean.FALSE;
-				String isNull = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.NULLABLE);
-				if("Y".equalsIgnoreCase(isNull))
-					nullable = Boolean.TRUE;
-				column.setNullable(nullable);
-				
-				
-				String scaleStr = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_LENGTH);
-				try{
-					column.setSize(Integer.valueOf(scaleStr));
-				} catch (Exception e) {
-					// do nothing
-				}
-				
-				String preciStr = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_PRECISION);
-				try{
-					column.setPrecision(Integer.valueOf(preciStr));
-				} catch (Exception e) {
-					// do nothing
-				}
-				
-				/*String privilages = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.COLUMNS.PRIVILEGES);
-				column.setPrivileges(privilages);*/
-				
-				columns.add(column);
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			statement = (PreparedStatement) connection.prepareStatement(OracleMetaQueryConstants.ALL_COLUMNS_SQL);
+			statement.setString(1, table.getSchemaName().toUpperCase());
+			statement.setString(2, table.getModelName().toUpperCase());
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + OracleMetaQueryConstants.ALL_COLUMNS_SQL + " ]");
 			}
+			Column pkCol = table.getPrimaryKeyColumn();
+			
+			resultSet = statement.executeQuery();
+			if(null != resultSet){
+				while(resultSet.next()){
+					Column column = new Column(table);
+					column.setTableName(table.getModelName());
+					column.setSchemaName(table.getSchemaName());
+					
+					String columnName = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.COLUMN_NAME);
+					column.setModelName(columnName);
+					column.setPrimaryKey(table.isPrimaryKeyColumn(columnName));
+					RESERVED_WORDS_UTIL.addColumnName(connectionProperties.getConnectionName(), table.getModelName(), columnName);
+					
+					int columnID = resultSet.getInt(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.COLUMN_ID);
+					column.setColumnID(columnID);
+					
+					String comments = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.COMMENTS);
+					column.setComments(comments);
+					
+					String typeName = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_TYPE);
+					column.setTypeName(typeName);
+					try{
+						InputStream defaultValue; // Holds the LONG data
+				        StringBuffer dataBuffer = new StringBuffer();
+				        int chunk;
+				        defaultValue = resultSet.getAsciiStream(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_DEFAULT);
+				        if(null != defaultValue){
+							while ((chunk = defaultValue.read()) != -1) {
+								dataBuffer.append((char) chunk);
+							}
+							column.setDefaultValue(dataBuffer.toString());
+				        }
+					}catch(Exception e){
+						logger.error("Cannot read DATA_DEFAULT for column: " + columnName);
+						logger.error(e.getMessage());
+					}
+					Boolean nullable = Boolean.FALSE;
+					String isNull = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.NULLABLE);
+					if("Y".equalsIgnoreCase(isNull))
+						nullable = Boolean.TRUE;
+					column.setNullable(nullable);
+					
+					
+					String scaleStr = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_LENGTH);
+					try{
+						column.setSize(Integer.valueOf(scaleStr));
+					} catch (Exception e) {
+						// do nothing
+					}
+					
+					String preciStr = resultSet.getString(OracleMetadataConstants.ALL_COLUMNS_SQL_META_DATA.DATA_PRECISION);
+					try{
+						column.setPrecision(Integer.valueOf(preciStr));
+					} catch (Exception e) {
+						// do nothing
+					}
+					
+					/*String privilages = resultSet.getString(MysqlMetadataConstants.INFORMATION_SCHEMA.COLUMNS.PRIVILEGES);
+					column.setPrivileges(privilages);*/
+					
+					columns.add(column);
+				}
+			}
+			
+		} finally{
+			JdbcUtil.close(resultSet, false);
+			JdbcUtil.close(connection);
 		}
-		JdbcUtil.close(resultSet, false);
+		
+		
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: getColumnList()");
 		}
 		return columns;
 	}
 	
-	@Deprecated
-	public List<Column> getColumnList(String connectionName, String schemaName, String tableName, Connection connection, ReadDepthEnum readDepth) throws SQLException{
+	/*@Deprecated
+	public List<Column> getColumnList(ConnectionProperties connectionProperties, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException{
+		
 		if(connection instanceof OracleConnection)
 			((OracleConnection)connection).setRemarksReporting(true);
 		List<Column> list = new ArrayList<Column>();
 		DatabaseMetaData databaseMetaData = connection.getMetaData();
 		
-		List<PrimaryKey> pkList = grabPrimaryKeys(connectionName, connection, schemaName, tableName, readDepth);
+		List<PrimaryKey> pkList = grabPrimaryKeys(connectionProperties, schemaName, tableName, readDepth);
 		Set<String> pkColSet = new HashSet<String>();
 		for (PrimaryKey pk : pkList) {
 			pkColSet.add(pk.getColumnName());
 		}
 		
 		Set<String> fkColSet = new HashSet<String>();
-		List<ForeignKey> importedKeys = grabImportedKeys(connectionName, connection, schemaName, tableName, readDepth);
+		List<ForeignKey> importedKeys = grabImportedKeys(connectionProperties, schemaName, tableName, readDepth);
 		for (ForeignKey fk : importedKeys) {
 			fkColSet.add(fk.getFkColumnName());
 		}
@@ -392,7 +395,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 			colRs.close();
 		}
 		return list;
-	}
+	}*/
 	
 	/**
 	 * 
@@ -403,17 +406,19 @@ public class OracleDbGrabber implements SchemaGrabber{
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<PrimaryKey> grabPrimaryKeys(String connectionName, Connection connection, String schemaName, 
+	public List<PrimaryKey> grabPrimaryKeys(ConnectionProperties connectionProperties, String schemaName, 
 			String tableName, ReadDepthEnum readDepth) throws SQLException{
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabPrimaryKeys()");
 		}
-		if(connection == null){
+		if(connectionProperties == null){
 			return null;
 		}
 		List<PrimaryKey> pkList = new ArrayList<PrimaryKey>();
+		Connection connection = null;
 		ResultSet resultSet = null;
 		try{
+			connection = connectionProperties.getDataSource().getConnection();
 			PreparedStatement statement = connection.prepareStatement(OracleMetaQueryConstants.GET_CONSTRAINT_COLUMNS_SQL);
 			statement.setString(1, schemaName.toUpperCase());
 			statement.setString(2, tableName.toUpperCase());
@@ -437,6 +442,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 			throw e;
 		} finally {
 			JdbcUtil.close(resultSet, true);
+			JdbcUtil.close(connection);
 		}
 		
 		if(logger.isDebugEnabled()){
@@ -445,17 +451,44 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return pkList;
 	}
 	
-	public List<ForeignKey> grabImportedKeys(String connectionName, Connection connection, Table table, ReadDepthEnum readDepth) throws SQLException{
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		ResultSet fkRs = databaseMetaData.getImportedKeys("", table.getSchemaName(), table.getModelName());
-		return readFksFromRS(table, fkRs, true, readDepth);
+	@Override
+	public List<ForeignKey> grabImportedKeys(
+			ConnectionProperties connectionProperties, Table table, ReadDepthEnum readDepth) throws SQLException {
+		Connection connection = null;
+		ResultSet fkRs = null;
+		List<ForeignKey> importedKeys = new ArrayList<ForeignKey>();
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			fkRs = databaseMetaData.getImportedKeys("", table.getSchemaName(), table.getModelName());
+			importedKeys = readFksFromRS(table, fkRs, true, readDepth);
+		} finally{
+			JdbcUtil.close(fkRs, false);
+			JdbcUtil.close(connection);
+		}
+		
+		return importedKeys;
 	}
 	
-	public List<ForeignKey> grabExportedKeys(String connectionName, Connection connection, Table table, ReadDepthEnum readDepth) throws SQLException{
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		ResultSet fkRs = databaseMetaData.getExportedKeys("", table.getSchemaName(), table.getModelName());
-		return readFksFromRS(table, fkRs, false, readDepth);
+	@Override
+	public List<ForeignKey> grabExportedKeys(
+			ConnectionProperties connectionProperties, Table table, ReadDepthEnum readDepth) throws SQLException {
+		Connection connection = null;
+		ResultSet fkRs = null;
+		List<ForeignKey> exportedKeys = new ArrayList<ForeignKey>();
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			fkRs = databaseMetaData.getExportedKeys("", table.getSchemaName(), table.getModelName());
+			exportedKeys = readFksFromRS(table, fkRs, false, readDepth);
+		} finally{
+			JdbcUtil.close(fkRs, false);
+			JdbcUtil.close(connection);
+		}
+		
+		return exportedKeys;
 	}
+	
 	
 	private List<ForeignKey> readFksFromRS(Table table, ResultSet fkRs, Boolean imported, ReadDepthEnum readDepth) throws SQLException{
 		List<ForeignKey> fks = new ArrayList<ForeignKey>();
@@ -490,53 +523,49 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return fks;
 	}
 
-	public Set<String> getAvailableSchemaNames(String connectionName, 
-			Connection connection) throws SQLException {
+	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties) throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: getAvailableCatalogNames()");
 		}
 		Set<String> schemaNames = new HashSet<String>();
-		PreparedStatement statement = connection.prepareStatement(OracleMetaQueryConstants.AVAILABLE_SCHEMA_SQL);
-		if(logger.isDebugEnabled()){
-			logger.debug("Executing SQL: [ " + OracleMetaQueryConstants.AVAILABLE_SCHEMA_SQL + " ]");
-		}
-		ResultSet resultSet = statement.executeQuery();
-		if(null != resultSet){
-			while(resultSet.next()){
-				String schemaName = resultSet.getString(OracleMetadataConstants.AVAILABLE_SCHEMA_SQL_META_DATA.OWNER);
-				if(logger.isDebugEnabled()){
-					logger.debug("SCHEMA_NAME found: " + schemaName);
-				}
-				if(StringUtil.hasValidContent(schemaName))
-					schemaNames.add(schemaName);
+		Connection connection = null;
+		ResultSet resultSet = null;
+		
+		try{
+			PreparedStatement statement = connection.prepareStatement(OracleMetaQueryConstants.AVAILABLE_SCHEMA_SQL);
+			if(logger.isDebugEnabled()){
+				logger.debug("Executing SQL: [ " + OracleMetaQueryConstants.AVAILABLE_SCHEMA_SQL + " ]");
 			}
+			resultSet = statement.executeQuery();
+			if(null != resultSet){
+				while(resultSet.next()){
+					String schemaName = resultSet.getString(OracleMetadataConstants.AVAILABLE_SCHEMA_SQL_META_DATA.OWNER);
+					if(logger.isDebugEnabled()){
+						logger.debug("SCHEMA_NAME found: " + schemaName);
+					}
+					if(StringUtil.hasValidContent(schemaName))
+						schemaNames.add(schemaName);
+				}
+			}
+		} finally {
+			JdbcUtil.close(resultSet, false);
+			JdbcUtil.close(connection);
 		}
-		JdbcUtil.close(resultSet, false);
+		
 		if(logger.isDebugEnabled()){
 			logger.debug("Total SCHEMA_NAME(s) found: " + schemaNames.size());
-		}
-		if(logger.isDebugEnabled()){
-			logger.debug("");
 		}
 		return schemaNames;
 	}
 
-	@Override
-	public List<ForeignKey> grabImportedKeys(String connectionName,
-			Connection connection, String schemaName, String tableName,
-			ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ForeignKey> grabExportedKeys(String connectionName,
-			Connection connection, String schemaName, String tableName,
-			ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
+	@Override
+	public List<Column> getColumnList(
+			ConnectionProperties connectionProperties, String tableName,
+			ReadDepthEnum readDepth) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

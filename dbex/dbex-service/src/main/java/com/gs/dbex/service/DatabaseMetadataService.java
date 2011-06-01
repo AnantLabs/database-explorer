@@ -4,6 +4,7 @@
 package com.gs.dbex.service;
 
 import java.util.List;
+import java.util.Set;
 
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
@@ -37,5 +38,7 @@ public interface DatabaseMetadataService {
 	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, String schemaName, String tableName) throws DbexException;
 	
 	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, Table table) throws DbexException;
+	
+	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties) throws DbexException;
 	
 }
