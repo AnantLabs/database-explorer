@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:layout="com.gs.dbex.layout.*" 
+						layout="absolute" width="400" height="300"
+						titleIcon="{imageLocator.refreshIcon}"
+						showCloseButton="true" close="{PopUpManager.removePopUp(this);}">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			
+			[Bindable]
+			public var imageLocator:DbexImageConstants = DbexImageConstants.getInstance();
+			
+			public function initilize():void{
+				
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" height="100%" paddingTop="0" paddingBottom="3"
+			 paddingLeft="3" paddingRight="3">
+		<mx:HBox width="100%" height="75" horizontalGap="0" verticalGap="0">
+			<mx:HBox height="100%" width="35" horizontalAlign="left" verticalAlign="top">
+				<mx:Image source="{imageLocator.dbex24x24Icon}"/>
+			</mx:HBox>
+			<mx:Spacer height="100%" width="3"/>
+			<mx:TextArea width="100%" height="100%" id="shortMessageTextArea" editable="false"/>
+		</mx:HBox>
+		<mx:HBox width="100%" height="27" horizontalAlign="right" verticalAlign="middle">
+			<mx:CheckBox id="showDetailChkBox" label="Show/Hide detailed message" selected="false"/>
+		</mx:HBox>
+		<mx:HRule width="100%" height="2"/>
+		<mx:HBox width="100%" height="100%" horizontalAlign="left" verticalAlign="middle"
+				 id="detailedMessageBox" visible="false">
+			<mx:TextArea id="detailedMessageTextArea" editable="false" width="100%" height="100%"/>
+		</mx:HBox>
+		<mx:HBox width="100%" height="27" horizontalAlign="right" verticalAlign="middle">
+			<mx:Button click="{PopUpManager.removePopUp(this);}" label="Close"/>
+		</mx:HBox>
+	</mx:VBox>
+	
+</mx:TitleWindow>

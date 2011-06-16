@@ -23,12 +23,9 @@ public class DbexSplashWindow extends JWindow {
 		setPreferredSize(getMinimumSize());
 		WindowUtil.bringToCenter(this);
 		initComponents();
-		
 	}
 
 	private void initComponents() {
-		
-
 		getContentPane().setLayout(new BorderLayout());
 		dbexSplashPanel = new DbexSplashPanel();
 		getContentPane().add(dbexSplashPanel, BorderLayout.CENTER);
@@ -39,7 +36,6 @@ public class DbexSplashWindow extends JWindow {
 		try {
 			o = worker.doInBackground();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if(o != null){
@@ -85,8 +81,6 @@ public class DbexSplashWindow extends JWindow {
 			o.parcentage = 100;
 			return o;
 		}
-
-		
 		
 	}
 
