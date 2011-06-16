@@ -6,21 +6,23 @@
 	defaultButton="{connectButton}" creationComplete="initilize()" showWindowButtons="true">
 	<mx:Script>
 		<![CDATA[
-			import com.gs.dbex.control.DbexWindowManager;
-			import mx.collections.ArrayCollection;
-			import com.gs.dbex.common.event.BaseEventDispatcher;
-			import com.gs.dbex.common.event.DbexEventDispatcher;
-			import com.gs.dbex.common.event.DbexBaseEvent;
-			import com.gs.dbex.application.event.DatabaseConnectionEvent;
-			import com.gs.dbex.common.StorageTypeEnum;
-			import com.gs.dbex.vo.DatabaseConfigurationVO;
-			import com.gs.dbex.util.StringUtil;
-			import com.gs.dbex.common.DatabaseTypeEnum;
-			import com.gs.dbex.vo.ConnectionPropertiesVO;
 			import com.gs.dbex.DbexCommonModelLocator;
-			import mx.controls.Alert;
+			import com.gs.dbex.application.event.DatabaseConnectionEvent;
+			import com.gs.dbex.common.DatabaseTypeEnum;
+			import com.gs.dbex.common.StorageTypeEnum;
+			import com.gs.dbex.common.event.BaseEventDispatcher;
+			import com.gs.dbex.common.event.DbexBaseEvent;
+			import com.gs.dbex.common.event.DbexEventDispatcher;
 			import com.gs.dbex.control.DbexCommonEvent;
+			import com.gs.dbex.control.DbexWindowManager;
+			import com.gs.dbex.layout.DbexMessageBox;
 			import com.gs.dbex.layout.InputWindow;
+			import com.gs.dbex.util.StringUtil;
+			import com.gs.dbex.vo.ConnectionPropertiesVO;
+			import com.gs.dbex.vo.DatabaseConfigurationVO;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.managers.PopUpManager;
 			
 			[Bindable]
@@ -410,7 +412,7 @@
 			<mx:HBox width="100%" height="35" horizontalAlign="left" verticalAlign="middle">
 				<mx:Button label="Cancel" id="cancelButton"/>
 				<mx:Spacer width="100%"/>
-				<mx:Button label="Test" id="testConnectionButton"/>
+				<mx:Button label="Test" id="testConnectionButton" click="{PopUpManager.centerPopUp(PopUpManager.createPopUp(null, DbexMessageBox, true));}"/>
 				<mx:Button label="Connect" id="connectButton" click="connectToDB()"/> 
 			</mx:HBox>
 		</mx:VBox>
