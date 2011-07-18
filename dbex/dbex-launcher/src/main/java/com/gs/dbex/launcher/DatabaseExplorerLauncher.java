@@ -7,15 +7,12 @@ import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import sun.swing.SwingUtilities2;
 
 import com.gs.dbex.application.context.ApplicationCommonContext;
 import com.gs.dbex.application.frame.DatabaseExplorerFrame;
