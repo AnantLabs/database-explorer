@@ -22,15 +22,8 @@ import com.gs.dbex.service.QueryExecutionService;
 import com.gs.utils.jdbc.ResultSetDataTable;
 
 public class QueryExecutionTask extends
-		SwingWorker<ResultSetDataTable, SqlQuery> {
+		SwingWorker<ResultSetDataTable, SqlQuery> implements WorkerTaskConstants{
 
-	public static final String TASK_STATUS_DONE = "TASK_STATUS_DONE";
-	public static final String TASK_STATUS_START = "TASK_STATUS_START";
-	public static final String TASK_STATUS_ABORT = "TASK_STATUS_ABORT";
-	public static final String TASK_STATUS_FAILED = "TASK_STATUS_FAILED";
-	
-	public static final String PROPERTY_PROGRESS = "PROPERTY_PROGRESS";
-	public static final String PROPERTY_MESSAGE = "PROPERTY_MESSAGE";
 	
 	private static final Logger LOGGER = Logger.getLogger(QueryExecutionTask.class);
 	
