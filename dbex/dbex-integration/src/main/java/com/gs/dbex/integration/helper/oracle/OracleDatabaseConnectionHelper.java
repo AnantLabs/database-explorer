@@ -108,11 +108,9 @@ public class OracleDatabaseConnectionHelper extends DatabaseConnectionHelper {
 				connected = true;
 			}
 		} catch (ClassNotFoundException e) {
-			connected = false;
-			e.printStackTrace();
+			throw e;
 		} catch (SQLException e) {
-			connected = false;
-			e.printStackTrace();
+			throw e;
 		} finally {
 			if (conn != null) {
 				try {

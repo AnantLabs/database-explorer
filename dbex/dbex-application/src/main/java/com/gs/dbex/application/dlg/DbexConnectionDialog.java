@@ -1173,8 +1173,13 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 		sidTextField.setEnabled(b);
 	}
 
-	private void testConnectionButtonActionPerformed(ActionEvent evt) {                                                     
-		// TODO add your handling code here:
+	private void testConnectionButtonActionPerformed(ActionEvent evt) {  
+		ConnectionProperties properties = populateToProperties();
+		if(properties != null){
+			DbexConnectionStatusDialog dialog = new DbexConnectionStatusDialog(getParentFrame());
+			dialog.showDialog(properties);
+			dialog.setVisible(true);
+		}
 	}                                                    
 
 	private void connectButtonActionPerformed(ActionEvent evt) {                                              

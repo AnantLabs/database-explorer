@@ -45,11 +45,9 @@ public class OracleDatabaseConnectionIntegrationImpl extends
 				return false;
 			}
 		} catch (ClassNotFoundException e) {
-			
-			e.printStackTrace();
+			throw new DbexException(e);
 		} catch (SQLException e) {
-			
-			e.printStackTrace();
+			throw new DbexException(e);
 		}
 		if(logger.isDebugEnabled()){
 			logger.debug("EXIT ::- connectToDatabase() with SUCCESS");
