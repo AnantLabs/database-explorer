@@ -1,8 +1,13 @@
 package com.gs.dbex.application.task;
 
+import java.sql.SQLException;
+
 import javax.swing.SwingWorker;
 
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.service.DatabaseConnectionService;
+import com.gs.dbex.service.DbexServiceBeanFactory;
 
 public class DatabaseConnectionTask extends SwingWorker<Void, ConnectionProperties> implements WorkerTaskConstants{
 
@@ -19,21 +24,33 @@ public class DatabaseConnectionTask extends SwingWorker<Void, ConnectionProperti
 
 	@Override
 	protected Void doInBackground() throws Exception {
-		Long startTime = System.currentTimeMillis();
-		Long totalTime = 0L;
 		
 		firePropertyChange(PROPERTY_PROGRESS, null, TASK_STATUS_START);
-		setProgress(0);
-		
-		if(null == connectionProperties){
-			firePropertyChange(TASK_STATUS_ABORT, null, "Invalid connection properties !!!");
+		DatabaseConnectionService databaseConnectionService = DbexServiceBeanFactory.getBeanFactory().getDatabaseConnectionService();
+		if(null == connectionProperties || null == databaseConnectionService){
+			firePropertyChange(TASK_STATUS_FAILED, null, new Object[]{"Invalid connection properties !!!", null});
 			return null;
 		}
 		
-		
+		try{
+			boolean connected = databaseConnectionService.connectToDatabase(connectionProperties);
+			if(connected){
+				firePropertyChange(TASK_STATUS_DONE, null, "Connection Successful !!!");
+			} else {
+				firePropertyChange(TASK_STATUS_FAILED, null, new Object[]{"Connection Failed !!!", null});
+			}
+		} catch (DbexException e){
+			firePropertyChange(TASK_STATUS_FAILED, null, new Object[]{"Connection Failed !!!", e});
+		} catch (Exception e){
+			firePropertyChange(TASK_STATUS_FAILED, null, new Object[]{"Connection Failed !!!", e});
+		} 
 		
 		return null;
 	}
 	
+	public void stop() {
+		cancel(true);
+		firePropertyChange(TASK_STATUS_ABORT, null, null);
+	}
 	
 }
