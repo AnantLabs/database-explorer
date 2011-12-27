@@ -3,9 +3,13 @@
  */
 package com.gs.dbex.application.comps;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+
+import com.gs.dbex.model.db.Column;
 
 /**
  * @author sabuj.das
@@ -42,4 +46,27 @@ public class CollectionListModel<T extends Object> extends AbstractListModel {
 	public void addElementAt(T element, int index){
 		dataList.add(index, element);
 	}
+	
+	public void sort(Comparator<T> comparator){
+		if(null != comparator){
+			Collections.sort(getDataList(), comparator);
+		}
+	}
+	
+	public boolean swap(int i, int j){
+		if(i < 0 || j < 0){
+			return false;
+		}
+		if(i > getSize() || j > getSize()){
+			return false;
+		}
+		if(i == j){
+			return false;
+		}
+		Collections.swap(dataList, i, j);
+		return true;
+	}
+	
+	
+	
 }

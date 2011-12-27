@@ -19,6 +19,7 @@ import com.gs.dbex.application.frame.DatabaseExplorerFrame;
 import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.launcher.splash.DbexSplashWindow;
+import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
  * @author sabuj.das
@@ -67,7 +68,8 @@ public class DatabaseExplorerLauncher {
 	
 	public void launchApplication(){
 		try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
         } catch (ClassNotFoundException e1) {
             e1.printStackTrace();
         } catch (InstantiationException e1) {

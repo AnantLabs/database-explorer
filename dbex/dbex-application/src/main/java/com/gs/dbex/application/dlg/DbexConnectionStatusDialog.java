@@ -197,6 +197,10 @@ public class DbexConnectionStatusDialog extends JDialog implements ActionListene
 			detailedMessagePanel.setVisible(true);
 			showDetailsButton.setVisible(false);
 		}
+		
+		if(closeButton.equals(e.getSource())){
+			dispose();
+		}
 	}
 
 	@Override
@@ -235,6 +239,10 @@ public class DbexConnectionStatusDialog extends JDialog implements ActionListene
 		}
 		if (WorkerTaskConstants.TASK_STATUS_DONE.equals(propertyName)) {
 			statusProgressBar.setIndeterminate(false);
+			shortMessageLabel.setText("Connection Success !!!");
+			if(exitOnSuccess){
+				dispose();
+			}
 		}
 	}
 	
