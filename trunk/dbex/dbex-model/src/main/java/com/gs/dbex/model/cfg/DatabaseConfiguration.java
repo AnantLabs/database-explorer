@@ -143,6 +143,26 @@ public class DatabaseConfiguration {
 		this.versionNumber = versionNumber;
 	}
 
+	/**
+	 * @return
+	 */
+	public DatabaseConfiguration copyAll() {
+		DatabaseConfiguration cfg = new DatabaseConfiguration();
+		cfg.setConfigurationId(null);
+		cfg.setConnectionPropId(connectionPropId);
+		cfg.setDriverClassName(driverClassName);
+		cfg.setHostName(hostName);
+		cfg.setPassword(password);
+		cfg.setPortNumber(portNumber);
+		cfg.setSavePassword(savePassword);
+		cfg.setSchemaName(schemaName);
+		cfg.setSidServiceName(sidServiceName);
+		cfg.setStorageType(storageType);
+		cfg.setUserName(userName);
+		cfg.setVersionNumber(0);
+		return cfg;
+	}
+
 	
 	
 }

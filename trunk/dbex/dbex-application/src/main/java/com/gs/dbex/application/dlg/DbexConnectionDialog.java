@@ -19,11 +19,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,8 +47,11 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -69,13 +76,17 @@ import com.gs.dbex.application.context.ApplicationCommonContext;
 import com.gs.dbex.application.event.ApplicationEventHandler;
 import com.gs.dbex.application.event.ComponentUpdateEvent;
 import com.gs.dbex.application.event.ComponentUpdateEventListener;
+import com.gs.dbex.application.list.model.ColumnNameListModel;
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.common.enums.DatabaseStorageTypeEnum;
 import com.gs.dbex.common.enums.DatabaseTypeEnum;
 import com.gs.dbex.historyMgr.ApplicationDataHistoryMgr;
 import com.gs.dbex.historyMgr.DbexHistoryMgrBeanFactory;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.utils.enums.DisplayTypeEnum;
 import com.gs.utils.swing.display.DisplayUtils;
+import com.gs.utils.swing.file.ExtensionFileFilter;
+import com.gs.utils.swing.file.FileBrowserUtil;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -159,6 +170,9 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
     private JButton testConnectionButton;
     private JTextField urlTextField;
     private JTextField userNameTextField;
+    
+    private JPopupMenu connectionNamePopupMenu;
+    private JMenuItem renameConnMenuItem = new JMenuItem("Rename");
 	
     public int getIndexOf(String[] array, String value){
     	if(array == null || !StringUtil.hasValidContent(value))
@@ -207,6 +221,8 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
     	}
     	Collections.sort(pl);
     	CollectionListModel<ConnectionProperties> model = new CollectionListModel<ConnectionProperties>(pl);
+		model.sort(ConnectionProperties.DISPLAY_ORDER_COMPARATOR);
+		connectionNameList.updateUI();
     	connectionNameList.setModel(model);
     	connectionNameList.setSelectedIndex(0);
     	connectionNameList.updateUI();
@@ -238,7 +254,13 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 	}
     
     private void initComponents() {
-        GridBagConstraints gridBagConstraints;
+        
+    	connectionNamePopupMenu = new JPopupMenu();
+    	MouseListener popupListener = new PopupListener();
+    	renameConnMenuItem.addActionListener(this);
+    	connectionNamePopupMenu.add(renameConnMenuItem);
+    	
+    	GridBagConstraints gridBagConstraints;
 
         schemaCatalogButtonGroup = new ButtonGroup();
         jPanel1 = new JPanel();
@@ -320,6 +342,8 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
         connectionNameList.addListSelectionListener(this);
         connectionNameList.addPropertyChangeListener(this);
         connectionNameList.setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
+        //connectionNameList.setComponentPopupMenu(connectionNamePopupMenu);
+        connectionNameList.addMouseListener(popupListener);
         jScrollPane1.setViewportView(connectionNameList);
 
         gridBagConstraints = new GridBagConstraints();
@@ -864,8 +888,13 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
         else if (evt.getSource() == savePasswordCheckBox) {
             DbexConnectionDialog.this.savePasswordCheckBoxActionPerformed(evt);
         }
+        else if (evt.getSource() == renameConnMenuItem) {
+            DbexConnectionDialog.this.renameConnMenuItemActionPerformed(evt);
+        }
     }
 
+
+	
 
 	
 
@@ -945,7 +974,23 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
     	dispose();
 	}                                            
 
-	private void connectionNameListValueChanged(ListSelectionEvent evt) {                                                
+	private void connectionNameListValueChanged(ListSelectionEvent evt) {     
+		int firstIndex = evt.getFirstIndex();
+		int lastIndex = ((CollectionListModel<ConnectionProperties>)connectionNameList.getModel()).getSize()-1;
+		int currectIndex = connectionNameList.getSelectedIndex();
+		
+		if(currectIndex > firstIndex && currectIndex < lastIndex){
+			moveUpButton.setEnabled(true);
+			moveDownButton.setEnabled(true);
+		} else if(firstIndex == currectIndex){
+			moveUpButton.setEnabled(false);
+			moveDownButton.setEnabled(true);
+		} else {
+			moveUpButton.setEnabled(true);
+			moveDownButton.setEnabled(false);
+		}
+		
+		
 		ConnectionProperties p = (ConnectionProperties) connectionNameList.getSelectedValue();
 		if(p != null){
 			populateFromProperties(p);
@@ -965,6 +1010,7 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 			p.setDisplayOrder(connectionNameList.getModel().getSize()+1);
 			p.setPropertySaved(false);
 			((CollectionListModel<ConnectionProperties>)connectionNameList.getModel()).addElement(p);
+			((CollectionListModel<ConnectionProperties>)connectionNameList.getModel()).sort(ConnectionProperties.DISPLAY_ORDER_COMPARATOR);
 			connectionNameList.setSelectedIndex(connectionNameList.getModel().getSize()-1);
 			connectionNameList.updateUI();
 			applicationCommonContext.getConnectionPropertiesMap().put(p.getConnectionName(), p);
@@ -1034,30 +1080,91 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 	private void saveAsButtonActionPerformed(ActionEvent evt) {                                             
 		ConnectionProperties p = populateToProperties();
 		if(p != null){
-			applicationCommonContext.getConnectionPropertiesMap().put(p.getConnectionName(), p);
-			p.setPropertySaved(true);
-			changeButtonEnabled(p);
+			try {
+				String name = DisplayUtils.readString(this, "Enter a new Name: ");
+				if(StringUtil.hasValidContent(name)){
+					ConnectionProperties p1 = p.copyAll();
+					p1.setConnectionName(name);
+					
+					applicationCommonContext.getConnectionPropertiesMap().put(p1.getConnectionName(), p1);
+					p1.setPropertySaved(true);
+					changeButtonEnabled(p1);
+					
+					DisplayUtils.displayMessage(this, "Saved.... Successfully!!!", DisplayTypeEnum.INFO);
+					
+					((CollectionListModel<ConnectionProperties>)connectionNameList.getModel()).addElement(p1);
+					connectionNameList.setSelectedIndex(connectionNameList.getModel().getSize()-1);
+					connectionNameList.updateUI();
+					return;
+				}
+			} catch (Exception e) {
+				// TODO: na
+			}
 		}
+		DisplayUtils.displayMessage(this, "Not Saved.... Some error!!!", DisplayTypeEnum.ERROR);
 	}                                            
 
-	private void saveAllButtonActionPerformed(ActionEvent evt) {                                              
+	private void saveAllButtonActionPerformed(ActionEvent evt) { 
+		
 		saveAllConnectionProperties();
 	}                                             
 
-	private void deleteButtonActionPerformed(ActionEvent evt) {                                             
-		// TODO add your handling code here:
+	private void deleteButtonActionPerformed(ActionEvent evt) {      
+		if(connectionNameList.getSelectedIndex() >= 0 ){
+			ConnectionProperties p1 = (ConnectionProperties) connectionNameList.getSelectedValue();
+			if(null != p1){
+				int opt = DisplayUtils.confirmOkCancel(this, "Do you want to remove connection properties [ " 
+						+ p1.getConnectionName() + " ] ?", DisplayTypeEnum.WARN);
+				if(JOptionPane.OK_OPTION != opt)
+					return;
+				applicationCommonContext.getConnectionPropertiesMap().remove(p1.getConnectionName());
+				
+				((CollectionListModel<ConnectionProperties>)connectionNameList.getModel()).getDataList().remove(p1);
+				connectionNameList.setSelectedIndex(connectionNameList.getModel().getSize()-1);
+				connectionNameList.updateUI();
+				
+				DisplayUtils.displayMessage(this, "Removed.... Successfully!!!", DisplayTypeEnum.INFO);
+			}
+			
+		}
 	}                                            
 
-	private void clearButtonActionPerformed(ActionEvent evt) {                                            
-		// TODO add your handling code here:
+	private void clearButtonActionPerformed(ActionEvent evt) {  
+		ConnectionProperties p = (ConnectionProperties) connectionNameList.getSelectedValue();
+		if(p != null){
+			ConnectionProperties p1 = new ConnectionProperties();
+			p1.setConnectionName(p.getConnectionName());
+			populateFromProperties(p1);
+		}
+		
 	}                                           
 
 	private void exportAllButtonActionPerformed(ActionEvent evt) {                                                
-		// TODO add your handling code here:
+		File targetFile = FileBrowserUtil.browseToSaveFile(this, ".", 
+				new ExtensionFileFilter(new String[]{"xml"}, "XML Files"), false);
+		if(null == targetFile){
+			return;
+		}
+		String fileName = targetFile.getAbsolutePath();
+		if(!fileName.endsWith(".xml")){
+			fileName += ".xml";
+		}
+		
+		ApplicationDataHistoryMgr dataHistoryMgr = DbexHistoryMgrBeanFactory.getInstance().getApplicationDataHistoryMgr();
+		Collection<ConnectionProperties> list = applicationCommonContext.getConnectionPropertiesMap().values();
+		List<ConnectionProperties> ps = new ArrayList<ConnectionProperties>();
+		ps.addAll(list);
+		boolean b = dataHistoryMgr.saveAllConnectionProperties(ps, fileName);
+		if(b){
+			DisplayUtils.displayMessage(this, "Export completed successfully !!!");
+		} else {
+			System.out.println("NOT Saved");
+		}
 	}                                               
 
 	private void dbTypeComboBoxActionPerformed(ActionEvent evt) {
 		databaseTypeChanged();
+		connectionPropertiesModified();
 	}
 	
 	private void savePasswordCheckBoxActionPerformed(ActionEvent evt) {
@@ -1129,8 +1236,9 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 			} else {
 				schemaLabel.setText("Catalog Name");
 			}
+			connectionPropertiesModified();
 		}
-		connectionPropertiesModified();
+		
 	}
 	
 	private void dbTypeComboBoxPropertyChange(PropertyChangeEvent evt) {                                              
@@ -1147,12 +1255,48 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 	}                                               
 
 	private void moveUpButtonActionPerformed(ActionEvent evt) {                                             
-		// TODO add your handling code here:
+		ConnectionProperties p = (ConnectionProperties) connectionNameList.getSelectedValue();
+		if(p != null){
+			moveSelectedItem(true);
+		}
 	}                                            
 
 	private void moveDownButtonActionPerformed(ActionEvent evt) {                                               
-		// TODO add your handling code here:
-	}                                              
+		ConnectionProperties p = (ConnectionProperties) connectionNameList.getSelectedValue();
+		if(p != null){
+			moveSelectedItem(false);
+		}
+	}   
+	
+	private void moveSelectedItem(boolean up){
+		int index = connectionNameList.getSelectedIndex();
+		CollectionListModel<ConnectionProperties> model = (CollectionListModel<ConnectionProperties>) connectionNameList.getModel();
+		if(up){
+			boolean b = model.swap(index, index-1);
+			if(b){
+				swapDisplayOrder(model.getElementAt(index), model.getElementAt(index -1));
+				connectionNameList.setSelectedIndex(index-1);
+			}
+		}else{
+			boolean b = model.swap(index+1, index);
+			if(b){
+				swapDisplayOrder(model.getElementAt(index+1), model.getElementAt(index));
+				connectionNameList.setSelectedIndex(index+1);
+			}
+		}
+		connectionNameList.updateUI();
+	}
+
+	/**
+	 * @param elementAt
+	 * @param elementAt2
+	 */
+	private void swapDisplayOrder(ConnectionProperties p1,
+			ConnectionProperties p2) {
+		int temp = p1.getDisplayOrder();
+		p1.setDisplayOrder(p2.getDisplayOrder());
+		p2.setDisplayOrder(temp);
+	}
 
 	private void editUrlToggleButtonActionPerformed(ActionEvent evt) {                                                    
 		if(editUrlToggleButton.isSelected()){
@@ -1178,6 +1322,7 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 		if(properties != null){
 			DbexConnectionStatusDialog dialog = new DbexConnectionStatusDialog(getParentFrame());
 			dialog.showDialog(properties);
+			dialog.setExitOnSuccess(false);
 			dialog.setVisible(true);
 		}
 	}                                                    
@@ -1185,6 +1330,12 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 	private void connectButtonActionPerformed(ActionEvent evt) {                                              
 		ConnectionProperties properties = populateToProperties();
 		if(properties != null){
+			DbexConnectionStatusDialog dialog = new DbexConnectionStatusDialog(getParentFrame());
+			dialog.showDialog(properties);
+			dialog.setExitOnSuccess(true);
+			dialog.setVisible(true);
+			
+			
 			ApplicationEventHandler handler = new ApplicationEventHandler();
 			handler.setParent(getParent());
 			handler.setSourceForm(this);
@@ -1247,12 +1398,18 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 	}
 
 	private void saveAllConnectionProperties(){
+		//populateAllToProperties();
 		ApplicationDataHistoryMgr dataHistoryMgr = DbexHistoryMgrBeanFactory.getInstance().getApplicationDataHistoryMgr();
 		Collection<ConnectionProperties> list = applicationCommonContext.getConnectionPropertiesMap().values();
 		List<ConnectionProperties> ps = new ArrayList<ConnectionProperties>();
 		ps.addAll(list);
 		boolean b = dataHistoryMgr.saveAllConnectionProperties(ps);
 		if(b){
+			for (ConnectionProperties p : ps) {
+				
+				p.setPropertySaved(true);
+			}
+			
 			System.out.println("Saved");
 		} else {
 			System.out.println("NOT Saved");
@@ -1293,6 +1450,50 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 		
 		return p;
 	}
+	
+	
+	private void populateAllToProperties(){
+		
+		List<ConnectionProperties> values = ((CollectionListModel<ConnectionProperties>)connectionNameList.getModel()).getDataList();
+		
+		if(null == values)
+			return ;
+		applicationCommonContext.getConnectionPropertiesMap().clear();
+		for (ConnectionProperties p : values) {
+			if(p == null){
+				p = new ConnectionProperties();
+				p.setDisplayOrder(applicationCommonContext.getConnectionPropertiesMap().size()+1);
+			}
+			
+			if(null != dbTypeComboBox.getSelectedItem()){
+				p.setDatabaseType(DatabaseTypeEnum.getDatabaseTypeEnumByName(dbTypeComboBox.getSelectedItem().toString()).getCode());
+			}
+			p.setConnectionUrl(urlTextField.getText());
+			p.getDatabaseConfiguration().setHostName(hostNameTextField.getText());
+			if(StringUtil.hasValidContent(portNumberFormattedTextField.getText())){
+				p.getDatabaseConfiguration().setPortNumber(Integer.valueOf(portNumberFormattedTextField.getText()));
+			}
+			p.getDatabaseConfiguration().setUserName(userNameTextField.getText());
+			p.getDatabaseConfiguration().setDriverClassName(driverClassTextField.getText());
+			p.getDatabaseConfiguration().setPassword(passwordPasswordField.getText());
+			p.getDatabaseConfiguration().setSchemaName(schemaNameTextField.getText());
+			p.getDatabaseConfiguration().setSidServiceName(sidTextField.getText());
+			p.getDatabaseConfiguration().setSavePassword(savePasswordCheckBox.isSelected());
+			if(schemaRadioButton.isSelected()){
+				p.getDatabaseConfiguration().setStorageType(DatabaseStorageTypeEnum.SCHEMA_STORAGE.getCode());
+			}
+			else if(catalogRadioButton.isSelected()){
+				p.getDatabaseConfiguration().setStorageType(DatabaseStorageTypeEnum.CATALOG_STORAGE.getCode());
+			}
+			else {
+				p.getDatabaseConfiguration().setStorageType(DatabaseStorageTypeEnum.UNKNOWN.getCode());
+			}
+			applicationCommonContext.getConnectionPropertiesMap().put(p.getConnectionName(), p);
+		}
+		
+		
+	}
+	
 	
 	private void populateFromProperties(ConnectionProperties p){
 		if (null != p) {
@@ -1374,6 +1575,24 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 		}
 	}
 	
+	
+	private void renameConnMenuItemActionPerformed(ActionEvent evt) {
+		if(connectionNameList.getSelectedIndex() >= 0){
+			ConnectionProperties p = (ConnectionProperties) connectionNameList.getSelectedValue();
+			if(null != p){
+				String name = DisplayUtils.readString(this, "Old Name: " + p.getConnectionName()+ 
+						"\n Enter the new Name: ");
+				if(StringUtil.hasValidContent(name)){
+					p.setConnectionName(name);
+					p.setPropertySaved(false);
+					changeButtonEnabled(p);
+				} else{
+					DisplayUtils.displayMessage(this, "Invalid Name !!!", DisplayTypeEnum.ERROR);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void updateComponentUI(ComponentUpdateEvent componentUpdateEvent) {
 		if(null != componentUpdateEvent){
@@ -1399,4 +1618,20 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
     }
 
 
+    class PopupListener extends MouseAdapter {
+        public void mousePressed(MouseEvent e) {
+            maybeShowPopup(e);
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            maybeShowPopup(e);
+        }
+
+        private void maybeShowPopup(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+            	connectionNameList.setSelectedIndex(connectionNameList.locationToIndex(e.getPoint()));
+                connectionNamePopupMenu.show(connectionNameList, e.getX(), e.getY());
+            }
+        }
+    }
 }

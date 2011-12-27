@@ -28,6 +28,7 @@ import javax.sql.DataSource;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ForeignKey;
 
+import com.gs.utils.common.FieldSpecificComparator;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -47,6 +48,9 @@ public class ConnectionProperties implements Serializable,
 	 */
 	private static final long serialVersionUID = 2717753646686919478L;
 
+	public static final FieldSpecificComparator<ConnectionProperties, Integer>
+		DISPLAY_ORDER_COMPARATOR = new FieldSpecificComparator<ConnectionProperties, Integer>("displayOrder");
+	
 	private Long connectionPropId;
 	private Long userId;
 	private String connectionName;
@@ -217,5 +221,52 @@ public class ConnectionProperties implements Serializable,
 	public String toString() {
 		return (StringUtil.hasValidContent(getConnectionName())) ? getConnectionName()
 				: "UN-NAMED";
+	}
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((connectionName == null) ? 0 : connectionName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof ConnectionProperties)) {
+			return false;
+		}
+		ConnectionProperties other = (ConnectionProperties) obj;
+		if (connectionName == null) {
+			if (other.connectionName != null) {
+				return false;
+			}
+		} else if (!connectionName.equals(other.connectionName)) {
+			return false;
+		}
+		return true;
+	}
+
+	public ConnectionProperties copyAll(){
+		ConnectionProperties p1 = new ConnectionProperties();
+		p1.setConnectionName(getConnectionName());
+		p1.setConnectionPropId(null);
+		p1.setConnectionUrl(getConnectionUrl());
+		p1.setDatabaseConfiguration(getDatabaseConfiguration().copyAll());
+		p1.setDatabaseType(getDatabaseType());
+		p1.setDisplayOrder(getDisplayOrder());
+		p1.setPropertySaved(false);
+		p1.setUserId(getUserId());
+		p1.setVersionNumber(0);
+		
+		return p1;
 	}
 }

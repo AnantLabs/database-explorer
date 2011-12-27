@@ -1,7 +1,5 @@
 package com.gs.dbex.application.task;
 
-import java.sql.SQLException;
-
 import javax.swing.SwingWorker;
 
 import com.gs.dbex.common.exception.DbexException;

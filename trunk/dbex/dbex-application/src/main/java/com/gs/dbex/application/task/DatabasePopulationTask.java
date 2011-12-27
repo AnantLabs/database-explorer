@@ -1,7 +1,6 @@
 package com.gs.dbex.application.task;
 
 import java.awt.Component;
-import java.util.List;
 
 import javax.swing.SwingWorker;
 
