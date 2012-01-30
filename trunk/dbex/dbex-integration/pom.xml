@@ -48,7 +48,7 @@
 			<artifactId>castor</artifactId>
 			<version>1.0</version>
 			<type>jar</type>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>sax</groupId>
 			<artifactId>sax</artifactId>

@@ -13,9 +13,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -56,14 +55,12 @@ import com.gs.dbex.common.enums.ResourceEditTypeEnum;
 import com.gs.dbex.common.enums.ResourceTypeEnum;
 import com.gs.dbex.common.enums.TableDataExportTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
-import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.service.DatabaseMetadataService;
 import com.gs.dbex.service.DbexServiceBeanFactory;
-import com.gs.dbex.service.impl.DatabaseMetadataServiceImpl;
 
 /**
  * @author sabuj.das
@@ -579,7 +576,8 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 					try {
 						table = ((DatabaseMetadataService) ApplicationContextProvider.getInstance()
 								.getApplicationContext().getBean(DatabaseMetadataService.BEAN_NAME))
-								.getTableDetails(connectionProperties, table.getSchemaName(), table.getModelName());
+								.getTableDetails(connectionProperties, table.getSchemaName(), 
+										table.getModelName(), ReadDepthEnum.DEEP);
 					} catch (DbexException e) {
 						e.printStackTrace();
 						showCompleteTable = true;
@@ -750,6 +748,21 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
                     if(e.getClickCount() == 2){
                     	Table table = ((TableNode)dbNode).getTable();
             			if(table != null){
+            				List<Column> columns = table.getColumnlist();
+            				if (columns == null || columns.size() <= 0) {
+            					try {
+            						table = ((DatabaseMetadataService)
+            								ApplicationContextProvider.getInstance().getApplicationContext()
+            								.getBean(DatabaseMetadataService.BEAN_NAME)
+            							).getTableDetails(connectionProperties, 
+            								table.getSchemaName(), table.getModelName(), ReadDepthEnum.DEEP);
+            					} catch (Exception ex) {
+            						ex.printStackTrace();
+            					}
+            					if (table.getColumnlist() == null || table.getColumnlist().size() <= 0) {
+            						return;
+            					} 
+            				}
             				openTableDetails(table);
             			}
                     }

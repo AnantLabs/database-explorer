@@ -68,7 +68,7 @@ public class TableNode implements DatabaseNode<Table>, Comparable<TableNode> {
 						ApplicationContextProvider.getInstance().getApplicationContext()
 						.getBean(DatabaseMetadataService.BEAN_NAME)
 					).getTableDetails(connectionProperties, 
-						table.getSchemaName(), table.getModelName());
+						table.getSchemaName(), table.getModelName(), ReadDepthEnum.DEEP);
 			} catch (Exception e) {
 				e.printStackTrace();
 				return true;

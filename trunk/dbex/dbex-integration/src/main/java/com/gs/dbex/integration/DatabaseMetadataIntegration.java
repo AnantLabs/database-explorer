@@ -54,7 +54,7 @@ public interface DatabaseMetadataIntegration {
 	 * @return
 	 * @throws DbexException
 	 */
-	public Set<Constraint> getAllConstraints(ConnectionProperties connectionProperties, String schemaName, String tableName) throws DbexException;
+	public Set<Constraint> getAllConstraints(ConnectionProperties connectionProperties, String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException;
 	
 	
 	/**
@@ -63,7 +63,7 @@ public interface DatabaseMetadataIntegration {
 	 * @return
 	 * @throws DbexException
 	 */
-	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties) throws DbexException;
+	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException;
 	
 	//public Set<Trigger> getAllTriggers(ConnectionProperties connectionProperties) throws DbexException;
 	

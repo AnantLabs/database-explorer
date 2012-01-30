@@ -46,7 +46,7 @@ public class OracleDatabaseMetadataIntegrationImpl extends
 	
 	@Override
 	public Set<String> getAvailableSchemaNames(
-			ConnectionProperties connectionProperties) throws DbexException {
+			ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException {
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
@@ -88,7 +88,7 @@ public class OracleDatabaseMetadataIntegrationImpl extends
 		Schema schema = null;
 		try {
 			if(dbGrabber != null)
-				schema = dbGrabber.grabSchema(connectionProperties, connectionProperties.getDatabaseConfiguration().getSchemaName());
+				schema = dbGrabber.grabSchema(connectionProperties, connectionProperties.getDatabaseConfiguration().getSchemaName(), readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
@@ -117,7 +117,7 @@ public class OracleDatabaseMetadataIntegrationImpl extends
 	
 	@Override
 	public Set<Constraint> getAllConstraints(ConnectionProperties connectionProperties,
-			String schemaName, String tableName) throws DbexException {
+			String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException {
 		
 		return null;
 	}

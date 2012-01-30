@@ -47,6 +47,7 @@ import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.SqlGeneratorUtil;
 import com.gs.dbex.application.util.WindowUtil;
 import com.gs.dbex.common.ApplicationContextProvider;
+import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.enums.ResourceEditTypeEnum;
 import com.gs.dbex.common.enums.ResourceTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
@@ -142,7 +143,8 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		String[] schemaNames = null;
         		try{
         			Set<String> schemas = ((DatabaseMetadataService) ApplicationContextProvider.getInstance().getApplicationContext()
-        				.getBean(DatabaseMetadataService.BEAN_NAME)).getAvailableSchemaNames(connectionProperties); 
+        				.getBean(DatabaseMetadataService.BEAN_NAME)).
+        				getAvailableSchemaNames(connectionProperties, ReadDepthEnum.SHALLOW); 
         			if(logger.isDebugEnabled()){
         				logger.debug("[ " + schemas.size() + " ] available schema found.");
         			}

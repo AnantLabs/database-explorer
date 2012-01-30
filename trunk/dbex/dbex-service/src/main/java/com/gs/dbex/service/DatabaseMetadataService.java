@@ -27,18 +27,18 @@ public interface DatabaseMetadataService {
 	
 	public Database getDatabaseDetails(ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException;
 	
-	public Table getTableDetails(ConnectionProperties connectionProperties, String schemaName, String tableName) throws DbexException;
+	public Table getTableDetails(ConnectionProperties connectionProperties, String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException;
 	
-	public Column getColumnDetails(ConnectionProperties connectionProperties, String tableName, String columnName) throws DbexException;
+	public Column getColumnDetails(ConnectionProperties connectionProperties, String tableName, String columnName, ReadDepthEnum readDepthEnum) throws DbexException;
 	
-	public List<Column> getAllColumnDetails(ConnectionProperties connectionProperties, String tableName) throws DbexException;
+	public List<Column> getAllColumnDetails(ConnectionProperties connectionProperties, String tableName, ReadDepthEnum readDepthEnum) throws DbexException;
 	
-	public List<Table> getAllTableDetails(ConnectionProperties connectionProperties) throws DbexException;
+	public List<Table> getAllTableDetails(ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException;
 
-	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, String schemaName, String tableName) throws DbexException;
+	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException;
 	
-	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, Table table) throws DbexException;
+	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, Table table, ReadDepthEnum readDepthEnum) throws DbexException;
 	
-	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties) throws DbexException;
+	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException;
 	
 }

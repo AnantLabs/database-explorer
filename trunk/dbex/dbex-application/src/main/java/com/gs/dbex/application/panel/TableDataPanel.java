@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 
-import oracle.sql.ROWID;
 
 import org.apache.log4j.Logger;
 
@@ -129,7 +128,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 			public void mouseClicked(MouseEvent e) {
 				if(e.getButton() == MouseEvent.BUTTON1){
 					if(e.getClickCount() == 2){
-						QuickEditVO vo = new QuickEditVO();
+						/*QuickEditVO vo = new QuickEditVO();
 						vo.setTableName(tableName);
 						vo.setSchemaName(schemaName);
 						int columnIndex = dataTable.getSelectedColumn();
@@ -182,7 +181,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 						vo.setCurrentColumnName(dataTable.getModel().getColumnName(columnIndex));
 						vo.setCurrentColumnValue(dataTable.getModel().getValueAt(rowIndex, columnIndex).toString());
 						vo.setConnectionProperties(getConnectionProperties());
-						openQuickEditDialog(vo);
+						openQuickEditDialog(vo);*/
 					}
 				}
 			}

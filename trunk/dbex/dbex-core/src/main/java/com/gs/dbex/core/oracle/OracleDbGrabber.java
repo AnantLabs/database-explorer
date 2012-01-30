@@ -36,6 +36,8 @@ public class OracleDbGrabber implements SchemaGrabber{
 	private static final DatabaseReservedWordsUtil RESERVED_WORDS_UTIL = DatabaseReservedWordsUtil.getInstance();
 	private static final Logger logger = Logger.getLogger(OracleDbGrabber.class);
 	
+	private ReadDepthEnum currentReadDepth = ReadDepthEnum.SHALLOW;
+	
 	public OracleDbGrabber() {
 		// TODO Auto-generated constructor stub
 	}
@@ -48,6 +50,13 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return databaseMetaData.getSQLKeywords();
 	}
 	
+	
+	public ReadDepthEnum getCurrentReadDepth() {
+		if(null == currentReadDepth)
+			currentReadDepth = ReadDepthEnum.SHALLOW;
+		return currentReadDepth;
+	}
+
 	/**
 	 * Read the complete database information. The amount of information depends
 	 * on the readDepth (DEEP/ SHALLOW).
@@ -62,21 +71,22 @@ public class OracleDbGrabber implements SchemaGrabber{
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabDatabaseBySchema() for schemaName: " + schemaName);
 		}
+		currentReadDepth = readDepth;
 		if(connectionProperties == null){
 			return null;
 		}
 		Database database = new Database();
 		if(!StringUtil.hasValidContent(schemaName))
-			database.getSchemaList().addAll(grabSchema(connectionProperties));
+			database.getSchemaList().addAll(grabSchema(connectionProperties, readDepth));
 		else
-			database.getSchemaList().add(grabSchema(connectionProperties, schemaName.toUpperCase()));
+			database.getSchemaList().add(grabSchema(connectionProperties, schemaName.toUpperCase(), readDepth));
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: grabDatabaseBySchema()");
 		}
 		return database;
 	}
 	
-	public List<Schema> grabSchema(ConnectionProperties connectionProperties)
+	public List<Schema> grabSchema(ConnectionProperties connectionProperties, ReadDepthEnum readDepth)
 			throws SQLException {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabCatalog()");
@@ -89,7 +99,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 		if(null != schemaNames && schemaNames.size() > 0){
 			for (String schemaName : schemaNames) {
 				RESERVED_WORDS_UTIL.addSchemaName(connectionProperties.getConnectionName(), schemaName);
-				Schema schema = grabSchema(connectionProperties, schemaName);
+				Schema schema = grabSchema(connectionProperties, schemaName, readDepth);
 				if(null != schema)
 					schemas.add(schema);
 			}
@@ -100,7 +110,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 		return schemas;
 	}
 
-	public Schema grabSchema(ConnectionProperties connectionProperties, String schemaName) throws SQLException{
+	public Schema grabSchema(ConnectionProperties connectionProperties, String schemaName, ReadDepthEnum readDepth) throws SQLException{
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabSchema() for schema: " + schemaName);
 		}
@@ -113,14 +123,14 @@ public class OracleDbGrabber implements SchemaGrabber{
 		Schema schema = new Schema();
 		schema.setSchemaName(schemaName);
 		schema.setModelName(schemaName);
-		schema.setTableList(grabTables(connectionProperties, schemaName));
+		schema.setTableList(grabTables(connectionProperties, schemaName, readDepth));
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: grabSchema()");
 		}
 		return schema;
 	}
 	
-	public List<Table> grabTables(ConnectionProperties connectionProperties, String schemaName)throws SQLException  {
+	public List<Table> grabTables(ConnectionProperties connectionProperties, String schemaName, ReadDepthEnum readDepth)throws SQLException  {
 		if(logger.isDebugEnabled()){
 			logger.debug("Enter:: grabTables() for schemaName: " + schemaName);
 		}
@@ -153,7 +163,7 @@ public class OracleDbGrabber implements SchemaGrabber{
 					String dropped = resultSet.getString(OracleMetadataConstants.ALL_TABLES_SQL_META_DATA.DROPPED);
 					
 					if(StringUtil.hasValidContent(tableName)){
-						Table table = grabTable(connectionProperties, schemaName, tableName, ReadDepthEnum.DEEP);
+						Table table = grabTable(connectionProperties, schemaName, tableName, readDepth);
 						table.setTableCatalog(tableCatalog);
 						table.setTableSchema(tableSchema);
 						table.setModelName(tableName);
@@ -199,24 +209,26 @@ public class OracleDbGrabber implements SchemaGrabber{
 		table.setModelName(tableName);
 		table.setSchemaName(schemaName);
 		
-		List<PrimaryKey> primaryKeys = grabPrimaryKeys(connectionProperties, schemaName, tableName, readDepth);
-		if(null != primaryKeys){
-			table.getPrimaryKeys().addAll(primaryKeys);
-		}
-		
-		List<Column> columns = getColumnList(connectionProperties, table, ReadDepthEnum.DEEP);
-		if(null != columns){
-			table.getColumnlist().addAll(columns);
-		}
-		
-		List<ForeignKey> importedKeys = grabImportedKeys(connectionProperties, table, readDepth);
-		if(null != importedKeys){
-			table.getImportedKeys().addAll(importedKeys);
-		}
-		
-		List<ForeignKey> exportedKeys = grabExportedKeys(connectionProperties, table, readDepth);
-		if(null != exportedKeys){
-			table.getExportedKeys().addAll(exportedKeys);
+		if(!ReadDepthEnum.SHALLOW.getCode().equals(readDepth.getCode())){
+			List<PrimaryKey> primaryKeys = grabPrimaryKeys(connectionProperties, schemaName, tableName, readDepth);
+			if(null != primaryKeys){
+				table.getPrimaryKeys().addAll(primaryKeys);
+			}
+			
+			List<Column> columns = getColumnList(connectionProperties, table, ReadDepthEnum.DEEP);
+			if(null != columns){
+				table.getColumnlist().addAll(columns);
+			}
+			
+			List<ForeignKey> importedKeys = grabImportedKeys(connectionProperties, table, readDepth);
+			if(null != importedKeys){
+				table.getImportedKeys().addAll(importedKeys);
+			}
+			
+			List<ForeignKey> exportedKeys = grabExportedKeys(connectionProperties, table, readDepth);
+			if(null != exportedKeys){
+				table.getExportedKeys().addAll(exportedKeys);
+			}
 		}
 		
 		

@@ -37,6 +37,7 @@ import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.enums.ObjectTypeEnum;
+import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
@@ -69,7 +70,8 @@ public class SearchTablePanel extends JPanel implements ActionListener {
     	String[] schemaNames = null;
 		try{
 			Set<String> schemas = ((DatabaseMetadataService) ApplicationContextProvider.getInstance().getApplicationContext()
-    				.getBean(DatabaseMetadataService.BEAN_NAME)).getAvailableSchemaNames(connectionProperties); 
+    				.getBean(DatabaseMetadataService.BEAN_NAME))
+    				.getAvailableSchemaNames(connectionProperties, ReadDepthEnum.DEEP); 
 			if(logger.isDebugEnabled()){
 				logger.debug("[ " + schemas.size() + " ] available schema found.");
 			}

@@ -41,7 +41,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
-import oracle.sql.ROWID;
 
 import org.apache.log4j.Logger;
 
@@ -913,7 +912,7 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 				if(e.getSource().equals(targetTable)){
 					if(getDatabaseTable() == null)
 						return;
-					
+					/*
 					QuickEditVO vo = new QuickEditVO();
 					vo.setTableName(getDatabaseTable().getModelName());
 					vo.setSchemaName(getDatabaseTable().getSchemaName());
@@ -998,7 +997,7 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 					Object value = targetTable.getModel().getValueAt(rowIndex, columnIndex);
 					vo.setCurrentColumnValue((value != null) ? value.toString() : "");
 					vo.setConnectionProperties(getConnectionProperties());
-					openQuickEditDialog(vo);
+					openQuickEditDialog(vo);*/
 				}
 			}
 		
