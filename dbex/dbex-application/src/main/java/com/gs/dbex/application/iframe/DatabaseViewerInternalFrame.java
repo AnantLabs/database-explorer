@@ -6,7 +6,6 @@ package com.gs.dbex.application.iframe;
 import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
-import oracle.jdbc.pool.OracleDataSource;
-
 import org.apache.log4j.Logger;
-import org.omg.CORBA.portable.ApplicationException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.panel.DatabaseDirectoryPanel;
@@ -32,17 +28,13 @@ import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.exception.DbexException;
-import com.gs.dbex.core.GenericDataSource;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.common.ConnectionBasedReservedWords;
-import com.gs.dbex.model.common.DatabaseReservedWords;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.service.DbexServiceBeanFactory;
-import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 /**
  * @author sabuj.das
@@ -98,7 +90,7 @@ public class DatabaseViewerInternalFrame extends JInternalFrame implements
 						.getBeanFactory()
 						.getDatabaseMetadataService()
 						.getDatabaseDetails(connectionProperties,
-								ReadDepthEnum.SHALLOW);
+								readDepth);
 				if (null != db) {
 					db.setModelName(connectionProperties.getConnectionName());
 				}
@@ -255,7 +247,8 @@ public class DatabaseViewerInternalFrame extends JInternalFrame implements
 		if(connectionProperties.getDataSource() != null){
 			logger.info("Closing Datasource"); 
 			try {
-				if(connectionProperties.getDataSource() instanceof OracleDataSource){
+				connectionProperties.setDataSource(null);
+				/*if(connectionProperties.getDataSource() instanceof OracleDataSource){
 					OracleDataSource dataSource = (OracleDataSource) connectionProperties.getDataSource(); 
 					dataSource.close();
 				}
@@ -273,8 +266,8 @@ public class DatabaseViewerInternalFrame extends JInternalFrame implements
 				} 
 				else {
 					connectionProperties.setDataSource(null);
-				}
-			}catch (SQLException e) {
+				}*/
+			}catch (Exception e) {
 				DisplayUtils.displayMessage(getParentFrame(), e.getMessage(),DisplayTypeEnum.ERROR);
 			}
 		}

@@ -25,7 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 
-import oracle.sql.ROWID;
+
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.dlg.QuickEditDialog;
@@ -293,7 +293,7 @@ public class TableContentPanel extends JPanel implements ActionListener, MouseLi
 				if(getDatabaseTable() == null)
 					return;
 				
-				QuickEditVO vo = new QuickEditVO();
+				/*QuickEditVO vo = new QuickEditVO();
 				vo.setTableName(getDatabaseTable().getModelName());
 				vo.setSchemaName(getDatabaseTable().getSchemaName());
 				
@@ -378,7 +378,7 @@ public class TableContentPanel extends JPanel implements ActionListener, MouseLi
 				vo.setCurrentColumnValue((value != null) ? value.toString() : "");
 				vo.setConnectionProperties(getConnectionProperties());
 				openQuickEditDialog(vo);
-			
+				*/
 			}
 		}
 	}

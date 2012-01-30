@@ -25,10 +25,10 @@ public interface SchemaGrabber extends DbGrabber {
 	public Database grabDatabaseBySchema(ConnectionProperties connectionProperties,
 			String databaseName, ReadDepthEnum readDepth) throws SQLException;
 
-	public List<Schema> grabSchema(ConnectionProperties connectionProperties)
+	public List<Schema> grabSchema(ConnectionProperties connectionProperties, ReadDepthEnum readDepth)
 			throws SQLException;
 	
-	public Schema grabSchema(ConnectionProperties connectionProperties, String schemaName)
+	public Schema grabSchema(ConnectionProperties connectionProperties, String schemaName, ReadDepthEnum readDepth)
 			throws SQLException;
 
 	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties)

@@ -98,7 +98,7 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 		return db;
 	}
 
-	public Schema grabSchema(String connectionName, Connection connection, String schemaName) throws SQLException{
+	public Schema grabSchema(String connectionName, Connection connection, String schemaName, ReadDepthEnum readDepth) throws SQLException{
 		if(connection == null)
 			return null;
 		Schema schema = new Schema();
@@ -427,7 +427,7 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 	}
 
 	@Override
-	public List<Schema> grabSchema(ConnectionProperties connectionProperties)
+	public List<Schema> grabSchema(ConnectionProperties connectionProperties, ReadDepthEnum readDepth)
 			throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
@@ -435,7 +435,7 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 
 	@Override
 	public Schema grabSchema(ConnectionProperties connectionProperties,
-			String schemaName) throws SQLException {
+			String schemaName, ReadDepthEnum readDepth) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}

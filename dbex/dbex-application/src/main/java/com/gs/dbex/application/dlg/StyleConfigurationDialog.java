@@ -21,9 +21,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
@@ -46,9 +43,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
-import org.exolab.castor.mapping.MappingException;
-import org.exolab.castor.xml.MarshalException;
-import org.exolab.castor.xml.ValidationException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.common.DbexCommonContext;
@@ -62,9 +56,7 @@ import com.gs.dbex.model.syntax.SyntaxStyle;
 import com.gs.dbex.model.syntax.WordFont;
 import com.gs.dbex.model.syntax.WordStyle;
 import com.gs.utils.enums.DisplayTypeEnum;
-import com.gs.utils.io.IOUtil;
 import com.gs.utils.swing.display.DisplayUtils;
-import com.gs.utils.xml.rw.XmlRWUtils;
 
 /**
  * @author sabuj.das

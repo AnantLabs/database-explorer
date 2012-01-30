@@ -19,6 +19,7 @@ import javax.swing.table.TableModel;
 
 import com.gs.dbex.application.comps.ColumnRow;
 import com.gs.dbex.common.ApplicationContextProvider;
+import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.PrimaryKey;
@@ -68,7 +69,7 @@ public class TableRowEditorPanel extends JPanel implements ActionListener {
 				(
 					(DatabaseMetadataService)ApplicationContextProvider.getInstance().getApplicationContext()
 					.getBean(DatabaseMetadataService.BEAN_NAME)
-				).getTableDetails(connectionProperties, schemaName, tableName);
+				).getTableDetails(connectionProperties, schemaName, tableName, ReadDepthEnum.DEEP);
 			List<PrimaryKey> primaryKeyList = databaseTable.getPrimaryKeys();
 			for (PrimaryKey pk : primaryKeyList) {
 				primaryKeyColumnNameList.add(pk.getColumnName());

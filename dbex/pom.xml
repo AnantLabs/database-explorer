@@ -192,6 +192,23 @@
 			</modules>
 		</profile>
 		<profile>
+			<id>all</id>
+			<modules>
+				<module>dbex-common</module>
+				<module>dbex-model</module>
+				<module>dbex-core</module>
+				<module>dbex-bod</module>
+				<module>dbex-resources</module>
+				<module>dbex-integration</module>
+				<module>dbex-service</module>
+				<module>dbex-historyMgr</module>
+				<module>dbex-application</module>
+				<module>dbex-design</module>
+				<module>dbex-launcher</module>
+				<module>dbex-webapps</module>
+			</modules>
+		</profile>
+		<profile>
 			<id>desktop-app</id>
 			<modules>
 				<module>dbex-common</module>

@@ -146,7 +146,7 @@ public class DatabaseDirectoryTree extends JTree implements ApplicationConstants
 						} 
 						tNode.add(cNode);
 					}
-					//tNode.add(new DefaultMutableTreeNode(new Boolean(true)));
+					tNode.add(new DefaultMutableTreeNode(new Boolean(true)));
 					tableFolderNode.add(tNode);
 				}
 			}
@@ -221,15 +221,21 @@ public class DatabaseDirectoryTree extends JTree implements ApplicationConstants
 			final DatabaseNode<Object> databaseNode = getDatabaseNode(node);
 			Thread runner = new Thread() {
 				public void run() {
-					if (databaseNode != null && databaseNode.expand(node)) {
-						Runnable runnable = new Runnable() {
-							public void run() {
-								defaultTreeModel.reload(node);
-								updateUI();
-							}
-						};
-						SwingUtilities.invokeLater(runnable);
+					synchronized (this) {
+						if (databaseNode != null && databaseNode.expand(node)) {
+							Runnable runnable = new Runnable() {
+								public void run() {
+									synchronized (this) {
+										defaultTreeModel.reload(node);
+										updateUI();	
+									}
+								}
+							};
+							
+							SwingUtilities.invokeLater(runnable);
+						}
 					}
+					
 				}
 			};
             

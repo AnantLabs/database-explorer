@@ -2,6 +2,7 @@ package com.gs.dbex.application.dlg;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -56,9 +57,10 @@ public class DbexConnectionStatusDialog extends JDialog implements ActionListene
     
     private DatabaseConnectionTask databaseConnectionTask;
 	
+
 	public DbexConnectionStatusDialog(Frame parentFrame) {
+		super(parentFrame, true);
 		this.parentFrame = parentFrame;
-		setModal(true);
 		setTitle("Please Wait ...");
 		createComponents();
 		

@@ -26,7 +26,7 @@ public class CatalogMetadataIntegrationImpl implements
 	
 	@Override
 	public Set<String> getAvailableSchemaNames(
-			ConnectionProperties connectionProperties) throws DbexException {
+			ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -67,7 +67,7 @@ public class CatalogMetadataIntegrationImpl implements
 
 	@Override
 	public Set<Constraint> getAllConstraints(ConnectionProperties connectionProperties,
-			String schemaName, String tableName) throws DbexException {
+			String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException {
 		// TODO Auto-generated method stub
 		return null;
 	}

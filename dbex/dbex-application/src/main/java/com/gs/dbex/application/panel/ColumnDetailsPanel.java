@@ -88,7 +88,8 @@ public class ColumnDetailsPanel extends JPanel implements ActionListener,
 			.getDatabaseMetadataService();
 		if(null == table){
 			try {
-				table = metadataService.getTableDetails(getConnectionProperties(), schemaName, tableName);
+				table = metadataService.getTableDetails(getConnectionProperties(), 
+						schemaName, tableName, ReadDepthEnum.DEEP);
 			} catch(Exception e){
 				e.printStackTrace();
 			}finally{

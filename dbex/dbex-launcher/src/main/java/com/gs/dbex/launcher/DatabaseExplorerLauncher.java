@@ -70,6 +70,7 @@ public class DatabaseExplorerLauncher {
 		try {
             //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
+            //UIManager.setLookAndFeel(.class.getCanonicalName());
         } catch (ClassNotFoundException e1) {
             e1.printStackTrace();
         } catch (InstantiationException e1) {

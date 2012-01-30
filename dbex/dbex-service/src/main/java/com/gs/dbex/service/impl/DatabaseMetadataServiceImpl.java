@@ -22,7 +22,7 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 
 	
 	public Set<String> getAvailableSchemaNames(
-			ConnectionProperties connectionProperties) throws DbexException {
+			ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException {
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
@@ -33,7 +33,7 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 		if(integration == null){
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
-		return integration.getAvailableSchemaNames(connectionProperties);
+		return integration.getAvailableSchemaNames(connectionProperties, readDepthEnum);
 	}
 	
 	public Database getDatabaseDetails(
@@ -49,7 +49,7 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 		if(integration == null){
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
-		return integration.readDatabase(connectionProperties, ReadDepthEnum.SHALLOW);
+		return integration.readDatabase(connectionProperties, readDepthEnum);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 
 	@Override
 	public Table getTableDetails(ConnectionProperties connectionProperties, String schemaName,
-			String tableName) throws DbexException {
+			String tableName, ReadDepthEnum readDepthEnum) throws DbexException {
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
@@ -83,12 +83,12 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
 		
-		return integration.readTable(connectionProperties, schemaName, tableName, ReadDepthEnum.DEEP);
+		return integration.readTable(connectionProperties, schemaName, tableName, readDepthEnum);
 	}
 
 	@Override
 	public Column getColumnDetails(ConnectionProperties connectionProperties,
-			String tableName, String columnName)  throws DbexException{
+			String tableName, String columnName, ReadDepthEnum readDepthEnum)  throws DbexException{
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
@@ -105,7 +105,7 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 
 	@Override
 	public List<Column> getAllColumnDetails(
-			ConnectionProperties connectionProperties, String tableName) throws DbexException {
+			ConnectionProperties connectionProperties, String tableName, ReadDepthEnum readDepthEnum) throws DbexException {
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
@@ -122,7 +122,7 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 
 	@Override
 	public List<Table> getAllTableDetails(
-			ConnectionProperties connectionProperties) throws DbexException {
+			ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException {
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
@@ -138,16 +138,16 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 	}
 
 	@Override
-	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, Table table) throws DbexException {
+	public ResultSetDataTable getAllConstraints(ConnectionProperties connectionProperties, Table table, ReadDepthEnum readDepthEnum) throws DbexException {
 		if(table != null)
-			return getAllConstraints(connectionProperties, table.getSchemaName(), table.getModelName());
+			return getAllConstraints(connectionProperties, table.getSchemaName(), table.getModelName(), readDepthEnum);
 		return null;
 	}
 
 	@Override
 	public ResultSetDataTable getAllConstraints(
 			ConnectionProperties connectionProperties, String schemaName,
-			String tableName) throws DbexException {
+			String tableName, ReadDepthEnum readDepthEnum) throws DbexException {
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
