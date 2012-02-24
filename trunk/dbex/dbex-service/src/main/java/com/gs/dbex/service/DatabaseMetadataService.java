@@ -41,4 +41,12 @@ public interface DatabaseMetadataService {
 	
 	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties, ReadDepthEnum readDepthEnum) throws DbexException;
 	
+	public List<String> getSystemFunctions(ConnectionProperties connectionProperties) throws DbexException;
+	
+	public List<String> getNumericFunctions(ConnectionProperties connectionProperties) throws DbexException;
+	
+	public List<String> getStringFunctions(ConnectionProperties connectionProperties) throws DbexException;
+	
+	public List<String> getTimeDateFunctions(ConnectionProperties connectionProperties) throws DbexException;
+	
 }

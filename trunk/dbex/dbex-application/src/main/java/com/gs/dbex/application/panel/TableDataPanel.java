@@ -10,10 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -23,7 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 
-
 import org.apache.log4j.Logger;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
@@ -32,12 +27,7 @@ import com.gs.dbex.application.dlg.ResultFilterDialog;
 import com.gs.dbex.application.dlg.TableDataEditorDialog;
 import com.gs.dbex.application.pagination.PaginatedTablePanel;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
-import com.gs.dbex.application.util.DisplayTypeEnum;
-import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.MenuBarUtil;
-import com.gs.dbex.common.enums.ReadDepthEnum;
-import com.gs.dbex.common.exception.DbexException;
-import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.design.util.DesignUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;

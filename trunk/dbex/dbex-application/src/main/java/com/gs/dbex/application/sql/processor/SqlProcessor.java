@@ -1,12 +1,14 @@
 
 package com.gs.dbex.application.sql.processor;
 
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
+import java.util.List;
 import java.util.Set;
 
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.model.DatabaseReservedWordsUtil;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.service.DatabaseMetadataService;
+import com.gs.dbex.service.DbexServiceBeanFactory;
 
 
 /**
@@ -33,7 +35,7 @@ public class SqlProcessor extends AbstractProcessor {
     	return this.connectionProperties.getConnectionName();
     }
     
-    public void installServiceKeywords(){
+    public void installDatabaseKeywords(){
     	//initSymbolTable();
     	Set<String> schemaNames = RESERVED_WORDS_UTIL.getSchemaNames(getCurrentConnectionName());
     	if(schemaNames != null){
@@ -55,37 +57,38 @@ public class SqlProcessor extends AbstractProcessor {
     	}
     }
 
-    public void installServiceKeywords(DatabaseMetaData metaData) throws SQLException {
+    public void installServiceKeywords() throws DbexException {
 
         initSymbolTable();
-        String wordSet = metaData.getSystemFunctions();
-        StringTokenizer st = new StringTokenizer(wordSet, ",");
-        while (st.hasMoreTokens()) {
-            String nextToken = st.nextToken();
+        
+        DatabaseMetadataService metadataService = DbexServiceBeanFactory.getBeanFactory()
+        		.getDatabaseMetadataService();
+        
+        if(null == metadataService){
+        	return;
+        }
+        
+        List<String> wordSet = metadataService.getSystemFunctions(connectionProperties);
+        
+        for (String nextToken : wordSet) {
             lookup(TokenType.FUNCTION, nextToken);
             RESERVED_WORDS_UTIL.addFunctionName(getCurrentConnectionName(), nextToken, true);
         }
 
-        wordSet = metaData.getNumericFunctions();
-        st = new StringTokenizer(wordSet, ",");
-        while (st.hasMoreTokens()) {
-            String nextToken = st.nextToken();
+        wordSet = metadataService.getNumericFunctions(connectionProperties);
+        for (String nextToken : wordSet) {
             lookup(TokenType.FUNCTION, nextToken);
             RESERVED_WORDS_UTIL.addFunctionName(getCurrentConnectionName(), nextToken, true);
         }
 
-        wordSet = metaData.getStringFunctions();
-        st = new StringTokenizer(wordSet, ",");
-        while (st.hasMoreTokens()) {
-            String nextToken = st.nextToken();
+        wordSet = metadataService.getStringFunctions(connectionProperties);
+        for (String nextToken : wordSet) {
             lookup(TokenType.FUNCTION, nextToken);
             RESERVED_WORDS_UTIL.addFunctionName(getCurrentConnectionName(),nextToken, true);
         }
 
-        wordSet = metaData.getTimeDateFunctions();
-        st = new StringTokenizer(wordSet, ",");
-        while (st.hasMoreTokens()) {
-            String nextToken = st.nextToken();
+        wordSet = metadataService.getTimeDateFunctions(connectionProperties);
+        for (String nextToken : wordSet) {
             lookup(TokenType.FUNCTION, nextToken);
             RESERVED_WORDS_UTIL.addFunctionName(getCurrentConnectionName(),nextToken, true);
         }

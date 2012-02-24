@@ -3,6 +3,7 @@
  */
 package com.gs.dbex.integration;
 
+import java.util.List;
 import java.util.Set;
 
 import com.gs.dbex.common.enums.ReadDepthEnum;
@@ -67,6 +68,36 @@ public interface DatabaseMetadataIntegration {
 	
 	//public Set<Trigger> getAllTriggers(ConnectionProperties connectionProperties) throws DbexException;
 	
+	/**
+	 * Get all the system defined functions for the underlying database.
+	 * @param connectionProperties
+	 * @return
+	 * @throws DbexException
+	 */
+	public List<String> getSystemFunctions(ConnectionProperties connectionProperties) throws DbexException;
 	
+	/**
+	 * Get all the numeric functions for the underlying database.
+	 * @param connectionProperties
+	 * @return
+	 * @throws DbexException
+	 */
+	public List<String> getNumericFunctions(ConnectionProperties connectionProperties) throws DbexException;
+	
+	/**
+	 * Get all the String functions for the underlying database.
+	 * @param connectionProperties
+	 * @return
+	 * @throws DbexException
+	 */
+	public List<String> getStringFunctions(ConnectionProperties connectionProperties) throws DbexException;
+	
+	/**
+	 * Get all the date functions for the underlying database.
+	 * @param connectionProperties
+	 * @return
+	 * @throws DbexException
+	 */
+	public List<String> getTimeDateFunctions(ConnectionProperties connectionProperties) throws DbexException;
 	
 }

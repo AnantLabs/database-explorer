@@ -1,7 +1,5 @@
 package com.gs.dbex.application.table.model;
 
-import java.sql.SQLException;
-
 import javax.swing.table.TableModel;
 
 import com.gs.dbex.common.exception.DbexException;
@@ -55,5 +53,32 @@ public class DataTableTableModelFactory {
 			
 		}
 		return new DataTableTableModel(null);
+	}
+
+	/**
+	 * @param connectionProperties
+	 * @param queryString
+	 * @param rowNumFrom
+	 * @param rowNumTo
+	 * @return
+	 */
+	public TableModel getResultSetTableModel(
+			ConnectionProperties connectionProperties, String queryString,
+			int rowNumFrom, int rowNumTo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @param connectionProperties
+	 * @param queryString
+	 * @param filterSubQuery
+	 * @return
+	 */
+	public DataTableTableModel getResultSetTableModel(
+			ConnectionProperties connectionProperties, String queryString,
+			String filterSubQuery) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -161,4 +161,74 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 		
 		return null;
 	}
+
+	@Override
+	public List<String> getSystemFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		DatabaseMetadataIntegration integration = IntegrationBeanFactory.getBeanFactory()
+			.getDatabaseMetadataIntegration(
+					DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+					DatabaseStorageTypeEnum.getDatabaseStorageTypeEnum(connectionProperties.getDatabaseConfiguration().getStorageType()));
+		if(integration == null){
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		
+		return integration.getSystemFunctions(connectionProperties);
+	}
+
+	@Override
+	public List<String> getNumericFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		DatabaseMetadataIntegration integration = IntegrationBeanFactory.getBeanFactory()
+			.getDatabaseMetadataIntegration(
+					DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+					DatabaseStorageTypeEnum.getDatabaseStorageTypeEnum(connectionProperties.getDatabaseConfiguration().getStorageType()));
+		if(integration == null){
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		
+		return integration.getNumericFunctions(connectionProperties);
+	}
+
+	@Override
+	public List<String> getStringFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		DatabaseMetadataIntegration integration = IntegrationBeanFactory.getBeanFactory()
+			.getDatabaseMetadataIntegration(
+					DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+					DatabaseStorageTypeEnum.getDatabaseStorageTypeEnum(connectionProperties.getDatabaseConfiguration().getStorageType()));
+		if(integration == null){
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		
+		return integration.getStringFunctions(connectionProperties);
+	}
+
+	@Override
+	public List<String> getTimeDateFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		if(connectionProperties == null){
+			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
+		}
+		DatabaseMetadataIntegration integration = IntegrationBeanFactory.getBeanFactory()
+			.getDatabaseMetadataIntegration(
+					DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+					DatabaseStorageTypeEnum.getDatabaseStorageTypeEnum(connectionProperties.getDatabaseConfiguration().getStorageType()));
+		if(integration == null){
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		
+		return integration.getTimeDateFunctions(connectionProperties);
+	}
+	
+	
 }

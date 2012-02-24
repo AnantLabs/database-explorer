@@ -72,4 +72,21 @@ public interface QueryExecutionService {
 			ConnectionProperties connectionProperties,
 			SqlQuery sqlQuery)
 			throws DbexException ;
+
+	/**
+	 * @param connectionProperties
+	 * @param queryString
+	 * @return
+	 */
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			String queryString) throws DbexException;
+
+	/**
+	 * @param connectionProperties
+	 * @param queryString
+	 * @param filterSubQuery
+	 * @return
+	 */
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			String queryString, String filterSubQuery)  throws DbexException;
 }

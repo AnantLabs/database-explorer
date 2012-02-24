@@ -49,7 +49,7 @@ public class DependencyGraphPanel extends JPanel {
 	
 	private Font bitstreamFont;
 	private Font tahomaFont;
-	private Font verdanaFont;
+	//private Font verdanaFont;
 	
 	private TableDependency dependency;
 	private boolean showCompleteTable = false;
@@ -87,10 +87,10 @@ public class DependencyGraphPanel extends JPanel {
 			tahomaFont = new Font(tahomaFont.getFontName(),
 					java.awt.Font.BOLD, 11);
 			
-			verdanaFont = Font.createFont(Font.TRUETYPE_FONT, 
+			/*verdanaFont = Font.createFont(Font.TRUETYPE_FONT, 
 					getClass().getResourceAsStream("/fonts/verdana.TTF"));
 			verdanaFont = new Font(verdanaFont.getFontName(),
-					java.awt.Font.PLAIN, 10);
+					java.awt.Font.PLAIN, 10);*/
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (FontFormatException e) {
