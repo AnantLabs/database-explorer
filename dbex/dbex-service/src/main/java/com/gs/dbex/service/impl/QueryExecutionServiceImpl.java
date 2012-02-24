@@ -227,4 +227,20 @@ public class QueryExecutionServiceImpl implements QueryExecutionService {
 		}
 		return integration.executeQuery(connectionProperties, sqlQuery.getQuery());
 	}
+
+	@Override
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			String queryString) throws DbexException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getTotalRecords(ConnectionProperties connectionProperties,
+			String queryString, String filterSubQuery) throws DbexException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	
 }

@@ -22,9 +22,6 @@ import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.StringReader;
-import java.lang.Thread.State;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +68,8 @@ import javax.swing.text.StyledDocument;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
 
+import org.apache.log4j.Logger;
+
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.event.command.GuiEventHandler;
 import com.gs.dbex.application.sql.SyntaxHighlighter;
@@ -105,6 +104,8 @@ import com.gs.utils.text.StringUtil;
 public class SqlQueryPanel extends JPanel implements ActionListener, CaretListener, FocusListener,
 UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 
+	private static final Logger logger = Logger.getLogger(SqlQueryPanel.class);
+	
 	private JFrame parentFrame;
 	public static final Font DEFAULT_TEXT_FONT =
         new Font(Font.MONOSPACED,
@@ -142,32 +143,14 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 		}*/
 		bitstreamFont = DEFAULT_TEXT_FONT;
 		setConnectionProperties(getConnectionProperties());
-		ResultSetTableModelFactory factory = null;
-		try {
-			factory = new ResultSetTableModelFactory(
-					getConnectionProperties().getDataSource().getConnection());
-		} catch (SQLException e) {
-			DisplayUtils.displayMessage(getParentFrame(), e.getMessage(), DisplayTypeEnum.ERROR);
-		}
-		setFactory(factory);
-		Connection con = null;
-		try {
-			con = getConnectionProperties().getDataSource().getConnection();
-			sqlProcessor = new SqlProcessor(getConnectionProperties());
-			sqlProcessor.installServiceKeywords();//con.getMetaData(), "%", connectionProperties.getDatabaseName());
-			sqlProcessor.installServiceKeywords(con.getMetaData());
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if(con != null){
-				try {
-					con.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 		
+		sqlProcessor = new SqlProcessor(getConnectionProperties());
+		sqlProcessor.installDatabaseKeywords();//con.getMetaData(), "%", connectionProperties.getDatabaseName());
+		try {
+			sqlProcessor.installServiceKeywords();
+		} catch (DbexException e) {
+			logger.error(e);
+		}
 		queryExecutionService = DbexServiceBeanFactory.getBeanFactory().getQueryExecutionService();
 		initComponents();
 		
@@ -180,12 +163,6 @@ UndoableEditListener, HyperlinkListener, PropertyChangeListener {
 		dsb.add(runQueryButton);
 		dsb.add(runQueryMenuItem);
 		
-//		t = new QueryExecutionThread(getParentFrame(),
-//				getConnectionProperties(), 
-//				getFactory(), 
-//				queryResultTable, 
-//				queryResultTabbedPane, 
-//				queryLogTextArea, enb, dsb);
 	}
 
 	private void initComponents() {

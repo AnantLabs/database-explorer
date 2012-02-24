@@ -2,6 +2,7 @@ package com.gs.dbex.integration.impl;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Set;
 
 import com.gs.dbex.common.enums.ReadDepthEnum;
@@ -62,6 +63,34 @@ public class SchemaMetadataIntegrationImpl implements
 	public Set<Constraint> getAllConstraints(ConnectionProperties connectionProperties,
 			String schemaName, String tableName, ReadDepthEnum readDepthEnum) throws DbexException {
 		
+		return null;
+	}
+
+	@Override
+	public List<String> getSystemFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getNumericFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getStringFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getTimeDateFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

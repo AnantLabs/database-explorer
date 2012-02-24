@@ -20,6 +20,7 @@ public final class IntegrationBeanFactory {
 	private DatabaseMetadataIntegration sqlServerDatabaseMetadataIntegration;
 	private DatabaseMetadataIntegration catalogMetadataIntegration;
 	private DatabaseMetadataIntegration schemaMetadataIntegration;
+	private DatabaseMetadataIntegration genericMetadataIntegration;
 	private DatabaseConnectionIntegration oracleDatabaseConnectionIntegration;
 	private DatabaseConnectionIntegration mysqlDatabaseConnectionIntegration;
 	private DatabaseConnectionIntegration genericDatabaseConnectionIntegration;
@@ -56,7 +57,7 @@ public final class IntegrationBeanFactory {
 				return getSchemaMetadataIntegration();
 			}
 		}
-		return null;
+		return getGenericMetadataIntegration();
 	}
 	
 	public DatabaseConnectionIntegration getDatabaseConnectionIntegration(DatabaseTypeEnum databaseTypeEnum){
@@ -255,6 +256,17 @@ public final class IntegrationBeanFactory {
 	public void setSqlServerQueryExecutionIntegration(
 			QueryExecutionIntegration sqlServerQueryExecutionIntegration) {
 		this.sqlServerQueryExecutionIntegration = sqlServerQueryExecutionIntegration;
+	}
+
+	@Deprecated
+	public DatabaseMetadataIntegration getGenericMetadataIntegration() {
+		return genericMetadataIntegration;
+	}
+
+	@Deprecated
+	public void setGenericMetadataIntegration(
+			DatabaseMetadataIntegration genericMetadataIntegration) {
+		this.genericMetadataIntegration = genericMetadataIntegration;
 	}
 
 	

@@ -6,6 +6,8 @@ package com.gs.dbex.integration.impl.mysql;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -16,6 +18,8 @@ import com.gs.dbex.common.exception.ErrorCodeConstants;
 import com.gs.dbex.core.CatalogGrabber;
 import com.gs.dbex.core.mysql.MysqlDbGrabber;
 import com.gs.dbex.core.mysql.MysqlMetaQueryConstants;
+import com.gs.dbex.integration.DatabaseMetadataIntegration;
+import com.gs.dbex.integration.IntegrationBeanFactory;
 import com.gs.dbex.integration.impl.DatabaseMetadataIntegrationImpl;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Constraint;
@@ -138,4 +142,42 @@ public class MysqlDatabaseMetadataIntegrationImpl extends
 		return null;
 	}
 
+	@Override
+	public List<String> getSystemFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		DatabaseMetadataIntegration metadataIntegration=IntegrationBeanFactory.getBeanFactory().getGenericMetadataIntegration();
+		if(null != metadataIntegration){
+			return metadataIntegration.getSystemFunctions(connectionProperties);
+		}
+		return new ArrayList<String>();
+	}
+	@Override
+	public List<String> getNumericFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		DatabaseMetadataIntegration metadataIntegration=IntegrationBeanFactory.getBeanFactory().getGenericMetadataIntegration();
+		if(null != metadataIntegration){
+			return metadataIntegration.getNumericFunctions(connectionProperties);
+		}
+		return new ArrayList<String>();
+	}
+	@Override
+	public List<String> getStringFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		DatabaseMetadataIntegration metadataIntegration=IntegrationBeanFactory.getBeanFactory().getGenericMetadataIntegration();
+		if(null != metadataIntegration){
+			return metadataIntegration.getStringFunctions(connectionProperties);
+		}
+		return new ArrayList<String>();
+	}
+	@Override
+	public List<String> getTimeDateFunctions(
+			ConnectionProperties connectionProperties) throws DbexException {
+		DatabaseMetadataIntegration metadataIntegration=IntegrationBeanFactory.getBeanFactory().getGenericMetadataIntegration();
+		if(null != metadataIntegration){
+			return metadataIntegration.getTimeDateFunctions(connectionProperties);
+		}
+		return new ArrayList<String>();
+	}
+
+	
 }
