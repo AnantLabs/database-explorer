@@ -231,7 +231,7 @@ public class OracleQueryExecutionIntegration implements
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
 		} finally {
-			//JdbcUtil.close(connection);
+			JdbcUtil.close(connection);
 		}
 		return rows;
 	}

@@ -9,6 +9,8 @@ package com.gs.dbex.common.enums;
  */
 public enum ResourceTypeEnum {
 
+	CATALOG("DATABASE_SCHEMA", "Catalog", Boolean.FALSE),
+	SCHEMA("DATABASE_SCHEMA", "Schema", Boolean.FALSE),
 	TABLE("DATABASE_TABLE", "Table", Boolean.TRUE),
 	COLUMN("DATABASE_COLUMN", "Column", Boolean.TRUE);
 	

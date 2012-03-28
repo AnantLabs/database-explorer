@@ -11,6 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.apache.log4j.Logger;
+import org.fife.plaf.Office2003.Office2003LookAndFeel;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -19,7 +20,11 @@ import com.gs.dbex.application.frame.DatabaseExplorerFrame;
 import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.DbexCommonContext;
 import com.gs.dbex.launcher.splash.DbexSplashWindow;
+import com.gs.utils.enums.DisplayTypeEnum;
+import com.gs.utils.swing.display.DisplayUtils;
 import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
+
+import de.muntjak.tinylookandfeel.TinyLookAndFeel;
 
 /**
  * @author sabuj.das
@@ -63,14 +68,20 @@ public class DatabaseExplorerLauncher {
 		
 		
 		DatabaseExplorerLauncher launcher = (DatabaseExplorerLauncher) contextProvider.getApplicationContext().getBean("databaseExplorerLauncher");
-		DbexSplashWindow splashWindow = new DbexSplashWindow(launcher);
+		try {
+			DbexSplashWindow splashWindow = new DbexSplashWindow(launcher);
+		} catch (Exception e) {
+			DisplayUtils.displayMessage(null, "Internal System Error!!!\nPlease download the latest copy.", DisplayTypeEnum.ERROR);
+			System.exit(0);
+		}
 	}
 	
 	public void launchApplication(){
 		try {
-            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
-            //UIManager.setLookAndFeel(.class.getCanonicalName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
+            //UIManager.setLookAndFeel(TinyLookAndFeel.class.getCanonicalName());
+			//UIManager.setLookAndFeel(Office2003LookAndFeel.class.getCanonicalName());
         } catch (ClassNotFoundException e1) {
             e1.printStackTrace();
         } catch (InstantiationException e1) {

@@ -17,8 +17,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -35,27 +33,26 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
-import org.omg.CORBA.portable.ApplicationException;
-import org.springframework.beans.BeansException;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.panel.ResourceCommentPanel;
 import com.gs.dbex.application.panel.ResourceRenamePanel;
 import com.gs.dbex.application.panel.TruncateTablePanel;
 import com.gs.dbex.application.table.CopyTablePanel;
-import com.gs.dbex.application.util.DisplayUtils;
-import com.gs.dbex.application.util.SqlGeneratorUtil;
 import com.gs.dbex.application.util.WindowUtil;
 import com.gs.dbex.common.ApplicationContextProvider;
+import com.gs.dbex.common.enums.DatabaseTypeEnum;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.enums.ResourceEditTypeEnum;
 import com.gs.dbex.common.enums.ResourceTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
-import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.service.DatabaseMetadataService;
+import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.SqlGeneratorService;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -80,6 +77,7 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
 	private ResourceCommentPanel<T> resourceCommentPanel;
 	private TruncateTablePanel truncateTablePanel;
 	
+	private SqlGeneratorService sqlGeneratorService;
 
 	/**
 	 * Generated serialVersionUID = 8219746741623031954L
@@ -96,6 +94,8 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         this.resource = resource;
         resourceTypeEnum = resourceType;
         resourceEditTypeEnum = resourceEditType;
+        this.sqlGeneratorService = DbexServiceBeanFactory.getBeanFactory()
+        		.getSqlGeneratorService();
         
         if(connectionProperties == null)
         	return; //TODO: throw exception
@@ -124,9 +124,13 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		resourceRenamePanel.getResourceLabel().setText("New Table Name: ");
         		variableComponentPanel.removeAll();
         		variableComponentPanel.add(resourceRenamePanel, BorderLayout.CENTER);
-        		String sql = SqlGeneratorUtil.generateTableRenameSQL(schemaName, table.getModelName(), 
+        		SqlQuery sql = sqlGeneratorService.generateRenameTableSql(
+        				DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+        				schemaName, table.getModelName(), 
         				resourceRenamePanel.getNewResourceNameTextField().getText());
-        		sqlTextArea.setText(sql);
+        		if(null != sql){
+        			sqlTextArea.setText(sql.getQuery());
+        		}
         		resourceRenamePanel.getNewResourceNameTextField().addKeyListener(this);
         	} else if(ResourceEditTypeEnum.DROP.equals(resourceEditType)){
         		setTitle("Drop Table");
@@ -135,7 +139,10 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		variableComponentPanel.add(
         				new JLabel("Do you want to DROP the table [ " + table.getModelName() + " ] " +
         						"?"), BorderLayout.NORTH);
-        		sqlTextArea.setText(SqlGeneratorUtil.generateDropTableSQL(getSchemaName(), table.getModelName()));
+        		SqlQuery sql = sqlGeneratorService.generateDropTableSql(
+        				DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()), table);
+        		if(null != sql)
+        			sqlTextArea.setText(sql.getQuery());
         	} else if(ResourceEditTypeEnum.COPY.equals(resourceEditType)){
         		setTitle("Copy Table");
         		logger.info("Copy Table");
@@ -165,12 +172,15 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		copyTablePanel.getCopyDataCheckBox().addActionListener(this);
         		variableComponentPanel.removeAll();
         		variableComponentPanel.add(copyTablePanel, BorderLayout.CENTER);
+        		
+        		/*SqlQuery query = sqlGeneratorService.generateCopyTableSql(getSchemaName(), table.getModelName(),
+						"" + copyTablePanel.getNewSchemaListComboBox().getSelectedItem(), 
+						copyTablePanel.getNewTableNameTextField().getText(), 
+						copyTablePanel.getCopyDataCheckBox().isSelected())
+        		
         		sqlTextArea.setText(
-        				SqlGeneratorUtil.generateCopyTableSql(getSchemaName(), table.getModelName(),
-        						"" + copyTablePanel.getNewSchemaListComboBox().getSelectedItem(), 
-        						copyTablePanel.getNewTableNameTextField().getText(), 
-        						copyTablePanel.getCopyDataCheckBox().isSelected())
-        			);
+        				
+        			);*/
         	} else if(ResourceEditTypeEnum.TRUNCATE.equals(resourceEditType)){
         		setTitle("Truncate Table");
         		logger.info("Truncate Table");
@@ -183,6 +193,9 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		}
         		variableComponentPanel.removeAll();
         		variableComponentPanel.add(truncateTablePanel, BorderLayout.CENTER);
+        		SqlQuery sql = sqlGeneratorService.generateTruncateTableSql(
+        				DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+        				table, drop);
         		sqlTextArea.setText(
         				SqlGeneratorUtil.generateTruncateTableSQL(
         						getSchemaName(), table.getModelName(), drop

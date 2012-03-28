@@ -30,6 +30,8 @@ import javax.swing.JToolBar;
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.dlg.QuickEditDialog;
 import com.gs.dbex.application.dlg.ResultFilterDialog;
+import com.gs.dbex.application.pagination.PaginatedTablePanel;
+import com.gs.dbex.application.table.model.DataTableTableModelFactory;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
@@ -38,6 +40,8 @@ import com.gs.dbex.core.oracle.OracleDbGrabber;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.vo.QuickEditVO;
+import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.QueryExecutionService;
 
 /**
  * @author sabuj.das
@@ -52,32 +56,28 @@ public class TableContentPanel extends JPanel implements ActionListener, MouseLi
 		filterDataButton;
 	private JTable sampleContentTable;
 	private JToolBar contentToolBar;
-	private ResultSetTableModelFactory resultSetTableModelFactory;
 	private String queryString;
 	private String currentFilter = "";
 	private JFrame parentFrame;
 	private String []selectedColumns;
+	private PaginatedTablePanel paginatedTablePanel;
+	private DataTableTableModelFactory dataTableTableModelFactory;
 	
 	
-	
-	public TableContentPanel(String schemaName, String tableName,
-			ConnectionProperties connectionProperties, Table table) {
-		this(schemaName, tableName, connectionProperties, table, null);
+	public TableContentPanel(JFrame parentFrame, ConnectionProperties connectionProperties, Table table) {
+		this(parentFrame, connectionProperties, table, null);
 	}
 	
-	public TableContentPanel(String schemaName, String tableName,
-			ConnectionProperties connectionProperties, Table table, String []selectedColumns) {
-		this.schemaName = schemaName; 
-		this.tableName = tableName;
-		this.connectionProperties = connectionProperties;
+	public TableContentPanel(JFrame parentFrame, ConnectionProperties connectionProperties,
+			Table table, String []selectedColumns) {
+		this.parentFrame = parentFrame;
 		this.databaseTable = table;
+		this.schemaName = databaseTable.getSchemaName();
+		this.tableName = databaseTable.getModelName();
+		this.connectionProperties = connectionProperties;
 		this.selectedColumns = selectedColumns;
-		try {
-			this.resultSetTableModelFactory = new ResultSetTableModelFactory(
-					connectionProperties.getDataSource().getConnection());
-		} catch (SQLException e) {
-			DisplayUtils.displayMessage(null, e.getMessage(), DisplayTypeEnum.ERROR);
-		}
+		this.dataTableTableModelFactory = new DataTableTableModelFactory();
+		
 		String comaSeparatedColumns = " ";
 		if(null != selectedColumns && selectedColumns.length > 0){
 			for(int i=0; i<selectedColumns.length; i++){
@@ -95,26 +95,20 @@ public class TableContentPanel extends JPanel implements ActionListener, MouseLi
 		initComponents();
 		
 		showContent(queryString);
+		
+		
+		
 	}
 
+	
+	
+	
 	private void showContent(String query) {
-		OracleDbGrabber dbGrabber = new OracleDbGrabber();
-		Connection conn = null;
 		try {
-			sampleContentTable.setModel(resultSetTableModelFactory.getResultSetTableModel(query));
+			sampleContentTable.setModel(dataTableTableModelFactory.getResultSetTableModel(connectionProperties, query));
 		}catch(Exception e){
 			DisplayUtils.displayMessage(null, e.getMessage(), DisplayTypeEnum.ERROR);
-		}finally{
-			if(conn != null){
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 		}
-		
 	}
 
 	private void initComponents() {

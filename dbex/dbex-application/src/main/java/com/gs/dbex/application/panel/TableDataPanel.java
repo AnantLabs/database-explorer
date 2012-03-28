@@ -49,7 +49,6 @@ public class TableDataPanel extends JPanel implements ActionListener{
 	private JToolBar dataToolBar;
 	private String tableName, schemaName;
 	private ConnectionProperties connectionProperties;
-	private ResultSetTableModelFactory resultSetTableModelFactory;
 	private String queryString;
 	private String currentFilter = "";
 	private JFrame parentFrame;

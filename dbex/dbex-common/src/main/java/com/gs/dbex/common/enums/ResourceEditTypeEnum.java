@@ -14,6 +14,7 @@ public enum ResourceEditTypeEnum {
 	DROP("DROP", "Drop"),
 	TRUNCATE("TRUNCATE", "Truncate"),
 	COMMENT("COMMENT", "Comment"),
+	ALTER("ALTER", "Alter"),
 	MODIFY_ALL("MODIFY_ALL", "Modify");
 	
 	private String code, description;

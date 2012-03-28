@@ -12,7 +12,7 @@ import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.common.exception.ErrorCodeConstants;
 import com.gs.dbex.core.Transaction;
 import com.gs.dbex.integration.QueryExecutionIntegration;
-import com.gs.dbex.integration.helper.mysql.SqlServerIntegrationHelper;
+import com.gs.dbex.integration.helper.mssql.SqlServerIntegrationHelper;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.sql.SqlQuery;

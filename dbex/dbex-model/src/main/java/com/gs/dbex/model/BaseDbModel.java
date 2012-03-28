@@ -9,7 +9,7 @@ import java.sql.Timestamp;
  * @author Sabuj Das
  *
  */
-public abstract class BaseDbModel implements Serializable {
+public abstract class BaseDbModel implements Serializable, Comparable<BaseDbModel> {
 
 	/**
 	 * 
@@ -98,4 +98,11 @@ public abstract class BaseDbModel implements Serializable {
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(BaseDbModel o) {
+		return this.modelName.compareTo(o.modelName);
+	}
 }

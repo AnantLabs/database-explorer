@@ -16,6 +16,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.Thread.State;
 import java.sql.SQLException;
@@ -46,6 +48,8 @@ import com.gs.dbex.application.comps.ExtensionFileFilter;
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.list.model.ColumnNameListModel;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
+import com.gs.dbex.application.task.TableDataExportWorker;
+import com.gs.dbex.application.task.WorkerTaskConstants;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
 import com.gs.dbex.application.util.WindowUtil;
@@ -69,8 +73,9 @@ public class TableDataExportDialog  extends JDialog {
 	private ColumnNameListModel allColumnNameListModel;
 	private ColumnNameListModel selectedColumnNameListModel;
 	private ResultSetTableModelFactory resultSetTableModelFactory;
-	
+	private TableDataExportWorker tableDataExportWorker;
 	private Map<String, Column> selectedColumnsMap = new HashMap<String, Column>();
+    private FormListener formListener = new FormListener();
     
     public TableDataExportDialog(JFrame parentFrame, Table table,
 			TableDataExportTypeEnum exportTypeEnum,
@@ -148,7 +153,7 @@ public class TableDataExportDialog  extends JDialog {
         moveUpButton = new JButton("Up");
         moveDownButton = new JButton("Down");
 
-        FormListener formListener = new FormListener();
+        
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Export Data - " + getTable().getModelName());
@@ -254,7 +259,7 @@ public class TableDataExportDialog  extends JDialog {
         exportFileFormatPanel.add(browseButton, gridBagConstraints);
         
         
-        exportProgressLabel.setText(" Exporting Date ...");
+        exportProgressLabel.setText("");
         exportProgressLabel.setIcon(new ImageIcon(getClass()
 				.getResource(ApplicationConstants.IMAGE_PATH
 						+ "loading.gif")));
@@ -477,12 +482,20 @@ public class TableDataExportDialog  extends JDialog {
 	private class FormListener 
 		implements 
 			ActionListener, FocusListener, KeyListener, ListSelectionListener,
-			MouseListener
+			MouseListener, PropertyChangeListener
 	{
         FormListener() {
         	
         }
-        public void actionPerformed(ActionEvent evt) {
+        
+        @Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if(evt.getSource() == tableDataExportWorker){
+				tableDataExportWorkerPropertyChanged(evt);
+			}
+		}
+
+		public void actionPerformed(ActionEvent evt) {
             if (evt.getSource() == cancelButton) {
             	cancel();
                 
@@ -621,7 +634,46 @@ public class TableDataExportDialog  extends JDialog {
 		}
 	}
 	
+	private void tableDataExportWorkerPropertyChanged(
+			PropertyChangeEvent evt) {
+		String propertyName = evt.getPropertyName();
+		if (WorkerTaskConstants.TASK_STATUS_START.equals(propertyName)) {
+			exportProgressLabel.setVisible(true);
+			exportProgressLabel.setText(" " + evt.getNewValue());
+			exportButton.setEnabled(false);
+			cancelButton.setText("Stop");
+		}
+		if (WorkerTaskConstants.PROPERTY_PROGRESS.equals(propertyName)) {
+			
+		}
+		if (WorkerTaskConstants.TASK_STATUS_FAILED.equals(propertyName)) {
+			cancelButton.setText("Cancel");
+			exportButton.setEnabled(true);
+			exportProgressLabel.setVisible(false);
+		}
+		if (WorkerTaskConstants.TASK_STATUS_ABORT.equals(propertyName)) {
+			cancelButton.setText("Cancel");
+			exportButton.setEnabled(true);
+			exportProgressLabel.setVisible(false);
+		}
+		if (WorkerTaskConstants.TASK_STATUS_DONE.equals(propertyName)) {
+			cancelButton.setText("Cancel");
+			exportButton.setEnabled(true);
+			exportProgressLabel.setVisible(false);
+		}
+	}
+	
 	private void export() {
+		
+		synchronized (this) {
+			tableDataExportWorker = new TableDataExportWorker(connectionProperties, table);
+			tableDataExportWorker.setDataExportTypeEnum(getExportTypeEnum());
+			tableDataExportWorker.setOutputFileName(outputFileTextField.getText());
+			tableDataExportWorker.setExportSql(formSelectStatement(whereClauseTextField.getText()));
+			tableDataExportWorker.addPropertyChangeListener(formListener);
+			tableDataExportWorker.execute();
+		}
+		
 		/*exportRunner.setExportSql(formSelectStatement(whereClauseTextField.getText()));
 		exportRunner.setDataExportTypeEnum(getExportTypeEnum());
 		exportRunner.setExportSql(formSelectStatement(whereClauseTextField.getText()));
@@ -632,18 +684,12 @@ public class TableDataExportDialog  extends JDialog {
 			exportRunnerThread.stop();
 			exportRunnerThread.start();
 		}*/
-		exportProgressLabel.setVisible(true);
-		exportButton.setEnabled(false);
-		cancelButton.setText("Stop");
 		
 		/*TableDataExportServiceImpl exportService = new TableDataExportServiceImpl(getConnectionProperties());
 		exportService.exportData(getTable().getSchemaName(), getTable().getModelName(),
 				getExportTypeEnum(), outputFileTextField.getText(), 
 				formSelectStatement(whereClauseTextField.getText()));*/
 		
-		cancelButton.setText("Cancel");
-		exportButton.setEnabled(true);
-		exportProgressLabel.setVisible(false);
 		
 	}
 	

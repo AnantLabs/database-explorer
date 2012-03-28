@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -28,7 +30,11 @@ public class GenericDataSource implements DataSource {
 		DriverManager.registerDriver((Driver) Class.forName(driverClassName).newInstance());
 	}
 	
-	
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		return Logger.getLogger(getClass().getCanonicalName());
+	}
+
+
 	public PrintWriter getLogWriter() throws SQLException {
 		return DriverManager.getLogWriter();
 	}

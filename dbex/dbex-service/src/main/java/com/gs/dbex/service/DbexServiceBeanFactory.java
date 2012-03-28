@@ -26,7 +26,8 @@ public final class DbexServiceBeanFactory {
 	private DatabaseMetadataService databaseMetadataService;
 	private QueryExecutionService queryExecutionService;
 	private DependencyService dependencyService;
-
+	private TableDataExportService tableDataExportService;
+	private SqlGeneratorService sqlGeneratorService;
 	
 	public DependencyService getDependencyService() {
 		return dependencyService;
@@ -60,6 +61,23 @@ public final class DbexServiceBeanFactory {
 	public void setDatabaseMetadataService(
 			DatabaseMetadataService databaseMetadataService) {
 		this.databaseMetadataService = databaseMetadataService;
+	}
+
+	public TableDataExportService getTableDataExportService() {
+		return tableDataExportService;
+	}
+
+	public void setTableDataExportService(
+			TableDataExportService tableDataExportService) {
+		this.tableDataExportService = tableDataExportService;
+	}
+
+	public SqlGeneratorService getSqlGeneratorService() {
+		return sqlGeneratorService;
+	}
+
+	public void setSqlGeneratorService(SqlGeneratorService sqlGeneratorService) {
+		this.sqlGeneratorService = sqlGeneratorService;
 	}
 	
 	

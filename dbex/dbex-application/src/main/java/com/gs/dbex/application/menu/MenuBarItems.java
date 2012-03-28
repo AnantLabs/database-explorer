@@ -101,6 +101,7 @@ public class MenuBarItems implements ActionListener, GuiCommandConstants{
 	public static final String TILE_WINDOWS_MENU_ITEM = "TILE_WINDOWS_MENU_ITEM";
 // Help menu items
 	public static final String _HELP_MENU_ITEM = "";
+	public static final String ABOUT_HELP_MENU_ITEM = "ABOUT_HELP_MENU_ITEM";
 	
 // Tools menu
 	public static final String STYLE_CFG_MENU_ITEM = "STYLE_CFG_MENU_ITEM";
@@ -163,8 +164,8 @@ public class MenuBarItems implements ActionListener, GuiCommandConstants{
 	}
 
 	private void createHelpMenu() {
-		// TODO Auto-generated method stub
-		
+		addMenuItem(HELP_MENU_NAME, ABOUT_HELP_MENU_ITEM, "About", 
+				ABOUT_ACT_CMD, "Information.png");
 	}
 
 	private void createWindowsMenu() {

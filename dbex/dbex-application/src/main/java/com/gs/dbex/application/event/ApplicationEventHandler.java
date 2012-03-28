@@ -32,6 +32,7 @@ import com.gs.dbex.application.dlg.OpenResourceDialog;
 import com.gs.dbex.application.dlg.SearchObjectDialog;
 import com.gs.dbex.application.dlg.StyleConfigurationDialog;
 import com.gs.dbex.application.frame.DatabaseExplorerFrame;
+import com.gs.dbex.application.help.DbexAboutDialog;
 import com.gs.dbex.application.iframe.DatabaseViewerInternalFrame;
 import com.gs.dbex.application.menu.MenuBarItems;
 import com.gs.dbex.application.panel.SqlQueryPanel;
@@ -352,6 +353,9 @@ public class ApplicationEventHandler implements ActionListener,
 				if(dbIframe == null){
 					return;
 				}
+			} else if(ABOUT_ACT_CMD.equals(cmd)){
+				DbexAboutDialog aboutDialog = new DbexAboutDialog((DatabaseExplorerFrame) getParent(), true);
+				aboutDialog.setVisible(true);
 			}
 		}
 	}
@@ -377,9 +381,7 @@ public class ApplicationEventHandler implements ActionListener,
 				}
 			}
 			if(!tableOpened){
-				TableContentPanel contentPanel = new TableContentPanel(
-						table.getSchemaName(), table.getModelName(), dbIframe.getConnectionProperties(), table	
-					);
+				TableContentPanel contentPanel = new TableContentPanel( null,dbIframe.getConnectionProperties(), table	);
 					contentPanel.setParentFrame(dbIframe.getParentFrame());
 					iFrame.getDbDetailsTabbedPane().addTab(ApplicationConstants.CONTENT_TEXT + table.getModelName(), contentPanel);
 					int n = iFrame.getDbDetailsTabbedPane().getTabCount();

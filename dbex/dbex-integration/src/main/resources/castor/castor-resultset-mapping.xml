@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+    "http://castor.org/mapping.dtd">
+
+<mapping>
+
+	<class name="com.gs.oracle.service.vo.XmlColumnVo">
+		<map-to xml="COLUMN" />
+		<field name="columnName" type="string">
+			<bind-xml name="NAME" node="attribute" />
+		</field>
+		<field name="columnValue" type="string">
+			<bind-xml name="VALUE" node="element" />
+		</field>
+	</class>
+
+	<class name="com.gs.oracle.service.vo.XmlRowVo">
+		<map-to xml="ROW" />
+		<field name="xmlColumnList" type="com.gs.oracle.service.vo.XmlColumnVo"
+			collection="collection">
+			<bind-xml name="COLUMN" />
+		</field>
+	</class>
+	
+	<class name="com.gs.oracle.service.vo.XmlResultsVo">
+		<map-to xml="RESULTS" />
+		<field name="xmlRowList" type="com.gs.oracle.service.vo.XmlRowVo"
+			collection="collection">
+			<bind-xml name="ROW" />
+		</field>
+	</class>
+
+</mapping>

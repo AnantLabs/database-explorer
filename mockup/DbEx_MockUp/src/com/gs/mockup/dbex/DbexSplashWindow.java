@@ -20,23 +20,33 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class DbexSplashWindow extends JWindow{
 
     public static void main(String[] a){
-        
-        DbexSplashWindow window = new DbexSplashWindow();
-        window.setVisible(true);
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            DbexSplashWindow window = new DbexSplashWindow();
+            window.setVisible(true);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DbexSplashWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            Logger.getLogger(DbexSplashWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(DbexSplashWindow.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(DbexSplashWindow.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    private DbexSplashPanel dbexSplashPanel;
+    private NewDbexSplashPanel dbexSplashPanel;
 
     public DbexSplashWindow() {
         initComponents();
     }
 
     private void initComponents(){
-        setMinimumSize(new Dimension(402, 275));
+        setMinimumSize(new Dimension(530, 300));
         setPreferredSize(getMinimumSize());
 
         getContentPane().setLayout(new BorderLayout());
-        dbexSplashPanel = new DbexSplashPanel();
+        dbexSplashPanel = new NewDbexSplashPanel();
         getContentPane().add(dbexSplashPanel, BorderLayout.CENTER);
     }
 
