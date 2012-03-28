@@ -20,8 +20,7 @@ import com.gs.dbex.model.common.ColumnHeader;
  * Type Name : com.gs.oracle.model.Column
  * 
  */
-public class Column extends BaseDbModel implements Serializable,
-		Comparable<Column> {
+public class Column extends BaseDbModel implements Serializable {
 
 	private String tableName;
 	private Table parentTable;
@@ -171,10 +170,6 @@ public class Column extends BaseDbModel implements Serializable,
 	public String toString() {
 		return getModelName() + " [ " + typeName + ", " + ((null != size) ? "(" + size + ") " : "")
 				+ ((nullable) ? "NULL" : "NOTNULL") + " ]";
-	}
-
-	public int compareTo(Column o) {
-		return this.getColumnID().compareTo(o.getColumnID());
 	}
 
 	@Override

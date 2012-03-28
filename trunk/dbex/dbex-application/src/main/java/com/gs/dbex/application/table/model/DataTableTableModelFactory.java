@@ -5,8 +5,10 @@ import javax.swing.table.TableModel;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
+import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.service.DbexServiceBeanFactory;
 import com.gs.dbex.service.QueryExecutionService;
+import com.gs.utils.text.StringUtil;
 
 /**
  * @author Sabuj Das
@@ -26,6 +28,20 @@ public class DataTableTableModelFactory {
 
 	public void setQueryExecutionService(QueryExecutionService queryExecutionService) {
 		this.queryExecutionService = queryExecutionService;
+	}
+	
+	public DataTableTableModel getResultSetTableModel(ConnectionProperties connectionProperties, String queryString) {
+		if (connectionProperties == null || !StringUtil.hasValidContent(queryString))
+			throw new IllegalStateException("Unable to get required information.");
+		try {
+			SqlQuery sqlQuery = new SqlQuery(queryString);
+			
+			return new DataTableTableModel(
+					queryExecutionService.executeQuery(connectionProperties, sqlQuery));
+		} catch (DbexException e) {
+			
+		}
+		return new DataTableTableModel(null);
 	}
 	
 	public DataTableTableModel getResultSetTableModel(ConnectionProperties connectionProperties, 

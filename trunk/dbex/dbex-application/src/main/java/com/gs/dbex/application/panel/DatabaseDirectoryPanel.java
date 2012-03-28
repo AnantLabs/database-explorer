@@ -473,6 +473,8 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 			exportTableData(mouseClickedTreePath, TableDataExportTypeEnum.EXCEL);
 		}else if(e.getSource().equals(exportDataToXmlMenuItem)){
 			exportTableData(mouseClickedTreePath, TableDataExportTypeEnum.XML);
+		}else if(e.getSource().equals(modifyTableMenuItem)){
+			modifyResource(mouseClickedTreePath, ResourceTypeEnum.TABLE, ResourceEditTypeEnum.MODIFY_ALL);
 		}else if(e.getSource().equals(renameTableMenuItem)){
 			modifyResource(mouseClickedTreePath, ResourceTypeEnum.TABLE, ResourceEditTypeEnum.RENAME);
 		}else if(e.getSource().equals(dropTableMenuItem)){
@@ -544,9 +546,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
         if(dbNode instanceof TableNode){
         	Table table = ((TableNode)dbNode).getTable();
 			if(table != null){
-				TableContentPanel contentPanel = new TableContentPanel(
-					table.getTableCatalog(), table.getModelName(), connectionProperties, table	
-				);
+				TableContentPanel contentPanel = new TableContentPanel(getParentFrame(), connectionProperties, table);
 				contentPanel.setParentFrame(getParentFrame());
 				DatabaseViewerInternalFrame iFrame = (DatabaseViewerInternalFrame) getParentComponent();
 				iFrame.getDbDetailsTabbedPane().addTab(CONTENT_TEXT + table.getModelName(), contentPanel);
@@ -590,9 +590,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 					}
 				}
 				if(showCompleteTable){
-					TableContentPanel contentPanel = new TableContentPanel(
-							table.getTableCatalog(), table.getModelName(), connectionProperties, table	
-						);
+					TableContentPanel contentPanel = new TableContentPanel(getParentFrame(), connectionProperties, table	);
 						contentPanel.setParentFrame(getParentFrame());
 						DatabaseViewerInternalFrame iFrame = (DatabaseViewerInternalFrame) getParentComponent();
 						iFrame.getDbDetailsTabbedPane().addTab(CONTENT_TEXT + table.getModelName(), contentPanel);
@@ -625,9 +623,7 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 					
 					if(selectedColumns != null && selectedColumns.length == 0)
 						selectedColumns = null;
-					TableContentPanel contentPanel = new TableContentPanel(
-						table.getTableCatalog(), table.getModelName(), connectionProperties, table, selectedColumns	
-					);
+					TableContentPanel contentPanel = new TableContentPanel(getParentFrame(), connectionProperties, table, selectedColumns);
 					contentPanel.setParentFrame(getParentFrame());
 					DatabaseViewerInternalFrame iFrame = (DatabaseViewerInternalFrame) getParentComponent();
 					iFrame.getDbDetailsTabbedPane().addTab(CONTENT_TEXT + table.getModelName(), contentPanel);

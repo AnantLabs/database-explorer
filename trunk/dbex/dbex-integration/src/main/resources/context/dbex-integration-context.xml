@@ -68,6 +68,7 @@
 		<property name="sqlServerQueryExecutionIntegration" ref="sqlServerQueryExecutionIntegration" />
 		<property name="oracleQueryExecutionIntegration" ref="oracleQueryExecutionIntegration" />
 		<property name="oracleDependencyIntegration" ref="oracleDependencyIntegration" />
+		<property name="oracleTableDataExportIntegration" ref="oracleTableDataExportIntegration" />
 	</bean>
 	
 	<bean id="oracleDatabaseConnectionHelper"
@@ -138,6 +139,10 @@
 	<bean id="oracleDependencyIntegration"
 		class="com.gs.dbex.integration.impl.oracle.OracleDependencyIntegrationImpl">
 		<property name="dbGrabber" ref="oracleDBGrabber"></property>
+	</bean>
+	
+	<bean id="oracleTableDataExportIntegration"
+		class="com.gs.dbex.integration.impl.oracle.OracleTableDataExportIntegration">
 	</bean>
 	
 </beans>

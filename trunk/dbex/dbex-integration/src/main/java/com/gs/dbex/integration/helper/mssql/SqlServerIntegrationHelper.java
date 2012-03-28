@@ -1,4 +1,4 @@
-package com.gs.dbex.integration.helper.mysql;
+package com.gs.dbex.integration.helper.mssql;
 
 import org.apache.log4j.Logger;
 

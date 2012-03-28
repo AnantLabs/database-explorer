@@ -1,0 +1,10 @@
+
+Below are the targeted 6 stable versions:
+	1. He : Helium 
+	2. Ne : Neon
+	3. Ar : Argon
+	4. Kr : Krypton
+	5. Xe : Xenon
+	6. Rn : Radon
+
+

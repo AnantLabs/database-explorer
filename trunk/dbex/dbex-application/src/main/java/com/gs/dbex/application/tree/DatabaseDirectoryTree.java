@@ -119,7 +119,7 @@ public class DatabaseDirectoryTree extends JTree implements ApplicationConstants
 					new IconData(ICON_SCHEMA, null, new SchemaNode(schema, getConnectionProperties())));
 			// add all the tables in the table folder.
 			DefaultMutableTreeNode tableFolderNode = new DefaultMutableTreeNode(
-					new IconData(ICON_FOLDER_TABLE, ICON_SCHEMA, 
+					new IconData(ICON_FOLDER_TABLE, ICON_FOLDER_TABLE, 
 							new FolderNode<Table>("Tables", schema.getTableList())));
 			if(null != schema.getTableList() && schema.getTableList().size() > 0){
 				for (Table t : schema.getTableList()) {

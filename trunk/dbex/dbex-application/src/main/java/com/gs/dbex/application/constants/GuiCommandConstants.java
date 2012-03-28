@@ -66,5 +66,7 @@ public interface GuiCommandConstants {
 	String SEARCH_TABLE_ACT_CMD 		= "SEARCH_TABLE_ACT_CMD";
 	String SEARCH_COLUMN_ACT_CMD 		= "SEARCH_COLUMN_ACT_CMD";
 	String SEARCH_DATA_ACT_CMD 			= "SEARCH_DATA_ACT_CMD";
+	
+	String ABOUT_ACT_CMD 				= "ABOUT_ACT_CMD";
 
 }

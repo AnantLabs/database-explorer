@@ -1,5 +1,6 @@
 package com.gs.dbex.service.impl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.service.DatabaseMetadataService;
+import com.gs.utils.collection.CollectionUtils;
 import com.gs.utils.jdbc.ResultSetDataTable;
 
 public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
@@ -49,7 +51,18 @@ public class DatabaseMetadataServiceImpl implements DatabaseMetadataService {
 		if(integration == null){
 			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
 		}
-		return integration.readDatabase(connectionProperties, readDepthEnum);
+		Database database = integration.readDatabase(connectionProperties, readDepthEnum);
+		if(null != database){
+			if(CollectionUtils.hasElements(database.getSchemaList())){
+				Collections.sort(database.getSchemaList());
+				for (Schema schema : database.getSchemaList()) {
+					if(CollectionUtils.hasElements(schema.getTableList())){
+						Collections.sort(schema.getTableList());
+					}
+				}
+			}
+		}
+		return database;
 	}
 
 	@Override

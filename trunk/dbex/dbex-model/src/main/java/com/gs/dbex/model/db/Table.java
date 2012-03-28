@@ -14,7 +14,7 @@ import com.gs.utils.text.StringUtil;
  * @author sabuj.das
  *
  */
-public class Table extends BaseDbModel implements Serializable {
+public class Table extends BaseDbModel implements Serializable{
 
 	private String tableCatalog;
 	private String tableSchema;
@@ -193,4 +193,6 @@ public class Table extends BaseDbModel implements Serializable {
 			}
 		}
 	}
+	
+	
 }

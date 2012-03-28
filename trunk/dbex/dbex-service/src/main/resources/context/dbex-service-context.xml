@@ -17,12 +17,18 @@
 		class="com.gs.dbex.service.impl.DependencyServiceImpl">
 	</bean>
 	
+	<bean id="tableDataExportService"
+		class="com.gs.dbex.service.impl.TableDataExportServiceImpl">
+		<property name="queryExecutionService" ref="queryExecutionService" />
+	</bean>
+	
 	<bean id="DbexServiceBeanFactory"
 		class="com.gs.dbex.service.DbexServiceBeanFactory" factory-method="getBeanFactory">
-		<property name="databaseConnectionService" ref="databaseConnectionService"></property>
-		<property name="databaseMetadataService" ref="databaseMetadataService"></property>
-		<property name="queryExecutionService" ref="queryExecutionService"></property>
+		<property name="databaseConnectionService" ref="databaseConnectionService" />
+		<property name="databaseMetadataService" ref="databaseMetadataService" />
+		<property name="queryExecutionService" ref="queryExecutionService" />
 		<property name="dependencyService" ref="dependencyService" />
+		<property name="tableDataExportService" ref="tableDataExportService" />
 	</bean>
 
 </beans>

@@ -9,6 +9,8 @@ import javax.swing.SwingWorker;
 
 import com.gs.dbex.launcher.DatabaseExplorerLauncher;
 import com.gs.dbex.launcher.DbexLaunchHelper;
+import com.gs.utils.enums.DisplayTypeEnum;
+import com.gs.utils.swing.display.DisplayUtils;
 import com.gs.utils.swing.window.WindowUtil;
 
 public class DbexSplashWindow extends JWindow {
@@ -19,7 +21,7 @@ public class DbexSplashWindow extends JWindow {
 
 	public DbexSplashWindow(DatabaseExplorerLauncher launcher) {
 		databaseExplorerLauncher = launcher;
-		setMinimumSize(new Dimension(402, 275));
+		setMinimumSize(new Dimension(530, 300));
 		setPreferredSize(getMinimumSize());
 		WindowUtil.bringToCenter(this);
 		initComponents();
@@ -37,11 +39,14 @@ public class DbexSplashWindow extends JWindow {
 			o = worker.doInBackground();
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}
 		if(o != null){
 			if("done".equals(o.message)){
 				dbexSplashPanel.setProgressValue(100);
-				databaseExplorerLauncher.launchApplication();
+					databaseExplorerLauncher.launchApplication();
+					
+					
 				dispose();
 			}
 		}

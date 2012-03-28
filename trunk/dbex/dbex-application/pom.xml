@@ -44,15 +44,16 @@
 			<groupId>org.fife.plaf</groupId>
 			<artifactId>office-lNf</artifactId>
 			<version>2.7</version>
-			<scope>system</scope>
-			<systemPath>${libs.dir}/OfficeLnFs_2.7.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>de.muntjak.tinylookandfeel</groupId>
 			<artifactId>tiny-lNf</artifactId>
 			<version>2.7</version>
-			<scope>system</scope>
-			<systemPath>${libs.dir}/tinylaf.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>org.netbeans</groupId>
+			<artifactId>AbsoluteLayout</artifactId>
+			<version>1.0</version>
 		</dependency>
 		
 		<dependency>

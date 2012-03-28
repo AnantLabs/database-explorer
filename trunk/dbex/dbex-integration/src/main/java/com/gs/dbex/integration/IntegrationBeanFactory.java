@@ -30,6 +30,10 @@ public final class IntegrationBeanFactory {
 	private QueryExecutionIntegration sqlServerQueryExecutionIntegration;
 	private QueryExecutionIntegration oracleQueryExecutionIntegration;
 	private DependencyIntegration oracleDependencyIntegration;
+	private TableDataExportIntegration oracleTableDataExportIntegration;
+	private TableDataExportIntegration mysqlTableDataExportIntegration;
+	private TableDataExportIntegration sqlServerTableDataExportIntegration;
+	private TableDataExportIntegration genericTableDataExportIntegration;
 	
 	private IntegrationBeanFactory() {
 		
@@ -103,6 +107,20 @@ public final class IntegrationBeanFactory {
 		return null;
 	}
 	
+	public TableDataExportIntegration getTableDataExportIntegration(DatabaseTypeEnum databaseTypeEnum){
+		if(null == databaseTypeEnum)
+			return null;
+		if(DatabaseTypeEnum.ORACLE.equals(databaseTypeEnum)){
+			return getOracleTableDataExportIntegration();
+		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
+			return getMysqlTableDataExportIntegration();
+		}else if(DatabaseTypeEnum.MSSQL_2005.equals(databaseTypeEnum)){
+			return getSqlServerTableDataExportIntegration();
+		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
+			return getGenericTableDataExportIntegration();
+		}
+		return null;
+	}
 	
 	@Deprecated
 	public DependencyIntegration getOracleDependencyIntegration() {
@@ -269,6 +287,50 @@ public final class IntegrationBeanFactory {
 		this.genericMetadataIntegration = genericMetadataIntegration;
 	}
 
-	
+	@Deprecated
+	public TableDataExportIntegration getOracleTableDataExportIntegration() {
+		return oracleTableDataExportIntegration;
+	}
+
+	@Deprecated
+	public void setOracleTableDataExportIntegration(
+			TableDataExportIntegration oracleTableDataExportIntegration) {
+		this.oracleTableDataExportIntegration = oracleTableDataExportIntegration;
+	}
+
+	@Deprecated
+	public TableDataExportIntegration getMysqlTableDataExportIntegration() {
+		return mysqlTableDataExportIntegration;
+	}
+
+	@Deprecated
+	public void setMysqlTableDataExportIntegration(
+			TableDataExportIntegration mysqlTableDataExportIntegration) {
+		this.mysqlTableDataExportIntegration = mysqlTableDataExportIntegration;
+	}
+
+	@Deprecated
+	public TableDataExportIntegration getSqlServerTableDataExportIntegration() {
+		return sqlServerTableDataExportIntegration;
+	}
+
+	@Deprecated
+	public void setSqlServerTableDataExportIntegration(
+			TableDataExportIntegration sqlServerTableDataExportIntegration) {
+		this.sqlServerTableDataExportIntegration = sqlServerTableDataExportIntegration;
+	}
+
+	@Deprecated
+	public TableDataExportIntegration getGenericTableDataExportIntegration() {
+		return genericTableDataExportIntegration;
+	}
+
+	@Deprecated
+	public void setGenericTableDataExportIntegration(
+			TableDataExportIntegration genericTableDataExportIntegration) {
+		this.genericTableDataExportIntegration = genericTableDataExportIntegration;
+	}
+
+		
 	
 }

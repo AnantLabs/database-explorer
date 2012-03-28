@@ -14,7 +14,8 @@ public enum QueryTypeEnum {
 	INSERT("INSERT"), 
 	CREATE("CREATE"), 
 	ALTER("ALTER"),
-	TRUNCATE("TRUNCATE");
+	TRUNCATE("TRUNCATE"),
+	DROP("DROP");
 	
 	
 	private String code;
@@ -42,6 +43,12 @@ public enum QueryTypeEnum {
 		}
 		else if(ALTER.getCode().equalsIgnoreCase(value)){
 			return ALTER;
+		}
+		else if(TRUNCATE.getCode().equalsIgnoreCase(value)){
+			return TRUNCATE;
+		}
+		else if(DROP.getCode().equalsIgnoreCase(value)){
+			return DROP;
 		}
 		return SELECT;
 	}
