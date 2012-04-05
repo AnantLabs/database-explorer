@@ -4,7 +4,7 @@
 
 <mapping>
 
-	<class name="com.gs.oracle.service.vo.XmlColumnVo">
+	<class name="com.gs.dbex.model.vo.XmlColumnVo">
 		<map-to xml="COLUMN" />
 		<field name="columnName" type="string">
 			<bind-xml name="NAME" node="attribute" />
@@ -14,17 +14,17 @@
 		</field>
 	</class>
 
-	<class name="com.gs.oracle.service.vo.XmlRowVo">
+	<class name="com.gs.dbex.model.vo.XmlRowVo">
 		<map-to xml="ROW" />
-		<field name="xmlColumnList" type="com.gs.oracle.service.vo.XmlColumnVo"
+		<field name="xmlColumnList" type="com.gs.dbex.model.vo.XmlColumnVo"
 			collection="collection">
 			<bind-xml name="COLUMN" />
 		</field>
 	</class>
 	
-	<class name="com.gs.oracle.service.vo.XmlResultsVo">
+	<class name="com.gs.dbex.model.vo.XmlResultsVo">
 		<map-to xml="RESULTS" />
-		<field name="xmlRowList" type="com.gs.oracle.service.vo.XmlRowVo"
+		<field name="xmlRowList" type="com.gs.dbex.model.vo.XmlRowVo"
 			collection="collection">
 			<bind-xml name="ROW" />
 		</field>

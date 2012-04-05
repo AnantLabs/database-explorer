@@ -22,6 +22,10 @@
 		<property name="queryExecutionService" ref="queryExecutionService" />
 	</bean>
 	
+	<bean id="sqlGeneratorService"
+		class="com.gs.dbex.service.impl.SqlGeneratorServiceImpl">
+	</bean>
+	
 	<bean id="DbexServiceBeanFactory"
 		class="com.gs.dbex.service.DbexServiceBeanFactory" factory-method="getBeanFactory">
 		<property name="databaseConnectionService" ref="databaseConnectionService" />
@@ -29,6 +33,7 @@
 		<property name="queryExecutionService" ref="queryExecutionService" />
 		<property name="dependencyService" ref="dependencyService" />
 		<property name="tableDataExportService" ref="tableDataExportService" />
+		<property name="sqlGeneratorService" ref="sqlGeneratorService"/>
 	</bean>
 
 </beans>

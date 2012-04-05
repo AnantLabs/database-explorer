@@ -18,6 +18,7 @@ public class DatabaseTreeNode  implements DatabaseNode<Database> {
 
 	public DatabaseTreeNode(Database database, ConnectionProperties connectionProperties) {
 		this.database = database;
+		this.connectionProperties = connectionProperties;
 	}
 
 	

@@ -27,7 +27,7 @@ public class ColumnNode implements DatabaseNode<Column>, Comparable<ColumnNode> 
 	}
 
 	public boolean expand(DefaultMutableTreeNode parent) {
-		return true;
+		return false;
 	}
 
 	

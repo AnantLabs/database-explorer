@@ -79,6 +79,9 @@ public class OracleDatabaseMetadataIntegrationImpl extends
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
 		} 
+		if(null != database){
+			database.setModelName(connectionProperties.getConnectionName());
+		}
 		logger.debug("END:: Reading Full database.");
 		return database;
 	}

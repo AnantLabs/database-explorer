@@ -248,5 +248,30 @@ public class SqlGeneratorServiceImpl implements SqlGeneratorService {
 		return null;
 	}
 
+	@Override
+	public SqlQuery generateCopyTableSql(DatabaseTypeEnum databaseTypeEnum,
+			String sourceSchema, String sourceTable,
+			String destinationSchema, String destinationTable, boolean copyData)
+			throws DbexException {
+		if(!StringUtil.hasValidContent(sourceSchema)
+				|| !StringUtil.hasValidContent(sourceTable)
+				|| !StringUtil.hasValidContent(destinationSchema)
+				|| !StringUtil.hasValidContent(destinationTable)){
+			return null;
+		}
+		StringBuffer queryBuffer = new StringBuffer("CREATE TABLE ");
+		queryBuffer
+			.append(destinationSchema)
+			.append('.')
+			.append(destinationTable)
+			.append(" AS SELECT * FROM ")
+			.append(sourceSchema)
+			.append('.')
+			.append(sourceTable)
+			.append(" WHERE '1' = ")
+			.append((copyData) ? "\'1\'" : "\'\'");
+		return new SqlQuery(queryBuffer.toString());
+	}
+
 		
 }
