@@ -3,12 +3,12 @@
  */
 package com.gs.dbex.core;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Set;
 
 import com.gs.dbex.common.enums.ReadDepthEnum;
+import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.ForeignKey;
@@ -22,38 +22,36 @@ import com.gs.dbex.model.db.Table;
  */
 public interface CatalogGrabber extends DbGrabber {
 
-	public Database grabDatabaseByCatalog(String connectionName, Connection connection,
+	public Database grabDatabaseByCatalog(ConnectionProperties connectionProperties,
 			String databaseName, ReadDepthEnum readDepth) throws SQLException;
 
-	public List<Schema> grabCatalog(String connectionName, Connection connection) throws SQLException;
+	public List<Schema> grabCatalog(ConnectionProperties connectionProperties, ReadDepthEnum readDepth) throws SQLException;
 
-	public Schema grabCatalog(String connectionName, Connection connection, String catalogName)
+	public Schema grabCatalog(ConnectionProperties connectionProperties, String catalogName, ReadDepthEnum readDepth)
 			throws SQLException;
 
-	public Set<String> getAvailableCatalogNames(String connectionName, Connection connection)
+	public Set<String> getAvailableCatalogNames(ConnectionProperties connectionProperties)
 			throws SQLException;
 
-	public Table grabTable(String connectionName, Connection connection, String catalogName,
+	public Table grabTable(ConnectionProperties connectionProperties, String catalogName,
 			String tableName, ReadDepthEnum readDepth) throws SQLException;
 
-	public List<Table> grabTables(String connectionName, Connection connection, String schemaName)
-			throws SQLException;
 
-	public List<Column> getColumnList(String connectionName, Table table, Connection connection,
+	public List<Column> getColumnList(ConnectionProperties connectionProperties, Table table,
 			ReadDepthEnum readDepth) throws SQLException;
 
-	public List<Column> getColumnList(String connectionName, String catalogName, String tableName,
-			Connection connection, ReadDepthEnum readDepth) throws SQLException;
+	public List<Column> getColumnList(ConnectionProperties connectionProperties, String catalogName, String tableName,
+			ReadDepthEnum readDepth) throws SQLException;
 
-	public List<PrimaryKey> grabPrimaryKeys(String connectionName, Connection connection,
+	public List<PrimaryKey> grabPrimaryKeys(ConnectionProperties connectionProperties,
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException;
 
-	public List<ForeignKey> grabImportedKeys(String connectionName, Connection connection,
+	public List<ForeignKey> grabImportedKeys(ConnectionProperties connectionProperties,
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException;
 
-	public List<ForeignKey> grabExportedKeys(String connectionName, Connection connection,
+	public List<ForeignKey> grabExportedKeys(ConnectionProperties connectionProperties,
 			String catalogName, String tableName, ReadDepthEnum readDepth)
 			throws SQLException;
 }

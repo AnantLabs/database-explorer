@@ -15,6 +15,8 @@ import java.util.Set;
 
 import oracle.jdbc.driver.OracleConnection;
 
+import org.apache.log4j.Logger;
+
 import com.gs.dbex.common.enums.ColumnMetaDataEnum;
 import com.gs.dbex.common.enums.ForeignKeyMetaDataEnum;
 import com.gs.dbex.common.enums.PKMetaDataEnum;
@@ -28,19 +30,33 @@ import com.gs.dbex.model.db.ForeignKey;
 import com.gs.dbex.model.db.PrimaryKey;
 import com.gs.dbex.model.db.Schema;
 import com.gs.dbex.model.db.Table;
+import com.gs.utils.jdbc.JdbcUtil;
 
 /**
  * @author sabuj.das
  *
  */
 public class SchemaDBGrabberImpl implements SchemaGrabber {
-
-	public String grabSqlKeyWords(String connectionName, Connection connection) throws SQLException{
-		if(connection == null){
+	private static final Logger logger = Logger.getLogger(SchemaDBGrabberImpl.class);
+	/**
+	 * From database meta data, the keywords are returned as a ,-separated string.
+	 * 
+	 * @param connectionProperties
+	 */
+	@Override
+	public String grabSqlKeyWords(ConnectionProperties connectionProperties) throws SQLException{
+		if(connectionProperties == null){
 			return "";
 		}
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		return databaseMetaData.getSQLKeywords();
+		
+		Connection connection = null;
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			return databaseMetaData.getSQLKeywords();
+		} finally{
+			JdbcUtil.close(connection);
+		}
 	}
 	
 	/**
@@ -53,83 +69,108 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Database grabDatabaseBySchema(String connectionName, Connection connection, String databaseName, ReadDepthEnum readDepth) throws SQLException{
-		if(connection == null){
+	@Override
+	public Database grabDatabaseBySchema(ConnectionProperties connectionProperties, String databaseName, ReadDepthEnum readDepth) throws SQLException{
+		if(connectionProperties == null){
 			return null;
 		}
+		String connectionName = connectionProperties.getConnectionName();
 		Database db = new Database();
 		db.setModelName(databaseName);
-		List<Schema> schemaList = new ArrayList<Schema>();
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		if(databaseMetaData != null){
-			ResultSet rs = databaseMetaData.getSchemas();
-			while(rs.next()){
-				String cat = rs.getString("TABLE_SCHEM");
-				if(null != databaseName && !"".equals(databaseName))
-					if(!databaseName.equalsIgnoreCase(cat)){
-						continue;
-					}
-				RESERVED_WORDS_UTIL.addSchemaName(connectionName, cat);
-				Schema s = new Schema();
-				s.setModelName(cat);
-				ResultSet ret = databaseMetaData.getTables("", s.getModelName(), "%", new String[] {"TABLE"});
-				while(ret.next()){
-					String tn = ret.getString(TableMetaDataEnum.TABLE_NAME.getCode());
-					
-					Table t = grabTable(connectionName, connection, s.getModelName(), tn, readDepth);
-					if(tn.startsWith("BIN$"))
-						t.setDeleted(true);
-					s.getTableList().add(t);
-				}
-				if(ret != null){
-					ret.close();
-				}
-				
-				schemaList.add(s);
-				
-			}
-			if(rs != null){
-				rs.close();
-			}
+		Connection connection = null;
+		try{
+			List<Schema> schemaList = new ArrayList<Schema>();
 			
+			connection = connectionProperties.getDataSource().getConnection();
+			
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			if(databaseMetaData != null){
+				ResultSet rs = databaseMetaData.getSchemas();
+				while(rs.next()){
+					String cat = rs.getString("TABLE_SCHEM");
+					if(null != databaseName && !"".equals(databaseName))
+						if(!databaseName.equalsIgnoreCase(cat)){
+							continue;
+						}
+					RESERVED_WORDS_UTIL.addSchemaName(connectionName, cat);
+					Schema s = new Schema();
+					s.setModelName(cat);
+					ResultSet ret = databaseMetaData.getTables("", s.getModelName(), "%", new String[] {"TABLE"});
+					while(ret.next()){
+						String tn = ret.getString(TableMetaDataEnum.TABLE_NAME.getCode());
+						
+						Table t = grabTable(connectionProperties, s.getModelName(), tn, readDepth);
+						if(tn.startsWith("BIN$"))
+							t.setDeleted(true);
+						s.getTableList().add(t);
+					}
+					if(ret != null){
+						ret.close();
+					}
+					
+					schemaList.add(s);
+					
+				}
+				if(rs != null){
+					rs.close();
+				}
+				
+			}
+			databaseMetaData = null;
+			db.setSchemaList(schemaList);
+		} finally {
+			JdbcUtil.close(connection);
 		}
-		databaseMetaData = null;
-		db.setSchemaList(schemaList);
+		
 		return db;
 	}
 
-	public Schema grabSchema(String connectionName, Connection connection, String schemaName, ReadDepthEnum readDepth) throws SQLException{
-		if(connection == null)
+	@Override
+	public Schema grabSchema(ConnectionProperties connectionProperties, String schemaName, ReadDepthEnum readDepth) throws SQLException{
+		if(connectionProperties == null)
 			return null;
 		Schema schema = new Schema();
-		
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		if(databaseMetaData != null){
-			ResultSet rs = databaseMetaData.getCatalogs();
-			while(rs.next()){
-				String cat = rs.getString("TABLE_CAT");
-				if(cat.equalsIgnoreCase(schemaName)){
-					schema.setModelName(schemaName);
-					break;
+		Connection connection = null;
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			if(databaseMetaData != null){
+				ResultSet rs = databaseMetaData.getCatalogs();
+				while(rs.next()){
+					String cat = rs.getString("TABLE_CAT");
+					if(cat.equalsIgnoreCase(schemaName)){
+						schema.setModelName(schemaName);
+						break;
+					}
 				}
 			}
+			return schema;
+		} finally {
+			JdbcUtil.close(connection);
 		}
-		return schema;
 	}
 	
-	public ResultSet grabColumnDetails(String connectionName, String schemaName, String tableName, Connection connection) throws SQLException{
-		DatabaseMetaData metaData = connection.getMetaData();
-		return metaData.getColumns("", schemaName, tableName, "%");
-	}
-	
-	public int grabColumnCount(String connectionName, String schemaName, String tableName, Connection connection) throws SQLException{
-		DatabaseMetaData metaData = connection.getMetaData();
-		ResultSet rs = metaData.getColumns("", schemaName, tableName, "%");
-		int count = 0;
-		while(rs.next()){
-			count ++;
+
+	public int grabColumnCount(ConnectionProperties connectionProperties, 
+			String schemaName, String tableName) throws SQLException{
+		if(null == connectionProperties){
+			return 0;
 		}
-		return count;
+		
+		Connection connection = null;
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			DatabaseMetaData metaData = connection.getMetaData();
+			ResultSet rs = metaData.getColumns("", schemaName, tableName, "%");
+			int count = 0;
+			while(rs.next()){
+				count ++;
+			}
+			return count;
+		}
+		finally {
+			JdbcUtil.close(connection);
+		}
 	}
 	
 	/**
@@ -139,13 +180,24 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 	 * @param tableName
 	 * @param readDepth
 	 * @return
+	 * @throws SQLException 
 	 */
-	public Table grabTable(String connectionName, Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth){
-		if(connection instanceof OracleConnection)
-			((OracleConnection)connection).setRemarksReporting(true);
+	@Override
+	public Table grabTable(ConnectionProperties connectionProperties, String schemaName, 
+			String tableName, ReadDepthEnum readDepth) throws SQLException{
+		if(null == connectionProperties){
+			return null;
+		}
+		
+		Connection connection = null;
 		Table table = new Table();
 		table.setModelName(tableName);
 		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			
+			if(connection instanceof OracleConnection)
+				((OracleConnection)connection).setRemarksReporting(true);
+			
 			DatabaseMetaData meta = connection.getMetaData();
 			ResultSet ret = meta.getTables("", schemaName, tableName, new String[] {"TABLE"});
 			while(ret.next()){
@@ -153,11 +205,11 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 				table.setModelName(tn);
 				table.setSchemaName(schemaName);
 				if(ReadDepthEnum.DEEP.equals(readDepth) || ReadDepthEnum.MEDIUM.equals(readDepth)){
-					table.setPrimaryKeys(grabPrimaryKeys(connectionName, connection, schemaName, tableName, readDepth));
-					table.setImportedKeys(grabImportedKeys(connectionName, connection, schemaName, tableName, readDepth));
-					table.setExportedKeys(grabExportedKeys(connectionName, connection, schemaName, tableName, readDepth));
+					table.setPrimaryKeys(grabPrimaryKeys(connectionProperties, schemaName, tableName, readDepth));
+					table.setImportedKeys(grabImportedKeys(connectionProperties, table, readDepth));
+					table.setExportedKeys(grabExportedKeys(connectionProperties, table, readDepth));
 					try{
-						table.setColumnlist(getColumnList(connectionName, table, connection, readDepth));
+						table.setColumnlist(getColumnList(connectionProperties, table, readDepth));
 					}catch(Exception e){
 						System.err.println("Table : " + table.getModelName() );
 						e.printStackTrace();
@@ -170,153 +222,104 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 				if(tn.startsWith("BIN$"))
 					table.setDeleted(true);
 				else
-					RESERVED_WORDS_UTIL.addTableName(connectionName, schemaName, tn);
+					RESERVED_WORDS_UTIL.addTableName(connectionProperties.getConnectionName(), schemaName, tn);
 				
 			}
-		}catch(Exception e){
-			e.printStackTrace();
+		} finally{
+			JdbcUtil.close(connection);
 		}
 		return table;
 	}
 	
-	public List<Column> getColumnList(String connectionName, Table table, Connection connection, ReadDepthEnum readDepth) throws SQLException{
-		if(connection instanceof OracleConnection)
-			((OracleConnection)connection).setRemarksReporting(true);
-		List<Column> list = new ArrayList<Column>();
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		List<PrimaryKey> pkList = table.getPrimaryKeys();
-		Set<String> pkColSet = new HashSet<String>();
-		for (PrimaryKey pk : pkList) {
-			pkColSet.add(pk.getColumnName());
+	@Override
+	public List<Column> getColumnList(ConnectionProperties connectionProperties, Table table, ReadDepthEnum readDepth) throws SQLException{
+		if(null == connectionProperties){
+			return null;
 		}
 		
-		Set<String> fkColSet = new HashSet<String>();
-		List<ForeignKey> importedKeys = table.getImportedKeys();
-		for (ForeignKey fk : importedKeys) {
-			fkColSet.add(fk.getFkColumnName());
+		Connection connection = null;
+		
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			
+			if(connection instanceof OracleConnection)
+				((OracleConnection)connection).setRemarksReporting(true);
+			List<Column> list = new ArrayList<Column>();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			List<PrimaryKey> pkList = table.getPrimaryKeys();
+			Set<String> pkColSet = new HashSet<String>();
+			for (PrimaryKey pk : pkList) {
+				pkColSet.add(pk.getColumnName());
+			}
+			
+			Set<String> fkColSet = new HashSet<String>();
+			List<ForeignKey> importedKeys = table.getImportedKeys();
+			for (ForeignKey fk : importedKeys) {
+				fkColSet.add(fk.getFkColumnName());
+			}
+			ResultSet colRs = databaseMetaData.getColumns("", table.getSchemaName(), table.getModelName(), "%");
+			ResultSetMetaData rsm = colRs.getMetaData();
+			int cc = rsm.getColumnCount();
+			while(colRs.next()){
+				Column c = new Column(table);
+				// set the schema name
+				c.setSchemaName(table.getSchemaName());
+				//set table name
+				c.setTableName(table.getModelName());
+				// set column name
+				c.setModelName(colRs.getString(ColumnMetaDataEnum.COLUMN_NAME.getCode()));
+				RESERVED_WORDS_UTIL.addColumnName(connectionProperties.getConnectionName(), table.getModelName(), c.getModelName());
+				// set PK
+				if(pkColSet.contains(c.getModelName())){
+					c.setPrimaryKey(true);
+				}
+				// set FK
+				if(fkColSet.contains(c.getModelName())){
+					c.setForeignKey(true);
+				}
+				// set type name
+				c.setTypeName(colRs.getString(ColumnMetaDataEnum.TYPE_NAME.getCode()));
+				// set nullable
+				String nulAble = colRs.getString(ColumnMetaDataEnum.IS_NULLABLE.getCode());
+				if(ColumnMetaDataEnum.IS_NULLABLE_YES.getCode().equalsIgnoreCase(nulAble)){
+					c.setNullable(true);
+				}else{
+					c.setNullable(false);
+				}
+				
+				
+				// set size
+				c.setSize(colRs.getInt(ColumnMetaDataEnum.COLUMN_SIZE.getCode()));
+				
+				
+				if(ReadDepthEnum.DEEP.equals(readDepth)){
+					// set sql type
+					c.setDataType(colRs.getInt(ColumnMetaDataEnum.SQL_DATA_TYPE.getCode()));
+					// set column id
+					c.setColumnID(colRs.getInt(ColumnMetaDataEnum.ORDINAL_POSITION.getCode()));
+					// Precision
+					c.setPrecision(colRs.getInt(ColumnMetaDataEnum.DECIMAL_DIGITS.getCode()));
+					// set default value
+					//c.setDefaultValue(colRs.getString(ColumnMetaDataEnum.COLUMN_DEF.getCode()));
+					// comment
+					c.setComments(colRs.getString(ColumnMetaDataEnum.REMARKS.getCode()));
+				}
+				
+				list.add(c);
+			}
+			if(colRs != null){
+				colRs.close();
+			}
+			return list;
+			
+		} finally {
+			JdbcUtil.close(connection);
 		}
-		ResultSet colRs = databaseMetaData.getColumns("", table.getSchemaName(), table.getModelName(), "%");
-		ResultSetMetaData rsm = colRs.getMetaData();
-		int cc = rsm.getColumnCount();
-		while(colRs.next()){
-			Column c = new Column(table);
-			// set the schema name
-			c.setSchemaName(table.getSchemaName());
-			//set table name
-			c.setTableName(table.getModelName());
-			// set column name
-			c.setModelName(colRs.getString(ColumnMetaDataEnum.COLUMN_NAME.getCode()));
-			RESERVED_WORDS_UTIL.addColumnName(connectionName, table.getModelName(), c.getModelName());
-			// set PK
-			if(pkColSet.contains(c.getModelName())){
-				c.setPrimaryKey(true);
-			}
-			// set FK
-			if(fkColSet.contains(c.getModelName())){
-				c.setForeignKey(true);
-			}
-			// set type name
-			c.setTypeName(colRs.getString(ColumnMetaDataEnum.TYPE_NAME.getCode()));
-			// set nullable
-			String nulAble = colRs.getString(ColumnMetaDataEnum.IS_NULLABLE.getCode());
-			if(ColumnMetaDataEnum.IS_NULLABLE_YES.getCode().equalsIgnoreCase(nulAble)){
-				c.setNullable(true);
-			}else{
-				c.setNullable(false);
-			}
-			
-			
-			// set size
-			c.setSize(colRs.getInt(ColumnMetaDataEnum.COLUMN_SIZE.getCode()));
-			
-			
-			if(ReadDepthEnum.DEEP.equals(readDepth)){
-				// set sql type
-				c.setDataType(colRs.getInt(ColumnMetaDataEnum.SQL_DATA_TYPE.getCode()));
-				// set column id
-				c.setColumnID(colRs.getInt(ColumnMetaDataEnum.ORDINAL_POSITION.getCode()));
-				// Precision
-				c.setPrecision(colRs.getInt(ColumnMetaDataEnum.DECIMAL_DIGITS.getCode()));
-				// set default value
-				//c.setDefaultValue(colRs.getString(ColumnMetaDataEnum.COLUMN_DEF.getCode()));
-				// comment
-				c.setComments(colRs.getString(ColumnMetaDataEnum.REMARKS.getCode()));
-			}
-			
-			list.add(c);
-		}
-		if(colRs != null){
-			colRs.close();
-		}
-		return list;
 	}
 	
-	public List<Column> getColumnList(String connectionName, String schemaName, String tableName, Connection connection, ReadDepthEnum readDepth) throws SQLException{
-		if(connection instanceof OracleConnection)
-			((OracleConnection)connection).setRemarksReporting(true);
-		List<Column> list = new ArrayList<Column>();
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		
-		List<PrimaryKey> pkList = grabPrimaryKeys(connectionName, connection, schemaName, tableName, readDepth);
-		Set<String> pkColSet = new HashSet<String>();
-		for (PrimaryKey pk : pkList) {
-			pkColSet.add(pk.getColumnName());
-		}
-		
-		Set<String> fkColSet = new HashSet<String>();
-		List<ForeignKey> importedKeys = grabImportedKeys(connectionName, connection, schemaName, tableName, readDepth);
-		for (ForeignKey fk : importedKeys) {
-			fkColSet.add(fk.getFkColumnName());
-		}
-		
-		ResultSet colRs = databaseMetaData.getColumns("", schemaName, tableName, "%");
-		ResultSetMetaData rsm = colRs.getMetaData();
-		int cc = rsm.getColumnCount();
-		while(colRs.next()){
-			Column c = new Column(null);
-			//set schema name
-			c.setSchemaName(schemaName);
-			//set table name
-			c.setTableName(tableName);
-			// set column name
-			c.setModelName(colRs.getString(ColumnMetaDataEnum.COLUMN_NAME.getCode()));
-			// set PK
-			if(pkColSet.contains(c.getModelName())){
-				c.setPrimaryKey(true);
-			}
-			// set FK
-			if(fkColSet.contains(c.getModelName())){
-				c.setForeignKey(true);
-			}
-			// set type name
-			c.setTypeName(colRs.getString(ColumnMetaDataEnum.TYPE_NAME.getCode()));
-			// set nullable
-			String nulAble = colRs.getString(ColumnMetaDataEnum.IS_NULLABLE.getCode());
-			if(ColumnMetaDataEnum.IS_NULLABLE_YES.getCode().equalsIgnoreCase(nulAble)){
-				c.setNullable(true);
-			}else{
-				c.setNullable(false);
-			}
-			// set size
-			c.setSize(colRs.getInt(ColumnMetaDataEnum.COLUMN_SIZE.getCode()));
-			if(ReadDepthEnum.DEEP.equals(readDepth)){
-				// set sql type
-				c.setDataType(colRs.getInt(ColumnMetaDataEnum.SQL_DATA_TYPE.getCode()));
-				// set column id
-				c.setColumnID(colRs.getInt(ColumnMetaDataEnum.ORDINAL_POSITION.getCode()));
-				// Precision
-				c.setPrecision(colRs.getInt(ColumnMetaDataEnum.DECIMAL_DIGITS.getCode()));
-				// set default value
-				//c.setDefaultValue(colRs.getString(ColumnMetaDataEnum.COLUMN_DEF.getCode()));
-				// comment
-				c.setComments(colRs.getString(ColumnMetaDataEnum.REMARKS.getCode()));
-			}
-			list.add(c);
-		}
-		if(colRs != null){
-			colRs.close();
-		}
-		return list;
+	@Override
+	public List<Column> getColumnList(ConnectionProperties connectionProperties, String tableName, ReadDepthEnum readDepth) throws SQLException{
+		throw new UnsupportedOperationException("Method not implemented");
 	}
 	
 	/**
@@ -328,43 +331,124 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<PrimaryKey> grabPrimaryKeys(String connectionName, Connection connection, String schemaName, 
-			String tableName, ReadDepthEnum readDepth) throws SQLException{
-		List<PrimaryKey> pkList = new ArrayList<PrimaryKey>();
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		ResultSet pkRs = databaseMetaData.getPrimaryKeys("", schemaName, tableName);
-		while(pkRs.next()){
-			PrimaryKey pk = new PrimaryKey();
-			pk.setColumnName(pkRs.getString(PKMetaDataEnum.COLUMN_NAME.getCode()));
-			
-			if(ReadDepthEnum.DEEP.equals(readDepth)){
-				pk.setTableCat(pkRs.getString(PKMetaDataEnum.TABLE_CAT.getCode()));
-				pk.setTableSchem(pkRs.getString(PKMetaDataEnum.TABLE_SCHEM.getCode()));
-				pk.setTableName(tableName);
-				pk.setModelName(pkRs.getString(PKMetaDataEnum.PK_NAME.getCode()));
-				//pk.setDeleted(pkRs.getBoolean(PKMetaDataEnum.))
-				pk.setKeySeq(pkRs.getShort(PKMetaDataEnum.KEY_SEQ.getCode()));
-				//pk.setComments(pkRs.getString(PKMetaDataEnum.comments))
-			}
-			
-			pkList.add(pk);
+	@Override
+	public List<PrimaryKey> grabPrimaryKeys(ConnectionProperties connectionProperties,
+			String catalogName, String tableName, ReadDepthEnum readDepth)
+			throws SQLException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: grabPrimaryKeys()");
 		}
-		if(pkRs != null){
-			pkRs.close();
+		if(connectionProperties == null){
+			return null;
+		}
+		Connection connection = null;
+		List<PrimaryKey> pkList = new ArrayList<PrimaryKey>();
+		try {
+			connection = connectionProperties.getDataSource().getConnection();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			ResultSet pkRs = databaseMetaData.getPrimaryKeys(catalogName, "", tableName);
+			while(pkRs.next()){
+				PrimaryKey pk = new PrimaryKey();
+				pk.setColumnName(pkRs.getString(PKMetaDataEnum.COLUMN_NAME.getCode()));
+				
+				if(ReadDepthEnum.DEEP.equals(readDepth)){
+					pk.setTableCat(pkRs.getString(PKMetaDataEnum.TABLE_CAT.getCode()));
+					pk.setTableSchem(pkRs.getString(PKMetaDataEnum.TABLE_SCHEM.getCode()));
+					pk.setTableName(tableName);
+					pk.setModelName(pkRs.getString(PKMetaDataEnum.PK_NAME.getCode()));
+					//pk.setDeleted(pkRs.getBoolean(PKMetaDataEnum.))
+					pk.setKeySeq(pkRs.getShort(PKMetaDataEnum.KEY_SEQ.getCode()));
+					//pk.setComments(pkRs.getString(PKMetaDataEnum.comments))
+				}
+				
+				pkList.add(pk);
+			}
+			JdbcUtil.close(pkRs, true);
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		if(logger.isDebugEnabled()){
+			logger.debug("Exit:: grabPrimaryKeys()");
 		}
 		return pkList;
 	}
 	
-	public List<ForeignKey> grabImportedKeys(String connectionName, Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException{
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		ResultSet fkRs = databaseMetaData.getImportedKeys("", schemaName, tableName);
-		return readFksFromRS(fkRs, true, readDepth);
+	@Override
+	public List<ForeignKey> grabImportedKeys(ConnectionProperties connectionProperties, Table table,
+			ReadDepthEnum readDepth)
+			throws SQLException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: grabImportedKeys()");
+		}
+		if(connectionProperties == null){
+			return null;
+		}
+		Connection connection = null;
+		try {
+			connection = connectionProperties.getDataSource().getConnection();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			ResultSet fkRs = databaseMetaData.getImportedKeys(table.getSchemaName(), "", table.getModelName());
+			
+			if(logger.isDebugEnabled()){
+				logger.debug("Exit:: grabImportedKeys()");
+			}
+			return readFksFromRS(fkRs, true, readDepth);
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		
+		
 	}
 	
-	public List<ForeignKey> grabExportedKeys(String connectionName, Connection connection, String schemaName, String tableName, ReadDepthEnum readDepth) throws SQLException{
-		DatabaseMetaData databaseMetaData = connection.getMetaData();
-		ResultSet fkRs = databaseMetaData.getExportedKeys("", schemaName, tableName);
-		return readFksFromRS(fkRs, false, readDepth);
+	public List<Schema> grabSchema(ConnectionProperties connectionProperties,
+			ReadDepthEnum readDepth) throws SQLException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Enter:: grabCatalog()");
+		}
+		if (connectionProperties == null) {
+			return null;
+		}
+		List<Schema> schemas = new ArrayList<Schema>();
+		Set<String> schemaNames = getAvailableSchemaNames(connectionProperties);
+		if (null != schemaNames && schemaNames.size() > 0) {
+			for (String schemaName : schemaNames) {
+				RESERVED_WORDS_UTIL.addSchemaName(
+						connectionProperties.getConnectionName(), schemaName);
+				Schema schema = grabSchema(connectionProperties, schemaName,
+						readDepth);
+				if (null != schema)
+					schemas.add(schema);
+			}
+		}
+		if (logger.isDebugEnabled()) {
+			logger.debug("Exit:: grabCatalog()");
+		}
+		return schemas;
+	}
+	
+	@Override
+	public List<ForeignKey> grabExportedKeys(ConnectionProperties connectionProperties,
+			Table table, ReadDepthEnum readDepth)
+			throws SQLException {
+		if(logger.isDebugEnabled()){
+			logger.debug("Enter:: grabExportedKeys()");
+		}
+		if(connectionProperties == null){
+			return null;
+		}
+		Connection connection = null;
+		try {
+			connection = connectionProperties.getDataSource().getConnection();
+			DatabaseMetaData databaseMetaData = connection.getMetaData();
+			ResultSet fkRs = databaseMetaData.getExportedKeys(table.getSchemaName(), "", table.getModelName());
+			if(logger.isDebugEnabled()){
+				logger.debug("Exit:: grabExportedKeys()");
+			}
+			return readFksFromRS(fkRs, false, readDepth);
+		} finally {
+			JdbcUtil.close(connection);
+		}
+		
 	}
 	
 	private List<ForeignKey> readFksFromRS(ResultSet fkRs, Boolean imported, ReadDepthEnum readDepth) throws SQLException{
@@ -397,105 +481,34 @@ public class SchemaDBGrabberImpl implements SchemaGrabber {
 		return fks;
 	}
 
-	public Set<String> getAvailableSchemaNames(String connectionName, 
-			Connection connection) throws SQLException {
-		Set<String> schemaNames = new HashSet<String>();
-		if(null == connection)
-			return schemaNames;
-		
-		DatabaseMetaData metaData = connection.getMetaData();
-		if(metaData != null){
-			ResultSet rs = metaData.getSchemas();
-			while(rs.next()){
-				String cat = rs.getString("TABLE_SCHEM");
-				schemaNames.add(cat);
-			}
-			if(rs != null){
-				rs.close();
-			}
+	public Set<String> getAvailableSchemaNames(ConnectionProperties connectionProperties) throws SQLException {
+		if(null == connectionProperties){
+			return null;
 		}
-		
-		return schemaNames;
+		Connection connection = null;
+		try{
+			connection = connectionProperties.getDataSource().getConnection();
+			Set<String> schemaNames = new HashSet<String>();
+			if(null == connection)
+				return schemaNames;
+			
+			DatabaseMetaData metaData = connection.getMetaData();
+			if(metaData != null){
+				ResultSet rs = metaData.getSchemas();
+				while(rs.next()){
+					String cat = rs.getString("TABLE_SCHEM");
+					schemaNames.add(cat);
+				}
+				if(rs != null){
+					rs.close();
+				}
+			}
+			
+			return schemaNames;
+		} finally {
+			JdbcUtil.close(connection);
+		}
 	}
 
-	@Override
-	public Database grabDatabaseBySchema(
-			ConnectionProperties connectionProperties, String databaseName,
-			ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Schema> grabSchema(ConnectionProperties connectionProperties, ReadDepthEnum readDepth)
-			throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Schema grabSchema(ConnectionProperties connectionProperties,
-			String schemaName, ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Set<String> getAvailableSchemaNames(
-			ConnectionProperties connectionProperties) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Table grabTable(ConnectionProperties connectionProperties,
-			String schemaName, String tableName, ReadDepthEnum readDepth)
-			throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Column> getColumnList(
-			ConnectionProperties connectionProperties, Table table,
-			ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Column> getColumnList(
-			ConnectionProperties connectionProperties, String tableName,
-			ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<PrimaryKey> grabPrimaryKeys(
-			ConnectionProperties connectionProperties, String schemaName,
-			String tableName, ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ForeignKey> grabImportedKeys(
-			ConnectionProperties connectionProperties, Table table,
-			ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ForeignKey> grabExportedKeys(
-			ConnectionProperties connectionProperties, Table table,
-			ReadDepthEnum readDepth) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	
 
 }

@@ -61,6 +61,7 @@ import com.gs.dbex.model.db.Database;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.service.DatabaseMetadataService;
 import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.utils.text.StringUtil;
 
 /**
  * @author sabuj.das
@@ -693,9 +694,9 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 		try {
 			Database db = DbexServiceBeanFactory.getBeanFactory().getDatabaseMetadataService()
 				.getDatabaseDetails(connectionProperties, ReadDepthEnum.SHALLOW);
-			databaseDirectoryTree.reload(db);
+			databaseDirectoryTree.reload(connectionProperties, db);
 			if(mouseClickedTreePath != null){
-				databaseDirectoryTree.expandPath(mouseClickedTreePath);
+				//databaseDirectoryTree.expandPath(mouseClickedTreePath);
 				databaseDirectoryTree.updateUI();
 			}
 			
@@ -809,10 +810,16 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 		if(ResourceTypeEnum.TABLE.equals(resourceTypeEnum)){
 			Table table = getTableFromTreePath(mouseClickedTreePath);
 			if(table != null){
+				String schemaName = "";
+				if(StringUtil.hasValidContent(table.getTableCatalog())){
+					schemaName = table.getTableCatalog();
+				} else {
+					schemaName = table.getSchemaName();
+				}
 				ResourceEditDialog<Table> editTableDialog = new ResourceEditDialog<Table>(
 						getParentFrame(), true,
 						connectionProperties,
-						table.getTableCatalog(),
+						schemaName,
 						table,
 						resourceTypeEnum,
 						resourceEditTypeEnum
@@ -825,10 +832,16 @@ public class DatabaseDirectoryPanel extends JPanel implements ActionListener,
 		} else if(ResourceTypeEnum.COLUMN.equals(resourceTypeEnum)){
 			Column column = getColumnFromTreePath(mouseClickedTreePath);
 			if(column != null){
+				String schemaName = "";
+				if(StringUtil.hasValidContent(column.getParentTable().getTableCatalog())){
+					schemaName = column.getParentTable().getTableCatalog();
+				} else {
+					schemaName = column.getParentTable().getSchemaName();
+				}
 				ResourceEditDialog<Column> editTableDialog = new ResourceEditDialog<Column>(
 						getParentFrame(), true,
 						connectionProperties,
-						column.getParentTable().getTableCatalog(),
+						schemaName,
 						column,
 						resourceTypeEnum,
 						resourceEditTypeEnum

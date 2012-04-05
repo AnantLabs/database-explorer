@@ -90,4 +90,9 @@ public interface SqlGeneratorService {
 	public SqlQuery generateAlterColumnSql(DatabaseTypeEnum databaseTypeEnum,
 			String schemaName, String tableName, String ColumnName)
 			throws DbexException;
+	
+	public SqlQuery generateCopyTableSql(DatabaseTypeEnum databaseTypeEnum,
+			String sourceSchema, String sourceTable,
+			String destinationSchema, String destinationTable, boolean copyData)
+			throws DbexException;
 }

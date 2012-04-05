@@ -58,18 +58,14 @@ public class SqlServerDatabaseMetadataIntegrationImpl extends
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
-		Connection connection = null; 
 		Database database = null;
 		try {
-			connection = connectionProperties.getDataSource().getConnection();
 			if(dbGrabber != null)
-				database = dbGrabber.grabDatabaseByCatalog(connectionProperties.getConnectionName(), connection, connectionProperties.getDatabaseConfiguration().getSchemaName(), readDepthEnum);
+				database = dbGrabber.grabDatabaseByCatalog(connectionProperties, connectionProperties.getDatabaseConfiguration().getSchemaName(), readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
-		} finally {
-			JdbcUtil.close(connection);
-		}
+		} 
 		logger.debug("END:: Reading Full database.");
 		return database;
 	}
@@ -86,18 +82,14 @@ public class SqlServerDatabaseMetadataIntegrationImpl extends
 		if(connectionProperties == null){
 			throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 		}
-		Connection connection = null; 
 		Table table = null;
 		try {
-			connection = connectionProperties.getDataSource().getConnection();
 			if(dbGrabber != null)
-				table = dbGrabber.grabTable(connectionProperties.getConnectionName(), connection, schemaName, tableName, readDepthEnum);
+				table = dbGrabber.grabTable(connectionProperties, schemaName, tableName, readDepthEnum);
 		} catch (SQLException e) {
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
-		} finally {
-			JdbcUtil.close(connection);
-		}
+		} 
 		logger.debug("END:: readTable()");
 		return table;
 	}

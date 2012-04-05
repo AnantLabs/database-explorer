@@ -222,17 +222,21 @@ public class DatabaseDirectoryTree extends JTree implements ApplicationConstants
 			Thread runner = new Thread() {
 				public void run() {
 					synchronized (this) {
-						if (databaseNode != null && databaseNode.expand(node)) {
-							Runnable runnable = new Runnable() {
-								public void run() {
-									synchronized (this) {
-										defaultTreeModel.reload(node);
-										updateUI();	
+						try{
+							if (databaseNode != null && databaseNode.expand(node)) {
+								Runnable runnable = new Runnable() {
+									public void run() {
+										synchronized (this) {
+											defaultTreeModel.reload(node);
+											updateUI();	
+										}
 									}
-								}
-							};
-							
-							SwingUtilities.invokeLater(runnable);
+								};
+								
+								SwingUtilities.invokeLater(runnable);
+							}
+						} catch (Exception ex){
+							ex.printStackTrace();
 						}
 					}
 					
@@ -259,6 +263,17 @@ public class DatabaseDirectoryTree extends JTree implements ApplicationConstants
 
 	public void setConnectionProperties(ConnectionProperties connectionProperties) {
 		this.connectionProperties = connectionProperties;
+	}
+
+	/**
+	 * @param connectionProperties2
+	 * @param db
+	 */
+	public void reload(ConnectionProperties connectionProperties, Database db) {
+		this.database = db;
+		this.connectionProperties = connectionProperties;
+		removeAll();
+		initComponents();
 	}
 	
 	

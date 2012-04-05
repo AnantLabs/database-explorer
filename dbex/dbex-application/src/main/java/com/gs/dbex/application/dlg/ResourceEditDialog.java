@@ -17,6 +17,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Set;
 
 import javax.swing.BorderFactory;
@@ -42,17 +47,21 @@ import com.gs.dbex.application.table.CopyTablePanel;
 import com.gs.dbex.application.util.WindowUtil;
 import com.gs.dbex.common.ApplicationContextProvider;
 import com.gs.dbex.common.enums.DatabaseTypeEnum;
+import com.gs.dbex.common.enums.QueryTypeEnum;
 import com.gs.dbex.common.enums.ReadDepthEnum;
 import com.gs.dbex.common.enums.ResourceEditTypeEnum;
 import com.gs.dbex.common.enums.ResourceTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.core.Transaction;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.service.DatabaseMetadataService;
 import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.QueryExecutionService;
 import com.gs.dbex.service.SqlGeneratorService;
+import com.gs.utils.swing.display.DisplayUtils;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -77,7 +86,7 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
 	private ResourceCommentPanel<T> resourceCommentPanel;
 	private TruncateTablePanel truncateTablePanel;
 	
-	private SqlGeneratorService sqlGeneratorService;
+	private SqlGeneratorService sqlGeneratorService ;
 
 	/**
 	 * Generated serialVersionUID = 8219746741623031954L
@@ -124,10 +133,16 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		resourceRenamePanel.getResourceLabel().setText("New Table Name: ");
         		variableComponentPanel.removeAll();
         		variableComponentPanel.add(resourceRenamePanel, BorderLayout.CENTER);
-        		SqlQuery sql = sqlGeneratorService.generateRenameTableSql(
-        				DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
-        				schemaName, table.getModelName(), 
-        				resourceRenamePanel.getNewResourceNameTextField().getText());
+        		SqlQuery sql = null;
+				try {
+					sql = sqlGeneratorService.generateRenameTableSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+							schemaName, table.getModelName(), 
+							resourceRenamePanel.getNewResourceNameTextField().getText());
+				} catch (DbexException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         		if(null != sql){
         			sqlTextArea.setText(sql.getQuery());
         		}
@@ -139,8 +154,14 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		variableComponentPanel.add(
         				new JLabel("Do you want to DROP the table [ " + table.getModelName() + " ] " +
         						"?"), BorderLayout.NORTH);
-        		SqlQuery sql = sqlGeneratorService.generateDropTableSql(
-        				DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()), table);
+        		SqlQuery sql = null;
+				try {
+					sql = sqlGeneratorService.generateDropTableSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()), table);
+				} catch (DbexException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         		if(null != sql)
         			sqlTextArea.setText(sql.getQuery());
         	} else if(ResourceEditTypeEnum.COPY.equals(resourceEditType)){
@@ -173,6 +194,21 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		variableComponentPanel.removeAll();
         		variableComponentPanel.add(copyTablePanel, BorderLayout.CENTER);
         		
+        		try {
+					SqlQuery sql = sqlGeneratorService.generateCopyTableSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+							getSchemaName(),
+							this.tableNameTextField.getText(),
+							"" + copyTablePanel.getNewSchemaListComboBox().getSelectedItem(), 
+							copyTablePanel.getNewTableNameTextField().getText(), 
+							copyTablePanel.getCopyDataCheckBox().isSelected());
+					if(null != sql){
+						sqlTextArea.setText(sql.getQuery());
+					}
+				} catch (DbexException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
         		/*SqlQuery query = sqlGeneratorService.generateCopyTableSql(getSchemaName(), table.getModelName(),
 						"" + copyTablePanel.getNewSchemaListComboBox().getSelectedItem(), 
 						copyTablePanel.getNewTableNameTextField().getText(), 
@@ -187,19 +223,24 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		truncateTablePanel = new TruncateTablePanel();
         		truncateTablePanel.getDropRadioButton().addActionListener(this);
         		truncateTablePanel.getReuseRadioButton().addActionListener(this);
-        		boolean drop = truncateTablePanel.getDropRadioButton().isSelected();
-        		if(truncateTablePanel.getReuseRadioButton().isSelected()){
-        			drop = false;
+        		boolean reuseStorage = truncateTablePanel.getReuseRadioButton().isSelected();
+        		if(truncateTablePanel.getDropRadioButton().isSelected()){
+        			reuseStorage = false;
         		}
         		variableComponentPanel.removeAll();
         		variableComponentPanel.add(truncateTablePanel, BorderLayout.CENTER);
-        		SqlQuery sql = sqlGeneratorService.generateTruncateTableSql(
-        				DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
-        				table, drop);
+        		SqlQuery sql = null;
+				try {
+					sql = sqlGeneratorService.generateTruncateTableSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+							table, reuseStorage);
+				} catch (DbexException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		if(null != sql)
         		sqlTextArea.setText(
-        				SqlGeneratorUtil.generateTruncateTableSQL(
-        						getSchemaName(), table.getModelName(), drop
-        				)
+        				sql.getQuery()
         			);
         	} else if(ResourceEditTypeEnum.COMMENT.equals(resourceEditType)){
         		setTitle("Comment on Table");
@@ -208,9 +249,17 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		resourceCommentPanel = new ResourceCommentPanel<T>(resource);
         		resourceCommentPanel.getCommentTextArea().addKeyListener(this);
         		variableComponentPanel.add(resourceCommentPanel, BorderLayout.CENTER);
-        		sqlTextArea.setText(SqlGeneratorUtil.generateCommentTableSQL(getSchemaName(), 
-        				table.getModelName(),
-        				resourceCommentPanel.getCommentTextArea().getText()));
+        		SqlQuery sql = null;
+				try {
+					sql = sqlGeneratorService.generateCommentTableSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()), 
+							table, resourceCommentPanel.getCommentTextArea().getText());
+				} catch (DbexException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		if(null != sql)
+        		sqlTextArea.setText(sql.getQuery());
         	}
         	
         } else if(ResourceTypeEnum.COLUMN.equals(resourceType)){
@@ -227,11 +276,20 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		resourceRenamePanel.getResourceLabel().setText("New Column Name: ");
         		variableComponentPanel.removeAll();
         		variableComponentPanel.add(resourceRenamePanel, BorderLayout.CENTER);
-        		String sql = SqlGeneratorUtil.generateColumnRenameSQL(schemaName, 
-        				column.getTableName(),
-        				column.getModelName(),
-        				resourceRenamePanel.getNewResourceNameTextField().getText());
-        		sqlTextArea.setText(sql);
+        		SqlQuery sql = null;
+				try {
+					sql = sqlGeneratorService.generateRenameColumnSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+							getSchemaName(),
+							column.getTableName(), 
+							column.getModelName(),
+							resourceRenamePanel.getNewResourceNameTextField().getText());
+				} catch (DbexException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		if(null != sql)
+        			sqlTextArea.setText(sql.getQuery());
         		resourceRenamePanel.getNewResourceNameTextField().addKeyListener(this);
         	} else if(ResourceEditTypeEnum.DROP.equals(resourceEditType)){
         		setTitle("Drop Table");
@@ -241,9 +299,19 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         				new JLabel("Do you want to DROP the column [ " 
         						+ column.getTableName() + "." + column.getModelName() + " ] " +
         						"?"), BorderLayout.NORTH);
-        		sqlTextArea.setText(SqlGeneratorUtil.generateDropColumnSQL(getSchemaName(), 
-        				column.getTableName(),
-        				column.getModelName()));
+        		SqlQuery sql = null;
+				try {
+					sql = sqlGeneratorService.generateDropColumnSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+							getSchemaName(), 
+							column.getTableName(), 
+							column.getModelName());
+				} catch (DbexException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		if(null != sql)
+        			sqlTextArea.setText(sql.getQuery());
         	} else if(ResourceEditTypeEnum.COMMENT.equals(resourceEditType)){
         		setTitle("Comment on Table");
         		logger.info("Comment on Table");
@@ -251,11 +319,21 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		resourceCommentPanel = new ResourceCommentPanel<T>(resource);
         		resourceCommentPanel.getCommentTextArea().addKeyListener(this);
         		variableComponentPanel.add(resourceCommentPanel, BorderLayout.CENTER);
-        		sqlTextArea.setText(SqlGeneratorUtil.generateCommentColumnSQL(
-        				getSchemaName(),
-        				column.getTableName(),
-        				column.getModelName(),
-        				resourceCommentPanel.getCommentTextArea().getText()));
+        		SqlQuery sql = null;
+				try {
+					sql = sqlGeneratorService.generateCommentColumnSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+							getSchemaName(), 
+							column.getTableName(), 
+							column.getModelName(),
+							resourceCommentPanel.getCommentTextArea().getText()
+							);
+				} catch (DbexException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		if(null != sql)
+        			sqlTextArea.setText(sql.getQuery());
         	}
         }
         
@@ -414,14 +492,14 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         if(copyTablePanel != null){
         	if(evt.getSource().equals(copyTablePanel.getNewSchemaListComboBox())
         			|| evt.getSource().equals(copyTablePanel.getCopyDataCheckBox())){
-        		sqlTextArea.setText(
+        		/*sqlTextArea.setText(
 	    				SqlGeneratorUtil.generateCopyTableSql(
 	    						getSchemaName(),
 	    						this.tableNameTextField.getText(),
 	    						"" + copyTablePanel.getNewSchemaListComboBox().getSelectedItem(), 
 	    						copyTablePanel.getNewTableNameTextField().getText(), 
 	    						copyTablePanel.getCopyDataCheckBox().isSelected())
-	    			);
+	    			);*/
         	}
         }
         if(truncateTablePanel != null){
@@ -431,10 +509,19 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
         		if(truncateTablePanel.getReuseRadioButton().isSelected()){
         			drop = false;
         		}
+        		SqlQuery sql = null;
+				try {
+					sql = sqlGeneratorService.generateTruncateTableSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+							getSchemaName(),
+							tableNameTextField.getText(), drop);
+				} catch (DbexException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        		if(null != sql)
         		sqlTextArea.setText(
-        				SqlGeneratorUtil.generateTruncateTableSQL(
-        						getSchemaName(), tableNameTextField.getText(), drop
-        				)
+        				sql.getQuery()
         			);
         	}
         }
@@ -448,6 +535,36 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
 
     private void applyButtonActionPerformed(ActionEvent evt) {
     	setSelectedOption(ApplicationConstants.APPLY_OPTION);
+    	QueryExecutionService executionService = DbexServiceBeanFactory.getBeanFactory().getQueryExecutionService();
+    	SqlQuery query = new SqlQuery(sqlTextArea.getText());
+    	boolean exceptionOccured = false;
+    	Transaction<
+			? extends Connection, 
+			? extends Statement, 
+			? extends PreparedStatement, 
+			? extends ResultSet> currentTransaction = null;
+    	try {
+    		logger.info("Executing query : " + query.getQuery());
+    		currentTransaction = executionService.createTransaction(connectionProperties);
+    		if (null != currentTransaction) {
+				if(QueryTypeEnum.SELECT.equals(query.getQueryType())){
+					executionService.executeQuery(connectionProperties, query, currentTransaction);
+				} else {
+					executionService.executeNonQuery(connectionProperties, query, currentTransaction);
+					currentTransaction.commit();
+				}
+			}
+		} catch (DbexException e) {
+			DisplayUtils.displayMessage(parentFrame, "ERROR\n"+e.getMessage());
+			logger.error("Cannot execute query { " + query.getQuery() + " }\nReason: ", e);
+			exceptionOccured = true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(!exceptionOccured){
+			dispose();
+		}
     	/*QueryExecutionService executionService = new QueryExecutionServiceImpl(getConnectionProperties());
     	SqlQuery query = new SqlQuery(sqlTextArea.getText());
     	boolean exceptionOccured = false;
@@ -462,7 +579,7 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
 		if(!exceptionOccured){
 			dispose();
 		}*/
-    	dispose();
+    	//dispose();
     }
 
     // Variables declaration 
@@ -541,43 +658,96 @@ public class ResourceEditDialog<T> extends JDialog implements ActionListener, Ke
 		if(resourceRenamePanel != null){
 			if(e.getSource().equals(resourceRenamePanel.getNewResourceNameTextField())){
 				if(ResourceTypeEnum.TABLE.equals(getResourceTypeEnum())){
-					sqlTextArea.setText(SqlGeneratorUtil.generateTableRenameSQL(
-							getSchemaName(),
-							tableNameTextField.getText(), 
-							resourceRenamePanel.getNewResourceNameTextField().getText()));
+					SqlQuery sql = null;
+					try {
+						sql = sqlGeneratorService.generateRenameTableSql(
+								DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+								getSchemaName(),
+								tableNameTextField.getText(), 
+								resourceRenamePanel.getNewResourceNameTextField().getText());
+					} catch (DbexException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+	        		if(null != sql){
+	        			sqlTextArea.setText(sql.getQuery());
+	        		}
 				} else if(ResourceTypeEnum.COLUMN.equals(getResourceTypeEnum())){
-					String sql = SqlGeneratorUtil.generateColumnRenameSQL(schemaName, 
-	        				tableNameTextField.getText(),
-	        				((Column)getResource()).getModelName(),
-	        				resourceRenamePanel.getNewResourceNameTextField().getText());
-	        		sqlTextArea.setText(sql);
+					SqlQuery sql = null;
+					try {
+						sql = sqlGeneratorService.generateRenameColumnSql(
+								DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+								getSchemaName(),
+								tableNameTextField.getText(), 
+								((Column)getResource()).getModelName(),
+								resourceRenamePanel.getNewResourceNameTextField().getText());
+					} catch (DbexException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+	        		if(null != sql)
+	        			sqlTextArea.setText(sql.getQuery());
 				}
 			}
 		}
 		if(copyTablePanel != null){
 			if(e.getSource().equals(copyTablePanel.getNewTableNameTextField())){
-				sqlTextArea.setText(
+				try {
+					SqlQuery sql = sqlGeneratorService.generateCopyTableSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+							getSchemaName(),
+							this.tableNameTextField.getText(),
+							"" + copyTablePanel.getNewSchemaListComboBox().getSelectedItem(), 
+							copyTablePanel.getNewTableNameTextField().getText(), 
+							copyTablePanel.getCopyDataCheckBox().isSelected());
+					if(null != sql){
+						sqlTextArea.setText(sql.getQuery());
+					}
+				} catch (DbexException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				/*sqlTextArea.setText(
 	    				SqlGeneratorUtil.generateCopyTableSql(
 	    						getSchemaName(),
 	    						this.tableNameTextField.getText(),
 	    						"" + copyTablePanel.getNewSchemaListComboBox().getSelectedItem(), 
 	    						copyTablePanel.getNewTableNameTextField().getText(), 
 	    						copyTablePanel.getCopyDataCheckBox().isSelected())
-	    			);
+	    			);*/
 			}
 		}
 		if(resourceCommentPanel != null){
 			if(e.getSource().equals(resourceCommentPanel.getCommentTextArea())){
 				if(ResourceTypeEnum.TABLE.equals(getResourceTypeEnum())){
-					sqlTextArea.setText(SqlGeneratorUtil.generateCommentTableSQL(getSchemaName(), 
-	        				tableNameTextField.getText(),
-	        				resourceCommentPanel.getCommentTextArea().getText()));
+					SqlQuery sql = null;
+					try {
+						sql = sqlGeneratorService.generateCommentTableSql(
+								DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()), 
+								getSchemaName(), tableNameTextField.getText(), 
+								resourceCommentPanel.getCommentTextArea().getText());
+					} catch (DbexException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+	        		if(null != sql)
+	        			sqlTextArea.setText(sql.getQuery());
 				} else if(ResourceTypeEnum.COLUMN.equals(getResourceTypeEnum())){
-					sqlTextArea.setText(SqlGeneratorUtil.generateCommentColumnSQL(
-	        				getSchemaName(),
-	        				((Column)getResource()).getTableName(),
-	        				((Column)getResource()).getModelName(),
-	        				resourceCommentPanel.getCommentTextArea().getText()));
+					SqlQuery sql = null;
+					try {
+						sql = sqlGeneratorService.generateCommentColumnSql(
+								DatabaseTypeEnum.getDatabaseTypeEnum(connectionProperties.getDatabaseType()),
+								getSchemaName(), 
+								((Column)getResource()).getTableName(),
+		        				((Column)getResource()).getModelName(),
+								resourceCommentPanel.getCommentTextArea().getText()
+								);
+					} catch (DbexException ex) {
+						// TODO Auto-generated catch block
+						ex.printStackTrace();
+					}
+	        		if(null != sql)
+	        			sqlTextArea.setText(sql.getQuery());
 				}
 				
 			}

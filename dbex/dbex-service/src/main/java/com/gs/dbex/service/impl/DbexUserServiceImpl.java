@@ -1,5 +1,6 @@
 package com.gs.dbex.service.impl;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gs.dbex.common.exception.DbexException;
@@ -10,7 +11,7 @@ import com.gs.dbex.model.vo.UserVO;
 import com.gs.dbex.service.DbexUserService;
 import com.gs.utils.text.StringUtil;
 
-@Transactional
+@Transactional(propagation=Propagation.REQUIRED)
 public class DbexUserServiceImpl implements DbexUserService {
 
 	private DbexUserDao dbexUserDao;
