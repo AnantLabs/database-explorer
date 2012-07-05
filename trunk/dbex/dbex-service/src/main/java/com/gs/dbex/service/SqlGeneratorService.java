@@ -17,6 +17,8 @@
 
 package com.gs.dbex.service;
 
+import java.util.Map;
+
 import com.gs.dbex.common.enums.DatabaseTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.model.db.Column;
@@ -95,4 +97,13 @@ public interface SqlGeneratorService {
 			String sourceSchema, String sourceTable,
 			String destinationSchema, String destinationTable, boolean copyData)
 			throws DbexException;
+	
+	public SqlQuery generateInsertSql(DatabaseTypeEnum databaseTypeEnum,
+			String sourceSchema, String sourceTable, Map<String, Object> values)
+			throws DbexException;
+	
+	public SqlQuery generateUpdateSql(DatabaseTypeEnum databaseTypeEnum,
+			String sourceSchema, String sourceTable, Map<String, Object> values)
+			throws DbexException;
+	
 }

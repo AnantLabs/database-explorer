@@ -103,7 +103,7 @@
 							<addClasspath>true</addClasspath>
 							<addExtensions>false</addExtensions>
 							<classpathPrefix>lib/</classpathPrefix>
-							<classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout>
+							<classpathMavenRepositoryLayout>false</classpathMavenRepositoryLayout>
 						</manifest>
 						<!-- <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> 
 							<classpathLayoutType>repository</classpathLayoutType> <classpathMavenRepositoryLayout>true</classpathMavenRepositoryLayout> -->
@@ -181,7 +181,7 @@
 							<overWriteReleases>false</overWriteReleases>
 							<overWriteSnapshots>false</overWriteSnapshots>
 							<overWriteIfNewer>true</overWriteIfNewer>
-							<useRepositoryLayout>true</useRepositoryLayout>
+							<useRepositoryLayout>false</useRepositoryLayout>
 						</configuration>
 					</execution>
 				</executions>

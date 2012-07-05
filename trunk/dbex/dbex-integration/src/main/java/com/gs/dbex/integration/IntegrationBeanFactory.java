@@ -34,6 +34,10 @@ public final class IntegrationBeanFactory {
 	private TableDataExportIntegration mysqlTableDataExportIntegration;
 	private TableDataExportIntegration sqlServerTableDataExportIntegration;
 	private TableDataExportIntegration genericTableDataExportIntegration;
+	private SqlGeneratorIntegration genericSqlGeneratorIntegration;
+	private SqlGeneratorIntegration oracleSqlGeneratorIntegration;
+	private SqlGeneratorIntegration mysqlSqlGeneratorIntegration;
+	private SqlGeneratorIntegration mssqlSqlGeneratorIntegration;
 	
 	private IntegrationBeanFactory() {
 		
@@ -118,6 +122,21 @@ public final class IntegrationBeanFactory {
 			return getSqlServerTableDataExportIntegration();
 		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
 			return getGenericTableDataExportIntegration();
+		}
+		return null;
+	}
+	
+	public SqlGeneratorIntegration getSqlGeneratorIntegration(DatabaseTypeEnum databaseTypeEnum){
+		if(null == databaseTypeEnum)
+			return null;
+		if(DatabaseTypeEnum.ORACLE.equals(databaseTypeEnum)){
+			return getOracleSqlGeneratorIntegration();
+		} else if(DatabaseTypeEnum.MYSQL.equals(databaseTypeEnum)){
+			return getMysqlSqlGeneratorIntegration();
+		}else if(DatabaseTypeEnum.MSSQL_2005.equals(databaseTypeEnum)){
+			return getMssqlSqlGeneratorIntegration();
+		} else if(DatabaseTypeEnum.OTHER.equals(databaseTypeEnum)){
+			return getGenericSqlGeneratorIntegration();
 		}
 		return null;
 	}
@@ -329,6 +348,42 @@ public final class IntegrationBeanFactory {
 	public void setGenericTableDataExportIntegration(
 			TableDataExportIntegration genericTableDataExportIntegration) {
 		this.genericTableDataExportIntegration = genericTableDataExportIntegration;
+	}
+	@Deprecated
+	public SqlGeneratorIntegration getGenericSqlGeneratorIntegration() {
+		return genericSqlGeneratorIntegration;
+	}
+	@Deprecated
+	public void setGenericSqlGeneratorIntegration(
+			SqlGeneratorIntegration genericSqlGeneratorIntegration) {
+		this.genericSqlGeneratorIntegration = genericSqlGeneratorIntegration;
+	}
+	@Deprecated
+	public SqlGeneratorIntegration getOracleSqlGeneratorIntegration() {
+		return oracleSqlGeneratorIntegration;
+	}
+	@Deprecated
+	public void setOracleSqlGeneratorIntegration(
+			SqlGeneratorIntegration oracleSqlGeneratorIntegration) {
+		this.oracleSqlGeneratorIntegration = oracleSqlGeneratorIntegration;
+	}
+	@Deprecated
+	public SqlGeneratorIntegration getMysqlSqlGeneratorIntegration() {
+		return mysqlSqlGeneratorIntegration;
+	}
+	@Deprecated
+	public void setMysqlSqlGeneratorIntegration(
+			SqlGeneratorIntegration mysqlSqlGeneratorIntegration) {
+		this.mysqlSqlGeneratorIntegration = mysqlSqlGeneratorIntegration;
+	}
+	@Deprecated
+	public SqlGeneratorIntegration getMssqlSqlGeneratorIntegration() {
+		return mssqlSqlGeneratorIntegration;
+	}
+	@Deprecated
+	public void setMssqlSqlGeneratorIntegration(
+			SqlGeneratorIntegration mssqlSqlGeneratorIntegration) {
+		this.mssqlSqlGeneratorIntegration = mssqlSqlGeneratorIntegration;
 	}
 
 		

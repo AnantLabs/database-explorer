@@ -93,6 +93,8 @@ public class JdbcDriverManagerDialog extends JDialog implements ActionListener,
     private int selectedOption = ApplicationConstants.CANCEL_OPTION;
     private Frame parentFrame;
 
+    
+    
     public JdbcDriverManagerDialog(Frame parent, boolean modal) {
         super(parent, modal);
         parentFrame = parent;
@@ -584,6 +586,9 @@ public class JdbcDriverManagerDialog extends JDialog implements ActionListener,
 
     private void okButtonActionPerformed(ActionEvent evt) {
         selectedOption = ApplicationConstants.APPLY_OPTION;
+        
+        
+        
         dispose();
     }
     

@@ -18,6 +18,7 @@
 package com.gs.dbex.integration.impl.oracle;
 
 import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.integration.helper.oracle.OracleSqlGeneratorHelper;
 import com.gs.dbex.integration.impl.AbstractSqlGeneratorIntegration;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
@@ -31,11 +32,22 @@ import com.gs.dbex.model.sql.SqlQuery;
  */
 public class OracleSqlGeneratorIntegration extends AbstractSqlGeneratorIntegration {
 
+	private OracleSqlGeneratorHelper oracleSqlGeneratorHelper;
+	
 	/**
 	 * 
 	 */
 	public OracleSqlGeneratorIntegration() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public OracleSqlGeneratorHelper getOracleSqlGeneratorHelper() {
+		return oracleSqlGeneratorHelper;
+	}
+
+	public void setOracleSqlGeneratorHelper(
+			OracleSqlGeneratorHelper oracleSqlGeneratorHelper) {
+		this.oracleSqlGeneratorHelper = oracleSqlGeneratorHelper;
 	}
 	
 	

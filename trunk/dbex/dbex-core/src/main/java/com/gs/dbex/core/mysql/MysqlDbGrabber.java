@@ -262,6 +262,8 @@ public class MysqlDbGrabber implements CatalogGrabber {
 		Table table = new Table();
 		table.setModelName(tableName);
 		table.setSchemaName(catalogName);
+		table.setTableCatalog(catalogName);
+		
 		if(ReadDepthEnum.DEEP.equals(readDepth)){
 			List<Column> columns = getColumnList(connectionProperties, table, readDepth);
 			if(null != columns){

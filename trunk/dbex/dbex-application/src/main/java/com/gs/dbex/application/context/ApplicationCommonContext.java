@@ -9,6 +9,7 @@ import java.util.Properties;
 
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.cfg.JdbcDriverConfiguration;
 
 /**
  * A singleton class to hold the runtime context
@@ -16,7 +17,7 @@ import com.gs.dbex.model.cfg.ConnectionProperties;
  * @author sabuj
  *
  */
-public class ApplicationCommonContext{
+public class ApplicationCommonContext implements Cloneable{
 
 	private static final String DRIVER_MGR_DIR = "driver-manager/";
 	private static final String JDBC_DRIVER_DIR = DRIVER_MGR_DIR + "jdbc-driver/";
@@ -40,6 +41,12 @@ public class ApplicationCommonContext{
 		super.finalize();
 	}
 	
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException("This is a Singleton class. Clone of instance is not supproted!!!");
+	}
+	
 	public static void resetContext(){
 		instance = new ApplicationCommonContext();
 	}
@@ -49,7 +56,7 @@ public class ApplicationCommonContext{
 		+ "properties/ErrorMessage.properties";
 	private final Properties errorMessageProperties = ApplicationPropertyLoader.loadProperties(getErrorMsgConstFileName());
 	private final Map<String, ConnectionProperties> connectionPropertiesMap = new HashMap<String, ConnectionProperties>();
-	
+	private final Map<String, JdbcDriverConfiguration> jdbcDriverConfigurationMap = new HashMap<String, JdbcDriverConfiguration>();
 	
 	/* -----  Context Variables   ------------------------------------------ */
 	
@@ -104,6 +111,10 @@ public class ApplicationCommonContext{
 
 	public Map<String, ConnectionProperties> getConnectionPropertiesMap() {
 		return connectionPropertiesMap;
+	}
+
+	public Map<String, JdbcDriverConfiguration> getJdbcDriverConfigurationMap() {
+		return jdbcDriverConfigurationMap;
 	}
 
 

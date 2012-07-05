@@ -1,9 +1,9 @@
 /* ******************************************************************************
  * 	
- * 	Name	: SqlGeneratorIntegration.java
- * 	Type	: com.gs.dbex.integration.SqlGeneratorIntegration
+ * 	Name	: MysqlSqlGeneratorHelper.java
+ * 	Type	: com.gs.dbex.integration.helper.mysql.MysqlSqlGeneratorHelper
  * 
- * 	Created	: Mar 25, 2012
+ * 	Created	: Jun 21, 2012
  * 	
  * 	Author	: Sabuj Das [ mailto::sabuj.das@gmail.com ]
  * 
@@ -15,15 +15,16 @@
  * 																				*
  ****************************************************************************** */
 
-package com.gs.dbex.integration;
+package com.gs.dbex.integration.helper.mysql;
 
+import com.gs.dbex.integration.helper.SqlGeneratorHelper;
 
 /**
  * @author sabuj.das
  * @MailTo sabuj.das@gmail.com
  * 
  */
-public interface SqlGeneratorIntegration {
+public class MysqlSqlGeneratorHelper extends SqlGeneratorHelper {
 
 	
 	

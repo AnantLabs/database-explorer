@@ -37,19 +37,19 @@
 	</appender>
 
 	<category name="com.gs.dbex">
-		<priority value="DEBUG" />
+		<priority value="ERROR" />
 		<appender-ref ref="APP_LOG" />
 	</category>
 	<category name="org.exolab.castor">
-		<priority value="DEBUG" />
+		<priority value="ERROR" />
 		<appender-ref ref="CASTOR_LOG" />
 	</category>
 	<category name="com.gs.utils">
-		<priority value="DEBUG" />
+		<priority value="ERROR" />
 		<appender-ref ref="GS_UTIL_LOG" />
 	</category>
 	<category name="org.springframework">
-		<priority value="DEBUG" />
+		<priority value="ERROR" />
 		<appender-ref ref="SPRING_LOG" />
 	</category>
 </log4j:configuration>

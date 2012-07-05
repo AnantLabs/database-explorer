@@ -15,7 +15,6 @@ import com.gs.dbex.integration.QueryExecutionIntegration;
 import com.gs.dbex.integration.helper.mysql.MySqlIntegrationHelper;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Table;
-import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.model.vo.PaginationResult;
 import com.gs.utils.exception.UtilityException;
 import com.gs.utils.jdbc.JdbcUtil;
@@ -23,7 +22,6 @@ import com.gs.utils.jdbc.ResultSetDataTable;
 import com.gs.utils.text.StringUtil;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.ResultSetImpl;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -90,7 +88,7 @@ public class MySqlQueryExecutionIntegration implements
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
 		} finally {
-			//JdbcUtil.close(connection);
+			JdbcUtil.close(connection);
 		}
 		if(logger.isDebugEnabled()){
 			logger.debug("Exit:: getLimitedResultset()");
@@ -119,7 +117,7 @@ public class MySqlQueryExecutionIntegration implements
 			if(connection == null){
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
-			connection.setCatalog(table.getTableSchema());
+			connection.setCatalog(table.getTableCatalog());
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
 					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			preparedStatement.setInt(1, rowFrom);
@@ -161,7 +159,7 @@ public class MySqlQueryExecutionIntegration implements
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
 			
-			connection.setCatalog(databaseTable.getTableSchema());
+			connection.setCatalog(databaseTable.getTableCatalog());
 			java.sql.Statement statement = connection.prepareStatement(countQuery);
 			ResultSet rs = statement.executeQuery(countQuery);
 			if(rs != null){
@@ -202,7 +200,7 @@ public class MySqlQueryExecutionIntegration implements
 			if(connection == null){
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
-			connection.setCatalog(databaseTable.getTableSchema());
+			connection.setCatalog(databaseTable.getTableCatalog());
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
 					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			if(logger.isDebugEnabled()){
@@ -241,7 +239,7 @@ public class MySqlQueryExecutionIntegration implements
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
 			
-			connection.setCatalog(databaseTable.getTableSchema());
+			connection.setCatalog(databaseTable.getTableCatalog());
 			java.sql.Statement statement = connection.prepareStatement(countQuery);
 			ResultSet rs = statement.executeQuery(countQuery);
 			if(rs != null){
@@ -369,7 +367,7 @@ public class MySqlQueryExecutionIntegration implements
 			logger.error(e);
 			throw new DbexException(null, e.getMessage());
 		} finally {
-			//JdbcUtil.close(connection);
+			JdbcUtil.close(connection);
 		}
 		return rows;
 	}
@@ -394,7 +392,6 @@ public class MySqlQueryExecutionIntegration implements
 			if(connection == null){
 				throw new DbexException(ErrorCodeConstants.CANNOT_CONNECT_DB);
 			}
-			//connection.setCatalog(connectionProperties.getTableSchema());
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(
 					query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			if(logger.isDebugEnabled()){
