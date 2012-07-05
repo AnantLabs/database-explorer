@@ -11,6 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,11 +25,21 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.gs.dbex.application.accesscontrol.AuthorizationController;
+import com.gs.dbex.application.comps.ColumnRow;
 import com.gs.dbex.application.constants.ApplicationConstants;
 import com.gs.dbex.application.panel.TableRowEditorPanel;
+import com.gs.dbex.common.ApplicationContextProvider;
+import com.gs.dbex.common.enums.DatabaseTypeEnum;
+import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.model.cfg.ConnectionProperties;
+import com.gs.dbex.model.sql.SqlQuery;
+import com.gs.dbex.service.DbexServiceBeanFactory;
+import com.gs.dbex.service.SqlGeneratorService;
+import com.gs.utils.collection.CollectionUtils;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -67,6 +79,7 @@ public class TableDataEditorDialog extends JDialog implements ActionListener{
 	
 	private TableRowEditorPanel rowEditorPanel;
 
+	private boolean addRecord = false;
 
 	/** Creates new form TableDataEditorDialog */
 	public TableDataEditorDialog(JFrame parent, final JTable t) {
@@ -79,13 +92,16 @@ public class TableDataEditorDialog extends JDialog implements ActionListener{
 		getRootPane().setDefaultButton(okButton);
 		if(null == pkColumnValue){
 			setTitle("Add Record");
+			addRecord = true;
 		} else {
 			setTitle("Edit Record");
+			addRecord = false;
 		}
 	}
 	
 	public int showEditorDialog(){
-		rowEditorPanel = new TableRowEditorPanel(getTable(), getSchemaName(), getTableName(), getConnectionProperties());
+		rowEditorPanel = new TableRowEditorPanel(getTable(), getSchemaName(), 
+				getTableName(), getConnectionProperties(), addRecord);
 		dataEditorScrollPane.setViewportView(rowEditorPanel);
 		setVisible(true);
         return selectedOption;
@@ -157,7 +173,17 @@ public class TableDataEditorDialog extends JDialog implements ActionListener{
 		
 
 		dataEditorTabbedPane.addTab("DATA", dataEditorScrollPane);
-
+		dataEditorTabbedPane.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				int index = dataEditorTabbedPane.getSelectedIndex();
+				if(index == 1){
+					populateSQL();
+				}
+			}
+			
+		});
 		generatedSqlPanel.setLayout(new BorderLayout());
 
 		generatedSqlTextPane.setEditable(false);
@@ -250,6 +276,54 @@ public class TableDataEditorDialog extends JDialog implements ActionListener{
 		pack();
 	}
 
+	public void populateSQL() {
+		String genSql = "";
+		SqlGeneratorService sqlGeneratorService = DbexServiceBeanFactory.getBeanFactory().getSqlGeneratorService();
+		if(null != sqlGeneratorService){
+		
+			Map<String, Object> values = new LinkedHashMap<String, Object>();
+			final Map<String, ColumnRow> columnRowMap = rowEditorPanel.getColumnRowMap();
+			if(null != columnRowMap){
+				for(String colName : columnRowMap.keySet()){
+					final ColumnRow columnRow = columnRowMap.get(colName);
+					values.put(colName, columnRow.getColumnValue());
+				}
+			}
+			
+			if(!CollectionUtils.hasElements(values)){
+				System.out.println("No data");
+				return;
+			}
+			SqlQuery query = null;
+			if(addRecord){
+				try {
+					query = sqlGeneratorService.generateInsertSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(getConnectionProperties().getDatabaseType()), 
+							getSchemaName(), 
+							getTableName(), 
+							values);
+				} catch (DbexException e) {
+					
+					e.printStackTrace();
+				}
+			} else {
+				try {
+					query = sqlGeneratorService.generateUpdateSql(
+							DatabaseTypeEnum.getDatabaseTypeEnum(getConnectionProperties().getDatabaseType()), 
+							getSchemaName(), 
+							getTableName(), 
+							values);
+				} catch (DbexException e) {
+					
+					e.printStackTrace();
+				}
+			}
+			if(null != query)
+				genSql = query.getQuery();
+		}
+		generatedSqlTextPane.setText(genSql);
+		
+	}
 
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(okButton)){
@@ -366,6 +440,14 @@ public class TableDataEditorDialog extends JDialog implements ActionListener{
 	 */
 	public void setPkColumnValue(Object pkColumnValue) {
 		this.pkColumnValue = pkColumnValue;
+	}
+
+	/**
+	 * @return 
+	 * 
+	 */
+	public String getGeneratedSQL() {
+		return generatedSqlTextPane.getText();
 	}
 
 	

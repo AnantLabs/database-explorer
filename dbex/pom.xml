@@ -25,7 +25,7 @@
 				<artifactId>commons-logging</artifactId>
 				<version>1.1.1</version>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.gs.utils</groupId>
 				<artifactId>gs-utils</artifactId>
@@ -48,9 +48,9 @@
 				<version>2.1</version>
 			</dependency>
 			<dependency>
-			  	<groupId>javax.transaction</groupId>
-			  	<artifactId>jta</artifactId>
-			  	<version>1.1</version>
+				<groupId>javax.transaction</groupId>
+				<artifactId>jta</artifactId>
+				<version>1.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.hibernate</groupId>
@@ -90,8 +90,14 @@
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>3.3.1.ga</version>
 			</dependency>
+			<dependency>
+				<groupId>commons-dbcp</groupId>
+				<artifactId>commons-dbcp</artifactId>
+				<version>1.4</version>
+			</dependency>
+
 		</dependencies>
-		
+
 	</dependencyManagement>
 
 	<dependencies>
@@ -131,8 +137,13 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+		</dependency>
+
 	</dependencies>
-	
+
 	<build>
 		<plugins>					
 			<plugin>
@@ -165,11 +176,35 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<reportPlugins>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>findbugs-maven-plugin</artifactId>
+							
+							<configuration>
+								<failOnError>false</failOnError>
+								<effort>Max</effort>
+								<findbugsXmlOutput>true</findbugsXmlOutput>
+								<xmlOutput>true</xmlOutput>
+								<debug>false</debug>
+								<findbugsXmlOutputDirectory>${findbugs.output.directory}\${artifactId}</findbugsXmlOutputDirectory>
+								<outputDirectory>${findbugs.output.directory}\${artifactId}</outputDirectory>
+								<xmlOutputDirectory>${findbugs.output.directory}\${artifactId}</xmlOutputDirectory>
+								<excludeFilterFile>findbugs-exclusion-filter.xml</excludeFilterFile>
+							</configuration>
+						</plugin>
+					</reportPlugins>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
-	
+
 	<profiles>
 		<profile>
 			<id>default</id>
@@ -243,33 +278,87 @@
 				<module>dbex-webapps</module>
 			</modules>
 		</profile>
-		
-		
-		
+
+
+
 	</profiles>
-	
+
 	<reporting>
-	  <plugins>
-		<plugin>
-			<groupId>org.codehaus.mojo</groupId>
-			<artifactId>findbugs-maven-plugin</artifactId>
-			<version>2.0.1</version>
-			<configuration>
-				<failOnError>false</failOnError>
-				<effort>Max</effort>
-				<findbugsXmlOutput>true</findbugsXmlOutput>
-				<xmlOutput>true</xmlOutput>
-				<debug>false</debug>
-				<findbugsXmlOutputDirectory>${findbugs.output.directory}\${artifactId}</findbugsXmlOutputDirectory>
-				<outputDirectory>${findbugs.output.directory}\${artifactId}</outputDirectory>
-				<xmlOutputDirectory>${findbugs.output.directory}\${artifactId}</xmlOutputDirectory>
-				<excludeFilterFile>findbugs-exclusion-filter.xml</excludeFilterFile>
-			</configuration>
-		</plugin>
-	  </plugins>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>${jdk.version}</targetJdk>
+					<excludes>
+						<exclude>**/generated/*.java</exclude>
+					</excludes>
+					<excludeRoots>
+						<excludeRoot>target/generated-sources/stubs</excludeRoot>
+					</excludeRoots>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<failOnError>false</failOnError>
+					<effort>Max</effort>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<xmlOutput>true</xmlOutput>
+					<debug>false</debug>
+					<findbugsXmlOutputDirectory>${findbugs.output.directory}\${artifactId}</findbugsXmlOutputDirectory>
+					<outputDirectory>${findbugs.output.directory}\${artifactId}</outputDirectory>
+					<xmlOutputDirectory>${findbugs.output.directory}\${artifactId}</xmlOutputDirectory>
+					<excludeFilterFile>findbugs-exclusion-filter.xml</excludeFilterFile>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.12</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<formats>
+						<format>xml</format>
+						<format>html</format>
+					</formats>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.9.1</version>
+			</plugin>
+		</plugins>
 	</reporting>
 
-	
+
 	<properties>
 		<project.title>DBEX</project.title>
 		<project.home>D:/SVN_HOME/database-explorer/trunk</project.home>
@@ -287,7 +376,7 @@
 		<flex.home>C:\TOOLS\Flex-sdk-3.1.0</flex.home>
 		<spring-version>3.0.0.RELEASE</spring-version>
 		<web.context.root>/dbex</web.context.root>
-		
+
 		<reporting.output.directory>D:/SVN_HOME/database-explorer/trunk/dbex-reportings</reporting.output.directory>
 		<findbugs.output.directory>${reporting.output.directory}/findbugs</findbugs.output.directory>
 	</properties>

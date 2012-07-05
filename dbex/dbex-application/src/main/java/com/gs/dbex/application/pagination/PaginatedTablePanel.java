@@ -786,6 +786,9 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 		else if(e.getSource().equals(filterButton)){
 			applyFilter();
 		}
+		else if(e.getSource().equals(addNewRecordButton)){
+			addRecord();
+		}
 		else if(e.getSource().equals(editRecordButton)){
 			editRecord();
 		}
@@ -824,6 +827,22 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 		}
 	}
 	
+	/**
+	 * 
+	 */
+	private void addRecord() {
+		TableDataEditorDialog dataEditorDialog = new TableDataEditorDialog(getParentFrame(), targetTable);
+		dataEditorDialog.setSchemaName(databaseTable.getSchemaName());
+		dataEditorDialog.setTableName(databaseTable.getModelName());
+		dataEditorDialog.setConnectionProperties(connectionProperties);
+		dataEditorDialog.setLocation(100, 100);
+		int opt = dataEditorDialog.showEditorDialog();
+		if(opt == ApplicationConstants.APPLY_OPTION){
+			String sql = dataEditorDialog.getGeneratedSQL();
+			System.out.println("Generated SQL: \n\t" +sql);
+		}
+	}
+
 	private String getExportOutptFileName(TableDataExportTypeEnum dataExportTypeEnum){
 		ExtensionFileFilter filter = new ExtensionFileFilter(new String[] { dataExportTypeEnum.getExtension()}, 
 				dataExportTypeEnum.getDescription());
@@ -1196,7 +1215,8 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 		dataEditorDialog.setLocation(100, 100);
 		int opt = dataEditorDialog.showEditorDialog();
 		if(opt == ApplicationConstants.APPLY_OPTION){
-			
+			String sql = dataEditorDialog.getGeneratedSQL();
+			System.out.println("Generated SQL: \n\t" +sql);
 		}
 	}
 

@@ -74,5 +74,12 @@ public class ColumnRow implements Serializable{
 		this.columnValue = columnValue;
 	}
 
+
+	@Override
+	public String toString() {
+		return "ColumnRow [columnName=" + columnName + ", columnClass="
+				+ columnClass + ", columnValue=" + columnValue + "]";
+	}
+
 	
 }

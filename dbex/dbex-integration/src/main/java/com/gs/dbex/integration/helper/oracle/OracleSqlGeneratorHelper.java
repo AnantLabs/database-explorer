@@ -1,9 +1,9 @@
 /* ******************************************************************************
  * 	
- * 	Name	: SqlGeneratorIntegration.java
- * 	Type	: com.gs.dbex.integration.SqlGeneratorIntegration
+ * 	Name	: OracleSqlGeneratorHelper.java
+ * 	Type	: com.gs.dbex.integration.helper.oracle.OracleSqlGeneratorHelper
  * 
- * 	Created	: Mar 25, 2012
+ * 	Created	: Jun 21, 2012
  * 	
  * 	Author	: Sabuj Das [ mailto::sabuj.das@gmail.com ]
  * 
@@ -15,16 +15,15 @@
  * 																				*
  ****************************************************************************** */
 
-package com.gs.dbex.integration;
+package com.gs.dbex.integration.helper.oracle;
 
+import com.gs.dbex.integration.helper.SqlGeneratorHelper;
 
 /**
  * @author sabuj.das
  * @MailTo sabuj.das@gmail.com
  * 
  */
-public interface SqlGeneratorIntegration {
+public class OracleSqlGeneratorHelper extends SqlGeneratorHelper {
 
-	
-	
 }

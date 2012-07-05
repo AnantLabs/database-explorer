@@ -226,6 +226,7 @@ public class TableDataPanel extends JPanel implements ActionListener{
 						+ "add_plus.png"));
 		addRecordButton.setIcon(image);
 		addRecordButton.setFocusable(false);
+		addRecordButton.addActionListener(this);
 		dataToolBar.add(addRecordButton);
 		image = new ImageIcon(MenuBarUtil.class
 				.getResource(ApplicationConstants.IMAGE_PATH
@@ -306,6 +307,8 @@ public class TableDataPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent evt) {
 		if(evt.getSource().equals(refreshButton)){
 			showTableData();
+		} if(evt.getSource().equals(addRecordButton)){
+			addNewRecord();
 		} else if(evt.getSource().equals(filterDataButton)){
 			applyFilter();
 		} else if(evt.getSource().equals(editRecordButton)){
@@ -314,8 +317,27 @@ public class TableDataPanel extends JPanel implements ActionListener{
 	}
 
 
+	/**
+	 * 
+	 */
+	public void addNewRecord() {
+		TableDataEditorDialog dataEditorDialog = new TableDataEditorDialog(getParentFrame(), dataTable);
+		dataEditorDialog.setSchemaName(schemaName);
+		dataEditorDialog.setTableName(tableName);
+		dataEditorDialog.setConnectionProperties(connectionProperties);
+		dataEditorDialog.setLocation(100, 100);
+		int opt = dataEditorDialog.showEditorDialog();
+		if(opt == ApplicationConstants.APPLY_OPTION){
+			
+		}
+		
+	}
+
+
+
 	private void applyFilter() {
-		ResultFilterDialog filterDialog = new ResultFilterDialog(getParentFrame(), true, connectionProperties.getConnectionName());
+		ResultFilterDialog filterDialog = new ResultFilterDialog(getParentFrame(), 
+				true, connectionProperties.getConnectionName());
 		filterDialog.setFilterQuery(currentFilter);
 		filterDialog.setInputQuery(queryString);
 		filterDialog.setAlwaysOnTop(true);

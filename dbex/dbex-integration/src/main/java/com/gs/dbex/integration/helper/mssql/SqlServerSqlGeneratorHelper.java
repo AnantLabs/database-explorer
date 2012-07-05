@@ -1,9 +1,9 @@
 /* ******************************************************************************
  * 	
- * 	Name	: SqlGeneratorIntegration.java
- * 	Type	: com.gs.dbex.integration.SqlGeneratorIntegration
+ * 	Name	: SqlServerSqlGeneratorHelper.java
+ * 	Type	: com.gs.dbex.integration.helper.mssql.SqlServerSqlGeneratorHelper
  * 
- * 	Created	: Mar 25, 2012
+ * 	Created	: Jun 21, 2012
  * 	
  * 	Author	: Sabuj Das [ mailto::sabuj.das@gmail.com ]
  * 
@@ -15,16 +15,15 @@
  * 																				*
  ****************************************************************************** */
 
-package com.gs.dbex.integration;
+package com.gs.dbex.integration.helper.mssql;
 
+import com.gs.dbex.integration.helper.SqlGeneratorHelper;
 
 /**
  * @author sabuj.das
  * @MailTo sabuj.das@gmail.com
  * 
  */
-public interface SqlGeneratorIntegration {
+public class SqlServerSqlGeneratorHelper extends SqlGeneratorHelper {
 
-	
-	
 }

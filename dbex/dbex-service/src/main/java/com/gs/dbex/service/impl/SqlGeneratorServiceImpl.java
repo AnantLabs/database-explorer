@@ -17,12 +17,25 @@
 
 package com.gs.dbex.service.impl;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
+
 import com.gs.dbex.common.enums.DatabaseTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
+import com.gs.dbex.common.exception.ErrorCodeConstants;
+import com.gs.dbex.integration.IntegrationBeanFactory;
+import com.gs.dbex.integration.QueryExecutionIntegration;
+import com.gs.dbex.integration.SqlGeneratorIntegration;
+import com.gs.dbex.integration.helper.SqlGeneratorHelper;
+import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.sql.SqlQuery;
 import com.gs.dbex.service.SqlGeneratorService;
+import com.gs.utils.collection.CollectionUtils;
 import com.gs.utils.text.StringUtil;
 
 /**
@@ -32,11 +45,23 @@ import com.gs.utils.text.StringUtil;
  */
 public class SqlGeneratorServiceImpl implements SqlGeneratorService {
 
+	private static final Logger logger = Logger.getLogger(SqlGeneratorServiceImpl.class);
+	
+	private SqlGeneratorHelper sqlGeneratorHelper;
+	
 	/**
 	 * 
 	 */
 	public SqlGeneratorServiceImpl() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public SqlGeneratorHelper getSqlGeneratorHelper() {
+		return sqlGeneratorHelper;
+	}
+
+	public void setSqlGeneratorHelper(SqlGeneratorHelper sqlGeneratorHelper) {
+		this.sqlGeneratorHelper = sqlGeneratorHelper;
 	}
 
 	@Override
@@ -272,6 +297,65 @@ public class SqlGeneratorServiceImpl implements SqlGeneratorService {
 			.append((copyData) ? "\'1\'" : "\'\'");
 		return new SqlQuery(queryBuffer.toString());
 	}
+	
+	private SqlGeneratorIntegration getIntegrationPoint(DatabaseTypeEnum databaseTypeEnum) throws DbexException{
+		if(databaseTypeEnum == null){
+			throw new DbexException("No database type");
+		}
+		SqlGeneratorIntegration integration = IntegrationBeanFactory.getBeanFactory()
+			.getSqlGeneratorIntegration(databaseTypeEnum);
+		if(integration == null){
+			logger.debug("Integration point not found.");
+			throw new DbexException(ErrorCodeConstants.UNSUPPORTED_OPERATION);
+		}
+		return integration;
+	}
+
+	@Override
+	public SqlQuery generateInsertSql(DatabaseTypeEnum databaseTypeEnum,
+			String sourceSchema, String sourceTable, Map<String, Object> values)
+			throws DbexException {
+		if(!StringUtil.hasValidContent(sourceSchema)
+				|| !StringUtil.hasValidContent(sourceTable)){
+			return null;
+		}
+		
+		SqlGeneratorIntegration integration = getIntegrationPoint(databaseTypeEnum);
+		
+		StringBuffer stringBuffer = new StringBuffer("INSERT INTO ")
+			.append(sourceSchema)
+			.append('.')
+			.append(sourceTable)
+			.append(" (");
+		
+		Set<String> columnNameSet = values.keySet();
+		if(CollectionUtils.hasElements(columnNameSet)){
+			
+			
+		}
+		
+		return new SqlQuery(stringBuffer.toString());
+	}
+
+	@Override
+	public SqlQuery generateUpdateSql(DatabaseTypeEnum databaseTypeEnum,
+			String sourceSchema, String sourceTable, Map<String, Object> values)
+			throws DbexException {
+		if(!StringUtil.hasValidContent(sourceSchema)
+				|| !StringUtil.hasValidContent(sourceTable)){
+			return null;
+		}
+		StringBuffer stringBuffer = new StringBuffer("UPDATE ")
+		.append(sourceSchema)
+		.append('.')
+		.append(sourceTable)
+		.append(" ");
+	
+	
+	
+	return new SqlQuery(stringBuffer.toString());
+	}
 
 		
+	
 }

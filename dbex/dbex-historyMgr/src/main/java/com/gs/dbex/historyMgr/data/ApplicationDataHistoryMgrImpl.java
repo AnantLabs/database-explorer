@@ -136,14 +136,14 @@ public class ApplicationDataHistoryMgrImpl implements ApplicationDataHistoryMgr 
 
 	public boolean saveAllJdbcDriverConfiguration(
 			List<JdbcDriverConfiguration> driverConfigurations) {
-		// TODO Auto-generated method stub
-		return false;
+		return saveAllJdbcDriverConfiguration(driverConfigurations, dbexCommonContext.getDriverManagerFileName());
 	}
 
 	public boolean saveAllJdbcDriverConfiguration(
 			List<JdbcDriverConfiguration> driverConfigurations, String fileName) {
-		// TODO Auto-generated method stub
-		return false;
+		String xmlText = getDriverManagerXmlTransformer().saveDrivermanagerDetails(driverConfigurations);
+		FileRWUtil.writeAsText(fileName, xmlText);
+		return true;
 	}
 
 
