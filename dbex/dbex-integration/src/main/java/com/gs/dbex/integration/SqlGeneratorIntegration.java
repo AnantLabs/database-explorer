@@ -17,6 +17,8 @@
 
 package com.gs.dbex.integration;
 
+import java.util.Map;
+
 
 /**
  * @author sabuj.das
@@ -25,6 +27,6 @@ package com.gs.dbex.integration;
  */
 public interface SqlGeneratorIntegration {
 
-	
+	String populateInsertValues(Map<String, Object> values);
 	
 }

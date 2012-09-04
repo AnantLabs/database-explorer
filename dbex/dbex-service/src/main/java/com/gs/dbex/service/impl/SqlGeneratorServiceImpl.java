@@ -17,7 +17,6 @@
 
 package com.gs.dbex.service.impl;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,10 +26,8 @@ import com.gs.dbex.common.enums.DatabaseTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.common.exception.ErrorCodeConstants;
 import com.gs.dbex.integration.IntegrationBeanFactory;
-import com.gs.dbex.integration.QueryExecutionIntegration;
 import com.gs.dbex.integration.SqlGeneratorIntegration;
 import com.gs.dbex.integration.helper.SqlGeneratorHelper;
-import com.gs.dbex.model.cfg.ConnectionProperties;
 import com.gs.dbex.model.db.Column;
 import com.gs.dbex.model.db.Table;
 import com.gs.dbex.model.sql.SqlQuery;
@@ -326,12 +323,11 @@ public class SqlGeneratorServiceImpl implements SqlGeneratorService {
 			.append(sourceSchema)
 			.append('.')
 			.append(sourceTable)
-			.append(" (");
+			.append(" ");
 		
 		Set<String> columnNameSet = values.keySet();
 		if(CollectionUtils.hasElements(columnNameSet)){
-			
-			
+			stringBuffer.append(integration.populateInsertValues(values));
 		}
 		
 		return new SqlQuery(stringBuffer.toString());
