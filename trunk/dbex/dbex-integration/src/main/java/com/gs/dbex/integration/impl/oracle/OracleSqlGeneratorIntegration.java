@@ -17,13 +17,8 @@
 
 package com.gs.dbex.integration.impl.oracle;
 
-import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.integration.helper.oracle.OracleSqlGeneratorHelper;
 import com.gs.dbex.integration.impl.AbstractSqlGeneratorIntegration;
-import com.gs.dbex.model.cfg.ConnectionProperties;
-import com.gs.dbex.model.db.Column;
-import com.gs.dbex.model.db.Table;
-import com.gs.dbex.model.sql.SqlQuery;
 
 /**
  * @author sabuj.das
