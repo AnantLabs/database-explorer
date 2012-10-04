@@ -17,6 +17,8 @@
 
 package com.gs.dbex.integration.impl.oracle;
 
+import java.util.Map;
+
 import com.gs.dbex.integration.helper.oracle.OracleSqlGeneratorHelper;
 import com.gs.dbex.integration.impl.AbstractSqlGeneratorIntegration;
 
@@ -43,6 +45,12 @@ public class OracleSqlGeneratorIntegration extends AbstractSqlGeneratorIntegrati
 	public void setOracleSqlGeneratorHelper(
 			OracleSqlGeneratorHelper oracleSqlGeneratorHelper) {
 		this.oracleSqlGeneratorHelper = oracleSqlGeneratorHelper;
+	}
+
+	@Override
+	public String populateInsertValues(Map<String, Object> values) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -17,6 +17,8 @@
 
 package com.gs.dbex.integration.impl.mssql;
 
+import java.util.Map;
+
 import com.gs.dbex.integration.helper.mssql.SqlServerSqlGeneratorHelper;
 import com.gs.dbex.integration.impl.AbstractSqlGeneratorIntegration;
 
@@ -44,6 +46,12 @@ public class SqlServerSqlGeneratorIntegration extends
 	public void setSqlServerSqlGeneratorHelper(
 			SqlServerSqlGeneratorHelper sqlServerSqlGeneratorHelper) {
 		this.sqlServerSqlGeneratorHelper = sqlServerSqlGeneratorHelper;
+	}
+
+	@Override
+	public String populateInsertValues(Map<String, Object> values) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -17,6 +17,8 @@
 
 package com.gs.dbex.integration.impl;
 
+import java.util.Map;
+
 import com.gs.dbex.integration.helper.GenericSqlGeneratorHelper;
 
 /**
@@ -43,6 +45,12 @@ public class GenericSqlGeneratorIntegration extends
 	public void setGenericSqlGeneratorHelper(
 			GenericSqlGeneratorHelper genericSqlGeneratorHelper) {
 		this.genericSqlGeneratorHelper = genericSqlGeneratorHelper;
+	}
+
+	@Override
+	public String populateInsertValues(Map<String, Object> values) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
