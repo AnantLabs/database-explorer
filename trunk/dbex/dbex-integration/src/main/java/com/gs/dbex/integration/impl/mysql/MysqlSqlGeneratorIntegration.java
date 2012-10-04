@@ -17,6 +17,8 @@
 
 package com.gs.dbex.integration.impl.mysql;
 
+import java.util.Map;
+
 import com.gs.dbex.integration.helper.mysql.MysqlSqlGeneratorHelper;
 import com.gs.dbex.integration.impl.AbstractSqlGeneratorIntegration;
 
@@ -44,6 +46,12 @@ public class MysqlSqlGeneratorIntegration extends
 	public void setMysqlSqlGeneratorHelper(
 			MysqlSqlGeneratorHelper mysqlSqlGeneratorHelper) {
 		this.mysqlSqlGeneratorHelper = mysqlSqlGeneratorHelper;
+	}
+
+	@Override
+	public String populateInsertValues(Map<String, Object> values) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
