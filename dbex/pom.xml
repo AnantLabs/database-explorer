@@ -165,17 +165,17 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!--plugin>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<dependencies>
 					<dependency>
 						<groupId>com.adobe.flexant</groupId>
 						<artifactId>flex-ant</artifactId>
 						<version>022607</version>
-						<!--<version>3.1.0</version>-->
+						
 					</dependency>
 				</dependencies>
-			</plugin>
+			</plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
