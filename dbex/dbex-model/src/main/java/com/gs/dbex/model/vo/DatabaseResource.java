@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import com.gs.dbex.common.enums.DatabaseResourceEnum;
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public class DatabaseResource implements Serializable, Comparable<DatabaseResource>{

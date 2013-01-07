@@ -34,7 +34,7 @@ import com.gs.dbex.application.sql.SqlDocument;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public class DDLGenerationPanel extends JPanel implements ActionListener,

@@ -15,7 +15,7 @@ import com.gs.dbex.model.common.ColumnHeader;
 import com.gs.dbex.model.db.Column;
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public class ColumnDetailsTableModel implements TableModel {

@@ -5,7 +5,7 @@
  *	Type	: com.gs.dbex.application.util.WindowUtil.java
  *	Date	: Jul 29, 2009	8:15:51 PM
  *
- *	Author	: Green Moon
+ *	Author	: Sabuj Das | sabuj.das@gmail.com
  *
  *	
  *****************************************************************************/
@@ -17,7 +17,7 @@ import java.awt.Point;
 import java.awt.Toolkit;
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public class WindowUtil {

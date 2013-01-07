@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public class ColumnRow implements Serializable{
