@@ -20,15 +20,23 @@
 			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
 		</layout>
 	</appender>
+	
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%p] %c{1}.%M(%L) | %m%n" />
+		</layout>
+	</appender>
 
 	<category name="com.gs.dbex">
-		<priority value="ERROR" />
+		<priority value="debug" />
 		<appender-ref ref="APP_LOG" />
+		 <appender-ref ref="CONSOLE"/>
 	</category>
 
 	<category name="com.gs.utils">
-		<priority value="ERROR" />
+		<priority value="debug" />
 		<appender-ref ref="APP_LOG" />
+		 <appender-ref ref="CONSOLE"/>
 	</category>
 	<category name="org.springframework">
 		<priority value="TRACE" />
