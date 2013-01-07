@@ -42,6 +42,8 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 
+import oracle.sql.ROWID;
+
 import org.apache.log4j.Logger;
 
 import com.gs.dbex.application.comps.ExtensionFileFilter;
@@ -54,6 +56,7 @@ import com.gs.dbex.application.table.model.DataTableTableModelFactory;
 import com.gs.dbex.application.table.model.ResultSetTableModelFactory;
 import com.gs.dbex.application.util.DisplayTypeEnum;
 import com.gs.dbex.application.util.DisplayUtils;
+import com.gs.dbex.common.enums.DatabaseTypeEnum;
 import com.gs.dbex.common.enums.TableDataExportTypeEnum;
 import com.gs.dbex.common.exception.DbexException;
 import com.gs.dbex.design.util.DesignUtil;
@@ -931,7 +934,93 @@ public class PaginatedTablePanel extends JPanel implements Serializable,
 				if(e.getSource().equals(targetTable)){
 					if(getDatabaseTable() == null)
 						return;
-					
+					if(DatabaseTypeEnum.ORACLE.getCode().equals(connectionProperties.getDatabaseType())){
+						QuickEditVO vo = new QuickEditVO();
+						vo.setTableName(getDatabaseTable().getModelName());
+						vo.setSchemaName(getDatabaseTable().getSchemaName());
+						
+						int columnIndex = targetTable.getSelectedColumn();
+						int rowIndex = targetTable.getSelectedRow();
+						int columnCount = targetTable.getColumnCount();
+						String q = "SELECT ROWID, ORA_ROWSCN FROM " + vo.getSchemaName() + "." + vo.getTableName() + " WHERE ";
+						StringBuffer qbuf = new StringBuffer("SELECT ROWID, ORA_ROWSCN FROM ");
+						qbuf.append(vo.getSchemaName())
+							.append(".")
+							.append(vo.getTableName())
+							.append(" WHERE ");
+							
+						for (int i = 0; i < columnCount; i++) {
+							Object value = targetTable.getModel().getValueAt(rowIndex, i);
+							
+							if(value == null){
+								q += targetTable.getModel().getColumnName(i) + " IS NULL ";
+								if(i != columnCount-1){
+									q += "AND ";
+								}
+								continue;
+							}
+							Class clazz = targetTable.getColumnClass(i);
+							if(clazz.getCanonicalName().equalsIgnoreCase("java.util.Date") 
+									|| clazz.getCanonicalName().equalsIgnoreCase("java.sql.Date")
+									|| clazz.getCanonicalName().equalsIgnoreCase("java.sql.Timestamp")
+									|| clazz.getCanonicalName().equalsIgnoreCase("java.sql.Time")){
+								SimpleDateFormat dateFormat = new SimpleDateFormat(ApplicationConstants.INSERT_DATE_FORMAT);
+								if(value instanceof java.util.Date){
+									java.util.Date utilDate = (java.util.Date) value;
+									value = ApplicationConstants.SQL_DATE_FUNCTION + "('" +
+										dateFormat.format(utilDate) + "', " + ApplicationConstants.SQL_DATE_FORMAT + ")";
+								}
+								q += targetTable.getModel().getColumnName(i) + " = "
+									+ (
+									(value != null) ? value.toString() : "") + " ";
+								if(i != columnCount-1){
+									q += "AND ";
+								}
+								continue;
+							}
+								
+							q += targetTable.getModel().getColumnName(i) + " = '"
+								+ (
+								(value != null) ? value.toString() : "") + "' ";
+							if(i != columnCount-1){
+								q += "AND ";
+							}
+						}
+						Connection con = null;
+						try{
+							con = getConnectionProperties().getDataSource().getConnection();
+							Statement stmt = con.prepareStatement(q);
+							ResultSet rs = stmt.executeQuery(q);
+							if(rs == null)
+								return;
+							while(rs.next()){
+								ROWID rid = (ROWID) rs.getObject("ROWID");
+								if(rid != null){
+									vo.setRowid(rid.stringValue());
+								}
+								String x = rs.getString("ORA_ROWSCN");
+								if(x != null){
+									vo.setOraRowscn(x);
+								}
+							}
+						}catch(Exception ex){
+							logger.error("Cannot execute query [ : " + q + "\n\tReasone: " + ex.getMessage());
+							return;
+						}finally{
+							if(con != null){
+								try {
+									con.close();
+								} catch (SQLException e1) {
+									e1.printStackTrace();
+								}
+							}
+						}
+						vo.setCurrentColumnName(targetTable.getModel().getColumnName(columnIndex));
+						Object value = targetTable.getModel().getValueAt(rowIndex, columnIndex);
+						vo.setCurrentColumnValue((value != null) ? value.toString() : "");
+						vo.setConnectionProperties(getConnectionProperties());
+						openQuickEditDialog(vo);
+					}
 				}
 			}
 		
