@@ -4,32 +4,17 @@
 	debug="true">
 
 	<appender name="APP_LOG" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="./logs/app/Application.log" />
-		<param name="MaxFileSize" value="10485760KB" />
+		<param name="file" value="d:/logs/dbex/dbex-app.log" />
+		<param name="MaxFileSize" value="10MB" />
 		<param name="maxBackupIndex" value="10" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
 		</layout>
 	</appender>
-	<appender name="CASTOR_LOG" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="./logs/integration/Castor.log" />
-		<param name="MaxFileSize" value="10485760KB" />
-		<param name="maxBackupIndex" value="10" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
-		</layout>
-	</appender>
-	<appender name="GS_UTIL_LOG" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="./logs/external/Utility.log" />
-		<param name="MaxFileSize" value="10485760KB" />
-		<param name="maxBackupIndex" value="10" />
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
-		</layout>
-	</appender>
+	
 	<appender name="SPRING_LOG" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="./logs/integration/Spring.log" />
-		<param name="MaxFileSize" value="10485760KB" />
+		<param name="file" value="d:/logs/dbex/dbex-spring.log" />
+		<param name="MaxFileSize" value="10MB" />
 		<param name="maxBackupIndex" value="10" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{dd-MMM-yyyy HH:mm:ss.SSS} %-5p %C{1}: %m%n" />
@@ -40,16 +25,13 @@
 		<priority value="ERROR" />
 		<appender-ref ref="APP_LOG" />
 	</category>
-	<category name="org.exolab.castor">
-		<priority value="ERROR" />
-		<appender-ref ref="CASTOR_LOG" />
-	</category>
+
 	<category name="com.gs.utils">
 		<priority value="ERROR" />
-		<appender-ref ref="GS_UTIL_LOG" />
+		<appender-ref ref="APP_LOG" />
 	</category>
 	<category name="org.springframework">
-		<priority value="ERROR" />
+		<priority value="TRACE" />
 		<appender-ref ref="SPRING_LOG" />
 	</category>
 </log4j:configuration>

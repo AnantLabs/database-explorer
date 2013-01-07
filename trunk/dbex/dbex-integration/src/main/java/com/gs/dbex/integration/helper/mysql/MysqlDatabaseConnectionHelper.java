@@ -36,6 +36,7 @@ private static final Logger logger = Logger.getLogger(MysqlDatabaseConnectionHel
 		ds.setDatabaseName(connectionProperties.getDatabaseConfiguration().getSidServiceName()); 
 		ds.setUser(connectionProperties.getDatabaseConfiguration().getUserName());
 		ds.setPassword(connectionProperties.getDatabaseConfiguration().getPassword());
+		ds.setZeroDateTimeBehavior("convertToNull");
 		if(logger.isDebugEnabled()){
 			logger.debug("EXIT ::- createDataSource()");
 		}
@@ -58,6 +59,7 @@ private static final Logger logger = Logger.getLogger(MysqlDatabaseConnectionHel
 		if(StringUtil.hasValidContent(connectionProperties.getDatabaseConfiguration().getSchemaName())){
 			url.append(connectionProperties.getDatabaseConfiguration().getSchemaName());
 		}
+		url.append("?zeroDateTimeBehavior=convertToNull");
 		logger.info("Connection URL : [ " + url.toString() + " ]");
 		if(logger.isDebugEnabled()){
 			logger.debug("EXIT ::- formConnectionURL()");

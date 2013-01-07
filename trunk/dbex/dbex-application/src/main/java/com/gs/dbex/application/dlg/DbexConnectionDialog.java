@@ -1427,6 +1427,7 @@ implements ActionListener, ListSelectionListener, PropertyChangeListener, KeyLis
 			p.setDatabaseType(DatabaseTypeEnum.getDatabaseTypeEnumByName(dbTypeComboBox.getSelectedItem().toString()).getCode());
 		}
 		p.setConnectionUrl(urlTextField.getText());
+		
 		p.getDatabaseConfiguration().setHostName(hostNameTextField.getText());
 		if(StringUtil.hasValidContent(portNumberFormattedTextField.getText())){
 			p.getDatabaseConfiguration().setPortNumber(Integer.valueOf(portNumberFormattedTextField.getText()));
