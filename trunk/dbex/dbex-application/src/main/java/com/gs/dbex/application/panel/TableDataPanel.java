@@ -36,7 +36,7 @@ import com.gs.dbex.service.DbexServiceBeanFactory;
 import com.gs.dbex.service.QueryExecutionService;
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public class TableDataPanel extends JPanel implements ActionListener{

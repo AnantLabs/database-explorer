@@ -99,7 +99,7 @@ import com.gs.utils.text.StringUtil;
 
 /**
  * 
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  */
 public class SqlQueryPanel extends JPanel implements ActionListener, CaretListener, FocusListener,
 UndoableEditListener, HyperlinkListener, PropertyChangeListener {

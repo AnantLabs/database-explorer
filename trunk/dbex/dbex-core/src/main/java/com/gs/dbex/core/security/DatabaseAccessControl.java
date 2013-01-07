@@ -19,7 +19,7 @@ import com.gs.utils.text.StringUtil;
 
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public class DatabaseAccessControl {

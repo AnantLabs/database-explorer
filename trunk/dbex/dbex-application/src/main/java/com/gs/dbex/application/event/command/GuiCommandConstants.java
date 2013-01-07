@@ -4,7 +4,7 @@
 package com.gs.dbex.application.event.command;
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public interface GuiCommandConstants {

@@ -5,7 +5,7 @@
  *	Type	: com.gs.oracle.model.Column.java
  *	Date	: Jul 29, 2009	1:06:46 PM
  *
- *	Author	: Green Moon
+ *	Author	: Sabuj Das | sabuj.das@gmail.com
  *
  *	
  *****************************************************************************/

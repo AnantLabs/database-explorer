@@ -6,7 +6,7 @@ package com.gs.dbex.model.vo;
 import com.gs.dbex.model.cfg.ConnectionProperties;
 
 /**
- * @author Green Moon
+ * @author Sabuj Das | sabuj.das@gmail.com
  *
  */
 public class QuickEditVO {
