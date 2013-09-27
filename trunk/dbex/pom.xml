@@ -361,15 +361,15 @@
 
 	<properties>
 		<project.title>DBEX</project.title>
-		<project.home>D:/SVN_HOME/database-explorer/trunk</project.home>
+		<project.home>../../</project.home>
 		<release.version>1.0-Helium-1</release.version>
-		<setup.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup</setup.dir>
-		<libs.dir>D:/SVN_HOME/database-explorer/trunk/dbex-setup/libs</libs.dir>
-		<release.dir>D:/SVN_HOME/database-explorer/trunk/release</release.dir>
+		<setup.dir>../../dbex-setup</setup.dir>
+		<libs.dir>../../dbex-setup/libs</libs.dir>
+		<release.dir>../../release</release.dir>
 		<jdk.version>1.6</jdk.version>
 		<maven.test.skip>true</maven.test.skip>
 		<maven.jar.sign.skip>true</maven.jar.sign.skip>
-		<staging.dir>D:/SVN_HOME/database-explorer/trunk/release/staging</staging.dir>
+		<staging.dir>../../release/staging</staging.dir>
 		<izpack-standalone.version>4.3.1</izpack-standalone.version>
 		<system.architecture.version>x86</system.architecture.version>
 		<system.classifier>win32</system.classifier>
@@ -377,7 +377,7 @@
 		<spring-version>3.0.0.RELEASE</spring-version>
 		<web.context.root>/dbex</web.context.root>
 
-		<reporting.output.directory>D:/SVN_HOME/database-explorer/trunk/dbex-reportings</reporting.output.directory>
+		<reporting.output.directory>../../dbex-reportings</reporting.output.directory>
 		<findbugs.output.directory>${reporting.output.directory}/findbugs</findbugs.output.directory>
 	</properties>
 

@@ -4,7 +4,7 @@
 	debug="true">
 
 	<appender name="APP_LOG" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="d:/logs/dbex/dbex-app.log" />
+		<param name="file" value="./logs/dbex/dbex-app.log" />
 		<param name="MaxFileSize" value="10MB" />
 		<param name="maxBackupIndex" value="10" />
 		<layout class="org.apache.log4j.PatternLayout">
@@ -13,7 +13,7 @@
 	</appender>
 	
 	<appender name="SPRING_LOG" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="d:/logs/dbex/dbex-spring.log" />
+		<param name="file" value="./logs/dbex/dbex-spring.log" />
 		<param name="MaxFileSize" value="10MB" />
 		<param name="maxBackupIndex" value="10" />
 		<layout class="org.apache.log4j.PatternLayout">
