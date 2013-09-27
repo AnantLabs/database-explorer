@@ -78,9 +78,9 @@ public class DatabaseExplorerLauncher {
 	
 	public void launchApplication(){
 		try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             //UIManager.setLookAndFeel(NimbusLookAndFeel.class.getCanonicalName());
-            //UIManager.setLookAndFeel(TinyLookAndFeel.class.getCanonicalName());
+            UIManager.setLookAndFeel(TinyLookAndFeel.class.getCanonicalName());
 			//UIManager.setLookAndFeel(Office2003LookAndFeel.class.getCanonicalName());
         } catch (ClassNotFoundException e1) {
             e1.printStackTrace();
