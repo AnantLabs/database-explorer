@@ -1,0 +1,3 @@
+Database Explorer (DbEx) is a tool for viewing/editing different databases. This tool has both Desktop and Web application. The desktop application comes with an installer or a .zip file. The web part comes as a .war file. This war file can be deployed in any web-server or app-server.
+
+.... Coming Soon ....
